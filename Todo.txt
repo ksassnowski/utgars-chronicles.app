@@ -1,0 +1,39 @@
+Current
+=======
+
+- [Define Palette] Yes
+    - Add entry to yes
+    - Edit entry
+    - Delete entry from yes
+
+Backlog
+=======
+
+- Define Palette
+    - No
+        - Add entry to no
+        - Edit entry
+        - Delete entry from no
+
+- Define Legacy
+    - Create Legacy
+    - Edit Legacy
+    - Delete Legacy
+
+- Manage Game
+    - Schedule next game
+    - Invite Players to Game
+        - Send out invitation
+            - Send out email
+        - View pending invitations
+        - Revoke pending invitation
+        - Accept Invitation
+        - Kick Player from Game
+
+- Export Game
+    - To WorldAnvil
+        - Research if API exists
+
+- Social Signup
+    - Sign up with Google
+
