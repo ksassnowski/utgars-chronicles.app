@@ -1,13 +1,15 @@
 Current
 =======
 
+- Manage Game
+    - Invite Players to Game
+        - Send out invitation
+            - Send out email
 MVP
 =======
 
 - Manage Game
     - Invite Players to Game
-        - Send out invitation
-            - Send out email
         - Accept Invitation
         - Kick Player from Game
 

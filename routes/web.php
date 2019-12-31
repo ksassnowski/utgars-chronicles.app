@@ -2,8 +2,10 @@
 
 Auth::routes();
 
+Route::get('/', 'PageController')->middleware('guest');
+
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/', 'HomeController')->name('home');
+    Route::get('/home', 'HomeController')->name('home');
 
     Route::post('histories', 'History\StoreHistoryController')->name('history.store');
     Route::get('histories/create', 'History\CreateHistoryController')->name('history.create');

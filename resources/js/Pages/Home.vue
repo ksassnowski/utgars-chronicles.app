@@ -35,7 +35,11 @@
 </template>
 
 <script>
+import Layout from "./Layout";
+
 export default {
     name: 'HomePage',
+
+    layout: Layout,
 };
 </script>
