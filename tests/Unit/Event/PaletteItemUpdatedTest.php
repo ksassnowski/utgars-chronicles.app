@@ -2,7 +2,8 @@
 
 namespace Tests\Unit\Event;
 
-use App\History;
+use App\Palette;
+use App\PaletteType;
 use PHPUnit\Framework\TestCase;
 use App\Events\PaletteItemUpdated;
 
@@ -14,20 +15,29 @@ class PaletteItemUpdatedTest extends TestCase
     public function broadcastCorrectAttributes(): void
     {
         $this->assertEquals([
-            'id' => 123,
+            'palette' => [
+                'id' => 123,
+                'name' => '::new-name::',
+                'type' => PaletteType::YES,
+            ],
+            'history' => 999,
         ], $this->createEvent()->broadcastWith());
     }
 
     protected function createEvent()
     {
         return new PaletteItemUpdated(
-            123,
-            new History(['id' => 999]),
+            new Palette([
+                'id' => 123,
+                'name' => '::new-name::',
+                'type' => PaletteType::YES,
+                'history_id' => 999,
+            ])
         );
     }
 
     protected function getChannelName($event): string
     {
-        return 'history.' . $event->history->id;
+        return 'history.999';
     }
 }

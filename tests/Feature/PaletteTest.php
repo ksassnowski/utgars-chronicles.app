@@ -2,24 +2,26 @@
 
 namespace Tests\Feature;
 
-use App\User;
 use Generator;
 use App\History;
 use App\Palette;
 use Tests\TestCase;
 use App\PaletteType;
+use Tests\ValidateRoutesTest;
+use Tests\AuthorizeHistoryTest;
 use App\Events\ItemAddedToPalette;
+use App\Events\PaletteItemDeleted;
 use App\Events\PaletteItemUpdated;
+use Tests\AuthenticatedRoutesTest;
 use Illuminate\Support\Facades\Event;
 use App\Http\Controllers\PaletteController;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Http\Requests\Palette\CreatePaletteItemRequest;
 use App\Http\Requests\Palette\UpdatePaletteItemRequest;
 
 class PaletteTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, AuthorizeHistoryTest, AuthenticatedRoutesTest, ValidateRoutesTest;
 
     protected function setUp(): void
     {
@@ -28,21 +30,7 @@ class PaletteTest extends TestCase
         Event::fake();
     }
 
-    /**
-     * @test
-     * @dataProvider routeProvider
-     */
-    public function authenticationTest(string $httpMethod, string $uri): void
-    {
-        $method = "{$httpMethod}Json";
-
-        /** @var TestResponse $response */
-        $response = $this->$method($uri);
-
-        $response->assertUnauthorized();
-    }
-
-    public function routeProvider(): Generator
+    public function authenticatedRoutesProvider(): Generator
     {
         yield from [
             'add to palette' => ['post', '/histories/1/palette'],
@@ -51,46 +39,12 @@ class PaletteTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider validationProvider
-     */
-    public function validateRoutes(string $controller, string $action, string $requestClass): void
-    {
-        $this->assertActionUsesFormRequest($controller, $action, $requestClass);
-    }
-
     public function validationProvider(): Generator
     {
         yield from [
             'add to palette' => [PaletteController::class, 'store', CreatePaletteItemRequest::class],
             'edit palette item' => [PaletteController::class, 'update', UpdatePaletteItemRequest::class],
         ];
-    }
-
-    /**
-     * @test
-     * @dataProvider authorizationProvider
-     */
-    public function authorizationTest(array $payload, string $route, string $httpMethod, int $status, ?callable $setup = null): void
-    {
-        $method = "{$httpMethod}Json";
-        /** @var History $history */
-        $history = factory(History::class)->create();
-
-        if ($setup !== null) {
-            $setup($history);
-        }
-
-        [$player, $notAPlayer] = factory(User::class, 2)->create();
-        $history->addPlayer($player);
-
-        /** @var TestResponse $response */
-        $response = $this->actingAs($notAPlayer)->$method($route, $payload);
-        $response->assertForbidden();
-
-        $response = $this->actingAs($player)->$method($route, $payload);
-        $response->assertStatus($status);
     }
 
     public function authorizationProvider(): Generator
@@ -163,7 +117,7 @@ class PaletteTest extends TestCase
         $this->assertEquals(PaletteType::NO, $item->type);
         Event::assertDispatched(
             PaletteItemUpdated::class,
-            fn (PaletteItemUpdated $event) => $event->itemId === $item->id && $event->history->id === $history->id
+            fn (PaletteItemUpdated $event) => $event->item->id === $item->id
         );
     }
 
@@ -179,5 +133,9 @@ class PaletteTest extends TestCase
         $this->assertDatabaseMissing('palettes', [
             'id' => $item->id,
         ]);
+        Event::assertDispatched(
+            PaletteItemDeleted::class,
+            fn (PaletteItemDeleted $event) => $event->itemId === $item->id && $event->history->id === $history->id
+        );
     }
 }

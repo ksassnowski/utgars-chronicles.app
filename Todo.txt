@@ -1,23 +1,29 @@
 Current
 =======
 
-Backlog
-=======
-
 - Define Legacy
     - Create Legacy
     - Edit Legacy
     - Delete Legacy
 
+MVP
+=======
+
 - Manage Game
-    - Schedule next game
     - Invite Players to Game
         - Send out invitation
             - Send out email
-        - View pending invitations
-        - Revoke pending invitation
         - Accept Invitation
         - Kick Player from Game
+
+Backlog
+=======
+
+- Manage Game
+    - Schedule next game
+    - Invite Players to Game
+        - View pending invitations
+        - Revoke pending invitation
 
 - Export Game
     - To WorldAnvil

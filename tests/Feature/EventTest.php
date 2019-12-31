@@ -3,20 +3,22 @@
 namespace Tests\Feature;
 
 use App\Type;
-use App\User;
 use App\Event;
 use Generator;
 use App\Period;
+use App\History;
 use Tests\TestCase;
 use App\Events\EventCreated;
 use App\Events\EventDeleted;
 use App\Events\EventUpdated;
+use Tests\AuthorizeHistoryTest;
+use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event as EventFacade;
 
 class EventTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest;
 
     private Period $period;
 
@@ -34,19 +36,7 @@ class EventTest extends TestCase
         $this->user = $this->period->history->owner;
     }
 
-    /**
-     * @test
-     * @dataProvider routeProvider
-     */
-    public function authenticatedRoutes(string $method, string $url): void
-    {
-        $method = $method . 'Json';
-        $response = $this->{$method}($url);
-
-        $response->assertUnauthorized();
-    }
-
-    public function routeProvider()
+    public function authenticatedRoutesProvider()
     {
         yield from [
             'create event' => ['post', '/periods/1/events'],
@@ -55,33 +45,37 @@ class EventTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function creatingAnEventNeedsAuthorization(): void
+    public function authorizationProvider(): Generator
     {
-        $response = $this->postJson(
-            route('periods.events.store', $this->period),
-            [
-                'name' => '::event-name::',
-                'type' => Type::DARK,
+        yield from [
+            'create event' => [
+                ['name' => '::event-name::', 'type' => Type::DARK],
+                '/periods/2/events',
+                'post',
+                201,
+                fn (History $history) => factory(Period::class)->create(['history_id' => $history->id]),
             ],
-        );
-
-        $response->assertUnauthorized();
-    }
-
-    /** @test */
-    public function canOnlyCreateEventForOwnHistories()
-    {
-        $otherUser = factory(User::class)->create();
-        $response = $this->actingAs($otherUser)->postJson(
-            route('periods.events.store', $this->period),
-            [
-                'name' => '::event-name::',
-                'type' => Type::DARK,
+            'edit event' => [
+                ['name' => '::event-name::', 'type' => Type::DARK],
+                '/events/1',
+                'put',
+                200,
+                function (History $history) {
+                    $period = factory(Period::class)->create(['history_id' => $history->id]);
+                    factory(Event::class)->create(['period_id' => $period->id]);
+                },
             ],
-        );
-
-        $response->assertForbidden();
+            'delete event' => [
+                [],
+                '/events/1',
+                'delete',
+                204,
+                function (History $history) {
+                    $period = factory(Period::class)->create(['history_id' => $history->id]);
+                    factory(Event::class)->create(['period_id' => $period->id]);
+                },
+            ]
+        ];
     }
 
     /** @test */
@@ -185,20 +179,6 @@ class EventTest extends TestCase
     }
 
     /** @test */
-    public function canOnlyUpdateEventsThatBelongToOwnHistory()
-    {
-        $otherUser = factory(User::class)->create();
-        $event = factory(Event::class)->create(['period_id' => $this->period->id]);
-
-        $response = $this->actingAs($otherUser)->putJson(
-            route('events.update', $event),
-            []
-        );
-
-        $response->assertForbidden();
-    }
-
-    /** @test */
     public function deleteEvent(): void
     {
         $event = factory(Event::class)->create(['period_id' => $this->period->id]);
@@ -212,17 +192,5 @@ class EventTest extends TestCase
             EventDeleted::class,
             fn (EventDeleted $e) => $e->id === $event->id && $e->period->id === $event->period->id
         );
-    }
-
-    /** @test */
-    public function canOnlyDeleteEventsThatBelongToOwnHistory(): void
-    {
-        $otherUser = factory(User::class)->create();
-        $event = factory(Event::class)->create(['period_id' => $this->period->id]);
-
-        $response = $this->actingAs($otherUser)
-            ->deleteJson(route('events.delete', $event));
-
-        $response->assertForbidden();
     }
 }
