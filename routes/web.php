@@ -16,6 +16,18 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:updateHistory,history')
         ->name('history.update');
 
+    Route::post('histories/{history}/palette', [\App\Http\Controllers\PaletteController::class, 'store'])
+        ->middleware('can:modifyGame,history')
+        ->name('history.palette.store');
+
+    Route::put('palette/{palette}', [\App\Http\Controllers\PaletteController::class, 'update'])
+        ->middleware('can:updatePalette,palette')
+        ->name('palette.update');
+
+    Route::delete('palette/{palette}', [\App\Http\Controllers\PaletteController::class, 'destroy'])
+        ->middleware('can:deletePalette,palette')
+        ->name('palette.delete');
+
     Route::post('histories/{history}/focus', 'History\DefineFocusController')
         ->middleware('can:modifyGame,history')
         ->name('history.focus.define');

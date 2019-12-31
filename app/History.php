@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * @property User owner
+ * @property int owner_id
  */
 class History extends Model
 {
@@ -41,6 +42,11 @@ class History extends Model
         return $this->hasMany(Focus::class);
     }
 
+    public function palette(): HasMany
+    {
+        return $this->hasMany(Palette::class);
+    }
+
     public function addPlayer(User $user): void
     {
         if ($this->isPlayer($user)) {
@@ -58,5 +64,13 @@ class History extends Model
     public function defineFocus(string $name): Focus
     {
         return $this->focus()->create(['name' => $name]);
+    }
+
+    public function addToPalette(string $description, string $type): Palette
+    {
+        return $this->palette()->create([
+            'name' => $description,
+            'type' => $type,
+        ]);
     }
 }
