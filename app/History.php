@@ -47,6 +47,11 @@ class History extends Model
         return $this->hasMany(Palette::class);
     }
 
+    public function legacies(): HasMany
+    {
+        return $this->hasMany(Legacy::class);
+    }
+
     public function addPlayer(User $user): void
     {
         if ($this->isPlayer($user)) {
@@ -71,6 +76,13 @@ class History extends Model
         return $this->palette()->create([
             'name' => $description,
             'type' => $type,
+        ]);
+    }
+
+    public function addLegacy(string $name): Legacy
+    {
+        return $this->legacies()->create([
+            'name' => $name,
         ]);
     }
 }

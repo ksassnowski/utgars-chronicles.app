@@ -28,6 +28,18 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:deletePalette,palette')
         ->name('palette.delete');
 
+    Route::post('histories/{history}/legacies', 'Legacy\CreateLegacyController')
+        ->middleware('can:modifyGame,history')
+        ->name('history.legacies.store');
+
+    Route::put('legacies/{legacy}', 'Legacy\UpdateLegacyController')
+        ->middleware('can:updateLegacy,legacy')
+        ->name('legacies.update');
+
+    Route::delete('legacies/{legacy}', 'Legacy\DeleteLegacyController')
+        ->middleware('can:deleteLegacy,legacy')
+        ->name('legacies.delete');
+
     Route::post('histories/{history}/focus', 'History\DefineFocusController')
         ->middleware('can:modifyGame,history')
         ->name('history.focus.define');

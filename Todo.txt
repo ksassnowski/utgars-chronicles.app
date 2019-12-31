@@ -1,11 +1,6 @@
 Current
 =======
 
-- Define Legacy
-    - Create Legacy
-    - Edit Legacy
-    - Delete Legacy
-
 MVP
 =======
 
