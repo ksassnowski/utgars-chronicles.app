@@ -1,5 +1,7 @@
 <template>
     <div>
+        <SceneModal v-if="showSceneModal" :event="event" @close="closeSceneModal" />
+
         <article class="relative p-8 relative rounded-sm border-2 bg-white border-gray-600 text-sm w-full mb-4 min-h-32 group">
             <template v-if="!editing">
                 <SettingsPanel
@@ -12,7 +14,7 @@
                 <h4 class="text-center">{{ event.name }}</h4>
 
                 <div class="absolute invisible group-hover:visible flex justify-end items-center inset-x-0 bottom-0 px-2 pb-2">
-                    <button class="text-sm text-indigo-700">Create Scene</button>
+                    <button class="text-sm text-indigo-700" @click="createScene">Create Scene</button>
                 </div>
 
                 <div
@@ -51,7 +53,7 @@
             </form>
         </article>
 
-        <draggable :list="orderedScenes" @change="sceneMoved" class="px-6">
+        <draggable :list="orderedScenes" @change="sceneMoved">
             <SceneCard v-for="scene in orderedScenes" :scene="scene" :key="scene.id" />
         </draggable>
     </div>
@@ -64,6 +66,7 @@ import draggable from 'vuedraggable';
 
 import SettingsPanel from './SettingsPanel';
 import SceneCard from './SceneCard';
+import SceneModal from "./SceneModal";
 
 export default {
     name: 'EventCard',
@@ -71,6 +74,7 @@ export default {
     props: ['event', 'period'],
 
     components: {
+        SceneModal,
         draggable,
         SceneCard,
         SettingsPanel,
@@ -85,6 +89,7 @@ export default {
     data() {
         return {
             editing: false,
+            showSceneModal: false,
             form: {
                 type: this.event.type,
                 name: this.event.name,
@@ -135,6 +140,15 @@ export default {
             this.form.type = this.event.type;
             this.form.name= this.event.name;
             this.editing = false;
+        },
+
+        createScene() {
+            this.showSceneModal = true;
+        },
+
+        closeSceneModal() {
+            this.showSceneModal = false;
+            this.selectedScene = null;
         },
     },
 };

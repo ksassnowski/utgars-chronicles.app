@@ -374,7 +374,7 @@ export default {
                 position,
             });
 
-            axios.post(`/histories/${this.history.id}/periods/${period.id}/events/${event.id}/scenes/${scene.id}/move`, {
+            axios.post(this.$route('scenes.move', scene), {
                 position: position,
             }).catch(console.error);
         },

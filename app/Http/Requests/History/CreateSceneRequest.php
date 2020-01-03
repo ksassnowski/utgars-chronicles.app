@@ -14,7 +14,7 @@ class CreateSceneRequest extends FormRequest
             'question' => 'required',
             'scene' => 'nullable',
             'answer' => 'nullable',
-            'type' => Rule::in([Type::DARK, Type::LIGHT]),
+            'type' => ['nullable', Rule::in([Type::DARK, Type::LIGHT])],
         ];
     }
 }
