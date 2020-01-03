@@ -2,11 +2,15 @@
     <div :class="{ 'px-6': !editing }">
         <div class="border-2 bg-white border-gray-600 mb-5">
             <div v-if="!editing" class="p-8 group relative">
-                <SettingsPanel
-                    class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2"
-                    @delete="remove"
-                    @edit="editing = true"
-                />
+                <div class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2 flex justify-end">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="handle w-4 h-4 fill-current text-gray-500 cursor-move" style="margin-top: 2px" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
+
+                    <SettingsPanel
+                        v-if="!editing"
+                        @delete="remove"
+                        @edit="editing = true"
+                    />
+                </div>
 
                 <p class="text-sm pb-2">{{ scene.question }}</p>
 

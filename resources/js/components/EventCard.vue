@@ -56,7 +56,7 @@
             </form>
         </article>
 
-        <draggable :list="orderedScenes" @change="sceneMoved">
+        <draggable :list="orderedScenes" @change="sceneMoved" handle=".handle">
             <SceneCard v-for="scene in orderedScenes" :scene="scene" :key="scene.id" />
         </draggable>
     </div>
