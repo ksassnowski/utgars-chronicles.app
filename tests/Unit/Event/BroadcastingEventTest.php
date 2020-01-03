@@ -3,14 +3,14 @@
 namespace Tests\Unit\Event;
 
 use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
 trait BroadcastingEventTest
 {
     /** @test */
     public function implementsCorrectInterface(): void
     {
-        $this->assertInstanceOf(ShouldBroadcast::class, $this->createEvent());
+        $this->assertInstanceOf(ShouldBroadcastNow::class, $this->createEvent());
     }
 
     /** @test */
