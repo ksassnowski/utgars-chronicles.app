@@ -1,7 +1,48 @@
 <template>
-    <div class="w-1/2 md:w-1/4 lg:w-1/5">
+    <div class="w-1/2 md:w-1/4 lg:w-1/5 flex-shrink-0">
+        <Modal v-if="showModal" title="Create Event" @close="showModal = false">
+            <form @submit.prevent="addEvent">
+                <div class="mb-4">
+                    <label for="name" class="label">Name</label>
+                    <input type="text" class="input" id="name" ref="input" v-model="eventForm.name" required>
+                </div>
+
+                <div class="mb-4">
+                    <p class="label">Tone</p>
+
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <input type="radio" id="light" value="light" v-model="eventForm.type">
+                            <label for="light">Light</label>
+                        </div>
+
+                        <div>
+                            <input type="radio" id="dark" value="dark" v-model="eventForm.type">
+                            <label for="dark">Dark</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    class="text-white w-full rounded py-2 px-4"
+                    :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
+                    :disabled="loading"
+                >
+                    {{ loading ? 'Hang on...' : 'Save' }}
+                </button>
+            </form>
+        </Modal>
+
         <article class="border-2 border-gray-600 p-8 rounded-sm mb-6 shadow bg-white relative mx-4 relative group">
             <template v-if="!editing">
+                <SettingsPanel
+                    v-if="!editing"
+                    class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2"
+                    @delete="remove"
+                    @edit="editing = true"
+                />
+
                 <h3 class="font-bold tracking-wide text-center">{{ period.name }}</h3>
 
                 <div
@@ -10,18 +51,8 @@
                     :class="{ 'bg-white': period.type === 'light', 'bg-gray-800': period.type === 'dark' }"
                 ></div>
 
-                <div class="absolute inset-x-0 bottom-0 flex justify-between items-center px-2 pb-2 invisible group-hover:visible">
-                    <button
-                        class="text-sm text-red-500"
-                        @click="remove"
-                    >
-                        Delete
-                    </button>
-
-                    <button
-                        class="text-sm text-indigo-700"
-                        @click="editing = true"
-                    >Edit</button>
+                <div class="flex justify-end absolute inset-x-0 bottom-0 p-2 invisible group-hover:visible">
+                    <button class="text-indigo-700 text-sm" @click="showEventModal">Add Event</button>
                 </div>
             </template>
 
@@ -47,10 +78,15 @@
                     </div>
                 </div>
 
-                <div class="flex justify-between items-center">
-                    <button type="button" class="text-sm text-gray-500" @click="cancel">Cancel</button>
-                    <button type="submit" class="text-sm text-indigo-600">Save</button>
-                </div>
+                <button
+                    type="submit"
+                    class="text-white w-full rounded py-2 px-4 mb-2"
+                    :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
+                    :disabled="loading"
+                >
+                    {{ loading ? 'Hang on...' : 'Save' }}
+                </button>
+                <button type="button" class="text-sm text-gray-600 text-center block" @click="cancel">Cancel</button>
             </form>
         </article>
 
@@ -66,17 +102,22 @@
 </template>
 
 <script>
+import axios from 'axios';
 import draggable from 'vuedraggable';
 import sortBy from 'lodash/sortBy';
 
 import EventCard from './EventCard';
+import SettingsPanel from './SettingsPanel';
+import Modal from './Modal';
 
 export default {
     name: 'PeriodCard',
 
-    props: ['period'],
+    props: ['period', 'historyId'],
 
     components: {
+        Modal,
+        SettingsPanel,
         draggable,
         EventCard,
     },
@@ -90,9 +131,15 @@ export default {
     data() {
         return {
             editing: false,
+            loading: false,
+            showModal: false,
             form: {
                 name: this.period.name,
                 type: this.period.type,
+            },
+            eventForm: {
+                name: null,
+                type: 'dark',
             },
         };
     },
@@ -110,6 +157,17 @@ export default {
             })
         },
 
+        reset() {
+            this.eventForm.name = null;
+            this.eventForm.type = 'dark';
+        },
+
+        showEventModal() {
+            this.reset();
+            this.showModal = true;
+            this.$nextTick(() => this.$refs.input.focus());
+        },
+
         cancel() {
             this.editing = false;
             this.form.name = this.period.name;
@@ -125,18 +183,38 @@ export default {
                 return;
             }
 
-            Bus.$emit('period.saved', {
-                period: this.period.id,
-                payload: this.form,
-            });
+            this.loading = true;
 
-            this.editing = false;
+            axios.put(this.$route('periods.update', this.period), this.form)
+                .then(() => {
+                    this.loading = false;
+                    this.editing = false;
+                })
+                .catch(() => {
+                    this.loading = false;
+                });
+        },
+
+        addEvent() {
+            this.loading = true;
+
+            axios.post(this.$route('periods.events.store', this.period), this.eventForm)
+                .then(() => {
+                    this.loading = false;
+                    this.showModal = false;
+                })
+                .catch(() => {
+                    this.loading = false;
+                });
         },
 
         remove() {
-            Bus.$emit('period.removed', {
-                id: this.period.id
-            });
+            const confirmed = confirm('Really delete this period? This will delete all events and scenes as well!');
+
+            if (confirmed) {
+                axios.delete(this.$route('periods.delete', this.period))
+                    .catch(console.error);
+            }
         },
     },
 };

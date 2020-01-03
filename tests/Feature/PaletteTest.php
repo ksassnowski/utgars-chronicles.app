@@ -92,8 +92,7 @@ class PaletteTest extends TestCase
         Event::assertDispatched(
             ItemAddedToPalette::class,
             function (ItemAddedToPalette $event) use ($history) {
-                return $event->history->id === $history->id
-                    && $event->item->name === '::entry-name::'
+                return $event->item->name === '::entry-name::'
                     && $event->item->type === PaletteType::YES;
             }
         );

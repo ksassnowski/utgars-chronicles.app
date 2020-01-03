@@ -28,9 +28,6 @@ class LegacyUpdated implements ShouldBroadcast
 
     public function broadcastWith(): array
     {
-        return [
-            'legacy' => $this->legacy->only(['id', 'name']),
-            'history' => $this->legacy->history_id,
-        ];
+        return $this->legacy->only(['id', 'name']);
     }
 }

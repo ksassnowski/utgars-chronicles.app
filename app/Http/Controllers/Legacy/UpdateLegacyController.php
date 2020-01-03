@@ -14,7 +14,7 @@ class UpdateLegacyController extends Controller
     {
         $legacy->update($request->validated());
 
-        broadcast(new LegacyUpdated($legacy))->toOthers();
+        broadcast(new LegacyUpdated($legacy));
 
         return response()->json();
     }

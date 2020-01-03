@@ -2,8 +2,8 @@
 
 namespace App;
 
-use DomainException;
 use Illuminate\Database\Eloquent\Model;
+use App\Exceptions\UserIsAlreadyPlayerInHistory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -52,10 +52,13 @@ class History extends Model
         return $this->hasMany(Legacy::class);
     }
 
+    /**
+     * @throws UserIsAlreadyPlayerInHistory
+     */
     public function addPlayer(User $user): void
     {
         if ($this->isPlayer($user)) {
-            throw new DomainException('Cannot add same player to history twice.');
+            throw new UserIsAlreadyPlayerInHistory();
         }
 
         $this->players()->attach($user->id);

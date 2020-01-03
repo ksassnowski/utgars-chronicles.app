@@ -13,7 +13,7 @@ final class DeleteLegacyController
     {
         $legacy->delete();
 
-        broadcast(new LegacyDeleted($legacy->id, $legacy->history))->toOthers();
+        broadcast(new LegacyDeleted($legacy->id, $legacy->history));
 
         return response()->json([], 204);
     }

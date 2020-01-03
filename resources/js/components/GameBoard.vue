@@ -1,20 +1,94 @@
 <template>
     <div class="flex flex-col justify-between flex-1 py-4">
-        <draggable :list="orderedPeriods" @change="onPeriodMoved" class="px-4 flex -mx-4">
-            <PeriodCard v-for="period in orderedPeriods" :period="period" :key="period.id" />
-        </draggable>
+        <Modal v-if="showModal" title="Add Period" @close="showModal = false">
+            <form @submit.prevent="submit">
+                <div class="mb-4">
+                    <label for="name" class="label" ref="input">Name</label>
+                    <input type="text" class="input" id="name" v-model="form.name" required>
+                </div>
 
-        <div class="border-t border-gray-300">
-            <div class="px-4 pt-4 flex justify-between">
-                <FocusTracker :channel="'history.' + history.id" :foci="history.focus" />
+                <div class="mb-4">
+                    <p class="label">Tone</p>
 
-                <PlayerList :channel="'history.' + history.id" />
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <input type="radio" id="light" value="light" v-model="form.type">
+                            <label for="light">Light</label>
+                        </div>
+
+                        <div>
+                            <input type="radio" id="dark" value="dark" v-model="form.type">
+                            <label for="dark">Dark</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    type="submit"
+                    class="text-white w-full rounded py-2 px-4"
+                    :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
+                    :disabled="loading"
+                >
+                    {{ loading ? 'Hang on...' : 'Save' }}
+                </button>
+            </form>
+        </Modal>
+
+        <div class="flex flex-1 flex-col">
+            <div class="flex items-center px-4 mb-4">
+                <div class="flex-1"></div>
+
+                <h1 class="text-2xl font-bold text-gray-800">{{ history.name }}</h1>
+
+                <div class="flex-1 flex justify-end">
+                    <button class="px-4 py-2 bg-indigo-700 rounded text-white font-bold" @click="create">Add Period</button>
+                </div>
             </div>
+
+            <draggable :list="orderedPeriods" @change="onPeriodMoved" class="px-4 flex w-full h-full overflow-auto pt-4 pb-64">
+                <PeriodCard
+                    v-for="period in orderedPeriods"
+                    :period="period"
+                    :key="period.id"
+                    :history-id="history.id"
+                />
+            </draggable>
         </div>
+
+        <GamePanel>
+            <div class="pt-4 flex -mx-4">
+                <FocusTracker
+                    class="w-1/4 px-4"
+                    :channel="channelName"
+                    :foci="history.focus"
+                    :history-id="history.id"
+                />
+
+                <Palette
+                    class="w-1/3 px-4"
+                    :channel="channelName"
+                    :palette="history.palette"
+                    :history-id="history.id"
+                />
+
+                <LegacyTracker
+                    class="w-1/4 px-4"
+                    :channel="channelName"
+                    :legacies="history.legacies"
+                    :history-id="history.id"
+                />
+
+                <PlayerList
+                    :channel="channelName"
+                    class="flex-grow px-4"
+                />
+            </div>
+        </GamePanel>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
 import sortBy from 'lodash/sortBy';
 import each from 'lodash/each';
 import find from 'lodash/find';
@@ -23,6 +97,10 @@ import draggable from 'vuedraggable';
 import PlayerList from './PlayerList';
 import PeriodCard from './PeriodCard';
 import FocusTracker from './FocusTracker';
+import Palette from './Palette';
+import LegacyTracker from './LegacyTracker';
+import Modal from './Modal';
+import GamePanel from './GamePanel';
 
 export default {
     name: 'GameBoard',
@@ -35,25 +113,63 @@ export default {
     },
 
     components: {
+        GamePanel,
+        Modal,
+        LegacyTracker,
         draggable,
         PeriodCard,
         PlayerList,
         FocusTracker,
+        Palette,
     },
 
     data() {
         return {
             periods: this.history.periods,
+            showModal: false,
+            loading: false,
+            form: {
+                name: null,
+                type: 'light',
+            },
         };
     },
 
     computed: {
         orderedPeriods() {
             return sortBy(this.periods, ['position']);
+        },
+
+        channelName() {
+            return `history.${this.history.id}`;
         }
     },
 
     methods: {
+        submit() {
+            this.loading = true;
+
+            axios.post(this.$route('history.periods.store', this.history), this.form)
+                .then(() => {
+                    this.loading = false;
+                    this.showModal = false;
+                })
+                .catch(() => {
+                    this.loading = false;
+                });
+        },
+
+        reset() {
+            this.form.name = null;
+            this.form.tone = 'light';
+        },
+
+        create() {
+            this.reset();
+            this.showModal = true;
+            this.$nextTick(() => this.$refs.input.focus());
+        },
+
         addPeriod({ period }) {
             this.periods.push(Object.assign({}, period, { events: [] }));
         },
@@ -242,22 +358,6 @@ export default {
             matchingEvent.scenes = matchingEvent.scenes.filter(s => s.id !== id);
         },
 
-        onPeriodSaved({ period, payload }) {
-            this.updatePeriod({
-                period: Object.assign({}, payload, {id: period})
-            });
-
-            axios.put(this.$route('periods.update', period), payload)
-                .catch(console.error);
-        },
-
-        onPeriodRemoved(payload) {
-            this.deletePeriod(payload);
-
-            axios.delete(this.$route('periods.delete', payload))
-                .catch(console.error);
-        },
-
         onEventMoved({ period, event, position }) {
             this.updateEventPositions({ id: event.id, position, period: period.id});
 
@@ -278,34 +378,13 @@ export default {
                 position: position,
             }).catch(console.error);
         },
-
-        onEventSaved({ period, event, payload }) {
-            this.updateEvent({
-                period,
-                event: Object.assign({}, payload, { id: event }),
-            });
-
-            axios.put(this.$route('history.periods.events.update', [this.history, period, event]), payload)
-                .catch(console.error);
-        },
-
-        onEventRemoved({ period, event }) {
-            this.deleteEvent({ id: event, period });
-
-            axios.delete(this.$route('events.delete', event))
-                .catch(console.error);
-        }
     },
 
     created() {
-        Bus.$on('period.saved', this.onPeriodSaved);
-        Bus.$on('period.removed', this.onPeriodRemoved);
         Bus.$on('event.moved', this.onEventMoved);
         Bus.$on('scene.moved', this.onSceneMoved);
-        Bus.$on('event.saved', this.onEventSaved);
-        Bus.$on('event.removed', this.onEventRemoved);
 
-        Echo.join(`history.${this.history.id}`)
+        Echo.join(this.channelName)
             .listen('PeriodCreated', this.addPeriod)
             .listen('PeriodUpdated', this.updatePeriod)
             .listen('PeriodMoved', this.updatePeriodPositions)
@@ -322,14 +401,12 @@ export default {
 
     beforeDestroy() {
         Bus.$off([
-            'period.saved',
-            'period.removed',
             'event.moved',
             'event.saved',
             'event.removed',
             'scene.moved',
         ]);
-        Echo.leave('history');
+        Echo.leave(this.channelName);
     },
 };
 </script>

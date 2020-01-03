@@ -15,12 +15,9 @@ class PaletteItemUpdatedTest extends TestCase
     public function broadcastCorrectAttributes(): void
     {
         $this->assertEquals([
-            'palette' => [
-                'id' => 123,
-                'name' => '::new-name::',
-                'type' => PaletteType::YES,
-            ],
-            'history' => 999,
+            'id' => 123,
+            'name' => '::new-name::',
+            'type' => PaletteType::YES,
         ], $this->createEvent()->broadcastWith());
     }
 

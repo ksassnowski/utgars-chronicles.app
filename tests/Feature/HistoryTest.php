@@ -5,8 +5,8 @@ namespace Tests\Feature;
 use App\User;
 use App\History;
 use Tests\TestCase;
-use DomainException;
 use Illuminate\Foundation\Testing\TestResponse;
+use App\Exceptions\UserIsAlreadyPlayerInHistory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class HistoryTest extends TestCase
@@ -112,7 +112,7 @@ class HistoryTest extends TestCase
     /** @test */
     public function cantAddSamePlayerTwice()
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(UserIsAlreadyPlayerInHistory::class);
 
         $history = factory(History::class)->create();
         $player = factory(User::class)->create();

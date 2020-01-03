@@ -32,7 +32,6 @@ class PaletteItemDeleted implements ShouldBroadcast
     {
         return [
             'id' => $this->itemId,
-            'history' => $this->history->id,
         ];
     }
 }

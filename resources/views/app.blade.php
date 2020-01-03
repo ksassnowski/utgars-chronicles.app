@@ -14,7 +14,7 @@
 
     @routes
 </head>
-<body class="flex flex-col h-full">
+<body class="flex flex-col h-full antialiased">
     @inertia
 </body>
 </html>

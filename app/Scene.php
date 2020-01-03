@@ -25,7 +25,7 @@ class Scene extends Model implements Movable
 
         self::creating(function (Scene $scene) {
             $scene->position = DB::table('scenes')
-                    ->where('event_id', $scene->event->id)
+                    ->where('event_id', $scene->event_id)
                     ->max('position') + 1;
         });
     }

@@ -14,11 +14,8 @@ class LegacyCreatedTest extends TestCase
     public function broadcastCorrectAttributes()
     {
         $this->assertEquals([
-            'legacy' => [
-                'id' => 999,
-                'name' => '::legacy-name::',
-            ],
-            'history' => 123,
+            'id' => 999,
+            'name' => '::legacy-name::',
         ], $this->createEvent()->broadcastWith());
     }
 

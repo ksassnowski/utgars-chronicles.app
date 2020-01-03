@@ -2,7 +2,6 @@
 
 namespace App\Events;
 
-use App\History;
 use App\Palette;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,28 +14,23 @@ class ItemAddedToPalette implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public Palette $item;
-    public History $history;
 
-    public function __construct(Palette $item, History $history)
+    public function __construct(Palette $item)
     {
         $this->item = $item;
-        $this->history = $history;
     }
 
     public function broadcastOn()
     {
-        return new PresenceChannel('history.' . $this->history->id);
+        return new PresenceChannel('history.' . $this->item->history_id);
     }
 
     public function broadcastWith(): array
     {
         return [
-            'history' => $this->history->id,
-            'item' => [
-                'id' => $this->item->id,
-                'name' => $this->item->name,
-                'type' => $this->item->type,
-            ],
+            'id' => $this->item->id,
+            'name' => $this->item->name,
+            'type' => $this->item->type,
         ];
     }
 }

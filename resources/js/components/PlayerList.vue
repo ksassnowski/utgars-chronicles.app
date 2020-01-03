@@ -1,5 +1,5 @@
 <template>
-    <div class="pl-2">
+    <div>
         <h3 class="font-bold text-sm text-gray-700 mb-4">Players</h3>
         <ul>
             <li

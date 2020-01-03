@@ -2,20 +2,17 @@
     <div>
         <article class="relative p-8 relative rounded-sm border-2 bg-white border-gray-600 text-sm w-full mb-4 min-h-32 group">
             <template v-if="!editing">
+                <SettingsPanel
+                    v-if="!editing"
+                    class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2"
+                    @delete="remove"
+                    @edit="editing = true"
+                />
+
                 <h4 class="text-center">{{ event.name }}</h4>
 
-                <div class="absolute invisible group-hover:visible flex justify-between items-center inset-x-0 bottom-0 px-2 pb-2">
-                    <button
-                        class="text-sm text-red-500"
-                        @click="remove"
-                    >
-                        Delete
-                    </button>
-
-                    <button
-                        class="text-sm text-indigo-700"
-                        @click="editing = true"
-                    >Edit</button>
+                <div class="absolute invisible group-hover:visible flex justify-end items-center inset-x-0 bottom-0 px-2 pb-2">
+                    <button class="text-sm text-indigo-700">Create Scene</button>
                 </div>
 
                 <div
@@ -61,9 +58,11 @@
 </template>
 
 <script>
+import axios from 'axios';
 import sortBy from 'lodash/sortBy';
 import draggable from 'vuedraggable';
 
+import SettingsPanel from './SettingsPanel';
 import SceneCard from './SceneCard';
 
 export default {
@@ -74,6 +73,7 @@ export default {
     components: {
         draggable,
         SceneCard,
+        SettingsPanel,
     },
 
     computed: {
@@ -115,20 +115,20 @@ export default {
                 return;
             }
 
-            Bus.$emit('event.saved', {
-                period: this.period.id,
-                event: this.event.id,
-                payload: this.form,
-            });
-
-            this.editing = false;
+            axios.put(this.$route('events.update', this.event), this.form)
+                .then(() => this.editing = false)
+                .catch(console.error);
         },
 
         remove() {
-            Bus.$emit('event.removed', {
-                period: this.period.id,
-                event: this.event.id,
-            });
+            const confirmed = confirm('Really delete this event? All scenes belonging to this event will be deleted too!');
+
+            if (!confirmed) {
+                return;
+            }
+
+            axios.delete(this.$route('events.delete', this.event))
+                .catch(console.error);
         },
 
         cancel() {

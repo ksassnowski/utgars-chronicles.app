@@ -12,7 +12,7 @@ final class DeleteEventController
     {
         $event->delete();
 
-        broadcast(new EventDeleted($event->period, $event->id))->toOthers();
+        broadcast(new EventDeleted($event->period, $event->id));
 
         return response()->json([], 204);
     }

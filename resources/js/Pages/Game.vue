@@ -4,7 +4,7 @@
 
 <script>
 import GameBoard from '../components/GameBoard';
-import Layout from './Layout';
+import Layout from './Layouts/Layout';
 
 export default {
     name: 'Game',

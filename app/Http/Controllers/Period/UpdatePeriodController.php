@@ -13,7 +13,7 @@ final class UpdatePeriodController
     {
         $period->update($request->validated());
 
-        broadcast(new PeriodUpdated($period))->toOthers();
+        broadcast(new PeriodUpdated($period));
 
         return response()->json();
     }

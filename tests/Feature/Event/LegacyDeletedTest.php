@@ -16,7 +16,6 @@ class LegacyDeletedTest extends TestCase
     {
         $this->assertEquals([
             'id' => 123,
-            'history' => 999,
         ], $this->createEvent()->broadcastWith());
     }
 

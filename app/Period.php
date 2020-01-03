@@ -39,7 +39,9 @@ class Period extends Model implements Movable
 
         self::creating(function (Period $period) {
             // Always sort new periods to the very end.
-            $period->position = DB::table('periods')->max('position') + 1;
+            $period->position = DB::table('periods')
+                    ->where('history_id', $period->history_id)
+                    ->max('position') + 1;
         });
     }
 

@@ -12,7 +12,7 @@ final class DeletePeriodController
     {
         $period->delete();
 
-        broadcast(new PeriodDeleted($period->history, $period->id))->toOthers();
+        broadcast(new PeriodDeleted($period->history, $period->id));
 
         return response()->json([], 204);
     }

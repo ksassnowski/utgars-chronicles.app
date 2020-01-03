@@ -13,6 +13,8 @@ class History extends JsonResource
             'name' => $this->name,
             'periods' => Period::collection($this->periods),
             'foci' => Focus::collection($this->focus),
+            'palette' => Palette::collection($this->palette),
+            'legacies' => Legacy::collection($this->legacies),
         ];
     }
 }

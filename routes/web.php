@@ -8,6 +8,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', 'HomeController')->name('home');
 
     Route::post('histories', 'History\StoreHistoryController')->name('history.store');
+
+    Route::get('histories/{history}/invitation', 'History\AcceptInvitationController')
+        ->middleware('signed')
+        ->name('invitation.accept');
+
     Route::get('histories/create', 'History\CreateHistoryController')->name('history.create');
 
     Route::get('histories/{history}', 'History\GameController')

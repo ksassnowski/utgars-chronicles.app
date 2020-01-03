@@ -13,7 +13,7 @@ final class UpdateEventController
     {
         $event->update($request->validated());
 
-        broadcast(new EventUpdated($event))->toOthers();
+        broadcast(new EventUpdated($event));
 
         return response()->json();
     }

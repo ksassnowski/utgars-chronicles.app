@@ -26,7 +26,7 @@ class PeriodDeleted implements ShouldBroadcast
 
     public function broadcastOn(): Channel
     {
-        return new PresenceChannel('history.' . $this->history_id);
+        return new PresenceChannel('history.' . $this->history->id);
     }
 
     public function broadcastWith(): array

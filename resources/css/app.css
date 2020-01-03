@@ -1,11 +1,12 @@
+@import '~tippy.js/dist/tippy.css';
+@import '~tippy.js/themes/light.css';
+
 @tailwind base;
-
 @tailwind components;
-
 @tailwind utilities;
 
 .input {
-    @apply .w-full .bg-gray-100 .px-4 .py-2 .border-2 .border-transparent .rounded;
+    @apply .w-full .bg-gray-200 .px-4 .py-2 .border-2 .border-transparent .rounded;
 }
 
 .input:focus {
@@ -90,3 +91,56 @@
     100% { transform: rotate(360deg); }
 }
 
+.page-header::before {
+    @apply .absolute .inset-x-0 .top-0 .bg-indigo-800;
+    content: '';
+    z-index: -10;
+    height: 125%;
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
+}
+
+.page-footer::before {
+    @apply .absolute .inset-x-0 .bottom-0 .bg-gray-800;
+    content: '';
+    z-index: -10;
+    height: 140%;
+    clip-path: polygon(0 0, 100% 60%, 100% 100%, 0% 100%);
+}
+
+
+.history-cards li {
+    @apply .mb-4;
+}
+
+@screen sm {
+    .page-header::before {
+        height: 140%;
+        clip-path: polygon(0 0, 100% 0, 100% 70%, 0% 100%);
+    }
+
+    .history-cards {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 1rem;
+    }
+
+    .history-cards li {
+        height: 220px;
+    }
+}
+
+@screen md {
+}
+
+@screen lg {
+    .history-cards {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@screen xl {
+    .page-header::before {
+        height: 145%;
+        clip-path: polygon(0 0, 100% 0, 100% 52%, 0% 100%);
+    }
+}

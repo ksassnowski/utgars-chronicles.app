@@ -14,7 +14,7 @@ class CreateLegacyController extends Controller
     {
         $legacy = $history->addLegacy($request->get('name'));
 
-        broadcast(new LegacyCreated($legacy))->toOthers();
+        broadcast(new LegacyCreated($legacy));
 
         return response()->json([], 201);
     }

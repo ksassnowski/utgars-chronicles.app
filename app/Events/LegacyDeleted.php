@@ -32,7 +32,6 @@ class LegacyDeleted implements ShouldBroadcast
     {
         return [
             'id' => $this->legacyId,
-            'history' => $this->history->id,
         ];
     }
 }

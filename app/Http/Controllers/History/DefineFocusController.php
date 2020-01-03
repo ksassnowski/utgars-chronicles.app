@@ -14,7 +14,7 @@ class DefineFocusController extends Controller
     {
         $focus = $history->defineFocus($request->name());
 
-        broadcast(new FocusDefined($history, $focus))->toOthers();
+        broadcast(new FocusDefined($history, $focus));
 
         return response()->json([], 201);
     }

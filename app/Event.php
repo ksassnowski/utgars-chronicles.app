@@ -31,7 +31,7 @@ class Event extends Model implements Movable
         self::creating(function (Event $event) {
             // Always sort new events to the very end.
             $event->position = DB::table('events')
-                    ->where('period_id', $event->period->id)
+                    ->where('period_id', $event->period_id)
                     ->max('position') + 1;
         });
     }

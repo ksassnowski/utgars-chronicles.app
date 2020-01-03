@@ -28,12 +28,9 @@ class PaletteItemUpdated implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            'palette' => [
-                'id' => $this->item->id,
-                'name' => $this->item->name,
-                'type' => $this->item->type,
-            ],
-            'history' => $this->item->history_id,
+            'id' => $this->item->id,
+            'name' => $this->item->name,
+            'type' => $this->item->type,
         ];
     }
 }

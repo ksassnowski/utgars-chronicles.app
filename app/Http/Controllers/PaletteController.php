@@ -17,7 +17,7 @@ class PaletteController extends Controller
     {
         $palette = $history->addToPalette($request->name(), $request->type());
 
-        broadcast(new ItemAddedToPalette($palette, $history))->toOthers();
+        broadcast(new ItemAddedToPalette($palette));
 
         return response()->json([], 201);
     }
@@ -26,7 +26,7 @@ class PaletteController extends Controller
     {
         $palette->update($request->validated());
 
-        broadcast(new PaletteItemUpdated($palette))->toOthers();
+        broadcast(new PaletteItemUpdated($palette));
 
         return response()->json();
     }
@@ -35,7 +35,7 @@ class PaletteController extends Controller
     {
         $palette->delete();
 
-        broadcast(new PaletteItemDeleted($palette->id, $palette->history))->toOthers();
+        broadcast(new PaletteItemDeleted($palette->id, $palette->history));
 
         return response()->json([], 204);
     }
