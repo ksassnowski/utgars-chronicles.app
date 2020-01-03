@@ -1,5 +1,5 @@
 <template>
-    <transition name="modal">
+    <portal to="modal">
         <div class="fixed inset-x-0 inset-y-0 z-50 flex items-center justify-center" style="background-color: rgba(0, 0, 0, 0.75)">
             <div class="rounded p-4 pt-2 shadow bg-white relative w-2/3 md:w-1/2 lg:w-1/3">
                 <header class="flex justify-between mb-4 items-center">
@@ -15,7 +15,7 @@
                 <slot />
             </div>
         </div>
-    </transition>
+    </portal>
 </template>
 
 <script>

@@ -13,7 +13,7 @@ final class DeleteSceneController
     {
         $scene->delete();
 
-        broadcast(new SceneDeleted($scene->event, $scene->id))->toOthers();
+        broadcast(new SceneDeleted($scene->event, $scene->id, $scene->position));
 
         return response()->json([], 204);
     }

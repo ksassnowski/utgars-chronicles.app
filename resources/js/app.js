@@ -10,8 +10,10 @@ Vue.component('game-board', require('@/components/GameBoard.vue').default);
  */
 
 import { InertiaApp } from '@inertiajs/inertia-vue';
+import PortalVue from 'portal-vue'
 
 Vue.use(InertiaApp);
+Vue.use(PortalVue);
 Vue.prototype.$route = (...args) => route(...args).url()
 
 window.Bus = new Vue();

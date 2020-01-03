@@ -15,13 +15,14 @@ class PeriodDeleted implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public History $history;
-
     public int $id;
+    public int $position;
 
-    public function __construct(History $history, int $id)
+    public function __construct(History $history, int $id, int $position)
     {
         $this->id = $id;
         $this->history = $history;
+        $this->position = $position;
     }
 
     public function broadcastOn(): Channel

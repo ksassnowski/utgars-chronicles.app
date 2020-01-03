@@ -13,7 +13,7 @@ final class UpdateSceneController
     {
         $scene->update($request->validated());
 
-        broadcast(new SceneUpdated($scene))->toOthers();
+        broadcast(new SceneUpdated($scene));
 
         return response()->json([], 200);
     }

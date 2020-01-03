@@ -45,7 +45,12 @@
                 </div>
             </div>
 
-            <draggable :list="orderedPeriods" @change="onPeriodMoved" class="px-4 flex w-full h-full overflow-auto pt-4 pb-64">
+            <draggable
+                :list="orderedPeriods"
+                @change="onPeriodMoved"
+                handle=".handle"
+                class="px-4 flex w-full h-full overflow-auto pt-4 pb-64"
+            >
                 <PeriodCard
                     v-for="period in orderedPeriods"
                     :period="period"
@@ -84,6 +89,8 @@
                 />
             </div>
         </GamePanel>
+
+        <portal-target name="modal"></portal-target>
     </div>
 </template>
 
@@ -261,7 +268,7 @@ export default {
         addEvent({ event, period }) {
             const match = find(this.periods, p => p.id === period);
 
-            match.events.push(event);
+            match.events.push(Object.assign({}, event, { scenes: [] }));
         },
 
         updateEvent({ period, event }) {

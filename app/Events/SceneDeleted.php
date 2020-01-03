@@ -14,13 +14,15 @@ class SceneDeleted implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private Event $event;
-    private int $sceneId;
+    public Event $event;
+    public int $sceneId;
+    public int $position;
 
-    public function __construct(Event $event, int $sceneId)
+    public function __construct(Event $event, int $sceneId, int $position)
     {
         $this->event = $event;
         $this->sceneId = $sceneId;
+        $this->position = $position;
     }
 
     public function broadcastOn(): Channel

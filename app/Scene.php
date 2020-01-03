@@ -19,6 +19,11 @@ class Scene extends Model implements Movable
         'event',
     ];
 
+    /** @var array  */
+    protected $casts = [
+        'position' => 'int',
+    ];
+
     protected static function boot()
     {
         parent::boot();

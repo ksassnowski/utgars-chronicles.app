@@ -24,6 +24,11 @@ class Event extends Model implements Movable
         'period',
     ];
 
+    /** @var array */
+    protected $casts = [
+        'position' => 'int',
+    ];
+
     protected static function boot()
     {
         parent::boot();

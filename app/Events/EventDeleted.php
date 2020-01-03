@@ -15,13 +15,14 @@ class EventDeleted implements ShouldBroadcastNow
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public int $id;
-
     public Period $period;
+    public int $position;
 
-    public function __construct(Period $period, int $id)
+    public function __construct(Period $period, int $id, int $position)
     {
         $this->id = $id;
         $this->period = $period;
+        $this->position = $position;
     }
 
     public function broadcastOn(): Channel
