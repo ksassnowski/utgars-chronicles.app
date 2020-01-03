@@ -667,6 +667,14 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@fullhuman/postcss-purgecss@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@fullhuman/postcss-purgecss/-/postcss-purgecss-1.3.0.tgz#d632900d818f4fcf4678e7326923fb838c3e03a7"
+  integrity sha512-zvfS3dPKD2FAtMcXapMJXGbDgEp9E++mLR6lTgSruv6y37uvV5xJ1crVktuC1gvnmMwsa7Zh1m05FeEiz4VnIQ==
+  dependencies:
+    postcss "^7.0.14"
+    purgecss "^1.4.0"
+
 "@inertiajs/inertia-vue@^0.1.2":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@inertiajs/inertia-vue/-/inertia-vue-0.1.2.tgz#e45ec9e5b75c31c302e8dc486ae484fff3c91460"
@@ -5283,6 +5291,16 @@ punycode@^2.1.0:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
+purgecss@^1.4.0:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/purgecss/-/purgecss-1.4.2.tgz#67ab50cb4f5c163fcefde56002467c974e577f41"
+  integrity sha512-hkOreFTgiyMHMmC2BxzdIw5DuC6kxAbP/gGOGd3MEsF3+5m69rIvUEPaxrnoUtfODTFKe9hcXjGwC6jcjoyhOw==
+  dependencies:
+    glob "^7.1.3"
+    postcss "^7.0.14"
+    postcss-selector-parser "^6.0.0"
+    yargs "^14.0.0"
+
 pusher-js@^5.0.3:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/pusher-js/-/pusher-js-5.0.3.tgz#22c62d0a094ed23f356d3a18aef360a5aacb1bd6"
@@ -6825,6 +6843,14 @@ yargs-parser@^13.1.0:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
+yargs-parser@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-15.0.0.tgz#cdd7a97490ec836195f59f3f4dbe5ea9e8f75f08"
+  integrity sha512-xLTUnCMc4JhxrPEPUYD5IBR1mWCK/aT6+RJ/K29JY2y1vD+FhtgKK0AXRWvI262q3QSffAQuTouFIKUuHX89wQ==
+  dependencies:
+    camelcase "^5.0.0"
+    decamelize "^1.2.0"
+
 yargs@12.0.5, yargs@^12.0.5:
   version "12.0.5"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-12.0.5.tgz#05f5997b609647b64f66b81e3b4b10a368e7ad13"
@@ -6859,3 +6885,20 @@ yargs@13.2.4:
     which-module "^2.0.0"
     y18n "^4.0.0"
     yargs-parser "^13.1.0"
+
+yargs@^14.0.0:
+  version "14.2.2"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-14.2.2.tgz#2769564379009ff8597cdd38fba09da9b493c4b5"
+  integrity sha512-/4ld+4VV5RnrynMhPZJ/ZpOCGSCeghMykZ3BhdFBDa9Wy/RH6uEGNWDJog+aUlq+9OM1CFTgtYRW5Is1Po9NOA==
+  dependencies:
+    cliui "^5.0.0"
+    decamelize "^1.2.0"
+    find-up "^3.0.0"
+    get-caller-file "^2.0.1"
+    require-directory "^2.1.1"
+    require-main-filename "^2.0.0"
+    set-blocking "^2.0.0"
+    string-width "^3.0.0"
+    which-module "^2.0.0"
+    y18n "^4.0.0"
+    yargs-parser "^15.0.0"
