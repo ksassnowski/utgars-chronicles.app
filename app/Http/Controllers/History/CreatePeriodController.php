@@ -15,7 +15,7 @@ final class CreatePeriodController
         /** @var Period $period */
         $period = $history->periods()->create($request->validated());
 
-        broadcast(new PeriodCreated($period))->toOthers();
+        broadcast(new PeriodCreated($period));
 
         return response()->json([], 201);
     }

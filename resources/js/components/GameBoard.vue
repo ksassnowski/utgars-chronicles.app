@@ -89,8 +89,6 @@
                 />
             </div>
         </GamePanel>
-
-        <portal-target name="modal"></portal-target>
     </div>
 </template>
 

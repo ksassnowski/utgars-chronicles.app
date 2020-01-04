@@ -1,7 +1,5 @@
 <template>
     <div>
-        <SceneModal v-if="showSceneModal" :event="event" @close="closeSceneModal" />
-
         <article class="relative p-8 relative rounded-sm border-2 bg-white border-gray-600 text-sm w-full mb-4 min-h-32 group">
             <template v-if="!editing">
                 <div class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2 flex justify-end">
@@ -59,6 +57,8 @@
         <draggable :list="orderedScenes" @change="sceneMoved" handle=".handle">
             <SceneCard v-for="scene in orderedScenes" :scene="scene" :key="scene.id" />
         </draggable>
+
+        <SceneModal v-if="showSceneModal" :event="event" @close="closeSceneModal" />
     </div>
 </template>
 
@@ -69,7 +69,7 @@ import draggable from 'vuedraggable';
 
 import SettingsPanel from './SettingsPanel';
 import SceneCard from './SceneCard';
-import SceneModal from "./SceneModal";
+import SceneModal from "./Modal/SceneModal";
 
 export default {
     name: 'EventCard',

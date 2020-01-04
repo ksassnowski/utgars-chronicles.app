@@ -129,9 +129,6 @@
     }
 }
 
-@screen md {
-}
-
 @screen lg {
     .history-cards {
         grid-template-columns: 1fr 1fr 1fr;
@@ -143,4 +140,15 @@
         height: 145%;
         clip-path: polygon(0 0, 100% 0, 100% 52%, 0% 100%);
     }
+}
+
+.modal-enter-active,
+.modal-leave-active {
+    transition: all 0.3s linear;
+}
+
+.modal-enter,
+.modal-leave-to {
+    opacity: 0;
+    transform: translateY(-25px);
 }

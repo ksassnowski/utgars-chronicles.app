@@ -29,6 +29,8 @@
         </header>
 
         <slot />
+
+        <portal-target name="modal" slim></portal-target>
     </div>
 </template>
 

@@ -1,38 +1,11 @@
 <template>
     <div class="w-1/2 md:w-1/4 lg:w-1/5 flex-shrink-0">
-        <Modal v-if="showModal" title="Create Event" @close="showModal = false">
-            <form @submit.prevent="addEvent">
-                <div class="mb-4">
-                    <label for="name" class="label">Name</label>
-                    <input type="text" class="input" id="name" ref="input" v-model="eventForm.name" required>
-                </div>
-
-                <div class="mb-4">
-                    <p class="label">Tone</p>
-
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <input type="radio" id="light" value="light" v-model="eventForm.type">
-                            <label for="light">Light</label>
-                        </div>
-
-                        <div>
-                            <input type="radio" id="dark" value="dark" v-model="eventForm.type">
-                            <label for="dark">Dark</label>
-                        </div>
-                    </div>
-                </div>
-
-                <button
-                    type="submit"
-                    class="text-white w-full rounded py-2 px-4"
-                    :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
-                    :disabled="loading"
-                >
-                    {{ loading ? 'Hang on...' : 'Save' }}
-                </button>
-            </form>
-        </Modal>
+        <CreateEventModal
+            v-if="showModal"
+            :period="period"
+            title="Create Event"
+            @close="showModal = false"
+        />
 
         <article class="border-2 border-gray-600 p-8 rounded-sm mb-6 shadow bg-white relative mx-4 relative group">
             <template v-if="!editing">
@@ -55,7 +28,7 @@
                 ></div>
 
                 <div class="flex justify-end absolute inset-x-0 bottom-0 p-2 invisible group-hover:visible">
-                    <button class="text-indigo-700 text-sm" @click="showEventModal">Add Event</button>
+                    <button class="text-indigo-700 text-sm" @click="showModal = true">Add Event</button>
                 </div>
             </template>
 
@@ -112,6 +85,7 @@ import sortBy from 'lodash/sortBy';
 import EventCard from './EventCard';
 import SettingsPanel from './SettingsPanel';
 import Modal from './Modal';
+import CreateEventModal from './Modal/CreateEventModal';
 
 export default {
     name: 'PeriodCard',
@@ -119,6 +93,7 @@ export default {
     props: ['period', 'historyId'],
 
     components: {
+        CreateEventModal,
         Modal,
         SettingsPanel,
         draggable,
@@ -140,10 +115,6 @@ export default {
                 name: this.period.name,
                 type: this.period.type,
             },
-            eventForm: {
-                name: null,
-                type: 'dark',
-            },
         };
     },
 
@@ -158,17 +129,6 @@ export default {
                 event: e.moved.element,
                 position: e.moved.newIndex + 1,
             })
-        },
-
-        reset() {
-            this.eventForm.name = null;
-            this.eventForm.type = 'dark';
-        },
-
-        showEventModal() {
-            this.reset();
-            this.showModal = true;
-            this.$nextTick(() => this.$refs.input.focus());
         },
 
         cancel() {
@@ -192,19 +152,6 @@ export default {
                 .then(() => {
                     this.loading = false;
                     this.editing = false;
-                })
-                .catch(() => {
-                    this.loading = false;
-                });
-        },
-
-        addEvent() {
-            this.loading = true;
-
-            axios.post(this.$route('periods.events.store', this.period), this.eventForm)
-                .then(() => {
-                    this.loading = false;
-                    this.showModal = false;
                 })
                 .catch(() => {
                     this.loading = false;

@@ -58,7 +58,7 @@
 <script>
 import axios from 'axios';
 
-import Modal from './Modal';
+import Modal from '../Modal';
 
 export default {
     name: 'SceneModal',

@@ -15,7 +15,7 @@ final class CreateEventController
         /** @var Event $event */
         $event = $period->events()->create($request->validated());
 
-        broadcast(new EventCreated($event))->toOthers();
+        broadcast(new EventCreated($event));
 
         return response()->json([], 201);
     }
