@@ -1,11 +1,18 @@
 <?php declare(strict_types=1);
 
+use App\Http\Controllers\PaletteController;
+use App\Http\Controllers\ProfileController;
+
 Auth::routes();
 
 Route::get('/', 'PageController')->middleware('guest');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', 'HomeController')->name('home');
+
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+
+    Route::post('/user/password', 'ChangePasswordController')->name('password.change');
 
     Route::post('histories', 'History\StoreHistoryController')->name('history.store');
 
@@ -29,15 +36,15 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:updateHistory,history')
         ->name('history.update');
 
-    Route::post('histories/{history}/palette', [\App\Http\Controllers\PaletteController::class, 'store'])
+    Route::post('histories/{history}/palette', [PaletteController::class, 'store'])
         ->middleware('can:modifyGame,history')
         ->name('history.palette.store');
 
-    Route::put('palette/{palette}', [\App\Http\Controllers\PaletteController::class, 'update'])
+    Route::put('palette/{palette}', [PaletteController::class, 'update'])
         ->middleware('can:updatePalette,palette')
         ->name('palette.update');
 
-    Route::delete('palette/{palette}', [\App\Http\Controllers\PaletteController::class, 'destroy'])
+    Route::delete('palette/{palette}', [PaletteController::class, 'destroy'])
         ->middleware('can:deletePalette,palette')
         ->name('palette.delete');
 
