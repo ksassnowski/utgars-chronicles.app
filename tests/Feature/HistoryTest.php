@@ -3,15 +3,16 @@
 namespace Tests\Feature;
 
 use App\User;
+use Generator;
 use App\History;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\TestResponse;
+use Tests\AuthenticatedRoutesTest;
 use App\Exceptions\UserIsAlreadyPlayerInHistory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class HistoryTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, AuthenticatedRoutesTest;
 
     /** @test */
     public function createANewHistoryForUser(): void
@@ -63,23 +64,12 @@ class HistoryTest extends TestCase
         $response->assertSessionHasErrors(['name']);
     }
 
-    /**
-     * @test
-     * @dataProvider authenticatedRoutesProvider
-     */
-    public function authenticatedRoutes(string $route, string $method)
-    {
-        /** @var TestResponse $response */
-        $response = $this->{$method}($route);
-
-        $response->assertRedirect('login');
-    }
-
-    public function authenticatedRoutesProvider()
+    public function authenticatedRoutesProvider(): Generator
     {
         yield from [
-            'create history' => ['/histories', 'post'],
-            'update history' => ['/histories/1', 'put'],
+            'create history' => ['post', '/histories'],
+            'update history' => ['put', '/histories/1'],
+            'delete history' => ['delete', '/histories/1'],
         ];
     }
 
@@ -110,7 +100,7 @@ class HistoryTest extends TestCase
     }
 
     /** @test */
-    public function cantAddSamePlayerTwice()
+    public function cantAddSamePlayerTwice(): void
     {
         $this->expectException(UserIsAlreadyPlayerInHistory::class);
 
@@ -119,5 +109,29 @@ class HistoryTest extends TestCase
         $history->addPlayer($player);
 
         $history->addPlayer($player);
+    }
+
+    /** @test */
+    public function deleteHistory(): void
+    {
+        $history = factory(History::class)->create();
+
+        $response = $this->actingAs($history->owner)->delete(route('history.delete', $history));
+
+        $response->assertRedirect(route('home'));
+        $this->assertDatabaseMissing('histories', [
+            'id' => $history->id,
+        ]);
+    }
+
+    /** @test */
+    public function onlyOwnerCanDeleteHistory(): void
+    {
+        $baddie = factory(User::class)->create();
+        $history = factory(History::class)->create();
+
+        $response = $this->actingAs($baddie)->delete(route('history.delete', $history));
+
+        $response->assertForbidden();
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto pt-8 px-4">
+    <div class="container mx-auto px-4">
         <CreateHistoryModal v-if="showModal" @close="showModal = false" />
 
         <section class="mb-8">
@@ -16,7 +16,7 @@
 
             <ul class="history-cards">
                 <li v-for="history in $page.histories" :key="history.id">
-                    <HistoryCard :history="history" :key="history.id" />
+                    <HistoryCard :history="history" :key="history.id" :url="$route('history.show', history)"/>
                 </li>
             </ul>
         </section>
@@ -28,7 +28,7 @@
 
             <ul class="history-cards">
                 <li v-for="game in $page.games" :key="game.id">
-                    <HistoryCard :history="game" :key="game.id" />
+                    <HistoryCard :history="game" :key="game.id" :url="$route('history.play', game)" />
                 </li>
             </ul>
         </section>

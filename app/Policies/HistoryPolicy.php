@@ -7,6 +7,16 @@ use App\History;
 
 class HistoryPolicy
 {
+    public function deleteHistory(User $user, History $history): bool
+    {
+        return $this->ownsHistory($user, $history);
+    }
+
+    public function showHistory(User $user, History $history): bool
+    {
+        return $this->ownsHistory($user, $history);
+    }
+
     public function updateHistory(User $user, History $history): bool
     {
         return $this->ownsHistory($user, $history);

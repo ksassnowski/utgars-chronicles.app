@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col flex-1">
-        <header class="px-4 pt-4 pb-4 flex justify-between items-center bg-indigo-800">
+        <header class="px-4 pt-4 pb-4 flex justify-between items-center bg-indigo-800 mb-8">
             <nav>
                 <ul class="flex">
                     <li>

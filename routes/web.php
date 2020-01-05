@@ -13,7 +13,15 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('signed')
         ->name('invitation.accept');
 
-    Route::get('histories/{history}', 'History\GameController')
+    Route::get('histories/{history}', 'History\ShowHistoryController')
+        ->middleware('can:showHistory,history')
+        ->name('history.show');
+
+    Route::delete('histories/{history}', 'History\DeleteHistoryController')
+        ->middleware('can:deleteHistory,history')
+        ->name('history.delete');
+
+    Route::get('histories/{history}/play', 'History\GameController')
         ->middleware('can:modifyGame,history')
         ->name('history.play');
 

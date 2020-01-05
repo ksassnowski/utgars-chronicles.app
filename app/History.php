@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\UserIsAlreadyPlayerInHistory;
+use App\Exceptions\OwnerCannotJoinOwnGameAsPlayer;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -54,9 +55,14 @@ class History extends Model
 
     /**
      * @throws UserIsAlreadyPlayerInHistory
+     * @throws OwnerCannotJoinOwnGameAsPlayer
      */
     public function addPlayer(User $user): void
     {
+        if ($this->owner->is($user)) {
+            throw new OwnerCannotJoinOwnGameAsPlayer();
+        }
+
         if ($this->isPlayer($user)) {
             throw new UserIsAlreadyPlayerInHistory();
         }

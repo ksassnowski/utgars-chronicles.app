@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col justify-between flex-1 py-4">
+    <div class="flex flex-col justify-between flex-1">
         <Modal v-if="showModal" title="Add Period" @close="showModal = false">
             <form @submit.prevent="submit">
                 <div class="mb-4">
