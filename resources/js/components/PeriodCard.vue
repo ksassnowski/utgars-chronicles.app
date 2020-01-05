@@ -28,7 +28,7 @@
                 ></div>
 
                 <p
-                    class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase"
+                    class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase px-1"
                     style="top: -15px; right: 20px;"
                 >
                     Period
@@ -90,6 +90,7 @@ import SettingsPanel from './SettingsPanel';
 import Modal from './Modal';
 import CreateEventModal from './Modal/CreateEventModal';
 import LoadingButton from "./LoadingButton";
+import Icon from "./Icon";
 
 export default {
     name: 'PeriodCard',
@@ -97,6 +98,7 @@ export default {
     props: ['period', 'historyId'],
 
     components: {
+        Icon,
         LoadingButton,
         CreateEventModal,
         Modal,

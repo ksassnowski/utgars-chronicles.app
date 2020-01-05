@@ -19,7 +19,7 @@
                 </div>
 
                 <p
-                    class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase"
+                    class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase px-1"
                     style="top: -15px; right: 20px;"
                 >
                     Event
@@ -80,6 +80,7 @@ import LoadingButton from './LoadingButton';
 import SettingsPanel from './SettingsPanel';
 import SceneCard from './SceneCard';
 import SceneModal from "./Modal/SceneModal";
+import Icon from "./Icon";
 
 export default {
     name: 'EventCard',
@@ -87,6 +88,7 @@ export default {
     props: ['event', 'period'],
 
     components: {
+        Icon,
         SceneModal,
         draggable,
         SceneCard,
