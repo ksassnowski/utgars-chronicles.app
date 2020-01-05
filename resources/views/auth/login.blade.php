@@ -21,6 +21,11 @@
                     @endif
                 </div>
 
+                <div class="mb-4">
+                    <input type="checkbox" name="remember" id="remember">
+                    <label for="remember" class="text-sm text-gray-700">Stay logged in</label>
+                </div>
+
                 <button type="submit" class="bg-indigo-600 w-full py-3 text-white rounded font-bold test-sm">Login</button>
 
                 <a href="{{ route('password.request') }}" class="mt-2 text-sm text-gray-700 text-center block">

@@ -10,17 +10,20 @@
                     </div>
 
                     <div class="w-2/3">
-                        <div class="mb-4">
+                        <div class="mb-4" :class="{ error: $page.errors.password }">
                             <label for="password" class="label">New Password</label>
-                            <input type="password" class="input" id="password" v-model="passwordForm.password">
+                            <input type="password" class="input" id="password" v-model="password.form.password">
+                            <small v-if="$page.errors.password" class="text-xs text-red-500 mt-1">{{ $page.errors.password[0] }}</small>
                         </div>
 
                         <div class="mb-4">
                             <label for="passwordConfirmation" class="label">Confirm Password</label>
-                            <input type="password" class="input" id="passwordConfirmation" v-model="passwordForm.password_confirmation">
+                            <input type="password" class="input" id="passwordConfirmation" v-model="password.form.password_confirmation">
                         </div>
 
-                        <button class="px-8 py-2 bg-indigo-700 rounded text-white">Change Password</button>
+                        <LoadingButton class="px-8 py-2 bg-indigo-700 rounded text-white" :loading="password.loading">
+                            Change Password
+                        </LoadingButton>
                     </div>
                 </form>
             </div>
@@ -30,24 +33,40 @@
 
 <script>
 import Layout from "../Layouts/Layout";
+import LoadingButton from "../../components/LoadingButton";
+import Icon from "../../components/Icon";
 
 export default {
     name: 'Profile',
-
+    components: {Icon, LoadingButton},
     layout: Layout,
 
     data() {
         return {
-            passwordForm: {
-                password: null,
-                password_confirmation: null,
+            password: {
+                loading: false,
+                form: {
+                    password: null,
+                    password_confirmation: null,
+                },
             },
         };
     },
 
     methods: {
         changePassword() {
-            this.$inertia.post(this.$route('password.change'), this.passwordForm);
+            this.password.loading = true;
+
+            this.$inertia.post(this.$route('password.change'), this.password.form)
+                .then(() => {
+                    this.password.form = {
+                        password: null,
+                        password_confirmation: null,
+                    };
+                })
+                .finally(() => {
+                    this.password.loading = false;
+                });
         },
     },
 };
