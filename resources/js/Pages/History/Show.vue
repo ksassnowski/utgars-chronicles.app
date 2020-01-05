@@ -17,8 +17,8 @@
 
                     <div class="w-2/3">
                         <ul>
-                            <li>{{ $page.auth.user.name }} (owner)</li>
-                            <li v-for="player in history.players" :key="player.id" class="mb-1">
+                            <li class="italic">{{ $page.auth.user.name }} (owner)</li>
+                            <li v-for="player in history.players" :key="player.id" class="mt-1">
                                 {{ player.name }}
                             </li>
                         </ul>
