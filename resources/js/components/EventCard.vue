@@ -18,6 +18,13 @@
                     <button class="text-sm text-indigo-700" @click="createScene">Create Scene</button>
                 </div>
 
+                <p
+                    class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase"
+                    style="top: -15px; right: 20px;"
+                >
+                    Event
+                </p>
+
                 <div
                     class="rounded-full border-2 border-gray-800 h-6 w-6 absolute"
                     style="top: -12px"

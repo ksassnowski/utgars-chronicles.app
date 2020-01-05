@@ -30,6 +30,13 @@
                     <p v-else class="text-sm pt-2 text-gray-600 italic">This scene has not been answered yet.</p>
                 </template>
 
+                <p
+                    class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase"
+                    style="top: -15px; right: 20px;"
+                >
+                    Scene
+                </p>
+
                 <div
                     v-if="scene.type"
                     class="rounded-full border-2 border-gray-800 h-6 w-6 absolute"

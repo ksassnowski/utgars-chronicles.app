@@ -27,6 +27,13 @@
                     :class="{ 'bg-white': period.type === 'light', 'bg-gray-800': period.type === 'dark' }"
                 ></div>
 
+                <p
+                    class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase"
+                    style="top: -15px; right: 20px;"
+                >
+                    Period
+                </p>
+
                 <div class="flex justify-end absolute inset-x-0 bottom-0 p-2 invisible group-hover:visible">
                     <button class="text-indigo-700 text-sm" @click="showModal = true">Add Event</button>
                 </div>
