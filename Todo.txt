@@ -1,16 +1,14 @@
 Current
 =======
 
-- Manage Game
-    - Invite Players to Game
-        - Send out invitation
-            - Send out email
+- Make Scene Card collapsible
+
 MVP
 =======
 
+- [BUG] Editing Scene card does not have correct state after update.
 - Manage Game
     - Invite Players to Game
-        - Accept Invitation
         - Kick Player from Game
 
 Backlog

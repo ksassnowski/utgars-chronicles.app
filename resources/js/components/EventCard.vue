@@ -3,12 +3,12 @@
         <article class="relative p-8 relative rounded-sm border-2 bg-white border-gray-600 text-sm w-full mb-4 min-h-32 group">
             <template v-if="!editing">
                 <div class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2 flex justify-end">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="handle w-4 h-4 fill-current text-gray-500 cursor-move" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="handle w-4 h-4 fill-current text-gray-600 cursor-move" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
 
                     <SettingsPanel
                         v-if="!editing"
                         @delete="remove"
-                        @edit="editing = true"
+                        @edit="edit"
                     />
                 </div>
 
@@ -47,10 +47,12 @@
                     </div>
                 </div>
 
-                <div class="flex justify-between items-center">
-                    <button type="button" class="text-sm text-gray-500" @click="cancel">Cancel</button>
-                    <button type="submit" class="text-sm text-indigo-600">Save</button>
-                </div>
+
+                <LoadingButton :loading="loading">
+                    {{ loading ? 'Hang on...' : 'Save' }}
+                </LoadingButton>
+
+                <button type="button" class="w-full text-gray-700 mt-2" @click="cancel">Cancel</button>
             </form>
         </article>
 
@@ -67,6 +69,7 @@ import axios from 'axios';
 import sortBy from 'lodash/sortBy';
 import draggable from 'vuedraggable';
 
+import LoadingButton from './LoadingButton';
 import SettingsPanel from './SettingsPanel';
 import SceneCard from './SceneCard';
 import SceneModal from "./Modal/SceneModal";
@@ -81,6 +84,7 @@ export default {
         draggable,
         SceneCard,
         SettingsPanel,
+        LoadingButton,
     },
 
     computed: {
@@ -137,6 +141,12 @@ export default {
 
             axios.delete(this.$route('events.delete', this.event))
                 .catch(console.error);
+        },
+
+        edit() {
+            this.form.type = this.event.type;
+            this.form.name = this.event.name;
+            this.editing = true;
         },
 
         cancel() {

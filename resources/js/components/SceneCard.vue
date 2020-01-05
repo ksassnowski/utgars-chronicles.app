@@ -3,26 +3,32 @@
         <div class="border-2 bg-white border-gray-600 mb-5">
             <div v-if="!editing" class="p-8 group relative">
                 <div class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2 flex justify-end">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="handle w-4 h-4 fill-current text-gray-500 cursor-move" style="margin-top: 2px" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
+                    <button @click="open = !open" class="mr-2" :title="open ? 'Collapse Scene' : 'Expand Scene'" style="margin-top: -2px;">
+                        <Icon class="w-4 h-4 fill-current text-gray-600" :name="open ? 'view-hide' : 'view-show'" />
+                    </button>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="handle w-4 h-4 fill-current text-gray-600 cursor-move" style="margin-top: 2px" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
 
                     <SettingsPanel
                         v-if="!editing"
                         @delete="remove"
-                        @edit="editing = true"
+                        @edit="edit"
                     />
                 </div>
 
-                <p class="text-sm pb-2">{{ scene.question }}</p>
+                <p class="text-sm" :class="{ 'pb-2': open }">{{ scene.question }}</p>
 
-                <hr>
+                <template v-if="open">
+                    <hr>
 
-                <p v-if="scene.scene" class="text-sm py-2">{{ scene.scene }}</p>
-                <p v-else class="text-sm py-2 text-gray-600 italic">This scene has no description.</p>
+                    <p v-if="scene.scene" class="text-sm py-2">{{ scene.scene }}</p>
+                    <p v-else class="text-sm py-2 text-gray-600 italic">This scene has no description.</p>
 
-                <hr>
+                    <hr>
 
-                <p v-if="scene.answer" class="text-sm pt-2">{{ scene.answer }}</p>
-                <p v-else class="text-sm pt-2 text-gray-600 italic">This scene has not been answered yet.</p>
+                    <p v-if="scene.answer" class="text-sm pt-2">{{ scene.answer }}</p>
+                    <p v-else class="text-sm pt-2 text-gray-600 italic">This scene has not been answered yet.</p>
+                </template>
 
                 <div
                     v-if="scene.type"
@@ -69,14 +75,11 @@
                     <small class="text-red-600 text-xs mt-1" v-if="errors.type">{{ errors.type[0] }}</small>
                 </div>
 
-                <button
-                    type="submit"
-                    class="text-white w-full rounded py-2 px-4"
-                    :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
-                    :disabled="loading"
-                >
+                <LoadingButton :loading="loading">
                     {{ loading ? 'Hang on...' : 'Save' }}
-                </button>
+                </LoadingButton>
+
+                <button type="button" class="w-full text-gray-700 text-sm mt-2" @click="cancel">Cancel</button>
             </form>
         </div>
     </div>
@@ -86,11 +89,15 @@
 import axios from 'axios';
 
 import SettingsPanel from './SettingsPanel';
+import Icon from './Icon';
+import LoadingButton from './LoadingButton';
 
 export default {
     name: 'SceneCard',
 
     components: {
+        LoadingButton,
+        Icon,
         SettingsPanel,
     },
 
@@ -100,6 +107,7 @@ export default {
         return {
             editing: false,
             loading: false,
+            open: true,
             errors: {},
             form: {
                 question: this.scene.question,
@@ -120,6 +128,22 @@ export default {
 
             axios.delete(this.$route('scenes.delete', this.scene))
                 .then(() => this.editing = false);
+        },
+
+        edit() {
+            this.editing = true;
+            this.form.question = this.period.question;
+            this.form.scene = this.period.scene;
+            this.form.answer = this.period.answer;
+            this.form.type = this.period.type;
+        },
+
+        cancel() {
+            this.editing = false;
+            this.form.question = this.period.question;
+            this.form.scene = this.period.scene;
+            this.form.answer = this.period.answer;
+            this.form.type = this.period.type;
         },
 
         submit() {
