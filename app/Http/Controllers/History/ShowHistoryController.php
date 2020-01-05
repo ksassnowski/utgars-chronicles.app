@@ -14,7 +14,7 @@ final class ShowHistoryController
     public function __invoke(Request $request, History $history): Response
     {
         return Inertia::render('History/Show', [
-            'history' => $history,
+            'history' => $history->load('players'),
             'invitationLink' => URL::temporarySignedRoute(
                 'invitation.accept',
                 Carbon::now()->addDay(),
