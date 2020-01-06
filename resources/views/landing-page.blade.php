@@ -53,6 +53,13 @@
                             Yes, thank you for asking! I do have a <a href="https://www.patreon.com/user?u=4095316" target="_blank" rel="noreferrer noopener" class="text-indigo-700 font-semibold">Patreon</a> that you can use to help fund the development of this site.
                         </p>
                     </li>
+
+                    <li class="mb-8">
+                        <p class="font-bold text-lg text-gray-800 mb-1">What's up with the name?</p>
+                        <p class="text-gray-700">
+                            Utgar was a character from our very first game of Microscope and has been a sort of running gag ever since.
+                        </p>
+                    </li>
                 </ul>
             </section>
         </main>
