@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
-    <title>Microscope Online</title>
+    <title>{{ config('app.name') }} - Play Microscope Online</title>
 </head>
 <body class="flex flex-col h-full antialiased">
     <main class="flex-1">
@@ -17,7 +17,7 @@
     </main>
 
     <footer class="page-footer mt-20 pt-8 text-xs text-center pb-4 relative text-gray-500">
-        Created in Munich by Kai Sassnowski &mdash; &copy; {{ date('Y') }}
+        Created in Munich by <a href="https://twitter.com/@warsh33p" target="_blank" rel="noreferrer noopener">@warsh33p</a> &mdash; &copy; {{ date('Y') }}
     </footer>
 </body>
 </html>

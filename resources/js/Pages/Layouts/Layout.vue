@@ -1,13 +1,9 @@
 <template>
     <div class="flex flex-col flex-1">
         <header class="px-4 flex justify-between items-center bg-indigo-800 mb-8">
-            <nav>
-                <ul class="flex">
-                    <li class="py-6">
-                        <InertiaLink :href="$route('home')" class="hover:text-white text-indigo-200">Home</InertiaLink>
-                    </li>
-                </ul>
-            </nav>
+            <InertiaLink :href="$route('home')" class="text-xl font-bold tracking-tight text-indigo-100">
+                Utgar's Chronicles
+            </InertiaLink>
 
             <UserNavigation />
         </header>

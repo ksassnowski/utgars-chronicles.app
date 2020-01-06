@@ -39,7 +39,11 @@
                 <input class="input" type="password" id="password_confirmation" name="password_confirmation">
             </div>
 
-            <button type="submit" class="bg-indigo-600 w-full py-3 text-white rounded font-bold test-sm">Login</button>
+            <button type="submit" class="bg-indigo-600 w-full py-3 text-white rounded font-bold test-sm">Register</button>
+
+            <a href="{{ route('login') }}" class="mt-2 text-sm text-indigo-700 text-center block">
+                Already have an account? Log in instead
+            </a>
         </form>
     </div>
 </div>

@@ -15,19 +15,19 @@
             </div>
 
             <ul class="history-cards">
-                <li v-for="history in $page.histories" :key="history.id">
+                <li v-for="history in histories" :key="history.id">
                     <HistoryCard :history="history" :key="history.id" :url="$route('history.show', history)"/>
                 </li>
             </ul>
         </section>
 
-        <section>
+        <section v-if="games.length > 0">
             <h2 class="font-bold text-xl mb-4">
                 Your Games
             </h2>
 
             <ul class="history-cards">
-                <li v-for="game in $page.games" :key="game.id">
+                <li v-for="game in games" :key="game.id">
                     <HistoryCard :history="game" :key="game.id" :url="$route('history.play', game)" />
                 </li>
             </ul>
@@ -44,6 +44,8 @@ export default {
     name: 'HomePage',
 
     layout: Layout,
+
+    props: ['histories', 'games'],
 
     components: {
         CreateHistoryModal,

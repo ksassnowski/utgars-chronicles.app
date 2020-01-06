@@ -19,6 +19,10 @@
                     @if ($errors->has('password'))
                         <small class="mt-1 text-xs text-red-400">{{ $errors->first('password') }}</small>
                     @endif
+
+                    <a href="{{ route('password.request') }}" class="mt-1 text-sm text-gray-600 block">
+                        Forgot password?
+                    </a>
                 </div>
 
                 <div class="mb-4">
@@ -28,8 +32,8 @@
 
                 <button type="submit" class="bg-indigo-600 w-full py-3 text-white rounded font-bold test-sm">Login</button>
 
-                <a href="{{ route('password.request') }}" class="mt-2 text-sm text-gray-700 text-center block">
-                    Forgot password?
+                <a href="{{ route('register') }}" class="mt-2 text-sm text-indigo-700 text-center block">
+                    Or create a new account
                 </a>
             </form>
         </div>
