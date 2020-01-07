@@ -22,6 +22,10 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('signed')
         ->name('invitation.accept');
 
+    Route::delete('histories/{history}/players/{player}', 'History\KickPlayerController')
+        ->middleware('can:kickPlayer,history')
+         ->name('history.players.kick');
+
     Route::get('histories/{history}', 'History\ShowHistoryController')
         ->middleware('can:showHistory,history')
         ->name('history.show');

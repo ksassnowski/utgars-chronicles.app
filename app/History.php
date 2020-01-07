@@ -70,6 +70,11 @@ class History extends Model
         $this->players()->attach($user->id);
     }
 
+    public function kickPlayer(User $player): void
+    {
+        $this->players()->detach($player->id);
+    }
+
     public function isPlayer(User $user): bool
     {
         return $this->players()->where('user_id', $user->id)->exists();
