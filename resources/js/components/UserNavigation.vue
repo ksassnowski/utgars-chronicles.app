@@ -23,7 +23,7 @@
         <div
             v-if="dropdownOpen"
             v-click-outside="() => dropdownOpen = false"
-            class="absolute bg-white border border-gray-300 shadow-lg right-0 rounded"
+            class="absolute bg-white border border-gray-300 shadow-lg right-0 rounded flex flex-col"
             style="top: 100%"
         >
             <InertiaLink
@@ -35,9 +35,18 @@
                 Profile
             </InertiaLink>
 
-            <form :action="$route('logout')" method="POST" class="hover:bg-gray-200 border-t border-gray-300">
+            <a
+                href="https://www.patreon.com/user?u=4095316"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="px-8 py-2 text-sm text-indigo-600 block hover:bg-gray-200 inline-flex items-center border-t border-gray-300"
+            >
+                Become a Patron
+            </a>
+
+            <form :action="$route('logout')" method="POST" class="hover:bg-gray-200">
                 <input type="hidden" name="_token" :value="token">
-                <button class="text-sm text-indigo-600 w-full px-8 py-2">Logout</button>
+                <button class="text-sm text-indigo-600 w-full px-8 py-2 text-left">Logout</button>
             </form>
         </div>
     </div>
