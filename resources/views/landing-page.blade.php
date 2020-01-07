@@ -8,13 +8,13 @@
 
                 <nav class="px-4 py-4 flex justify-end items-center">
                     <a href="{{ route('login') }}" class="text-indigo-100 px-4">Login</a>
-                    <a href="{{ route('register') }}" class="px-4 py-2 border-2 rounded-sm border-white text-white hover:text-indigo-700 hover:bg-white">Register</a>
+                    <a href="{{ route('register') }}" class="px-4 py-2 rounded-sm text-indigo-700 bg-white hover:bg-indigo-100">Register</a>
                 </nav>
             </div>
 
             <div class="container mx-auto px-4 pt-4 md:pt-12 pb-4">
                 <div class="md:w-2/3 lg:w-1/2">
-                    <h1 class="text-3xl md:text-5xl font-bold tracking-wider text-white">Play Microscope online</h1>
+                    <h1 class="text-3xl md:text-5xl font-bold tracking-wider text-white brand-shadow">Play Microscope online</h1>
                     <p class="text-indigo-200 mb-10">
                         Utgar's Chronicles is a website that enables you to play Microscope with your friends all over the world.
                         Completely for free. I just really like this game!
@@ -28,8 +28,8 @@
             </div>
         </header>
 
-        <main class="mt-32 container mx-auto px-4">
-            <section>
+        <main class="mt-32">
+            <section class="container mx-auto px-4">
                 <h2 class="text-4xl font-bold text-gray-800 tracking-tight text-center mb-12">{{ __('Frequently Asked Questions') }}</h2>
 
                 <ul class="lg:px-48">
@@ -58,8 +58,11 @@
 
                     <li class="mb-8">
                         <p class="font-bold text-lg text-gray-800 mb-1">Can I support the development and maintenance of Utgar's Chronicles?</p>
-                        <p class="text-gray-700">
-                            Yes, thank you for asking! I do have a <a href="https://www.patreon.com/user?u=4095316" target="_blank" rel="noreferrer noopener" class="text-indigo-700 font-semibold">Patreon</a> that you can use to help fund the development of this site.
+                        <p class="text-gray-700 mb-4">
+                            Yes, thank you for asking! I do have a Patreon that you can use to help fund the development of this site.
+                        </p>
+                        <p class="flex justify-center">
+                            <a href="https://www.patreon.com/bePatron?u=4095316" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
                         </p>
                     </li>
 
@@ -71,6 +74,9 @@
                     </li>
                 </ul>
             </section>
+
         </main>
+
+        <script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
     </div>
 @endsection
