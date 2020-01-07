@@ -17,6 +17,7 @@
         "laravel/vapor-core": "^2.2",
         "predis/predis": "^1.1",
         "pusher/pusher-php-server": "~4.0",
+        "sentry/sentry-laravel": "1.5.0",
         "tightenco/ziggy": "^0.8.1"
     },
     "require-dev": {
