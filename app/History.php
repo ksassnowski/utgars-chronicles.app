@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Exceptions\UserIsNotAPlayer;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\UserIsAlreadyPlayerInHistory;
 use App\Exceptions\OwnerCannotJoinOwnGameAsPlayer;
@@ -70,8 +71,11 @@ class History extends Model
         $this->players()->attach($user->id);
     }
 
-    public function kickPlayer(User $player): void
+    public function removePlayer(User $player): void
     {
+        if (!$this->isPlayer($player)) {
+            throw new UserIsNotAPlayer();
+        }
         $this->players()->detach($player->id);
     }
 

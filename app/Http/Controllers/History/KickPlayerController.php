@@ -11,7 +11,7 @@ final class KickPlayerController
 {
     public function __invoke(Request $request, History $history, User $player): RedirectResponse
     {
-        $history->kickPlayer($player);
+        $history->removePlayer($player);
 
         return redirect()
             ->route('history.show', $history)
