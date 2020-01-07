@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col flex-1">
+    <div class="flex flex-col flex-1 game-container">
         <header class="px-4 flex justify-between items-center bg-indigo-800 mb-8">
             <div class="flex items-center">
                 <InertiaLink :href="$route('home')" class="text-xl font-bold tracking-tight text-indigo-100 mr-8">
