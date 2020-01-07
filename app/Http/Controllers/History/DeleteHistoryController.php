@@ -12,6 +12,7 @@ final class DeleteHistoryController
     {
         $history->delete();
 
-        return redirect()->route('home');
+        return redirect()->route('home')
+            ->with('success', __('History successfully deleted'));
     }
 }
