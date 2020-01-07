@@ -23,7 +23,7 @@
         <div
             v-if="dropdownOpen"
             v-click-outside="() => dropdownOpen = false"
-            class="absolute bg-white border border-gray-300 shadow-lg right-0 rounded flex flex-col"
+            class="absolute bg-white border border-gray-300 shadow-lg right-0 rounded flex flex-col z-10"
             style="top: 100%"
         >
             <InertiaLink
