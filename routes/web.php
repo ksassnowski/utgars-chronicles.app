@@ -12,6 +12,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 
+    Route::post('feedback', 'FeedbackController')->name('feedback.submit');
+
     Route::post('/user/password', 'ChangePasswordController')->name('password.change');
 
     Route::post('histories', 'History\StoreHistoryController')->name('history.store');

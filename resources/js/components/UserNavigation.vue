@@ -1,5 +1,11 @@
 <template>
     <div class="flex items-center relative">
+        <ul class="mr-4">
+            <li class="px-4 hover:bg-indigo-600">
+                <FeedbackModal />
+            </li>
+        </ul>
+
         <Gravatar
             :email="$page.auth.user.email"
             :size="30"
@@ -40,12 +46,15 @@
 <script>
 import Gravatar from 'vue-gravatar';
 import vClickOutside from 'v-click-outside';
+
 import Icon from "./Icon";
+import FeedbackModal from "./Modal/FeedbackModal";
 
 export default {
     name: 'UserNavigation',
 
     components: {
+        FeedbackModal,
         Icon,
         Gravatar,
     },

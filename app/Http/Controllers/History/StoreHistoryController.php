@@ -13,8 +13,10 @@ final class StoreHistoryController
         /** @var User $user */
         $user = $request->user();
 
-        $user->histories()->create($request->validated());
+        $history = $user->histories()->create($request->validated());
 
-        return redirect()->route('home');
+        return redirect()
+            ->route('history.show', $history)
+            ->with('success', __('History created'));
     }
 }

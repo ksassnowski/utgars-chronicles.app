@@ -150,6 +150,17 @@
     }
 }
 
+.flash-enter-active,
+.flash-leave-active {
+    transition: all 0.4s ease;
+}
+
+.flash-enter,
+.flash-leave-to {
+    opacity: 0;
+    transform: translateX(-12px);
+}
+
 .modal-enter-active,
 .modal-leave-active {
     transition: all 0.3s linear;

@@ -9,6 +9,8 @@
         </header>
 
         <main class="flex-1">
+            <FlashMessage />
+
             <slot />
         </main>
 
@@ -18,11 +20,13 @@
 
 <script>
 import UserNavigation from "../../components/UserNavigation";
+import FlashMessage from "../../components/FlashMessage";
 
 export default {
     name: 'Layout',
 
     components: {
+        FlashMessage,
         UserNavigation,
     },
 };
