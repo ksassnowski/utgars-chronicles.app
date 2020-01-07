@@ -1,7 +1,7 @@
 <template>
     <div class="flex items-center relative">
         <ul class="mr-4">
-            <li class="px-4 hover:bg-indigo-600">
+            <li class="px-4 hover:bg-indigo-700">
                 <FeedbackModal />
             </li>
         </ul>
