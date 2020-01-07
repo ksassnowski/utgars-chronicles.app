@@ -41,6 +41,15 @@
                     </li>
 
                     <li class="mb-8">
+                        <p class="font-bold text-lg text-gray-800 mb-1">Are the rules of the game included?</p>
+                        <p class="text-gray-700">
+                            No, it is assumed that you or someone you play with knows or owns the rules.
+                            You can purchase them over at <a href="http://www.lamemage.com/microscope/" target="_blank" rel="noopener noreferrer" class="text-indigo-700 font-semibold">Lame Mage Productions</a>.
+                            Trust me, it's worth it.
+                        </p>
+                    </li>
+
+                    <li class="mb-8">
                         <p class="font-bold text-lg text-gray-800 mb-1">Does it cost anything?</p>
                         <p class="text-gray-700">
                             No, you can have as many histories as you want and play in as many games as you want.
