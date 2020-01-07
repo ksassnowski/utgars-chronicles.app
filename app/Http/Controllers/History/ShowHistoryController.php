@@ -17,7 +17,7 @@ final class ShowHistoryController
             'history' => $history->load('players'),
             'invitationLink' => URL::temporarySignedRoute(
                 'invitation.accept',
-                Carbon::now()->addDay(),
+                Carbon::now()->addHour(),
                 ['history' => $history->id]
             ),
         ]);

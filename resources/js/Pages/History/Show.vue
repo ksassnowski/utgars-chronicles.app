@@ -46,7 +46,9 @@
                         <div class="mb-4">
                             <label for="link" class="label">Invite Link</label>
                             <input type="text" id="link" class="input text-sm" :value="invitationLink" ref="link" @click="$refs.link.select()" readonly>
-                            <small class="text-xs text-gray-600 mt-1">Send this link to the person you want to invite to your game.</small>
+                            <small class="text-xs text-gray-600 mt-1">
+                                Send this link to the person you want to invite to your game. This link is valid for <strong>1 hour</strong>. Every time you refresh this page, you receive a new invitation link.
+                            </small>
                         </div>
                     </div>
                 </div>
