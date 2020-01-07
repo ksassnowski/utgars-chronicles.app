@@ -6,13 +6,26 @@ use App\User;
 use Generator;
 use App\History;
 use Tests\TestCase;
+use Tests\ValidateRoutesTest;
+use Tests\AuthorizeHistoryTest;
+use App\Events\HistorySeedUpdated;
 use Tests\AuthenticatedRoutesTest;
+use Illuminate\Support\Facades\Event;
 use App\Exceptions\UserIsAlreadyPlayerInHistory;
+use App\Http\Requests\History\UpdateSeedRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Http\Controllers\History\UpdateSeedController;
 
 class HistoryTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest;
+    use RefreshDatabase, AuthenticatedRoutesTest, ValidateRoutesTest, AuthorizeHistoryTest;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Event::fake();
+    }
 
     /** @test */
     public function createANewHistoryForUser(): void
@@ -42,46 +55,26 @@ class HistoryTest extends TestCase
             'name' => '::old-name::',
         ]);
 
-        $response = $this->put(route('history.update', $history), [
+        $response = $this->patchJson(route('history.update-seed', $history), [
             'name' => '::new-name::',
         ]);
 
-        $response->assertRedirect();
+        $response->assertOk();
         $history->refresh();
         $this->assertEquals('::new-name::', $history->name);
-    }
-
-    /** @test */
-    public function updateValidationCheck(): void
-    {
-        $this->login();
-        $history = factory(History::class)->create([
-            'owner_id' => $this->user->id,
-        ]);
-
-        $response = $this->put(route('history.update', $history), []);
-
-        $response->assertSessionHasErrors(['name']);
+        Event::assertDispatched(
+            HistorySeedUpdated::class,
+            fn (HistorySeedUpdated $event) => $event->history->id === $history->id && $event->history->name === '::new-name::'
+        );
     }
 
     public function authenticatedRoutesProvider(): Generator
     {
         yield from [
             'create history' => ['post', '/histories'],
-            'update history' => ['put', '/histories/1'],
+            'update seed' => ['patch', '/histories/1/seed'],
             'delete history' => ['delete', '/histories/1'],
         ];
-    }
-
-    /** @test */
-    public function canOnlyUpdateOwnHistories(): void
-    {
-        $history = factory(History::class)->create();
-        $otherUser = factory(User::class)->create();
-
-        $response = $this->actingAs($otherUser)->put(route('history.update', $history), []);
-
-        $response->assertForbidden();
     }
 
     /** @test */
@@ -133,5 +126,28 @@ class HistoryTest extends TestCase
         $response = $this->actingAs($baddie)->delete(route('history.delete', $history));
 
         $response->assertForbidden();
+    }
+
+    public function validationProvider(): Generator
+    {
+        yield from [
+            'update history seed' => [
+                UpdateSeedController::class,
+                '__invoke',
+                UpdateSeedRequest::class,
+            ],
+        ];
+    }
+
+    public function authorizationProvider(): Generator
+    {
+        yield from [
+            'update history seed' => [
+                ['name' => '::new-name::'],
+                '/histories/1/seed',
+                'patch',
+                200,
+            ]
+        ];
     }
 }

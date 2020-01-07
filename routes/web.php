@@ -34,9 +34,9 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.play');
 
-    Route::put('histories/{history}', 'History\UpdateHistoryController')
-        ->middleware('can:updateHistory,history')
-        ->name('history.update');
+    Route::patch('histories/{history}/seed', 'History\UpdateSeedController')
+        ->middleware('can:modifyGame,history')
+        ->name('history.update-seed');
 
     Route::post('histories/{history}/palette', [PaletteController::class, 'store'])
         ->middleware('can:modifyGame,history')

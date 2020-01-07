@@ -38,7 +38,7 @@
             <div class="flex items-center px-4 mb-4">
                 <div class="flex-1"></div>
 
-                <h1 class="text-2xl font-bold text-gray-800">{{ history.name }}</h1>
+                <HistorySeed :history="internalHistory" />
 
                 <div class="flex-1 flex justify-end">
                     <button class="px-4 py-2 bg-indigo-700 rounded text-white font-bold" @click="create">Add Period</button>
@@ -106,6 +106,7 @@ import Palette from './Palette';
 import LegacyTracker from './LegacyTracker';
 import Modal from './Modal';
 import GamePanel from './GamePanel';
+import HistorySeed from "./HistorySeed";
 
 export default {
     name: 'GameBoard',
@@ -118,6 +119,7 @@ export default {
     },
 
     components: {
+        HistorySeed,
         GamePanel,
         Modal,
         LegacyTracker,
@@ -130,6 +132,7 @@ export default {
 
     data() {
         return {
+            internalHistory: this.history,
             periods: this.history.periods,
             showModal: false,
             loading: false,
@@ -173,6 +176,10 @@ export default {
             this.reset();
             this.showModal = true;
             this.$nextTick(() => this.$refs.input.focus());
+        },
+
+        updateSeed({ name }) {
+            this.internalHistory.name = name;
         },
 
         addPeriod({ period }) {
@@ -390,6 +397,7 @@ export default {
         Bus.$on('scene.moved', this.onSceneMoved);
 
         Echo.join(this.channelName)
+            .listen('HistorySeedUpdated', this.updateSeed)
             .listen('PeriodCreated', this.addPeriod)
             .listen('PeriodUpdated', this.updatePeriod)
             .listen('PeriodMoved', this.updatePeriodPositions)

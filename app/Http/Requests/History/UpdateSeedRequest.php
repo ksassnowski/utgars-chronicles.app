@@ -4,7 +4,7 @@ namespace App\Http\Requests\History;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateHistoryRequest extends FormRequest
+class UpdateSeedRequest extends FormRequest
 {
     public function rules(): array
     {
