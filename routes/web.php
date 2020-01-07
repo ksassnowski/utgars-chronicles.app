@@ -16,6 +16,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/user/password', 'ChangePasswordController')->name('password.change');
 
+    Route::get('games/{game}', 'History\ShowGameController')
+        ->name('user.games.show');
     Route::delete('games/{game}', 'History\LeaveGameController')
         ->name('user.games.leave');
 

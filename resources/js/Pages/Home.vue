@@ -28,7 +28,7 @@
 
             <ul class="history-cards">
                 <li v-for="game in games" :key="game.id">
-                    <HistoryCard :history="game" :key="game.id" :url="$route('history.play', game)" />
+                    <HistoryCard :history="game" :key="game.id" :url="$route('user.games.show', game)" />
                 </li>
             </ul>
         </section>
