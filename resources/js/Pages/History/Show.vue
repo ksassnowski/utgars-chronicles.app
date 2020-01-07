@@ -18,8 +18,17 @@
                     <div class="w-2/3">
                         <ul>
                             <li class="italic">{{ $page.auth.user.name }} (owner)</li>
-                            <li v-for="player in history.players" :key="player.id" class="mt-1">
+                            <li v-for="player in history.players" :key="player.id" class="mt-1 group">
                                 {{ player.name }}
+                                <ConfirmAction @confirmed="kickPlayer(player)">
+                                    <button
+                                        @click="act"
+                                        slot-scope="{ act, needsConfirmation }"
+                                        class="invisible group-hover:visible inline text-sm text-red-600 ml-2"
+                                    >
+                                        {{ needsConfirmation ? 'Really kick this player?' : 'Kick' }}
+                                    </button>
+                                </ConfirmAction>
                             </li>
                         </ul>
                     </div>
@@ -87,7 +96,11 @@ export default {
     methods: {
         deleteHistory() {
             this.$inertia.delete(this.$route('history.delete', this.history));
-        }
+        },
+
+        kickPlayer(player) {
+            this.$inertia.delete(this.$route('history.players.kick', [this.history, player]));
+        },
     },
 };
 </script>

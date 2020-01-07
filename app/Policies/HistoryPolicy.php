@@ -12,6 +12,11 @@ class HistoryPolicy
         return $this->ownsHistory($user, $history);
     }
 
+    public function showGame(User $user, History $history): bool
+    {
+        return $this->isPlayer($user, $history);
+    }
+
     public function showHistory(User $user, History $history): bool
     {
         return $this->ownsHistory($user, $history);
