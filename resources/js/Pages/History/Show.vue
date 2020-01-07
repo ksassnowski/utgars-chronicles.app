@@ -70,6 +70,12 @@ import ConfirmAction from "../../components/ConfirmAction";
 export default {
     name: 'Show',
 
+    metaInfo() {
+        return {
+            title: `${this.$page.history.name} – Utgar\'s Chronicles`,
+        };
+    },
+
     props: ['history', 'invitationLink'],
 
     layout: Layout,

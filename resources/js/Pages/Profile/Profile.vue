@@ -38,7 +38,18 @@ import Icon from "../../components/Icon";
 
 export default {
     name: 'Profile',
-    components: {Icon, LoadingButton},
+
+    metaInfo() {
+        return {
+            title: 'Profile – Utgar\'s Chronicles',
+        };
+    },
+
+    components: {
+        Icon,
+        LoadingButton,
+    },
+
     layout: Layout,
 
     data() {

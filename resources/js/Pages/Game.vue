@@ -4,12 +4,18 @@
 
 <script>
 import GameBoard from '../components/GameBoard';
-import Layout from './Layouts/Layout';
+import GameLayout from './Layouts/Game';
 
 export default {
     name: 'Game',
 
-    layout: Layout,
+    metaInfo() {
+        return {
+            title: `${this.$page.history.name} – Utgar\'s Chronicles`
+        };
+    },
+
+    layout: GameLayout,
 
     components: {
         GameBoard,

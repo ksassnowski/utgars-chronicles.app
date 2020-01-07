@@ -43,6 +43,12 @@ import CreateHistoryModal from "../components/Modal/CreateHistoryModal";
 export default {
     name: 'HomePage',
 
+    metaInfo() {
+        return {
+            title: 'Utgar\'s Chronicles – Play Microscope Online'
+        };
+    },
+
     layout: Layout,
 
     props: ['histories', 'games'],
