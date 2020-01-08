@@ -19,6 +19,9 @@
             <div class="mb-4">
                 <label class="label" for="email">Email</label>
                 <input class="input" type="email" id="email" name="email" required>
+                <small class="text-xs text-gray-600 mt-1">
+                    Your email is used to create the account and, if necessary, send you a password reset link. That's it. It will not be shared with anyone or used to send you newsletters or other marketing bullshit.
+                </small>
 
                 @if ($errors->has('email'))
                     <small class="mt-1 text-xs text-red-400">{{ $errors->first('email') }}</small>
