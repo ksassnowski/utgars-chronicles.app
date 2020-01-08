@@ -139,18 +139,18 @@ export default {
 
         edit() {
             this.editing = true;
-            this.form.question = this.period.question;
-            this.form.scene = this.period.scene;
-            this.form.answer = this.period.answer;
-            this.form.type = this.period.type;
+            this.form.question = this.scene.question;
+            this.form.scene = this.scene.scene;
+            this.form.answer = this.scene.answer;
+            this.form.type = this.scene.type;
         },
 
         cancel() {
             this.editing = false;
-            this.form.question = this.period.question;
-            this.form.scene = this.period.scene;
-            this.form.answer = this.period.answer;
-            this.form.type = this.period.type;
+            this.form.question = this.scene.question;
+            this.form.scene = this.scene.scene;
+            this.form.answer = this.scene.answer;
+            this.form.type = this.scene.type;
         },
 
         submit() {
