@@ -1,5 +1,5 @@
 <template>
-    <button @click="showModal = true" class="text-indigo-100 py-6 flex items-center">
+    <button @click="showModal = true" class="text-indigo-100 py-4 sm:py-6 flex items-center">
         <Modal v-if="showModal" title="Submit Feedback" @close="showModal = false">
             <form @submit.prevent="submit">
                 <p class="text-gray-700 text-sm mb-4">
