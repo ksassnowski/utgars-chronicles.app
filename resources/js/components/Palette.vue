@@ -1,10 +1,11 @@
 <template>
     <div>
-        <Modal v-if="showModal" @close="showModal = false" :title="form.id === null ? 'Add Item to Palette' : 'Edit Item'">
+        <Modal v-if="showModal" @close="close" :title="form.id === null ? 'Add Item to Palette' : 'Edit Item'">
             <form @submit.prevent="submit">
-                <div class="mb-4">
+                <div :class="{ error: errors.name }" class="mb-4">
                     <label for="name" class="label">Description</label>
                     <input type="text" class="input" id="name" ref="input" v-model="form.name" required>
+                    <small v-if="errors.name" class="text-xs text-red-500 mt-1">{{ errors.name[0] }}</small>
                 </div>
 
                 <div class="mb-4">
@@ -107,6 +108,7 @@ export default {
             internalPalette: this.palette,
             showModal: false,
             loading: false,
+            errors: {},
             form: {
                 id: null,
                 name: null,
@@ -125,11 +127,11 @@ export default {
 
             promise.then(() => {
                 this.loading = false;
-                this.showModal = false;
-                this.reset();
+                this.close();
             })
-            .catch(() => {
+            .catch((err) => {
                 this.loading = false;
+                this.errors = err.response.data.errors;
             });
         },
 
@@ -141,7 +143,7 @@ export default {
             }
 
             axios.delete(this.$route('palette.delete', this.form.id))
-                .then(() => this.showModal = false);
+                .then(this.close);
         },
 
         create() {
@@ -160,6 +162,12 @@ export default {
             this.form.id = null;
             this.form.name = null;
             this.form.type = 'yes';
+        },
+
+        close() {
+            this.reset();
+            this.errors = {};
+            this.showModal = false;
         }
     },
 

@@ -20,7 +20,7 @@ class CreatePaletteItemRequestTest extends TestCase
     protected function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => ['required', 'string', 'max:255'],
             'type' => ['required', Rule::in([PaletteType::YES, PaletteType::NO])],
         ];
     }

@@ -18,7 +18,7 @@ class CreateLegacyRequestTest extends TestCase
     protected function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => ['required', 'string', 'max:255'],
         ];
     }
 }

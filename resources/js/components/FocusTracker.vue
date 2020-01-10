@@ -1,10 +1,11 @@
 <template>
     <div>
-        <Modal v-if="showModal" :title="form.id === null ? 'Define Focus' : 'Edit Focus'" @close="showModal = false">
+        <Modal v-if="showModal" :title="form.id === null ? 'Define Focus' : 'Edit Focus'" @close="close">
             <form @submit.prevent="submit">
-                <div class="mb-4">
+                <div :class="{ error: errors.name }" class="mb-4">
                     <label for="name" class="label">Title</label>
                     <input type="text" class="input" id="name" v-model="form.name" ref="input" required>
+                    <small v-if="errors.name" class="text-xs text-red-500 mt-1">{{ errors.name[0] }}</small>
                 </div>
 
                 <button
@@ -75,6 +76,7 @@ export default {
         return {
             showModal: false,
             loading: false,
+            errors: {},
             form: {
                 id: null,
                 name: null,
@@ -105,9 +107,10 @@ export default {
 
             promise.then(() => {
                 this.loading = false;
-                this.showModal = false;
+                this.close();
             })
-            .catch(() => {
+            .catch((err) => {
+                this.errors = err.response.data.errors;
                 this.loading = false;
             });
         },
@@ -120,15 +123,19 @@ export default {
             }
 
             axios.delete(this.$route('focus.delete', this.form.id))
-                .then(() => {
-                    this.showModal = false;
-                });
+                .then( this.close);
         },
 
         reset() {
             this.form.id = null;
             this.form.name = null;
         },
+
+        close() {
+            this.reset();
+            this.errors = {};
+            this.showModal = false;
+        }
     },
 
     created() {

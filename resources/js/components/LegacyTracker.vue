@@ -1,10 +1,11 @@
 <template>
     <div>
-        <Modal v-if="showModal" @close="showModal = false" :title="form.id === null ? 'Add Legacy' : 'Edit Legacy'">
+        <Modal v-if="showModal" @close="close" :title="form.id === null ? 'Add Legacy' : 'Edit Legacy'">
             <form @submit.prevent="submit">
-                <div class="mb-4">
+                <div :class="{ error: errors.name }" class="mb-4">
                     <label for="name" class="label">Name</label>
                     <input type="text" class="input" id="name" ref="input" v-model="form.name" required>
+                    <small v-if="errors.name" class="text-xs text-red-500 mt-1">{{ errors.name[0] }}</small>
                 </div>
 
                 <button
@@ -53,6 +54,7 @@ export default {
             loading: false,
             showModal: false,
             internalLegacies: this.legacies,
+            errors: {},
             form: {
                 id: null,
                 name: null,
@@ -70,12 +72,12 @@ export default {
 
             promise.then(() => {
                 this.loading = false;
-                this.showModal = false;
-                this.reset();
+                this.close();
             })
-                .catch(() => {
-                    this.loading = false;
-                });
+            .catch((err) => {
+                this.loading = false;
+                this.errors = err.response.data.errors;
+            });
         },
 
         reset() {
@@ -104,6 +106,12 @@ export default {
 
             axios.delete(this.$route('legacies.delete', this.form.id))
                 .then(() => this.showModal = false);
+        },
+
+        close() {
+            this.reset();
+            this.errors = {};
+            this.showModal = false;
         }
     },
 
