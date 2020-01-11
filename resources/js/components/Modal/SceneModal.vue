@@ -105,7 +105,7 @@ export default {
     },
 
     mounted() {
-        this.$refs.question.focus();
+        this.$nextTick(() => this.$refs.question.focus());
     }
 };
 </script>
