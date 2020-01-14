@@ -2,7 +2,7 @@
     <div>
         <article class="relative p-8 relative rounded-sm border-2 bg-white border-gray-600 text-sm w-full mb-4 min-h-32 group">
             <template v-if="!editing">
-                <div class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2 flex justify-end">
+                <div class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2 flex justify-end z-20">
                     <svg xmlns="http://www.w3.org/2000/svg" class="handle w-4 h-4 fill-current text-gray-600 cursor-move" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
 
                     <SettingsPanel
@@ -105,6 +105,7 @@ export default {
     data() {
         return {
             editing: false,
+            loading: false,
             showSceneModal: false,
             form: {
                 type: this.event.type,
@@ -136,9 +137,17 @@ export default {
                 return;
             }
 
+            this.loading = true;
+
             axios.put(this.$route('events.update', this.event), this.form)
-                .then(() => this.editing = false)
-                .catch(console.error);
+                .then(() => {
+                    this.loading = false;
+                    this.editing = false
+                })
+                .catch((err) => {
+                    this.loading = false;
+                    console.error(err);
+                });
         },
 
         remove() {

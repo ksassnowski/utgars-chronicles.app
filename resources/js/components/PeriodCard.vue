@@ -9,7 +9,7 @@
 
         <article class="border-2 border-gray-600 p-8 rounded-sm mb-6 shadow bg-white relative mx-4 relative group">
             <template v-if="!editing">
-                <div class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2 flex justify-end">
+                <div class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2 flex justify-end z-20">
                     <svg xmlns="http://www.w3.org/2000/svg" class="handle w-4 h-4 fill-current text-gray-600 cursor-move" style="margin-top: 2px" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
 
                     <SettingsPanel
