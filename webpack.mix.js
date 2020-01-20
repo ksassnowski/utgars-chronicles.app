@@ -1,6 +1,7 @@
 const mix = require('laravel-mix');
 const tailwindcss = require('tailwindcss');
-const purgecss = require('@fullhuman/postcss-purgecss');
+
+require('laravel-mix-purgecss');
 
 /*
  |--------------------------------------------------------------------------
@@ -20,13 +21,6 @@ mix.js('resources/js/app.js', 'public/js')
     .options({
         postCss: [
             tailwindcss('tailwind.config.js'),
-            ...mix.inProduction() ? [
-                purgecss({
-                    content: ['./resources/views/**/*.blade.php', './resources/js/**/*.vue'],
-                    defaultExtractor: content => content.match(/[\w-/:.]+(?<!:)/g) || [],
-                    whitelistPatternsChildren: [/nprogress/],
-                }),
-            ] : [],
         ]
     })
     .webpackConfig({
@@ -38,6 +32,12 @@ mix.js('resources/js/app.js', 'public/js')
                 '@': path.resolve('resources/js'),
             }
         }
+    })
+    .purgeCss({
+        whitelistPatternsChildren: [
+            /tippy/,
+            /nprogress/,
+        ]
     })
     .version()
     .sourceMaps();
