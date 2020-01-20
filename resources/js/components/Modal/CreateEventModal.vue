@@ -3,7 +3,7 @@
         <form @submit.prevent="submit">
             <div class="mb-4">
                 <label for="name" class="label">Name</label>
-                <input type="text" class="input" id="name" ref="input" v-model="form.name" required>
+                <textarea type="text" class="input" id="name" ref="input" v-model="form.name" rows="5" required></textarea>
             </div>
 
             <div class="mb-4">
