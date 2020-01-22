@@ -425,8 +425,6 @@ export default {
     beforeDestroy() {
         Bus.$off([
             'event.moved',
-            'event.saved',
-            'event.removed',
             'scene.moved',
         ]);
         Echo.leave(this.channelName);
