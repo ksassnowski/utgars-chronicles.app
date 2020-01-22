@@ -263,6 +263,11 @@ export default {
         updatePeriod({ period }) {
             const match = find(this.periods, p => p.id === period.id);
 
+            if (!match) {
+                // @TODO re-sync board
+                return;
+            }
+
             Object.assign(match, period);
         },
 
@@ -272,6 +277,11 @@ export default {
 
         addEvent({ event, period }) {
             const match = find(this.periods, p => p.id === period);
+
+            if (!match) {
+                // @TODO re-sync board
+                return;
+            }
 
             match.events.push(Object.assign({}, event, { scenes: [] }));
         },
