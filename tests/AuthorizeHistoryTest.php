@@ -5,7 +5,7 @@ namespace Tests;
 use App\User;
 use Generator;
 use App\History;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 
 trait AuthorizeHistoryTest
 {

@@ -40,6 +40,10 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:deleteHistory,history')
         ->name('history.delete');
 
+    Route::get('histories/{history}/export', 'History\ExportController')
+        ->middleware('can:modifyGame,history')
+        ->name('history.export');
+
     Route::get('histories/{history}/play', 'History\GameController')
         ->middleware('can:modifyGame,history')
         ->name('history.play');

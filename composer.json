@@ -15,12 +15,13 @@
         "laravel/framework": "^7.0",
         "laravel/horizon": "^4.0",
         "laravel/tinker": "^2.0",
+        "laravel/ui": "^2.0",
         "laravel/vapor-core": "^2.2",
+        "league/csv": "^9.6",
         "predis/predis": "^1.1",
         "pusher/pusher-php-server": "~4.0",
         "sentry/sentry-laravel": "1.7.0",
-        "tightenco/ziggy": "^0.8.1",
-        "laravel/ui": "^2.0"
+        "tightenco/ziggy": "^0.8.1"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.6",

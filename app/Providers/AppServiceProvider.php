@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use Auth;
 use Inertia\Inertia;
+use App\Export\HistoryExporter;
+use App\Export\CsvHistoryExporter;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 
@@ -26,6 +29,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->bind(HistoryExporter::class, CsvHistoryExporter::class);
+
         Inertia::version(function () {
             return md5_file(public_path('mix-manifest.json'));
         });
@@ -52,5 +57,9 @@ class AppServiceProvider extends ServiceProvider
                 ];
             },
         ]);
+
+        Collection::macro('transpose', function () {
+            return array_map(null, ...$this->all());
+        });
     }
 }
