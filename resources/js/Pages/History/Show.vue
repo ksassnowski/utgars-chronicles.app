@@ -61,6 +61,21 @@
                 </div>
             </section>
 
+            <section class="py-6 border-b border-gray-200">
+                <div class="px-6 flex">
+                    <div class="w-1/3 pr-4">
+                        <h2 class="text-base text-gray-700">Export Game</h2>
+                    </div>
+
+                    <div class="w-2/3">
+                        <div class="mb-4">
+                            <a :href="$route('history.export', history)" class="bg-indigo-700 inline-block text-white font-bold px-8 py-3 rounded">
+                                Export as CSV
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             <section class="py-6">
                 <div class="px-6 flex">
