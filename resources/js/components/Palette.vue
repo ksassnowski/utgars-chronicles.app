@@ -35,7 +35,7 @@
             </form>
 
             <form v-if="form.id !== null" @submit.prevent="deleteItem" class="text-center mt-1">
-                <button class="text-red-700 text-sm">Delete Focus</button>
+                <button class="text-red-700 text-sm">Delete Item</button>
             </form>
         </Modal>
 
