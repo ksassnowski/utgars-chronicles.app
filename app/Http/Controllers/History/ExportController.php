@@ -30,7 +30,7 @@ final class ExportController extends Controller
         return response((string) $writer, 200, [
             'Content-Transfer-Encoding' => 'binary',
             'Content-Type' => 'text/csv',
-            'Content-Disposition' => sprintf('attachment; filename=%s.csv', $history->name),
+            'Content-Disposition' => sprintf('attachment; filename="%s.csv"', $history->name),
         ]);
     }
 }
