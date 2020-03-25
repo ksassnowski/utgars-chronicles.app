@@ -20,6 +20,10 @@ final class ExportController extends Controller
 
     public function __invoke(Request $request, History $history)
     {
+        if ($history->periods()->count() === 0) {
+            return redirect()->back()->with('error', __('Cannot export an empty game'));
+        }
+
         if (!ini_get('auto_detect_line_endings')) {
             ini_set('auto_detect_line_endings', '1');
         }

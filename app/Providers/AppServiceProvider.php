@@ -59,6 +59,10 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         Collection::macro('transpose', function () {
+            if ($this->count() <= 1) {
+                $this->push([]);
+            }
+
             return array_map(null, ...$this->all());
         });
     }
