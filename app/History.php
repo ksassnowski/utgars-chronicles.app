@@ -36,7 +36,7 @@ class History extends Model
 
     public function periods(): HasMany
     {
-        return $this->hasMany(Period::class);
+        return $this->hasMany(Period::class)->orderBy('position', 'ASC');
     }
 
     public function focus(): HasMany

@@ -43,7 +43,7 @@ class Event extends Model implements Movable
 
     public function scenes(): HasMany
     {
-        return $this->hasMany(Scene::class);
+        return $this->hasMany(Scene::class)->orderBy('position', 'ASC');
     }
 
     public function period(): BelongsTo
