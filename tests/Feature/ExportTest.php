@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Mockery;
 use Generator;
+use App\Period;
 use App\History;
 use Tests\TestCase;
 use App\Export\HistoryExporter;
@@ -19,6 +20,7 @@ class ExportTest extends TestCase
     public function canDownloadExportOfHistory(): void
     {
         $history = factory(History::class)->create();
+        $history->periods()->create(factory(Period::class)->make()->toArray());
         $exporterMock = Mockery::mock(HistoryExporter::class);
         $exporterMock->shouldReceive('export')
             ->once();
@@ -45,6 +47,7 @@ class ExportTest extends TestCase
                 '/histories/1/export',
                 'get',
                 200,
+                fn (History $history) => $history->periods()->create(factory(Period::class)->make()->toArray()),
             ],
         ];
     }
