@@ -32,3 +32,8 @@ jobs:
 
       - name: Run Tests
         run: php artisan test
+
+      - name: Trigger Envoyer Deploy
+        uses: wei/curl@v1
+        with:
+          args: ${{secrets.ENVOYER_DEPLOY_URL}}
