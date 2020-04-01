@@ -45,19 +45,22 @@
                 </div>
             </div>
 
-            <draggable
-                :list="orderedPeriods"
-                @change="onPeriodMoved"
-                handle=".handle"
-                class="px-4 flex w-full h-full overflow-auto pt-4 pb-64"
-            >
-                <PeriodCard
-                    v-for="period in orderedPeriods"
-                    :period="period"
-                    :key="period.id"
-                    :history-id="history.id"
-                />
-            </draggable>
+            <div class="flex flex-1" id="board">
+                <draggable
+                    :list="orderedPeriods"
+                    @change="onPeriodMoved"
+                    handle=".handle"
+                    class="px-4 flex w-full h-full pt-4 pb-64"
+                    :class="{ 'overflow-auto': !panningEnabled }"
+                >
+                    <PeriodCard
+                        v-for="period in orderedPeriods"
+                        :period="period"
+                        :key="period.id"
+                        :history-id="history.id"
+                    />
+                </draggable>
+            </div>
         </div>
 
         <GamePanel>
@@ -98,6 +101,7 @@ import sortBy from 'lodash/sortBy';
 import each from 'lodash/each';
 import find from 'lodash/find';
 import draggable from 'vuedraggable';
+import Panzoom from '@panzoom/panzoom';
 
 import PlayerList from './PlayerList';
 import PeriodCard from './PeriodCard';
@@ -132,6 +136,7 @@ export default {
 
     data() {
         return {
+            panzoom: null,
             internalHistory: this.history,
             periods: this.history.periods,
             showModal: false,
@@ -144,6 +149,12 @@ export default {
     },
 
     computed: {
+        panningEnabled() {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            return urlParams.get('pan') === '1';
+        },
+
         orderedPeriods() {
             return sortBy(this.periods, ['position']);
         },
@@ -402,6 +413,12 @@ export default {
         },
     },
 
+    mounted() {
+        if (this.panningEnabled) {
+            this.panzoom = Panzoom(document.getElementById('board'));
+        }
+    },
+
     created() {
         Bus.$on('event.moved', this.onEventMoved);
         Bus.$on('scene.moved', this.onSceneMoved);
@@ -428,6 +445,10 @@ export default {
             'scene.moved',
         ]);
         Echo.leave(this.channelName);
+
+        if (this.panzoom !== null) {
+            this.panzoom.destroy();
+        }
     },
 };
 </script>
