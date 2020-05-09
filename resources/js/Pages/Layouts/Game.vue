@@ -2,7 +2,7 @@
     <div class="flex flex-col flex-1 game-container">
         <Navigation />
 
-        <main class="flex-1">
+        <main class="flex-1 flex">
             <slot />
         </main>
 

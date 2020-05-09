@@ -1,6 +1,6 @@
 <template>
     <div :class="{ 'px-6': !editing }">
-        <div class="border-2 bg-white border-gray-600 mb-5">
+        <div class="border-2 bg-white border-gray-600 mb-5 panzoom-exclude">
             <div v-if="!editing" class="p-8 group relative">
                 <div class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2 flex justify-end z-20">
                     <button @click="open = !open" class="mr-2" :title="open ? 'Collapse Scene' : 'Expand Scene'" style="margin-top: -2px;">

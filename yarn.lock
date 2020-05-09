@@ -751,6 +751,11 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
+"@panzoom/panzoom@^4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@panzoom/panzoom/-/panzoom-4.0.4.tgz#58ce813e4df28267882d2aa52b5dafc6f3a5e0ae"
+  integrity sha512-b4VNjl784gkyBoaKnf2gJJriK/BWFP9+dOvqt0sdBOIubx1iBJ8jcR99x3943Autr7h6U4TKT+Fn2C0oulzVlg==
+
 "@sentry/browser@^5.11.0":
   version "5.11.1"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.11.1.tgz#337ffcb52711b23064c847a07629e966f54a5ebb"
