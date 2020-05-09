@@ -42,7 +42,7 @@
             <form v-else @submit.prevent="submit">
                 <div class="mb-4">
                     <label for="name" class="label">Name</label>
-                    <input type="text" id="name" v-model="form.name" class="input">
+                    <textarea type="text" id="name" v-model="form.name" class="input"></textarea>
                 </div>
 
                 <div class="mb-4">
