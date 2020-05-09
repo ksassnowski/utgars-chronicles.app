@@ -36,7 +36,9 @@
 
         <div class="flex flex-1 flex-col">
             <div class="flex items-center px-4 mb-4">
-                <div class="flex-1"></div>
+                <div class="flex-1">
+                    <InertiaLink :href="$route('history.show', history)" class="text-gray-800 font-semibold">&laquo; back</InertiaLink>
+                </div>
 
                 <HistorySeed :history="internalHistory" />
 

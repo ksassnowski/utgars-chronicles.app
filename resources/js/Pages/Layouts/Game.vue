@@ -1,7 +1,5 @@
 <template>
-    <div class="flex flex-col flex-1 game-container">
-        <Navigation />
-
+    <div class="flex flex-col flex-1 game-container pt-4">
         <main class="flex-1 flex">
             <slot />
         </main>
