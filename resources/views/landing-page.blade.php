@@ -61,9 +61,11 @@
                         <p class="text-gray-700 mb-4">
                             Yes, thank you for asking! I do have a Patreon that you can use to help fund the development of this site.
                         </p>
-                        <p class="flex justify-center">
+                        <p class="flex justify-center mb-4">
                             <a href="https://www.patreon.com/bePatron?u=4095316" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
                         </p>
+
+                        <p>Or you can also <a href="https://www.buymeacoffee.com/utgar" target="_blank" rel="noreferrer noopener" class="text-indigo-700 font-semibold">buy me a coffee</a>.</p>
                     </li>
 
                     <li class="mb-8">

@@ -44,15 +44,6 @@
                     Profile
                 </InertiaLink>
 
-                <a
-                    href="https://www.patreon.com/user?u=4095316"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="block sm:px-8 py-4 sm:py-2 sm:text-sm text-indigo-100 sm:text-indigo-600 hover:bg-gray-200 items-center sm:border-t sm:border-gray-300"
-                >
-                    Become a Patron
-                </a>
-
                 <form :action="$route('logout')" method="POST" class="hover:bg-gray-200">
                     <input type="hidden" name="_token" :value="token">
                     <button class="sm:text-sm text-indigo-100 sm:text-indigo-600 w-full sm:px-8 py-4 sm:py-2 text-left">Logout</button>
