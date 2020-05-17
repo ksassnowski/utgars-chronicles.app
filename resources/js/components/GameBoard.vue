@@ -273,17 +273,6 @@ export default {
             this.periods = this.periods.filter(p => p.id !== id);
         },
 
-        addEvent({ event, period }) {
-            const match = find(this.periods, p => p.id === period);
-
-            if (!match) {
-                // @TODO re-sync board
-                return;
-            }
-
-            match.events.push(Object.assign({}, event, { scenes: [] }));
-        },
-
         updateEvent({ period, event }) {
             const matchingPeriod = this.periods.find(p => p.id === period);
 
@@ -417,7 +406,6 @@ export default {
             })
             .listen('HistorySeedUpdated', this.updateSeed)
             .listen('PeriodDeleted', this.deletePeriod)
-            .listen('EventCreated', this.addEvent)
             .listen('EventUpdated', this.updateEvent)
             .listen('EventDeleted', this.deleteEvent)
             .listen('EventMoved', this.updateEventPositions)

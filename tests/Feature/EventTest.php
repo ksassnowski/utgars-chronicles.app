@@ -8,7 +8,7 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
-use App\Events\EventCreated;
+use App\Events\BoardUpdated;
 use App\Events\EventDeleted;
 use App\Events\EventUpdated;
 use Tests\AuthorizeHistoryTest;
@@ -27,9 +27,9 @@ class EventTest extends TestCase
         parent::setUp();
 
         EventFacade::fake([
-            EventCreated::class,
             EventUpdated::class,
             EventDeleted::class,
+            BoardUpdated::class,
         ]);
 
         $this->period = factory(Period::class)->create();
@@ -93,7 +93,10 @@ class EventTest extends TestCase
         $this->assertTrue(
             $this->period->events->contains('name', '::event-name::')
         );
-        EventFacade::assertDispatched(EventCreated::class);
+        EventFacade::assertDispatched(
+            BoardUpdated::class,
+            fn (BoardUpdated $event) => $event->history->id === $this->period->history->id
+        );
     }
 
     /**
