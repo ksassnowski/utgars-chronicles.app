@@ -101,7 +101,6 @@
 import axios from 'axios';
 import sortBy from 'lodash/sortBy';
 import each from 'lodash/each';
-import find from 'lodash/find';
 import draggable from 'vuedraggable';
 import Panzoom from '@panzoom/panzoom';
 
@@ -269,10 +268,6 @@ export default {
             entity.position = position;
         },
 
-        deletePeriod({ id }) {
-            this.periods = this.periods.filter(p => p.id !== id);
-        },
-
         deleteEvent({ id, period }) {
             const matchingPeriod = this.periods.find(p => p.id === period);
 
@@ -389,7 +384,6 @@ export default {
                 this.periods = history.periods;
             })
             .listen('HistorySeedUpdated', this.updateSeed)
-            .listen('PeriodDeleted', this.deletePeriod)
             .listen('EventDeleted', this.deleteEvent)
             .listen('EventMoved', this.updateEventPositions)
             .listen('SceneCreated', this.addScene)
