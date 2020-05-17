@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Event;
 
 use App\Event;
-use App\Events\EventUpdated;
+use App\Events\BoardUpdated;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\History\UpdateEventRequest;
 
@@ -13,7 +13,7 @@ final class UpdateEventController
     {
         $event->update($request->validated());
 
-        broadcast(new EventUpdated($event));
+        broadcast(new BoardUpdated($event->period->history));
 
         return response()->json();
     }

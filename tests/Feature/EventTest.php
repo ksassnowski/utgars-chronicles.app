@@ -150,8 +150,8 @@ class EventTest extends TestCase
         $this->assertEquals(Type::DARK, $event->type);
 
         EventFacade::assertDispatched(
-            EventUpdated::class,
-            fn (EventUpdated $e) => $e->event->id === $event->id
+            BoardUpdated::class,
+            fn (BoardUpdated $e) => $e->history->id === $this->period->history->id
         );
     }
 

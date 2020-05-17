@@ -273,22 +273,6 @@ export default {
             this.periods = this.periods.filter(p => p.id !== id);
         },
 
-        updateEvent({ period, event }) {
-            const matchingPeriod = this.periods.find(p => p.id === period);
-
-            if (!matchingPeriod) {
-                return;
-            }
-
-            const matchingEvent = matchingPeriod.events.find(e => e.id === event.id);
-
-            if (!matchingEvent) {
-                return;
-            }
-
-            Object.assign(matchingEvent, event);
-        },
-
         deleteEvent({ id, period }) {
             const matchingPeriod = this.periods.find(p => p.id === period);
 
@@ -406,7 +390,6 @@ export default {
             })
             .listen('HistorySeedUpdated', this.updateSeed)
             .listen('PeriodDeleted', this.deletePeriod)
-            .listen('EventUpdated', this.updateEvent)
             .listen('EventDeleted', this.deleteEvent)
             .listen('EventMoved', this.updateEventPositions)
             .listen('SceneCreated', this.addScene)
