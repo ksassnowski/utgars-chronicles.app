@@ -9,8 +9,6 @@ use App\Period;
 use App\History;
 use Tests\TestCase;
 use App\Events\BoardUpdated;
-use App\Events\EventDeleted;
-use App\Events\EventUpdated;
 use Tests\AuthorizeHistoryTest;
 use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -27,8 +25,6 @@ class EventTest extends TestCase
         parent::setUp();
 
         EventFacade::fake([
-            EventUpdated::class,
-            EventDeleted::class,
             BoardUpdated::class,
         ]);
 
