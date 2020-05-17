@@ -41,6 +41,7 @@ jobs:
 
   deploy:
     if: contains(github.ref, 'master')
+    needs: test
     runs-on: ubuntu-latest
     name: Deploy
     steps:
