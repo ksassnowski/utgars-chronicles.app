@@ -7,7 +7,7 @@ use App\Event;
 use App\Period;
 use App\History;
 use Tests\TestCase;
-use App\Events\EventMoved;
+use App\Events\BoardUpdated;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event as EventFacade;
 
@@ -47,8 +47,8 @@ class MoveEventTest extends TestCase
         );
 
         EventFacade::assertDispatched(
-            EventMoved::class,
-            fn (EventMoved $e) => $e->event->id === $event->id && $e->newPosition === 2
+            BoardUpdated::class,
+            fn (BoardUpdated $e) => $e->history->id === $event->period->history->id
         );
     }
 }

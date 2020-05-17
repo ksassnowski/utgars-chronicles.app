@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Event;
 
 use App\Event;
 use App\Scene;
-use App\Events\SceneCreated;
+use App\Events\BoardUpdated;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\History\CreateSceneRequest;
 
@@ -15,7 +15,7 @@ final class CreateSceneController
         /** @var Scene $scene */
         $scene = $event->scenes()->create($request->validated());
 
-        broadcast(new SceneCreated($scene))->toOthers();
+        broadcast(new BoardUpdated($event->period->history));
 
         return response()->json([], 201);
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Period;
 
 use App\Period;
-use App\Events\PeriodUpdated;
+use App\Events\BoardUpdated;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\History\UpdatePeriodRequest;
 
@@ -13,7 +13,7 @@ final class UpdatePeriodController
     {
         $period->update($request->validated());
 
-        broadcast(new PeriodUpdated($period));
+        broadcast(new BoardUpdated($period->history));
 
         return response()->json();
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Scene;
 
 use App\Scene;
-use App\Events\SceneDeleted;
+use App\Events\BoardUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
@@ -13,7 +13,7 @@ final class DeleteSceneController
     {
         $scene->delete();
 
-        broadcast(new SceneDeleted($scene->event, $scene->id, $scene->position));
+        broadcast(new BoardUpdated($scene->event->period->history));
 
         return response()->json([], 204);
     }

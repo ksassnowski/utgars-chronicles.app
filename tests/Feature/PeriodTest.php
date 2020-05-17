@@ -8,11 +8,9 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
-use App\Events\PeriodCreated;
-use App\Events\PeriodDeleted;
-use App\Events\PeriodUpdated;
+use App\Events\BoardUpdated;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PeriodTest extends TestCase
@@ -64,7 +62,7 @@ class PeriodTest extends TestCase
 
         $response->assertStatus(201);
         $this->assertTrue($this->history->periods->contains('name', '::period-name::'));
-        Event::assertDispatched(PeriodCreated::class);
+        Event::assertDispatched(BoardUpdated::class);
     }
 
     /**
@@ -144,8 +142,8 @@ class PeriodTest extends TestCase
         $this->assertEquals($period->name, '::new-period-name::');
         $this->assertEquals($period->type, Type::LIGHT);
         Event::assertDispatched(
-            PeriodUpdated::class,
-            fn (PeriodUpdated $event) => $event->period->id === $period->id
+            BoardUpdated::class,
+            fn (BoardUpdated $event) => $event->history->id === $this->history->id
         );
     }
 
@@ -211,8 +209,8 @@ class PeriodTest extends TestCase
         $response->assertStatus(204);
         $this->assertDatabaseMissing('periods', ['id' => $period->id]);
         Event::assertDispatched(
-            PeriodDeleted::class,
-            fn (PeriodDeleted $event) => $event->id === $period->id && $event->history->id === $period->history_id
+            BoardUpdated::class,
+            fn (BoardUpdated $event) => $event->history->id === $period->history_id
         );
     }
 

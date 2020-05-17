@@ -8,9 +8,7 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
-use App\Events\EventCreated;
-use App\Events\EventDeleted;
-use App\Events\EventUpdated;
+use App\Events\BoardUpdated;
 use Tests\AuthorizeHistoryTest;
 use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -27,9 +25,7 @@ class EventTest extends TestCase
         parent::setUp();
 
         EventFacade::fake([
-            EventCreated::class,
-            EventUpdated::class,
-            EventDeleted::class,
+            BoardUpdated::class,
         ]);
 
         $this->period = factory(Period::class)->create();
@@ -93,7 +89,10 @@ class EventTest extends TestCase
         $this->assertTrue(
             $this->period->events->contains('name', '::event-name::')
         );
-        EventFacade::assertDispatched(EventCreated::class);
+        EventFacade::assertDispatched(
+            BoardUpdated::class,
+            fn (BoardUpdated $event) => $event->history->id === $this->period->history->id
+        );
     }
 
     /**
@@ -147,8 +146,8 @@ class EventTest extends TestCase
         $this->assertEquals(Type::DARK, $event->type);
 
         EventFacade::assertDispatched(
-            EventUpdated::class,
-            fn (EventUpdated $e) => $e->event->id === $event->id
+            BoardUpdated::class,
+            fn (BoardUpdated $e) => $e->history->id === $this->period->history->id
         );
     }
 
@@ -189,8 +188,8 @@ class EventTest extends TestCase
         $response->assertStatus(204);
         $this->assertDatabaseMissing('events', ['id' => $event->id]);
         EventFacade::assertDispatched(
-            EventDeleted::class,
-            fn (EventDeleted $e) => $e->id === $event->id && $e->period->id === $event->period->id
+            BoardUpdated::class,
+            fn (BoardUpdated $e) => $e->history->id === $event->period->history->id
         );
     }
 }

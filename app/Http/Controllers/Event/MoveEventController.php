@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Event;
 
 use App\Event;
-use App\Events\EventMoved;
+use App\Events\BoardUpdated;
 use App\Http\Requests\MoveEventRequest;
 
 final class MoveEventController
@@ -12,7 +12,7 @@ final class MoveEventController
     {
         $event->move($request->position());
 
-        broadcast(new EventMoved($event, $request->position()))->toOthers();
+        broadcast(new BoardUpdated($event->period->history))->toOthers();
 
         return response()->json([], 200);
     }

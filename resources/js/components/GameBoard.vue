@@ -101,7 +101,6 @@
 import axios from 'axios';
 import sortBy from 'lodash/sortBy';
 import each from 'lodash/each';
-import find from 'lodash/find';
 import draggable from 'vuedraggable';
 import Panzoom from '@panzoom/panzoom';
 
@@ -195,10 +194,6 @@ export default {
             this.internalHistory.name = name;
         },
 
-        addPeriod({ period }) {
-            this.periods.push(Object.assign({}, period, { events: [] }));
-        },
-
         updatePeriodPositions(e) {
             const period = this.periods.find(p => p.id === e.id);
 
@@ -273,58 +268,6 @@ export default {
             entity.position = position;
         },
 
-        updatePeriod({ period }) {
-            const match = find(this.periods, p => p.id === period.id);
-
-            if (!match) {
-                // @TODO re-sync board
-                return;
-            }
-
-            Object.assign(match, period);
-        },
-
-        deletePeriod({ id }) {
-            this.periods = this.periods.filter(p => p.id !== id);
-        },
-
-        addEvent({ event, period }) {
-            const match = find(this.periods, p => p.id === period);
-
-            if (!match) {
-                // @TODO re-sync board
-                return;
-            }
-
-            match.events.push(Object.assign({}, event, { scenes: [] }));
-        },
-
-        updateEvent({ period, event }) {
-            const matchingPeriod = this.periods.find(p => p.id === period);
-
-            if (!matchingPeriod) {
-                return;
-            }
-
-            const matchingEvent = matchingPeriod.events.find(e => e.id === event.id);
-
-            if (!matchingEvent) {
-                return;
-            }
-
-            Object.assign(matchingEvent, event);
-        },
-
-        deleteEvent({ id, period }) {
-            const matchingPeriod = this.periods.find(p => p.id === period);
-
-            if (!matchingPeriod) {
-                return;
-            }
-
-            matchingPeriod.events = matchingPeriod.events.filter(e => e.id !== id);
-        },
-
         onPeriodMoved(e) {
             if (!e.moved) {
                 return;
@@ -337,60 +280,6 @@ export default {
             axios.post(`/histories/${this.history.id}/periods/${element.id}/move`, {
                 position: newIndex + 1,
             }).catch(console.error);
-        },
-
-        addScene({ scene, event, period }) {
-            const matchingPeriod = this.periods.find(p => p.id === period);
-
-            if (!matchingPeriod) {
-                return;
-            }
-
-            const matchingEvent = matchingPeriod.events.find(e => e.id === event);
-
-            if (!matchingEvent) {
-                return;
-            }
-
-            matchingEvent.scenes.push(scene);
-        },
-
-        updateScene({ scene, event, period }) {
-            const matchingPeriod = this.periods.find(p => p.id === period);
-
-            if (!matchingPeriod) {
-                return;
-            }
-
-            const matchingEvent = matchingPeriod.events.find(e => e.id === event);
-
-            if (!matchingEvent) {
-                return;
-            }
-
-            const matchingScene = matchingEvent.scenes.find(s => s.id === scene.id);
-
-            if (!matchingScene) {
-                return;
-            }
-
-            Object.assign(matchingScene, scene);
-        },
-
-        deleteScene({ id, event, period }) {
-            const matchingPeriod = this.periods.find(p => p.id === period);
-
-            if (!matchingPeriod) {
-                return;
-            }
-
-            const matchingEvent = matchingPeriod.events.find(e => e.id === event);
-
-            if (!matchingEvent) {
-                return;
-            }
-
-            matchingEvent.scenes = matchingEvent.scenes.filter(s => s.id !== id);
         },
 
         onEventMoved({ period, event, position }) {
@@ -426,19 +315,11 @@ export default {
         Bus.$on('scene.moved', this.onSceneMoved);
 
         Echo.join(this.channelName)
-            .listen('HistorySeedUpdated', this.updateSeed)
-            .listen('PeriodCreated', this.addPeriod)
-            .listen('PeriodUpdated', this.updatePeriod)
-            .listen('PeriodMoved', this.updatePeriodPositions)
-            .listen('PeriodDeleted', this.deletePeriod)
-            .listen('EventCreated', this.addEvent)
-            .listen('EventUpdated', this.updateEvent)
-            .listen('EventDeleted', this.deleteEvent)
-            .listen('EventMoved', this.updateEventPositions)
-            .listen('SceneCreated', this.addScene)
-            .listen('SceneUpdated', this.updateScene)
-            .listen('SceneDeleted', this.deleteScene)
-            .listen('SceneMoved', this.updateScenePositions);
+            .listen('BoardUpdated', ({ history }) => {
+                this.internalHistory = history;
+                this.periods = history.periods;
+            })
+            .listen('HistorySeedUpdated', this.updateSeed);
     },
 
     beforeDestroy() {

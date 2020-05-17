@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers\Period;
 
-use App\Event;
 use App\Period;
-use App\History;
-use App\Events\EventCreated;
+use App\Events\BoardUpdated;
 use App\Http\Requests\History\CreateEventRequest;
 
 final class CreateEventController
 {
-    public function __invoke(CreateEventRequest $request, History $history, Period $period)
+    public function __invoke(CreateEventRequest $request, Period $period)
     {
-        /** @var Event $event */
-        $event = $period->events()->create($request->validated());
+        $period->events()->create($request->validated());
 
-        broadcast(new EventCreated($event));
+        broadcast(new BoardUpdated($period->history));
 
         return response()->json([], 201);
     }
