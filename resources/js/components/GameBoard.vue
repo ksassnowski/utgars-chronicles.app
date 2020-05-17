@@ -374,7 +374,6 @@ export default {
                 this.periods = history.periods;
             })
             .listen('HistorySeedUpdated', this.updateSeed)
-            .listen('EventMoved', this.updateEventPositions)
             .listen('SceneCreated', this.addScene)
             .listen('SceneUpdated', this.updateScene)
             .listen('SceneDeleted', this.deleteScene)
