@@ -195,10 +195,6 @@ export default {
             this.internalHistory.name = name;
         },
 
-        addPeriod({ period }) {
-            this.periods.push(Object.assign({}, period, { events: [] }));
-        },
-
         updatePeriodPositions(e) {
             const period = this.periods.find(p => p.id === e.id);
 
@@ -271,17 +267,6 @@ export default {
             }
 
             entity.position = position;
-        },
-
-        updatePeriod({ period }) {
-            const match = find(this.periods, p => p.id === period.id);
-
-            if (!match) {
-                // @TODO re-sync board
-                return;
-            }
-
-            Object.assign(match, period);
         },
 
         deletePeriod({ id }) {
@@ -426,10 +411,11 @@ export default {
         Bus.$on('scene.moved', this.onSceneMoved);
 
         Echo.join(this.channelName)
+            .listen('BoardUpdated', ({ history }) => {
+                this.internalHistory = history;
+                this.periods = history.periods;
+            })
             .listen('HistorySeedUpdated', this.updateSeed)
-            .listen('PeriodCreated', this.addPeriod)
-            .listen('PeriodUpdated', this.updatePeriod)
-            .listen('PeriodMoved', this.updatePeriodPositions)
             .listen('PeriodDeleted', this.deletePeriod)
             .listen('EventCreated', this.addEvent)
             .listen('EventUpdated', this.updateEvent)

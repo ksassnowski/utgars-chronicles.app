@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Period;
 
 use App\Period;
-use App\Events\PeriodDeleted;
+use App\Events\BoardUpdated;
 use Illuminate\Http\JsonResponse;
 
 final class DeletePeriodController
@@ -12,7 +12,7 @@ final class DeletePeriodController
     {
         $period->delete();
 
-        broadcast(new PeriodDeleted($period->history, $period->id, $period->position));
+        broadcast(new BoardUpdated($period->history));
 
         return response()->json([], 204);
     }

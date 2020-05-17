@@ -7,7 +7,7 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
-use App\Events\PeriodMoved;
+use App\Events\BoardUpdated;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -184,8 +184,8 @@ class MovePeriodTest extends TestCase
         ]);
 
         Event::assertDispatched(
-            PeriodMoved::class,
-            fn (PeriodMoved $event) => $event->period->id === $period->id && $event->newPosition === 2
+            BoardUpdated::class,
+            fn (BoardUpdated $event) => $event->history->id === $period->history->id
         );
     }
 
