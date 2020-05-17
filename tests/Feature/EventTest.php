@@ -192,8 +192,8 @@ class EventTest extends TestCase
         $response->assertStatus(204);
         $this->assertDatabaseMissing('events', ['id' => $event->id]);
         EventFacade::assertDispatched(
-            EventDeleted::class,
-            fn (EventDeleted $e) => $e->id === $event->id && $e->period->id === $event->period->id
+            BoardUpdated::class,
+            fn (BoardUpdated $e) => $e->history->id === $event->period->history->id
         );
     }
 }

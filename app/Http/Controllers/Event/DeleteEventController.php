@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Event;
 
 use App\Event;
-use App\Events\EventDeleted;
+use App\Events\BoardUpdated;
 use Illuminate\Http\JsonResponse;
 
 final class DeleteEventController
@@ -12,7 +12,7 @@ final class DeleteEventController
     {
         $event->delete();
 
-        broadcast(new EventDeleted($event->period, $event->id, $event->position));
+        broadcast(new BoardUpdated($event->period->history));
 
         return response()->json([], 204);
     }

@@ -268,16 +268,6 @@ export default {
             entity.position = position;
         },
 
-        deleteEvent({ id, period }) {
-            const matchingPeriod = this.periods.find(p => p.id === period);
-
-            if (!matchingPeriod) {
-                return;
-            }
-
-            matchingPeriod.events = matchingPeriod.events.filter(e => e.id !== id);
-        },
-
         onPeriodMoved(e) {
             if (!e.moved) {
                 return;
@@ -384,7 +374,6 @@ export default {
                 this.periods = history.periods;
             })
             .listen('HistorySeedUpdated', this.updateSeed)
-            .listen('EventDeleted', this.deleteEvent)
             .listen('EventMoved', this.updateEventPositions)
             .listen('SceneCreated', this.addScene)
             .listen('SceneUpdated', this.updateScene)
