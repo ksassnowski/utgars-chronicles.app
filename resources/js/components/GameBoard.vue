@@ -282,60 +282,6 @@ export default {
             }).catch(console.error);
         },
 
-        addScene({ scene, event, period }) {
-            const matchingPeriod = this.periods.find(p => p.id === period);
-
-            if (!matchingPeriod) {
-                return;
-            }
-
-            const matchingEvent = matchingPeriod.events.find(e => e.id === event);
-
-            if (!matchingEvent) {
-                return;
-            }
-
-            matchingEvent.scenes.push(scene);
-        },
-
-        updateScene({ scene, event, period }) {
-            const matchingPeriod = this.periods.find(p => p.id === period);
-
-            if (!matchingPeriod) {
-                return;
-            }
-
-            const matchingEvent = matchingPeriod.events.find(e => e.id === event);
-
-            if (!matchingEvent) {
-                return;
-            }
-
-            const matchingScene = matchingEvent.scenes.find(s => s.id === scene.id);
-
-            if (!matchingScene) {
-                return;
-            }
-
-            Object.assign(matchingScene, scene);
-        },
-
-        deleteScene({ id, event, period }) {
-            const matchingPeriod = this.periods.find(p => p.id === period);
-
-            if (!matchingPeriod) {
-                return;
-            }
-
-            const matchingEvent = matchingPeriod.events.find(e => e.id === event);
-
-            if (!matchingEvent) {
-                return;
-            }
-
-            matchingEvent.scenes = matchingEvent.scenes.filter(s => s.id !== id);
-        },
-
         onEventMoved({ period, event, position }) {
             this.updateEventPositions({ id: event.id, position, period: period.id});
 
@@ -373,11 +319,7 @@ export default {
                 this.internalHistory = history;
                 this.periods = history.periods;
             })
-            .listen('HistorySeedUpdated', this.updateSeed)
-            .listen('SceneCreated', this.addScene)
-            .listen('SceneUpdated', this.updateScene)
-            .listen('SceneDeleted', this.deleteScene)
-            .listen('SceneMoved', this.updateScenePositions);
+            .listen('HistorySeedUpdated', this.updateSeed);
     },
 
     beforeDestroy() {

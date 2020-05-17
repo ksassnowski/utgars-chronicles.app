@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Scene;
 
 use App\Scene;
-use App\Events\SceneUpdated;
+use App\Events\BoardUpdated;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\History\UpdateSceneRequest;
 
@@ -13,7 +13,7 @@ final class UpdateSceneController
     {
         $scene->update($request->validated());
 
-        broadcast(new SceneUpdated($scene));
+        broadcast(new BoardUpdated($scene->event->period->history));
 
         return response()->json([], 200);
     }

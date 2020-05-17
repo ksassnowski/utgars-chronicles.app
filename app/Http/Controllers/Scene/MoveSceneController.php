@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Scene;
 
 use App\Scene;
-use App\Events\SceneMoved;
+use App\Events\BoardUpdated;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\History\MoveSceneRequest;
 
@@ -13,7 +13,7 @@ final class MoveSceneController
     {
         $scene->move($request->position());
 
-        broadcast(new SceneMoved($scene, $request->position()))->toOthers();
+        broadcast(new BoardUpdated($scene->event->period->history))->toOthers();
 
         return response()->json();
     }
