@@ -8,6 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script src="{{ mix('js/app.js') }}" defer></script>
 
     <title>{{ config('app.name') }}</title>

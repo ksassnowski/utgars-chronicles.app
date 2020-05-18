@@ -43,7 +43,10 @@
                 <HistorySeed :history="internalHistory" />
 
                 <div class="flex-1 flex justify-end">
-                    <button class="px-4 py-2 bg-indigo-700 rounded text-white font-bold" @click="create">Add Period</button>
+                    <button
+                        class="px-4 py-2 bg-indigo-700 rounded text-white font-bold"
+                        @click="() => create(lastPosition + 1)"
+                    >Add Period</button>
                 </div>
             </div>
 
@@ -60,6 +63,7 @@
                         :period="period"
                         :key="period.id"
                         :history-id="history.id"
+                        @insertPeriod="create"
                     />
                 </draggable>
             </div>
@@ -145,11 +149,20 @@ export default {
             form: {
                 name: null,
                 type: 'light',
+                position: this.lastPosition,
             },
         };
     },
 
     computed: {
+        lastPosition() {
+            if (this.orderedPeriods.length === 0) {
+                return 1;
+            }
+
+            return this.orderedPeriods.slice(-1)[0].position;
+        },
+
         panningEnabled() {
             const urlParams = new URLSearchParams(window.location.search);
 
@@ -179,13 +192,10 @@ export default {
                 });
         },
 
-        reset() {
+        create(position) {
+            this.form.position = position;
             this.form.name = null;
             this.form.tone = 'light';
-        },
-
-        create() {
-            this.reset();
             this.showModal = true;
             this.$nextTick(() => this.$refs.input.focus());
         },
