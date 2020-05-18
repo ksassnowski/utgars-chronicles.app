@@ -24,6 +24,10 @@ class ValidPosition implements Rule
             ->where($this->relatedColumn, $this->relatedId)
             ->max('position');
 
+        if ($maxPosition === null) {
+            return $value === 1;
+        }
+
         return ($value - $maxPosition) <= 1;
     }
 

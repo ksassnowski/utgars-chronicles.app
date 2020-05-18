@@ -4,6 +4,7 @@ namespace Tests\Feature\Rules;
 
 use App\Event;
 use App\Period;
+use App\History;
 use Tests\TestCase;
 use App\Rules\ValidPosition;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,6 +12,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ValidPositionTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function canOnlyInsertIntoPositionOneIfBoardIsEmpty(): void
+    {
+        $history = factory(History::class)->create();
+        $rule = new ValidPosition('periods', 'history_id', $history->id);
+
+        $this->assertTrue($rule->passes('position', 1));
+        $this->assertFalse($rule->passes('position', 2));
+    }
 
     /** @test */
     public function cannotBeLargerThanTheMaxPositionPlusOne(): void
