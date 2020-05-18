@@ -206,5 +206,5 @@
     transform: translateY(-50%);
 }
 
-.game-add-button.left { left: 102%; }
-.game-add-button.right { right: 102%; }
+.game-add-button.left { right: 102%; }
+.game-add-button.right { left: 102%; }
