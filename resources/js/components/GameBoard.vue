@@ -157,7 +157,7 @@ export default {
     computed: {
         lastPosition() {
             if (this.orderedPeriods.length === 0) {
-                return 1;
+                return 0;
             }
 
             return this.orderedPeriods.slice(-1)[0].position;
