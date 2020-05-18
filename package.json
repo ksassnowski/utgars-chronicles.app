@@ -19,7 +19,6 @@
         "cross-env": "^5.1",
         "laravel-echo": "^1.6.1",
         "laravel-mix": "^4.0.7",
-        "laravel-mix-purgecss": "^4.2.0",
         "lodash": "^4.17.13",
         "portal-vue": "^2.1.7",
         "pusher-js": "^5.0.3",

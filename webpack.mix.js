@@ -1,8 +1,6 @@
 const mix = require('laravel-mix');
 const tailwindcss = require('tailwindcss');
 
-require('laravel-mix-purgecss');
-
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
@@ -32,12 +30,6 @@ mix.js('resources/js/app.js', 'public/js')
                 '@': path.resolve('resources/js'),
             }
         }
-    })
-    .purgeCss({
-        whitelistPatternsChildren: [
-            /tippy/,
-            /nprogress/,
-        ]
     })
     .version()
     .sourceMaps();
