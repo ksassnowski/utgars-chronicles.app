@@ -15,7 +15,7 @@
                         class="game-add-button left invisible group-hover:visible"
                         @click="$emit('insertPeriod', period.position)"
                     >
-                        <Icon name="add-solid" class="fill-current text-gray-500 hover:text-gray-800 w-6" />
+                        <Icon name="add-solid" class="fill-current text-gray-500 hover:text-indigo-700 w-6" />
                     </button>
 
                     <button
@@ -23,7 +23,7 @@
                         class="game-add-button right invisible group-hover:visible"
                         @click="$emit('insertPeriod', period.position + 1)"
                     >
-                        <Icon name="add-solid" class="fill-current text-gray-500 hover:text-gray-800 w-6" />
+                        <Icon name="add-solid" class="fill-current text-gray-500 hover:text-indigo-700 w-6" />
                     </button>
 
                     <div class="invisible group-hover:visible absolute left-0 top-0 w-full pl-3 pr-2 pt-2 flex justify-between z-20">
@@ -41,7 +41,7 @@
                         />
                     </div>
 
-                    <h3 class="font-bold tracking-wide text-center">{{ period.name }}</h3>
+                    <h3 class="font-bold tracking-wide text-center py-2">{{ period.name }}</h3>
 
                     <div
                         class="rounded-full w-6 h-6 border-2 border-gray-800 absolute"
