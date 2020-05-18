@@ -58,11 +58,50 @@ class PeriodTest extends TestCase
         $response = $this->login()->postJson(route('history.periods.store', $this->history), [
             'name' => '::period-name::',
             'type' => Type::LIGHT,
+            'position' => 1,
         ]);
 
         $response->assertStatus(201);
         $this->assertTrue($this->history->periods->contains('name', '::period-name::'));
         Event::assertDispatched(BoardUpdated::class);
+    }
+
+    /** @test */
+    public function createPeriodBetweenTwoPeriods(): void
+    {
+        factory(Period::class)->create([
+            'name' => '::period-1::',
+            'history_id' => $this->history->id,
+            'position' => 1,
+        ]);
+        factory(Period::class)->create([
+            'name' => '::period-2::',
+            'history_id' => $this->history->id,
+            'position' => 2
+        ]);
+
+        $response = $this->login()->postJson(route('history.periods.store', $this->history), [
+            'name' => '::period-3::',
+            'type' => Type::LIGHT,
+            'position' => 2,
+        ]);
+
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('periods', [
+            'name' => '::period-1::',
+            'history_id' => $this->history->id,
+            'position' => 1,
+        ]);
+        $this->assertDatabaseHas('periods', [
+            'name' => '::period-2::',
+            'history_id' => $this->history->id,
+            'position' => 3,
+        ]);
+        $this->assertDatabaseHas('periods', [
+            'name' => '::period-3::',
+            'history_id' => $this->history->id,
+            'position' => 2,
+        ]);
     }
 
     /**
@@ -116,6 +155,7 @@ class PeriodTest extends TestCase
         $response = $this->actingAs($player)->postJson(route('history.periods.store', $this->history), [
             'name' => '::period-name::',
             'type' => Type::DARK,
+            'position' => 1,
         ]);
 
         $response->assertStatus(201);

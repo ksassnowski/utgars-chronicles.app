@@ -10,7 +10,7 @@ final class CreateEventController
 {
     public function __invoke(CreateEventRequest $request, Period $period)
     {
-        $period->events()->create($request->validated());
+        $period->insertEvent($request->validated());
 
         broadcast(new BoardUpdated($period->history));
 

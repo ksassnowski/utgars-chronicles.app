@@ -11,7 +11,7 @@ final class CreatePeriodController
 {
     public function __invoke(CreatePeriodRequest $request, History $history): JsonResponse
     {
-        $history->periods()->create($request->validated());
+        $history->insertPeriod($request->validated());
 
         broadcast(new BoardUpdated($history));
 

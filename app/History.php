@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Facades\DB;
 use App\Exceptions\UserIsNotAPlayer;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\UserIsAlreadyPlayerInHistory;
@@ -52,6 +53,15 @@ class History extends Model
     public function legacies(): HasMany
     {
         return $this->hasMany(Legacy::class);
+    }
+
+    public function insertPeriod(array $attributes): Period
+    {
+        Period::where('history_id', $this->id)
+           ->where('position', '>=', $attributes['position'])
+           ->update(['position' => DB::raw('position + 1')]);
+
+        return $this->periods()->create($attributes);
     }
 
     /**

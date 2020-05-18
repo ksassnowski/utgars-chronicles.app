@@ -33,18 +33,6 @@ class Period extends Model implements Movable
         'position' => 'int',
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        self::creating(function (Period $period) {
-            // Always sort new periods to the very end.
-            $period->position = DB::table('periods')
-                    ->where('history_id', $period->history_id)
-                    ->max('position') + 1;
-        });
-    }
-
     public function history(): BelongsTo
     {
         return $this->belongsTo(History::class);
@@ -53,6 +41,15 @@ class Period extends Model implements Movable
     public function events(): HasMany
     {
         return $this->hasMany(Event::class)->orderBy('position', 'ASC');
+    }
+
+    public function insertEvent(array $attributes): Event
+    {
+        Event::where('period_id', $this->id)
+            ->where('position', '>=', $attributes['position'])
+            ->update(['position' => DB::raw('position + 1')]);
+
+        return $this->events()->create($attributes);
     }
 
     protected function limitElementsToMove(Builder $query): void
