@@ -13,11 +13,10 @@ class BoardUpdated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public History $history;
+    private History $history;
 
     public function __construct(History $history)
     {
-        $history->load('periods.events.scenes');
         $this->history = $history;
     }
 

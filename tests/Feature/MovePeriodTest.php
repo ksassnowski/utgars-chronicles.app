@@ -183,10 +183,7 @@ class MovePeriodTest extends TestCase
             'position' => 2,
         ]);
 
-        Event::assertDispatched(
-            BoardUpdated::class,
-            fn (BoardUpdated $event) => $event->history->id === $period->history->id
-        );
+        Event::assertDispatched(BoardUpdated::class);
     }
 
     /**

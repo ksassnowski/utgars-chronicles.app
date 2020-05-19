@@ -46,9 +46,6 @@ class MoveEventTest extends TestCase
             ['position' => 2]
         );
 
-        EventFacade::assertDispatched(
-            BoardUpdated::class,
-            fn (BoardUpdated $e) => $e->history->id === $event->period->history->id
-        );
+        EventFacade::assertDispatched(BoardUpdated::class);
     }
 }

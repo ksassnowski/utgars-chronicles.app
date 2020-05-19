@@ -89,10 +89,7 @@ class EventTest extends TestCase
         $this->assertTrue(
             $this->period->events->contains('name', '::event-name::')
         );
-        EventFacade::assertDispatched(
-            BoardUpdated::class,
-            fn (BoardUpdated $event) => $event->history->id === $this->period->history->id
-        );
+        EventFacade::assertDispatched(BoardUpdated::class);
     }
 
     /**
@@ -145,10 +142,7 @@ class EventTest extends TestCase
         $this->assertEquals('::new-name::', $event->name);
         $this->assertEquals(Type::DARK, $event->type);
 
-        EventFacade::assertDispatched(
-            BoardUpdated::class,
-            fn (BoardUpdated $e) => $e->history->id === $this->period->history->id
-        );
+        EventFacade::assertDispatched(BoardUpdated::class);
     }
 
     /**
@@ -187,9 +181,6 @@ class EventTest extends TestCase
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('events', ['id' => $event->id]);
-        EventFacade::assertDispatched(
-            BoardUpdated::class,
-            fn (BoardUpdated $e) => $e->history->id === $event->period->history->id
-        );
+        EventFacade::assertDispatched(BoardUpdated::class);
     }
 }
