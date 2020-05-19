@@ -179,6 +179,14 @@ export default {
     },
 
     methods: {
+        resyncBoard() {
+            axios.get(this.$route('history.sync', this.history))
+                .then(({ data }) => {
+                    this.internalHistory = data;
+                    this.periods = data.periods;
+                });
+        },
+
         submit() {
             this.loading = true;
 
@@ -325,10 +333,7 @@ export default {
         Bus.$on('scene.moved', this.onSceneMoved);
 
         Echo.join(this.channelName)
-            .listen('BoardUpdated', ({ history }) => {
-                this.internalHistory = history;
-                this.periods = history.periods;
-            })
+            .listen('BoardUpdated', this.resyncBoard)
             .listen('HistorySeedUpdated', this.updateSeed);
     },
 

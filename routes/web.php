@@ -44,6 +44,10 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.export');
 
+    Route::get('histories/{history}/sync', 'History\BoardController')
+        ->middleware('can:modifyGame,history')
+        ->name('history.sync');
+
     Route::get('histories/{history}/play', 'History\GameController')
         ->middleware('can:modifyGame,history')
         ->name('history.play');

@@ -181,10 +181,7 @@ class PeriodTest extends TestCase
         $period->refresh();
         $this->assertEquals($period->name, '::new-period-name::');
         $this->assertEquals($period->type, Type::LIGHT);
-        Event::assertDispatched(
-            BoardUpdated::class,
-            fn (BoardUpdated $event) => $event->history->id === $this->history->id
-        );
+        Event::assertDispatched(BoardUpdated::class);
     }
 
     /**
@@ -248,10 +245,7 @@ class PeriodTest extends TestCase
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('periods', ['id' => $period->id]);
-        Event::assertDispatched(
-            BoardUpdated::class,
-            fn (BoardUpdated $event) => $event->history->id === $period->history_id
-        );
+        Event::assertDispatched(BoardUpdated::class);
     }
 
     /** @test */
