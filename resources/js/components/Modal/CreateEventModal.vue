@@ -51,6 +51,7 @@ export default {
             form: {
                 name: null,
                 type: 'dark',
+                position: 1,
             },
         };
     },
