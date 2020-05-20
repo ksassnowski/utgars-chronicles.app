@@ -45,7 +45,7 @@ class EventTest extends TestCase
     {
         yield from [
             'create event' => [
-                ['name' => '::event-name::', 'type' => Type::DARK],
+                ['name' => '::event-name::', 'type' => Type::DARK, 'position' => 1],
                 '/periods/2/events',
                 'post',
                 201,
@@ -82,6 +82,7 @@ class EventTest extends TestCase
             [
                 'name' => '::event-name::',
                 'type' => Type::DARK,
+                'position' => 1,
             ],
         );
 

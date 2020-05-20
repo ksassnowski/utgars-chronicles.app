@@ -3,16 +3,17 @@
         <CreateEventModal
             v-if="showModal"
             :period="period"
+            :position="newEventPosition"
             title="Create Event"
             @close="showModal = false"
         />
 
-        <div class="px-4 group">
-            <article class="p-8 rounded-lg border border-gray-200 mb-6 shadow-lg bg-white relative panzoom-exclude">
+        <div class="px-4 game-card">
+            <article class="p-8 rounded-lg border border-gray-200 mb-6 shadow-lg bg-white relative panzoom-exclude group">
                 <template v-if="!editing">
                     <button
                         title="Add period before this one"
-                        class="game-add-button left invisible group-hover:visible"
+                        class="game-add-button left"
                         @click="$emit('insertPeriod', period.position)"
                     >
                         <Icon name="add-solid" class="fill-current text-gray-500 hover:text-indigo-700 w-6" />
@@ -20,7 +21,7 @@
 
                     <button
                         title="Add period after this one"
-                        class="game-add-button right invisible group-hover:visible"
+                        class="game-add-button right"
                         @click="$emit('insertPeriod', period.position + 1)"
                     >
                         <Icon name="add-solid" class="fill-current text-gray-500 hover:text-indigo-700 w-6" />
@@ -57,7 +58,10 @@
                     </p>
 
                     <div class="flex justify-end absolute inset-x-0 bottom-0 p-2 invisible group-hover:visible">
-                        <button class="text-indigo-700 text-sm" @click="showModal = true">Add Event</button>
+                        <button
+                            class="text-indigo-700 text-sm"
+                            @click="() => openCreateEventModal(nextEventPosition)"
+                        >Add Event</button>
                     </div>
                 </template>
 
@@ -98,6 +102,7 @@
                 :key="event.id"
                 :event="event"
                 :period="period"
+                @insertEvent="openCreateEventModal"
             />
         </draggable>
     </div>
@@ -131,6 +136,16 @@ export default {
     },
 
     computed: {
+        nextEventPosition() {
+            const last = this.orderedEvents.slice(-1)[0];
+
+            if (!last) {
+                return 1;
+            }
+
+            return last.position + 1;
+        },
+
         orderedEvents() {
             return sortBy(this.period.events, ['position']);
         }
@@ -141,6 +156,7 @@ export default {
             editing: false,
             loading: false,
             showModal: false,
+            newEventPosition: this.nextEventPosition,
             form: {
                 name: this.period.name,
                 type: this.period.type,
@@ -201,6 +217,11 @@ export default {
                 axios.delete(this.$route('periods.delete', this.period))
                     .catch(console.error);
             }
+        },
+
+        openCreateEventModal(position) {
+            this.newEventPosition = position;
+            this.showModal = true;
         },
     },
 };

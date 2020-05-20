@@ -38,7 +38,7 @@ import LoadingButton from "../LoadingButton";
 export default {
     name: "CreateEventModal",
 
-    props: ['period'],
+    props: ['period', 'position'],
 
     components: {
         LoadingButton,
@@ -51,7 +51,7 @@ export default {
             form: {
                 name: null,
                 type: 'dark',
-                position: 1,
+                position: this.position,
             },
         };
     },
