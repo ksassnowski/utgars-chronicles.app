@@ -1,19 +1,26 @@
 <template>
-    <div :class="{ 'px-6': !editing }">
-        <div class="border-2 bg-white border-gray-600 mb-5 panzoom-exclude">
-            <div v-if="!editing" class="p-8 group relative">
-                <div class="invisible group-hover:visible absolute right-0 top-0 pr-2 pt-2 flex justify-end z-20">
-                    <button @click="open = !open" class="mr-2" :title="open ? 'Collapse Scene' : 'Expand Scene'" style="margin-top: -2px;">
-                        <Icon class="w-4 h-4 fill-current text-gray-600" :name="open ? 'view-hide' : 'view-show'" />
-                    </button>
+    <div :class="{ 'px-6': !editing }" class="pt-6">
+        <div class="relative pt-8 px-6 pb-6 relative shadow-lg rounded-lg border bg-white border-gray-200 text-sm w-full min-h-32 group panzoom-exclude">
+            <div v-if="!editing">
+                <div class="invisible group-hover:visible absolute left-0 top-0 w-full pl-3 pr-2 pt-2 flex justify-between z-20">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="handle w-4 h-4 fill-current text-gray-400 cursor-move"
+                        style="margin-top: 2px"
+                        viewBox="0 0 20 20"
+                    ><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
 
-                    <svg xmlns="http://www.w3.org/2000/svg" class="handle w-4 h-4 fill-current text-gray-600 cursor-move" style="margin-top: 2px" viewBox="0 0 20 20"><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
+                    <div class="flex items-center">
+                        <button @click="open = !open" class="mr-2" :title="open ? 'Collapse Scene' : 'Expand Scene'" style="margin-top: -2px;">
+                            <Icon class="w-4 h-4 fill-current text-gray-600" :name="open ? 'view-hide' : 'view-show'" />
+                        </button>
 
-                    <SettingsPanel
-                        v-if="!editing"
-                        @delete="remove"
-                        @edit="edit"
-                    />
+                        <SettingsPanel
+                            v-if="!editing"
+                            @delete="remove"
+                            @edit="edit"
+                        />
+                    </div>
                 </div>
 
                 <p class="text-sm" :class="{ 'pb-2': open }">{{ scene.question }}</p>
@@ -45,7 +52,7 @@
                 ></div>
             </div>
 
-            <form v-else @submit.prevent="submit" class="p-2">
+            <form v-else @submit.prevent="submit">
                 <div class="mb-4">
                     <label for="question" class="label">Question</label>
                     <textarea id="question" rows="3" class="input" v-model="form.question" required></textarea>
