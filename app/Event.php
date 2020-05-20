@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -27,6 +28,19 @@ class Event extends Model implements Movable
     protected $casts = [
         'position' => 'int',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::deleted(function (Event $event) {
+            Event::where('period_id', $event->period_id)
+                ->where('position', '>', $event->position)
+                ->update([
+                    'position' => DB::raw('position - 1')
+                ]);
+        });
+    }
 
     public function scenes(): HasMany
     {

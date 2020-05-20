@@ -33,6 +33,19 @@ class Period extends Model implements Movable
         'position' => 'int',
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::deleted(function (Period $period) {
+            Period::where('history_id', $period->history_id)
+                ->where('position', '>', $period->position)
+                ->update([
+                    'position' => DB::raw('position - 1')
+                ]);
+        });
+    }
+
     public function history(): BelongsTo
     {
         return $this->belongsTo(History::class);

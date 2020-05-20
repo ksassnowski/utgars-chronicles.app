@@ -23,7 +23,7 @@ class PeriodTest extends TestCase
     {
         parent::setUp();
 
-        Event::fake();
+        Event::fake([BoardUpdated::class]);
 
         $this->user = factory(User::class)->create();
         $this->history = factory(History::class)->create(['owner_id' => $this->user->id]);
@@ -273,5 +273,18 @@ class PeriodTest extends TestCase
             ->deleteJson(route('periods.delete', $period));
 
         $response->assertForbidden();
+    }
+
+    /** @test */
+    public function deletingPeriodReordersTheRemainingPeriods(): void
+    {
+        $period1 = factory(Period::class)->create(['history_id' => $this->history->id, 'position' => 1]);
+        $period2 = factory(Period::class)->create(['history_id' => $this->history->id, 'position' => 2]);
+        $period3 = factory(Period::class)->create(['history_id' => $this->history->id, 'position' => 3]);
+
+        $this->login()->deleteJson(route('periods.delete', $period2));
+
+        $this->assertEquals(1, $period1->refresh()->position);
+        $this->assertEquals(2, $period3->refresh()->position);
     }
 }

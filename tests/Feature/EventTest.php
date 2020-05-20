@@ -183,4 +183,17 @@ class EventTest extends TestCase
         $this->assertDatabaseMissing('events', ['id' => $event->id]);
         EventFacade::assertDispatched(BoardUpdated::class);
     }
+
+    /** @test */
+    public function deletingAnEventReordersTheRemainingEvents(): void
+    {
+        $event1 = factory(Event::class)->create(['period_id' => $this->period->id, 'position' => 1]);
+        $event2 = factory(Event::class)->create(['period_id' => $this->period->id, 'position' => 2]);
+        $event3 = factory(Event::class)->create(['period_id' => $this->period->id, 'position' => 3]);
+
+        $this->login()->deleteJson(route('events.delete', $event2));
+
+        $this->assertEquals(1, $event1->refresh()->position);
+        $this->assertEquals(2, $event3->refresh()->position);
+    }
 }
