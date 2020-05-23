@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Generator;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 
 trait AuthenticatedRoutesTest
 {
