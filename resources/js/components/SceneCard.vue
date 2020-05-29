@@ -23,17 +23,17 @@
                     </div>
                 </div>
 
-                <p class="text-sm" :class="{ 'pb-2': open }">{{ scene.question }}</p>
+                <p class="text-sm whitespace-pre-wrap" :class="{ 'pb-2': open }">{{ scene.question }}</p>
 
                 <template v-if="open">
                     <hr>
 
-                    <p v-if="scene.scene" class="text-sm py-2">{{ scene.scene }}</p>
+                    <p v-if="scene.scene" class="text-sm py-2 whitespace-pre-wrap">{{ scene.scene }}</p>
                     <p v-else class="text-sm py-2 text-gray-600 italic">This scene has no description.</p>
 
                     <hr>
 
-                    <p v-if="scene.answer" class="text-sm pt-2">{{ scene.answer }}</p>
+                    <p v-if="scene.answer" class="text-sm pt-2 whitespace-pre-wrap">{{ scene.answer }}</p>
                     <p v-else class="text-sm pt-2 text-gray-600 italic">This scene has not been answered yet.</p>
                 </template>
 
