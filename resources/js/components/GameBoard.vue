@@ -43,6 +43,8 @@
                 <HistorySeed :history="internalHistory" />
 
                 <div class="flex-1 flex justify-end">
+                    <OracleModal class="mr-2" />
+
                     <button
                         class="px-4 py-2 bg-indigo-700 rounded text-white font-bold"
                         @click="() => create(lastPosition + 1)"
@@ -116,6 +118,7 @@ import LegacyTracker from './LegacyTracker';
 import Modal from './Modal';
 import GamePanel from './GamePanel';
 import HistorySeed from "./HistorySeed";
+import OracleModal from "./Modal/OracleModal";
 
 export default {
     name: 'GameBoard',
@@ -128,6 +131,7 @@ export default {
     },
 
     components: {
+        OracleModal,
         HistorySeed,
         GamePanel,
         Modal,
