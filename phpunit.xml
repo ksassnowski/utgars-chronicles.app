@@ -29,7 +29,7 @@
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
         <server name="DB_CONNECTION" value="mysql"/>
-        <server name="DB_DATABASE" value="microscope_online_test"/>
+        <server name="DB_DATABASE" value="utgars_chronicles_test"/>
         <server name="MAIL_DRIVER" value="array"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
