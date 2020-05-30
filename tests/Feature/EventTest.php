@@ -46,29 +46,29 @@ class EventTest extends TestCase
         yield from [
             'create event' => [
                 ['name' => '::event-name::', 'type' => Type::DARK, 'position' => 1],
-                '/periods/2/events',
-                'post',
+                fn (Period $period) => route('periods.events.store', $period),
+                'POST',
                 201,
                 fn (History $history) => factory(Period::class)->create(['history_id' => $history->id]),
             ],
             'edit event' => [
                 ['name' => '::event-name::', 'type' => Type::DARK],
-                '/events/1',
+                fn (Event $event) => route('events.update', $event),
                 'put',
                 200,
                 function (History $history) {
                     $period = factory(Period::class)->create(['history_id' => $history->id]);
-                    factory(Event::class)->create(['period_id' => $period->id]);
+                    return factory(Event::class)->create(['period_id' => $period->id]);
                 },
             ],
             'delete event' => [
                 [],
-                '/events/1',
+                fn (Event $event) => route('events.delete', $event),
                 'delete',
                 204,
                 function (History $history) {
                     $period = factory(Period::class)->create(['history_id' => $history->id]);
-                    factory(Event::class)->create(['period_id' => $period->id]);
+                    return factory(Event::class)->create(['period_id' => $period->id]);
                 },
             ]
         ];

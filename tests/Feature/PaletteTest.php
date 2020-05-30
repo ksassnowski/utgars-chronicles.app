@@ -52,20 +52,20 @@ class PaletteTest extends TestCase
         yield from [
             'add item to palette' => [
                 ['name' => '::entry-name::', 'type' => PaletteType::NO],
-                '/histories/1/palette',
+                fn (History $history) => route('history.palette.store', $history),
                 'post',
                 201,
             ],
             'edit palette item' => [
                 ['name' => '::entry-name::', 'type' => PaletteType::NO],
-                '/palette/1',
+                fn (Palette $palette) => route('palette.update', $palette),
                 'put',
                 200,
                 fn (History $history) => factory(Palette::class)->create(['history_id' => $history->id]),
             ],
             'delete palette item' => [
                 [],
-                '/palette/1',
+                fn (Palette $palette) => route('palette.delete', $palette),
                 'delete',
                 204,
                 fn (History $history) => factory(Palette::class)->create(['history_id' => $history->id]),

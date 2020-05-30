@@ -101,20 +101,20 @@ class LegacyTest extends TestCase
         yield from [
             'create legacy' => [
                 ['name' => '::legacy-name::'],
-                '/histories/1/legacies',
+                fn (History $history) => route('history.legacies.store', $history),
                 'post',
                 201,
             ],
             'update legacy' => [
                 ['name' => '::new-name::'],
-                '/legacies/1',
+                fn (Legacy $legacy) => route('legacies.update', $legacy),
                 'put',
                 200,
                 fn (History $history) => factory(Legacy::class)->create(['history_id' => $history->id]),
             ],
             'delete legacy' => [
                 [],
-                '/legacies/1',
+                fn (Legacy $legacy) => route('legacies.delete', $legacy),
                 'delete',
                 204,
                 fn (History $history) => factory(Legacy::class)->create(['history_id' => $history->id]),

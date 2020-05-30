@@ -144,7 +144,7 @@ class HistoryTest extends TestCase
         yield from [
             'update history seed' => [
                 ['name' => '::new-name::'],
-                '/histories/1/seed',
+                fn (History $history) => route('history.update-seed', $history),
                 'patch',
                 200,
             ]

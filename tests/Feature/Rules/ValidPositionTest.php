@@ -35,16 +35,18 @@ class ValidPositionTest extends TestCase
     /** @test */
     public function onlyLooksAtTheMaxPositionOfTheSameHistory(): void
     {
+        $history1 = factory(History::class)->create();
+        $history2 = factory(History::class)->create();
         factory(Period::class)->create([
             'position' => 2,
-            'history_id' => 1,
+            'history_id' => $history1->id,
         ]);
         factory(Period::class)->create([
             'position' => 1,
-            'history_id' => 2,
+            'history_id' => $history2->id,
         ]);
 
-        $rule = new ValidPosition('periods', 'history_id', 1);
+        $rule = new ValidPosition('periods', 'history_id', $history1->id);
 
         $this->assertTrue($rule->passes('position', 3));
     }
@@ -52,16 +54,18 @@ class ValidPositionTest extends TestCase
     /** @test */
     public function worksForDifferentEntities(): void
     {
+        $period1 = factory(Period::class)->create();
+        $period2 = factory(Period::class)->create();
         factory(Event::class)->create([
             'position' => 2,
-            'period_id' => 1,
+            'period_id' => $period1->id,
         ]);
         factory(Event::class)->create([
             'position' => 1,
-            'period_id' => 2,
+            'period_id' => $period2->id,
         ]);
 
-        $rule = new ValidPosition('events', 'period_id', 1);
+        $rule = new ValidPosition('events', 'period_id', $period1->id);
 
         $this->assertTrue($rule->passes('position', 3));
     }

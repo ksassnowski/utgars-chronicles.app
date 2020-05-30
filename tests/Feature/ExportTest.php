@@ -44,10 +44,13 @@ class ExportTest extends TestCase
         yield from [
             'download export' => [
                 [],
-                '/histories/1/export',
+                fn (History $history) => route('history.export', $history),
                 'get',
                 200,
-                fn (History $history) => $history->periods()->create(factory(Period::class)->make()->toArray()),
+                function (History $history) {
+                    $history->periods()->create(factory(Period::class)->make()->toArray());
+                    return $history;
+                },
             ],
         ];
     }

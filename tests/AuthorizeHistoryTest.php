@@ -13,15 +13,17 @@ trait AuthorizeHistoryTest
      * @test
      * @dataProvider authorizationProvider
      */
-    public function authorizationTest(array $payload, string $route, string $httpMethod, int $status, ?callable $setup = null): void
+    public function authorizationTest(array $payload, callable $getRoute, string $httpMethod, int $status, ?callable $setup = null): void
     {
         $method = "{$httpMethod}Json";
         /** @var History $history */
         $history = factory(History::class)->create();
 
+        $entity = $history;
         if ($setup !== null) {
-            $setup($history);
+            $entity = $setup($history);
         }
+        $route = $getRoute($entity);
 
         [$player, $notAPlayer] = factory(User::class, 2)->create();
         $history->addPlayer($player);
