@@ -7,10 +7,22 @@ on:
     branches:
       - master
 
+
 jobs:
   test:
     runs-on: ubuntu-latest
     name: Test
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: utgars_chronicles
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -26,7 +38,8 @@ jobs:
         with:
           php-version: 7.4
           tools: prestissimo
-          extensions: pdo, sqlite, pdo_sqlite
+          extensions: pdo, mysql, pdo_mysql
+          coverage: none
 
       - name: Install Dependencies
         run: composer install
@@ -38,6 +51,9 @@ jobs:
 
       - name: Run Tests
         run: vendor/bin/phpunit
+        env:
+          DB_PORT: ${{ job.services.mysql.ports[3306] }}
+          DB_DATABASE: utgars_chronicles
 
   deploy:
     if: contains(github.ref, 'master')
