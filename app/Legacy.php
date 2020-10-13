@@ -4,12 +4,15 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property History history
  */
 class Legacy extends Model
 {
+    use HasFactory;
+
     /** @var array */
     protected $guarded = [];
 

@@ -50,7 +50,7 @@ class FocusTest extends TestCase
     public function defineFocusForHistory(): void
     {
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
 
         $response = $this->actingAs($history->owner)->postJson(route('history.focus.define', $history), [
             'name' => '::focus-name::',
@@ -69,7 +69,7 @@ class FocusTest extends TestCase
     public function nameIsRequired()
     {
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
 
         $response = $this->actingAs($history->owner)->postJson(route('history.focus.define', $history), []);
 
@@ -79,9 +79,9 @@ class FocusTest extends TestCase
     /** @test */
     public function onlyPlayersCanDefineFoci()
     {
-        $player = factory(User::class)->create();
+        $player = User::factory()->create();
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $history->addPlayer($player);
 
         $response = $this->actingAs($player)->postJson(route('history.focus.define', $history), [
@@ -89,7 +89,7 @@ class FocusTest extends TestCase
         ]);
         $response->assertStatus(201);
 
-        $notAPlayer = factory(User::class)->create();
+        $notAPlayer = User::factory()->create();
         $response = $this->actingAs($notAPlayer)->postJson(route('history.focus.define', $history), [
             'name' => '::other-focus-name::',
         ]);
@@ -100,7 +100,7 @@ class FocusTest extends TestCase
     public function updateFocus()
     {
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $focus = $history->defineFocus('::old-name::');
 
         $response = $this->actingAs($history->owner)->putJson(route('focus.update', $focus), [
@@ -119,7 +119,7 @@ class FocusTest extends TestCase
     public function nameIsRequiredWhenUpdating(): void
     {
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $focus = $history->defineFocus('::old-name::');
 
         $response = $this->actingAs($history->owner)->putJson(route('focus.update', $focus));
@@ -131,9 +131,9 @@ class FocusTest extends TestCase
     /** @test */
     public function onlyPlayerCanUpdateFoci(): void
     {
-        $player = factory(User::class)->create();
+        $player = User::factory()->create();
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $history->addPlayer($player);
         $focus = $history->defineFocus('::old-focus::');
 
@@ -142,7 +142,7 @@ class FocusTest extends TestCase
         ]);
         $response->assertStatus(200);
 
-        $notAPlayer = factory(User::class)->create();
+        $notAPlayer = User::factory()->create();
         $response = $this->actingAs($notAPlayer)->putJson(route('focus.update', $focus), [
             'name' => '::other-focus-name::',
         ]);
@@ -154,7 +154,7 @@ class FocusTest extends TestCase
     {
         $this->withoutExceptionHandling();
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $focus = $history->defineFocus('::focus-name::');
 
         $response = $this->actingAs($history->owner)->deleteJson(route('focus.delete', $focus));
@@ -170,13 +170,13 @@ class FocusTest extends TestCase
     /** @test */
     public function onlyPlayerCanDeleteFoci()
     {
-        $player = factory(User::class)->create();
+        $player = User::factory()->create();
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $history->addPlayer($player);
         $focus = $history->defineFocus('::old-focus::');
 
-        $notAPlayer = factory(User::class)->create();
+        $notAPlayer = User::factory()->create();
         $response = $this->actingAs($notAPlayer)->deleteJson(route('focus.delete', $focus));
         $response->assertForbidden();
 

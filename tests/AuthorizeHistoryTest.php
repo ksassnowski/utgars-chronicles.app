@@ -17,7 +17,7 @@ trait AuthorizeHistoryTest
     {
         $method = "{$httpMethod}Json";
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
 
         $entity = $history;
         if ($setup !== null) {
@@ -25,7 +25,7 @@ trait AuthorizeHistoryTest
         }
         $route = $getRoute($entity);
 
-        [$player, $notAPlayer] = factory(User::class, 2)->create();
+        [$player, $notAPlayer] = User::factory()->count(2)->create();
         $history->addPlayer($player);
 
         /** @var TestResponse $response */

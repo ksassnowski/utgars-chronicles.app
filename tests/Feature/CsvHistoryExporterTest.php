@@ -16,18 +16,18 @@ class CsvHistoryExporterTest extends TestCase
     /** @test */
     public function exportPeriodsInCorrectOrder(): void
     {
-        $history = factory(History::class)->create();
-        factory(Period::class)->create([
+        $history = History::factory()->create();
+        Period::factory()->create([
             'history_id' => $history->id,
             'name' => '::period-1::',
             'type' => Type::DARK,
         ])->update(['position' => 2]);
-        factory(Period::class)->create([
+        Period::factory()->create([
             'history_id' => $history->id,
             'name' => '::period-2::',
             'type' => Type::LIGHT,
         ])->update(['position' => 1]);
-        factory(Period::class)->create([
+        Period::factory()->create([
             'history_id' => $history->id,
             'name' => '::period-3::',
             'type' => Type::DARK,

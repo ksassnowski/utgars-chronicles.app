@@ -1,18 +1,22 @@
 <?php declare(strict_types=1);
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Period;
 use App\History;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Period::class, function (Faker $faker) {
-    return [
-        'name' => $faker->sentence,
-        'position' => 1,
-        'type' => $faker->randomElement(['light', 'dark']),
-        'history_id' => function () {
-            return factory(History::class)->create()->id;
-        },
-    ];
-});
+class PeriodFactory extends Factory
+{
+    protected $model = Period::class;
+
+    public function definition()
+    {
+        return [
+            'name' => $this->faker->sentence,
+            'position' => 1,
+            'type' => $this->faker->randomElement(['light', 'dark']),
+            'history_id' => History::factory(),
+        ];
+    }
+}

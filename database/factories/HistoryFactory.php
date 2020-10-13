@@ -1,17 +1,19 @@
 <?php declare(strict_types=1);
 
-/** @var Factory $factory */
+namespace Database\Factories;
 
 use App\User;
-use App\History;
-use Faker\Generator as Faker;
-use Illuminate\Database\Eloquent\Factory;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(History::class, function (Faker $faker) {
-    return [
-        'name' => $faker->sentence,
-        'owner_id' => function () {
-            return factory(User::class)->create()->id;
-        }
-    ];
-});
+class HistoryFactory extends Factory
+{
+    protected $model = \App\History::class;
+
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->sentence,
+            'owner_id' => User::factory(),
+        ];
+    }
+}

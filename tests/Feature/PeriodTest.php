@@ -25,8 +25,8 @@ class PeriodTest extends TestCase
 
         Event::fake([BoardUpdated::class]);
 
-        $this->user = factory(User::class)->create();
-        $this->history = factory(History::class)->create(['owner_id' => $this->user->id]);
+        $this->user = User::factory()->create();
+        $this->history = History::factory()->create(['owner_id' => $this->user->id]);
     }
 
     /**
@@ -69,12 +69,12 @@ class PeriodTest extends TestCase
     /** @test */
     public function createPeriodBetweenTwoPeriods(): void
     {
-        factory(Period::class)->create([
+        Period::factory()->create([
             'name' => '::period-1::',
             'history_id' => $this->history->id,
             'position' => 1,
         ]);
-        factory(Period::class)->create([
+        Period::factory()->create([
             'name' => '::period-2::',
             'history_id' => $this->history->id,
             'position' => 2
@@ -137,7 +137,7 @@ class PeriodTest extends TestCase
     /** @test */
     public function canOnlyCreatePeriodForOwnHistories(): void
     {
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
 
         $response = $this->actingAs($otherUser)->postJson(route('history.periods.store', $this->history), [
             'name' => '::period-name::',
@@ -149,7 +149,7 @@ class PeriodTest extends TestCase
     /** @test */
     public function canCreatePeriodForHistoryThatIAmAPlayerOf(): void
     {
-        $player = factory(User::class)->create();
+        $player = User::factory()->create();
         $this->history->addPlayer($player);
 
         $response = $this->actingAs($player)->postJson(route('history.periods.store', $this->history), [
@@ -166,7 +166,7 @@ class PeriodTest extends TestCase
     public function updatePeriod(): void
     {
         /** @var Period $period */
-        $period = factory(Period::class)->create([
+        $period = Period::factory()->create([
             'history_id' => $this->history->id,
             'type' => Type::DARK,
         ]);
@@ -191,7 +191,7 @@ class PeriodTest extends TestCase
     public function validateAttributes(string $attribute, $value): void
     {
         /** @var Period $period */
-        $period = factory(Period::class)->create([
+        $period = Period::factory()->create([
             'history_id' => $this->history->id
         ]);
 
@@ -220,9 +220,9 @@ class PeriodTest extends TestCase
     /** @test */
     public function canOnlyUpdatePeriodsBelongingToOwnHistory(): void
     {
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
         /** @var Period $period */
-        $period = factory(Period::class)->create([
+        $period = Period::factory()->create([
             'history_id' => $this->history->id
         ]);
 
@@ -237,7 +237,7 @@ class PeriodTest extends TestCase
     public function deletePeriod(): void
     {
         /** @var Period $period */
-        $period = factory(Period::class)->create([
+        $period = Period::factory()->create([
             'history_id' => $this->history->id
         ]);
 
@@ -251,7 +251,7 @@ class PeriodTest extends TestCase
     /** @test */
     public function needToBeLoggedInToDeletePeriod()
     {
-        $period = factory(Period::class)->create([
+        $period = Period::factory()->create([
             'history_id' => $this->history->id
         ]);
 
@@ -263,8 +263,8 @@ class PeriodTest extends TestCase
     /** @test */
     public function canOnlyDeletePeriodsBelongingToOwnHistory(): void
     {
-        $otherUser = factory(User::class)->create();
-        $period = factory(Period::class)->create([
+        $otherUser = User::factory()->create();
+        $period = Period::factory()->create([
             'history_id' => $this->history->id
         ]);
 
@@ -278,9 +278,9 @@ class PeriodTest extends TestCase
     /** @test */
     public function deletingPeriodReordersTheRemainingPeriods(): void
     {
-        $period1 = factory(Period::class)->create(['history_id' => $this->history->id, 'position' => 1]);
-        $period2 = factory(Period::class)->create(['history_id' => $this->history->id, 'position' => 2]);
-        $period3 = factory(Period::class)->create(['history_id' => $this->history->id, 'position' => 3]);
+        $period1 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 1]);
+        $period2 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 2]);
+        $period3 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 3]);
 
         $this->login()->deleteJson(route('periods.delete', $period2));
 

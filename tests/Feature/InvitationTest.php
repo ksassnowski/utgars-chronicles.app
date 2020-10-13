@@ -15,8 +15,8 @@ class InvitationTest extends TestCase
     /** @test */
     public function acceptInvitation(): void
     {
-        $history = factory(History::class)->create();
-        $invitedUser = factory(User::class)->create();
+        $history = History::factory()->create();
+        $invitedUser = User::factory()->create();
 
         $this->actingAs($invitedUser)->get(URL::signedRoute('invitation.accept', [
             'history' => $history->id,
@@ -29,7 +29,7 @@ class InvitationTest extends TestCase
     /** @test */
     public function onlyALoggedInUserCanAcceptAnInvitation(): void
     {
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
 
         $response = $this->get(URL::signedRoute('invitation.accept', [
             'history' => $history->id,
@@ -41,8 +41,8 @@ class InvitationTest extends TestCase
     /** @test */
     public function cannotAcceptAnInvitationTwice(): void
     {
-        $history = factory(History::class)->create();
-        $invitedUser = factory(User::class)->create();
+        $history = History::factory()->create();
+        $invitedUser = User::factory()->create();
         $history->addPlayer($invitedUser);
 
         $response = $this->actingAs($invitedUser)->get(URL::signedRoute('invitation.accept', [
@@ -57,7 +57,7 @@ class InvitationTest extends TestCase
     /** @test */
     public function ownerCannotAcceptInvitationToTheirOwnGame(): void
     {
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
 
         $response = $this->actingAs($history->owner)->get(URL::signedRoute('invitation.accept', [
             'history' => $history->id,

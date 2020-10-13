@@ -24,9 +24,9 @@ class KickPlayerTest extends TestCase
     public function kickPlayer(): void
     {
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         /** @var User $kickedPlayer */
-        $kickedPlayer = factory(User::class)->create();
+        $kickedPlayer = User::factory()->create();
         $history->addPlayer($kickedPlayer);
         $this->assertTrue($history->players->contains('id', $kickedPlayer->id));
 
@@ -40,15 +40,15 @@ class KickPlayerTest extends TestCase
     public function onlyOwnerCanKickPlayers(): void
     {
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         /** @var User $kickedPlayer */
-        $player = factory(User::class)->create();
+        $player = User::factory()->create();
         $history->addPlayer($player);
 
         $response = $this->actingAs($player)->deleteJson(route('history.players.kick', [$history, $player]));
         $response->assertForbidden();
 
-        $otherUser = factory(User::class)->create();
+        $otherUser = User::factory()->create();
 
         $response = $this->actingAs($otherUser)->deleteJson(route('history.players.kick', [$history, $player]));
         $response->assertForbidden();

@@ -24,9 +24,9 @@ class LeaveGameTest extends TestCase
     public function leaveGame(): void
     {
         /** @var History $game */
-        $game = factory(History::class)->create();
+        $game = History::factory()->create();
         /** @var User $player */
-        $player = factory(User::class)->create();
+        $player = User::factory()->create();
         $game->addPlayer($player);
 
         $response = $this->actingAs($player)->deleteJson(route('user.games.leave', $game));
@@ -39,9 +39,9 @@ class LeaveGameTest extends TestCase
     public function canOnlyLeaveGamesOfWhichYouAreAPlayer(): void
     {
         /** @var History $game */
-        $game = factory(History::class)->create();
+        $game = History::factory()->create();
         /** @var User $player */
-        $player = factory(User::class)->create();
+        $player = User::factory()->create();
 
         $response = $this->actingAs($player)->deleteJson(route('user.games.leave', $game));
 

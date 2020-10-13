@@ -61,14 +61,14 @@ class PaletteTest extends TestCase
                 fn (Palette $palette) => route('palette.update', $palette),
                 'put',
                 200,
-                fn (History $history) => factory(Palette::class)->create(['history_id' => $history->id]),
+                fn (History $history) => Palette::factory()->create(['history_id' => $history->id]),
             ],
             'delete palette item' => [
                 [],
                 fn (Palette $palette) => route('palette.delete', $palette),
                 'delete',
                 204,
-                fn (History $history) => factory(Palette::class)->create(['history_id' => $history->id]),
+                fn (History $history) => Palette::factory()->create(['history_id' => $history->id]),
             ],
         ];
     }
@@ -76,7 +76,7 @@ class PaletteTest extends TestCase
     /** @test */
     public function addToPalette()
     {
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
 
         $response = $this->actingAs($history->owner)->postJson(route('history.palette.store', $history), [
             'name' => '::entry-name::',
@@ -102,7 +102,7 @@ class PaletteTest extends TestCase
     public function editPaletteItem(): void
     {
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $item = $history->addToPalette('::old-name::', PaletteType::YES);
 
         $response = $this->actingAs($history->owner)->putJson(route('palette.update', $item), [
@@ -123,7 +123,7 @@ class PaletteTest extends TestCase
     /** @test */
     public function deletePaletteItem()
     {
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $item = $history->addToPalette('::old-name::', PaletteType::YES);
 
         $response = $this->actingAs($history->owner)->deleteJson(route('palette.delete', $item));

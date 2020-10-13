@@ -28,7 +28,7 @@ class EventTest extends TestCase
             BoardUpdated::class,
         ]);
 
-        $this->period = factory(Period::class)->create();
+        $this->period = Period::factory()->create();
         $this->user = $this->period->history->owner;
     }
 
@@ -49,7 +49,7 @@ class EventTest extends TestCase
                 fn (Period $period) => route('periods.events.store', $period),
                 'POST',
                 201,
-                fn (History $history) => factory(Period::class)->create(['history_id' => $history->id]),
+                fn (History $history) => Period::factory()->create(['history_id' => $history->id]),
             ],
             'edit event' => [
                 ['name' => '::event-name::', 'type' => Type::DARK],
@@ -57,8 +57,8 @@ class EventTest extends TestCase
                 'put',
                 200,
                 function (History $history) {
-                    $period = factory(Period::class)->create(['history_id' => $history->id]);
-                    return factory(Event::class)->create(['period_id' => $period->id]);
+                    $period = Period::factory()->create(['history_id' => $history->id]);
+                    return Event::factory()->create(['period_id' => $period->id]);
                 },
             ],
             'delete event' => [
@@ -67,8 +67,8 @@ class EventTest extends TestCase
                 'delete',
                 204,
                 function (History $history) {
-                    $period = factory(Period::class)->create(['history_id' => $history->id]);
-                    return factory(Event::class)->create(['period_id' => $period->id]);
+                    $period = Period::factory()->create(['history_id' => $history->id]);
+                    return Event::factory()->create(['period_id' => $period->id]);
                 },
             ]
         ];
@@ -124,7 +124,7 @@ class EventTest extends TestCase
     /** @test */
     public function updateEvent(): void
     {
-        $event = factory(Event::class)->create([
+        $event = Event::factory()->create([
             'period_id' => $this->period->id,
             'name' => '::old-name::',
             'type' => Type::LIGHT,
@@ -157,7 +157,7 @@ class EventTest extends TestCase
             'type' => Type::DARK,
         ], [$attribute => $value]);
 
-        $event = factory(Event::class)->create([
+        $event = Event::factory()->create([
             'period_id' => $this->period->id,
             'name' => '::old-name::',
             'type' => Type::LIGHT,
@@ -175,7 +175,7 @@ class EventTest extends TestCase
     /** @test */
     public function deleteEvent(): void
     {
-        $event = factory(Event::class)->create(['period_id' => $this->period->id]);
+        $event = Event::factory()->create(['period_id' => $this->period->id]);
 
         $response = $this->login()
             ->deleteJson(route('events.delete', $event));
@@ -188,9 +188,9 @@ class EventTest extends TestCase
     /** @test */
     public function deletingAnEventReordersTheRemainingEvents(): void
     {
-        $event1 = factory(Event::class)->create(['period_id' => $this->period->id, 'position' => 1]);
-        $event2 = factory(Event::class)->create(['period_id' => $this->period->id, 'position' => 2]);
-        $event3 = factory(Event::class)->create(['period_id' => $this->period->id, 'position' => 3]);
+        $event1 = Event::factory()->create(['period_id' => $this->period->id, 'position' => 1]);
+        $event2 = Event::factory()->create(['period_id' => $this->period->id, 'position' => 2]);
+        $event3 = Event::factory()->create(['period_id' => $this->period->id, 'position' => 3]);
 
         $this->login()->deleteJson(route('events.delete', $event2));
 

@@ -33,7 +33,7 @@ class LegacyTest extends TestCase
     /** @test */
     public function createLegacy(): void
     {
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
 
         $response = $this->actingAs($history->owner)->postJson(route('history.legacies.store', $history), [
             'name' => '::legacy-name::',
@@ -52,7 +52,7 @@ class LegacyTest extends TestCase
     public function updateLegacy(): void
     {
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $legacy = $history->addLegacy('::old-name::');
 
         $response = $this->actingAs($history->owner)->putJson(route('legacies.update', $legacy), [
@@ -72,7 +72,7 @@ class LegacyTest extends TestCase
     public function deleteLegacy(): void
     {
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $legacy = $history->addLegacy('::legacy-name::');
 
         $response = $this->actingAs($history->owner)->deleteJson(route('legacies.delete', $legacy));
@@ -110,14 +110,14 @@ class LegacyTest extends TestCase
                 fn (Legacy $legacy) => route('legacies.update', $legacy),
                 'put',
                 200,
-                fn (History $history) => factory(Legacy::class)->create(['history_id' => $history->id]),
+                fn (History $history) => Legacy::factory()->create(['history_id' => $history->id]),
             ],
             'delete legacy' => [
                 [],
                 fn (Legacy $legacy) => route('legacies.delete', $legacy),
                 'delete',
                 204,
-                fn (History $history) => factory(Legacy::class)->create(['history_id' => $history->id]),
+                fn (History $history) => Legacy::factory()->create(['history_id' => $history->id]),
             ]
         ];
     }

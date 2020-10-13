@@ -50,7 +50,7 @@ class HistoryTest extends TestCase
     public function updateHistory(): void
     {
         $this->login();
-        $history = factory(History::class)->create([
+        $history = History::factory()->create([
             'owner_id' => $this->user->id,
             'name' => '::old-name::',
         ]);
@@ -81,8 +81,8 @@ class HistoryTest extends TestCase
     public function addNewPlayerToHistory(): void
     {
         /** @var History $history */
-        $history = factory(History::class)->create();
-        $player = factory(User::class)->create();
+        $history = History::factory()->create();
+        $player = User::factory()->create();
 
         $this->assertNull($history->players->first(fn (User $p) => $p->id === $player->id));
 
@@ -97,8 +97,8 @@ class HistoryTest extends TestCase
     {
         $this->expectException(UserIsAlreadyPlayerInHistory::class);
 
-        $history = factory(History::class)->create();
-        $player = factory(User::class)->create();
+        $history = History::factory()->create();
+        $player = User::factory()->create();
         $history->addPlayer($player);
 
         $history->addPlayer($player);
@@ -107,7 +107,7 @@ class HistoryTest extends TestCase
     /** @test */
     public function deleteHistory(): void
     {
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
 
         $response = $this->actingAs($history->owner)->delete(route('history.delete', $history));
 
@@ -120,8 +120,8 @@ class HistoryTest extends TestCase
     /** @test */
     public function onlyOwnerCanDeleteHistory(): void
     {
-        $baddie = factory(User::class)->create();
-        $history = factory(History::class)->create();
+        $baddie = User::factory()->create();
+        $history = History::factory()->create();
 
         $response = $this->actingAs($baddie)->delete(route('history.delete', $history));
 

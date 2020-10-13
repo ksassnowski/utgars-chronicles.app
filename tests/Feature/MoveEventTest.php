@@ -24,19 +24,19 @@ class MoveEventTest extends TestCase
 
         EventFacade::fake();
 
-        $this->user = factory(User::class)->create();
-        $this->history = factory(History::class)->create(['owner_id' => $this->user->id]);
-        $this->period = factory(Period::class)->create(['history_id' => $this->history->id]);
+        $this->user = User::factory()->create();
+        $this->history = History::factory()->create(['owner_id' => $this->user->id]);
+        $this->period = Period::factory()->create(['history_id' => $this->history->id]);
     }
 
     /** @test */
     public function broadcastEventAfterEventWasMoved(): void
     {
-        factory(Event::class)->create([
+        Event::factory()->create([
             'period_id' => $this->period->id,
             'position' => 2
         ]);
-        $event = factory(Event::class)->create([
+        $event = Event::factory()->create([
             'period_id' => $this->period->id,
             'position' => 1
         ]);

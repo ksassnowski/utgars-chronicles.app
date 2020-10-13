@@ -19,8 +19,8 @@ class ExportTest extends TestCase
     /** @test */
     public function canDownloadExportOfHistory(): void
     {
-        $history = factory(History::class)->create();
-        $history->periods()->create(factory(Period::class)->make()->toArray());
+        $history = History::factory()->create();
+        $history->periods()->create(Period::factory()->make()->toArray());
         $exporterMock = Mockery::mock(HistoryExporter::class);
         $exporterMock->shouldReceive('export')
             ->once();
@@ -48,7 +48,7 @@ class ExportTest extends TestCase
                 'get',
                 200,
                 function (History $history) {
-                    $history->periods()->create(factory(Period::class)->make()->toArray());
+                    $history->periods()->create(Period::factory()->make()->toArray());
                     return $history;
                 },
             ],

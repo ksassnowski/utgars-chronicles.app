@@ -21,8 +21,8 @@ class MovePeriodTest extends TestCase
     {
         parent::setUp();
 
-        $this->user = factory(User::class)->create();
-        $this->history = factory(History::class)->create([
+        $this->user = User::factory()->create();
+        $this->history = History::factory()->create([
             'owner_id' => $this->user->id,
         ]);
     }
@@ -30,11 +30,11 @@ class MovePeriodTest extends TestCase
     /** @test */
     public function movePeriodDownASlot(): void
     {
-        $period1 = factory(Period::class)->create([
+        $period1 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 1
         ]);
-        $period2 = factory(Period::class)->create([
+        $period2 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 2
         ]);
@@ -48,11 +48,11 @@ class MovePeriodTest extends TestCase
     /** @test */
     public function movePeriodUpASlot()
     {
-        $period1 = factory(Period::class)->create([
+        $period1 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 1
         ]);
-        $period2 = factory(Period::class)->create([
+        $period2 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 2
         ]);
@@ -66,15 +66,15 @@ class MovePeriodTest extends TestCase
     /** @test */
     public function movePeriodDownTwoSlots(): void
     {
-        $period1 = factory(Period::class)->create([
+        $period1 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 1
         ]);
-        $period2 = factory(Period::class)->create([
+        $period2 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 2
         ]);
-        $period3 = factory(Period::class)->create([
+        $period3 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 3
         ]);
@@ -89,15 +89,15 @@ class MovePeriodTest extends TestCase
     /** @test */
     public function moveUpTwoSlotsPeriod()
     {
-        $period1 = factory(Period::class)->create([
+        $period1 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 1
         ]);
-        $period2 = factory(Period::class)->create([
+        $period2 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 2
         ]);
-        $period3 = factory(Period::class)->create([
+        $period3 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 3
         ]);
@@ -112,19 +112,19 @@ class MovePeriodTest extends TestCase
     /** @test */
     public function movePeriodDownInBetweenTwoPeriods(): void
     {
-        $period1 = factory(Period::class)->create([
+        $period1 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 1
         ]);
-        $period2 = factory(Period::class)->create([
+        $period2 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 2
         ]);
-        $period3 = factory(Period::class)->create([
+        $period3 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 3
         ]);
-        $period4 = factory(Period::class)->create([
+        $period4 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 4
         ]);
@@ -140,19 +140,19 @@ class MovePeriodTest extends TestCase
     /** @test */
     public function movePeriodUpInBetweenTwoPeriods(): void
     {
-        $period1 = factory(Period::class)->create([
+        $period1 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 1
         ]);
-        $period2 = factory(Period::class)->create([
+        $period2 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 2
         ]);
-        $period3 = factory(Period::class)->create([
+        $period3 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 3
         ]);
-        $period4 = factory(Period::class)->create([
+        $period4 = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 4
         ]);
@@ -170,11 +170,11 @@ class MovePeriodTest extends TestCase
     {
         Event::fake();
 
-        factory(Period::class)->create([
+        Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 2
         ]);
-        $period = factory(Period::class)->create([
+        $period = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 1
         ]);
@@ -192,7 +192,7 @@ class MovePeriodTest extends TestCase
      */
     public function validatePosition(array $payload): void
     {
-        $period = factory(Period::class)->create([
+        $period = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 1
         ]);
@@ -216,8 +216,8 @@ class MovePeriodTest extends TestCase
     /** @test */
     public function canOnlyMovePeriodsBelongingToOwnHistory()
     {
-        $otherUser = factory(User::class)->create();
-        $period = factory(Period::class)->create([
+        $otherUser = User::factory()->create();
+        $period = Period::factory()->create([
             'history_id' => $this->history->id,
             'position' => 1
         ]);

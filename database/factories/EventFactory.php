@@ -1,17 +1,23 @@
 <?php declare(strict_types=1);
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
 use App\Type;
 use App\Event;
 use App\Period;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Event::class, function (Faker $faker) {
-    return [
-        'name' => $faker->sentence,
-        'type' => $faker->randomElement([Type::LIGHT, Type::DARK]),
-        'position' => 1,
-        'period_id' => fn () => factory(Period::class)->create()->id,
-    ];
-});
+class EventFactory extends Factory
+{
+    protected $model = Event::class;
+
+    public function definition(): array
+    {
+        return [
+            'name' => $this->faker->sentence,
+            'type' => $this->faker->randomElement([Type::LIGHT, Type::DARK]),
+            'position' => 1,
+            'period_id' => fn () => Period::factory(),
+        ];
+    }
+}

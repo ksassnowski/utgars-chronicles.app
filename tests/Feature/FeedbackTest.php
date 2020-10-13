@@ -28,7 +28,7 @@ class FeedbackTest extends TestCase
     public function submitFeedback(): void
     {
         Notification::fake();
-        $adminUser = factory(User::class)->create(['email' => 'admin@email.com']);
+        $adminUser = User::factory()->create(['email' => 'admin@email.com']);
         config(['app.admin_email' => 'admin@email.com']);
 
         $this->login()->post(route('feedback.submit'), [

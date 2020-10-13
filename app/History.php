@@ -9,6 +9,7 @@ use App\Exceptions\UserIsAlreadyPlayerInHistory;
 use App\Exceptions\OwnerCannotJoinOwnGameAsPlayer;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class History extends Model
 {
+    use HasFactory;
+
     /** @var array */
     protected $guarded = [];
 

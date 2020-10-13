@@ -15,8 +15,8 @@ class HistoryPolicyTest extends TestCase
     /** @test */
     public function ownerCanModifyGame(): void
     {
-        $owner = factory(User::class)->create();
-        $history = factory(History::class)->create(['owner_id' => $owner->id]);
+        $owner = User::factory()->create();
+        $history = History::factory()->create(['owner_id' => $owner->id]);
 
         $policy = new HistoryPolicy();
 
@@ -26,9 +26,9 @@ class HistoryPolicyTest extends TestCase
     /** @test */
     public function playerCanModifyGame(): void
     {
-        $player = factory(User::class)->create();
+        $player = User::factory()->create();
         /** @var History $history */
-        $history = factory(History::class)->create();
+        $history = History::factory()->create();
         $history->addPlayer($player);
 
         $policy = new HistoryPolicy();
@@ -39,8 +39,8 @@ class HistoryPolicyTest extends TestCase
     /** @test */
     public function everyoneElseCantModifyGame()
     {
-        $randomUser = factory(User::class)->create();
-        $history = factory(History::class)->create();
+        $randomUser = User::factory()->create();
+        $history = History::factory()->create();
 
         $policy = new HistoryPolicy();
 
