@@ -65,7 +65,11 @@
                             <a href="https://www.patreon.com/bePatron?u=4095316" data-patreon-widget-type="become-patron-button">Become a Patron!</a>
                         </p>
 
-                        <p>Or you can also <a href="https://www.buymeacoffee.com/utgar" target="_blank" rel="noreferrer noopener" class="text-indigo-700 font-semibold">buy me a coffee</a>.</p>
+                        <p class="mb-4 text-gray-700">Or you can also <a href="https://www.buymeacoffee.com/utgar" target="_blank" rel="noreferrer noopener" class="text-indigo-700 font-semibold">buy me a coffee</a>.</p>
+
+                        <p class="text-gray-700 mb-4">
+                            You can also <a href="https://github.com/sponsors/ksassnowski" target="_blank" rel="noreferrer noopener" class="text-indigo-700 font-semibold">sponsor me on GitHub</a>.
+                        </p>
                     </li>
 
                     <li class="mb-8">
