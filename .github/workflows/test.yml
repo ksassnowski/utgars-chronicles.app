@@ -55,9 +55,7 @@ jobs:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
 
   deploy:
-    on:
-      release:
-        types: [published]
+    if: contains(github.ref, 'master')
     needs: test
     runs-on: ubuntu-latest
     name: Deploy
