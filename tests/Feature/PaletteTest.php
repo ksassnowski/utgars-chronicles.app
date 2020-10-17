@@ -34,8 +34,8 @@ class PaletteTest extends TestCase
     {
         yield from [
             'add to palette' => ['post', '/histories/1/palette'],
-            'edit palette item' => ['put', '/palette/1'],
-            'delete palette item' => ['delete', '/palette/1'],
+            'edit palette item' => ['put', '/histories/1/palette/1'],
+            'delete palette item' => ['delete', '/histories/1/palette/1'],
         ];
     }
 
@@ -58,14 +58,14 @@ class PaletteTest extends TestCase
             ],
             'edit palette item' => [
                 ['name' => '::entry-name::', 'type' => PaletteType::NO],
-                fn (Palette $palette) => route('palette.update', $palette),
+                fn (Palette $palette) => route('palette.update', [$palette->history, $palette]),
                 'put',
                 200,
                 fn (History $history) => Palette::factory()->create(['history_id' => $history->id]),
             ],
             'delete palette item' => [
                 [],
-                fn (Palette $palette) => route('palette.delete', $palette),
+                fn (Palette $palette) => route('palette.delete', [$palette->history, $palette]),
                 'delete',
                 204,
                 fn (History $history) => Palette::factory()->create(['history_id' => $history->id]),
@@ -105,7 +105,7 @@ class PaletteTest extends TestCase
         $history = History::factory()->create();
         $item = $history->addToPalette('::old-name::', PaletteType::YES);
 
-        $response = $this->actingAs($history->owner)->putJson(route('palette.update', $item), [
+        $response = $this->actingAs($history->owner)->putJson(route('palette.update', [$history, $item]), [
             'name' => '::new-name::',
             'type' => PaletteType::NO,
         ]);
@@ -126,7 +126,8 @@ class PaletteTest extends TestCase
         $history = History::factory()->create();
         $item = $history->addToPalette('::old-name::', PaletteType::YES);
 
-        $response = $this->actingAs($history->owner)->deleteJson(route('palette.delete', $item));
+        $response = $this->actingAs($history->owner)
+            ->deleteJson(route('palette.delete', [$history, $item]));
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('palettes', [

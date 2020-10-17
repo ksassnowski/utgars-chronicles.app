@@ -22,7 +22,7 @@ class PaletteController extends Controller
         return response()->json([], 201);
     }
 
-    public function update(UpdatePaletteItemRequest $request, Palette $palette): JsonResponse
+    public function update(UpdatePaletteItemRequest $request, History $history, Palette $palette): JsonResponse
     {
         $palette->update($request->validated());
 
@@ -31,7 +31,7 @@ class PaletteController extends Controller
         return response()->json();
     }
 
-    public function destroy(Palette $palette): JsonResponse
+    public function destroy(History $history, Palette $palette): JsonResponse
     {
         $palette->delete();
 

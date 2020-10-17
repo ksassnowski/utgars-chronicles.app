@@ -60,11 +60,11 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.palette.store');
 
-    Route::put('palette/{palette}', [PaletteController::class, 'update'])
+    Route::put('histories/{history}/palette/{palette}', [PaletteController::class, 'update'])
         ->middleware('can:updatePalette,palette')
         ->name('palette.update');
 
-    Route::delete('palette/{palette}', [PaletteController::class, 'destroy'])
+    Route::delete('histories/{history}/palette/{palette}', [PaletteController::class, 'destroy'])
         ->middleware('can:deletePalette,palette')
         ->name('palette.delete');
 
