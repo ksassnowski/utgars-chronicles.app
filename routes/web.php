@@ -72,11 +72,11 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.legacies.store');
 
-    Route::put('legacies/{legacy}', 'Legacy\UpdateLegacyController')
+    Route::put('histories/{history}/legacies/{legacy}', 'Legacy\UpdateLegacyController')
         ->middleware('can:updateLegacy,legacy')
         ->name('legacies.update');
 
-    Route::delete('legacies/{legacy}', 'Legacy\DeleteLegacyController')
+    Route::delete('histories/{history}/legacies/{legacy}', 'Legacy\DeleteLegacyController')
         ->middleware('can:deleteLegacy,legacy')
         ->name('legacies.delete');
 
