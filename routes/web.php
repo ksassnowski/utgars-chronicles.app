@@ -84,11 +84,11 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.focus.define');
 
-    Route::put('focus/{focus}', 'Focus\UpdateFocusController')
+    Route::put('histories/{history}/focus/{focus}', 'Focus\UpdateFocusController')
         ->middleware('can:editFocus,focus')
         ->name('focus.update');
 
-    Route::delete('focus/{focus}', 'Focus\DeleteFocusController')
+    Route::delete('histories/{history}/focus/{focus}', 'Focus\DeleteFocusController')
         ->middleware('can:deleteFocus,focus')
         ->name('focus.delete');
 
