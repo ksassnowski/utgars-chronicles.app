@@ -103,7 +103,7 @@ export default {
 
             const promise = this.form.id === null
                 ? axios.post(this.$route('history.focus.define', this.historyId), this.form)
-                : axios.put(this.$route('focus.update', this.form.id), this.form);
+                : axios.put(this.$route('focus.update', [this.historyId, this.form.id]), this.form);
 
             promise.then(() => {
                 this.loading = false;
@@ -122,8 +122,8 @@ export default {
                 return;
             }
 
-            axios.delete(this.$route('focus.delete', this.form.id))
-                .then( this.close);
+            axios.delete(this.$route('focus.delete', [this.historyId, this.form.id]))
+                .then(this.close);
         },
 
         reset() {

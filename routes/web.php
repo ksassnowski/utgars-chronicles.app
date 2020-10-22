@@ -106,7 +106,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('histories/{history}/periods/{period:id}/move', 'History\MovePeriodController')
         ->middleware('can:modifyGame,history')
-        ->name('history.periods.move');
+        ->name('periods.move');
 
     Route::post('histories/{history}/periods/{period:id}/events', 'Period\CreateEventController')
         ->middleware('can:createEvent,period')

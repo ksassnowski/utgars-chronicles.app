@@ -154,6 +154,12 @@ export default {
         };
     },
 
+    provide() {
+        return {
+            history: this.history,
+        };
+    },
+
     computed: {
         lastPosition() {
             if (this.orderedPeriods.length === 0) {
@@ -295,7 +301,7 @@ export default {
 
             this.updatePeriodPositions({ id: element.id, position: newIndex + 1 });
 
-            axios.post(`/histories/${this.history.id}/periods/${element.id}/move`, {
+            axios.post(this.$route('periods.move', [this.history, element]), {
                 position: newIndex + 1,
             }).catch(console.error);
         },
@@ -303,7 +309,7 @@ export default {
         onEventMoved({ period, event, position }) {
             this.updateEventPositions({ id: event.id, position, period: period.id});
 
-            axios.post(this.$route('events.move', event), {
+            axios.post(this.$route('events.move', [this.history, event]), {
                 position: position,
             }).catch(console.error);
         },
@@ -316,7 +322,7 @@ export default {
                 position,
             });
 
-            axios.post(this.$route('scenes.move', scene), {
+            axios.post(this.$route('scenes.move', [this.history, scene]), {
                 position: position,
             }).catch(console.error);
         },

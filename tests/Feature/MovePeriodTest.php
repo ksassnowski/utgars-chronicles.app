@@ -180,7 +180,7 @@ class MovePeriodTest extends TestCase
             'position' => 1
         ]);
 
-        $this->login()->postJson(route('history.periods.move', [$this->history, $period]), [
+        $this->login()->postJson(route('periods.move', [$this->history, $period]), [
             'position' => 2,
         ]);
 
@@ -198,7 +198,7 @@ class MovePeriodTest extends TestCase
             'position' => 1
         ]);
 
-        $response = $this->login()->postJson(route('history.periods.move', [$this->history, $period]), $payload);
+        $response = $this->login()->postJson(route('periods.move', [$this->history, $period]), $payload);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('position');
@@ -223,7 +223,7 @@ class MovePeriodTest extends TestCase
             'position' => 1
         ]);
 
-        $response = $this->actingAs($otherUser)->postJson(route('history.periods.move', [$this->history, $period]), [
+        $response = $this->actingAs($otherUser)->postJson(route('periods.move', [$this->history, $period]), [
             'position' => 2,
         ]);
 
@@ -236,7 +236,7 @@ class MovePeriodTest extends TestCase
             'move period' => [
                 'post',
                 fn () => Period::factory()->create(),
-                fn (History $history, Period $period) => route('history.periods.move', [$history, $period]),
+                fn (History $history, Period $period) => route('periods.move', [$history, $period]),
             ]
         ];
     }
