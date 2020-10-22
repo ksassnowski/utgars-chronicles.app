@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Event;
 
 use App\Event;
+use App\History;
 use App\Events\BoardUpdated;
+use Illuminate\Http\JsonResponse;
 use App\Http\Requests\MoveEventRequest;
 
 final class MoveEventController
 {
-    public function __invoke(MoveEventRequest $request, Event $event)
+    public function __invoke(MoveEventRequest $request, History $history, Event $event): JsonResponse
     {
         $event->move($request->position());
 

@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Event;
 
 use App\Event;
+use App\History;
 use App\Events\BoardUpdated;
 use Illuminate\Http\JsonResponse;
 
 final class DeleteEventController
 {
-    public function __invoke(Event $event): JsonResponse
+    public function __invoke(History $history, Event $event): JsonResponse
     {
         $event->delete();
 

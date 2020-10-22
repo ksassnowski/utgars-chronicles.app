@@ -108,19 +108,19 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.periods.move');
 
-    Route::post('periods/{period}/events', 'Period\CreateEventController')
+    Route::post('histories/{history}/periods/{period:id}/events', 'Period\CreateEventController')
         ->middleware('can:createEvent,period')
         ->name('periods.events.store');
 
-    Route::put('events/{event}', 'Event\UpdateEventController')
+    Route::put('histories/{history}/events/{event:id}', 'Event\UpdateEventController')
         ->middleware('can:updateEvent,event')
         ->name('events.update');
 
-    Route::post('events/{event}/move', 'Event\MoveEventController')
+    Route::post('histories/{history}/events/{event:id}/move', 'Event\MoveEventController')
         ->middleware('can:moveEvent,event')
         ->name('events.move');
 
-    Route::delete('events/{event}', 'Event\DeleteEventController')
+    Route::delete('histories/{history}/events/{event:id}', 'Event\DeleteEventController')
         ->middleware('can:deleteEvent,event')
         ->name('events.delete');
 
