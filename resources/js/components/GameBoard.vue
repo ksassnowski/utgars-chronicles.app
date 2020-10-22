@@ -74,14 +74,14 @@
                 <FocusTracker
                     class="w-1/4 px-4"
                     :channel="channelName"
-                    :foci="history.focus"
+                    :foci="history.foci"
                     :history-id="history.id"
                 />
 
                 <Palette
                     class="w-1/3 px-4"
                     :channel="channelName"
-                    :palette="history.palette"
+                    :palette="history.palettes"
                     :history-id="history.id"
                 />
 

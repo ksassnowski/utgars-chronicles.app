@@ -6,6 +6,7 @@ use App\Focus;
 use Generator;
 use App\History;
 use Tests\TestCase;
+use Tests\ScopedRouteTest;
 use App\Events\FocusDefined;
 use App\Events\FocusDeleted;
 use App\Events\FocusUpdated;
@@ -21,7 +22,7 @@ use App\Http\Controllers\History\DefineFocusController;
 
 class FocusTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest, ValidateRoutesTest;
+    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest, ValidateRoutesTest, ScopedRouteTest;
 
     protected function setUp(): void
     {
@@ -94,7 +95,7 @@ class FocusTest extends TestCase
 
         $response->assertStatus(201);
         $history->refresh();
-        $this->assertTrue($history->focus->contains('name', '::focus-name::'));
+        $this->assertTrue($history->foci->contains('name', '::focus-name::'));
         Event::assertDispatched(
             FocusDefined::class,
             fn (FocusDefined $e) => $e->history->id === $history->id && $e->focus->name === '::focus-name::'
@@ -137,5 +138,21 @@ class FocusTest extends TestCase
             FocusDeleted::class,
             fn (FocusDeleted $e) => $e->history->id === $history->id && $e->focusId === $focus->id
         );
+    }
+
+    public function scopedRouteProvider(): Generator
+    {
+        yield from [
+            'update focus' => [
+                'put',
+                fn () => Focus::factory()->create(),
+                fn (History $history, Focus $focus) => route('focus.update', [$history, $focus]),
+            ],
+            'delete focus' => [
+                'delete',
+                fn () => Focus::factory()->create(),
+                fn (History $history, Focus $focus) => route('focus.delete', [$history, $focus]),
+            ],
+        ];
     }
 }

@@ -6,6 +6,7 @@ use Generator;
 use App\Legacy;
 use App\History;
 use Tests\TestCase;
+use Tests\ScopedRouteTest;
 use App\Events\LegacyCreated;
 use App\Events\LegacyDeleted;
 use App\Events\LegacyUpdated;
@@ -21,7 +22,7 @@ use App\Http\Controllers\Legacy\UpdateLegacyController;
 
 class LegacyTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest, ValidateRoutesTest;
+    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest, ValidateRoutesTest, ScopedRouteTest;
 
     protected function setUp(): void
     {
@@ -138,6 +139,22 @@ class LegacyTest extends TestCase
                 '__invoke',
                 UpdateLegacyRequest::class,
             ]
+        ];
+    }
+
+    public function scopedRouteProvider(): Generator
+    {
+        yield from [
+            'update legacy' => [
+                'put',
+                fn () => Legacy::factory()->create(),
+                fn (History $history, Legacy $legacy) => route('legacies.update', [$history, $legacy]),
+            ],
+            'delete legacy' => [
+                'delete',
+                fn () => Legacy::factory()->create(),
+                fn (History $history, Legacy $legacy) => route('legacies.delete', [$history, $legacy]),
+            ],
         ];
     }
 }

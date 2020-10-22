@@ -60,11 +60,11 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.palette.store');
 
-    Route::put('histories/{history}/palette/{palette}', [PaletteController::class, 'update'])
+    Route::put('histories/{history}/palette/{palette:id}', [PaletteController::class, 'update'])
         ->middleware('can:updatePalette,palette')
         ->name('palette.update');
 
-    Route::delete('histories/{history}/palette/{palette}', [PaletteController::class, 'destroy'])
+    Route::delete('histories/{history}/palette/{palette:id}', [PaletteController::class, 'destroy'])
         ->middleware('can:deletePalette,palette')
         ->name('palette.delete');
 
@@ -72,11 +72,11 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.legacies.store');
 
-    Route::put('histories/{history}/legacies/{legacy}', 'Legacy\UpdateLegacyController')
+    Route::put('histories/{history}/legacies/{legacy:id}', 'Legacy\UpdateLegacyController')
         ->middleware('can:updateLegacy,legacy')
         ->name('legacies.update');
 
-    Route::delete('histories/{history}/legacies/{legacy}', 'Legacy\DeleteLegacyController')
+    Route::delete('histories/{history}/legacies/{legacy:id}', 'Legacy\DeleteLegacyController')
         ->middleware('can:deleteLegacy,legacy')
         ->name('legacies.delete');
 
@@ -84,11 +84,11 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.focus.define');
 
-    Route::put('histories/{history}/focus/{focus}', 'Focus\UpdateFocusController')
+    Route::put('histories/{history}/focus/{focus:id}', 'Focus\UpdateFocusController')
         ->middleware('can:editFocus,focus')
         ->name('focus.update');
 
-    Route::delete('histories/{history}/focus/{focus}', 'Focus\DeleteFocusController')
+    Route::delete('histories/{history}/focus/{focus:id}', 'Focus\DeleteFocusController')
         ->middleware('can:deleteFocus,focus')
         ->name('focus.delete');
 

@@ -7,6 +7,7 @@ use App\History;
 use App\Palette;
 use Tests\TestCase;
 use App\PaletteType;
+use Tests\ScopedRouteTest;
 use Tests\ValidateRoutesTest;
 use Tests\AuthorizeHistoryTest;
 use App\Events\ItemAddedToPalette;
@@ -21,7 +22,7 @@ use App\Http\Requests\Palette\UpdatePaletteItemRequest;
 
 class PaletteTest extends TestCase
 {
-    use RefreshDatabase, AuthorizeHistoryTest, AuthenticatedRoutesTest, ValidateRoutesTest;
+    use RefreshDatabase, AuthorizeHistoryTest, AuthenticatedRoutesTest, ValidateRoutesTest, ScopedRouteTest;
 
     protected function setUp(): void
     {
@@ -137,5 +138,21 @@ class PaletteTest extends TestCase
             PaletteItemDeleted::class,
             fn (PaletteItemDeleted $event) => $event->itemId === $item->id && $event->history->id === $history->id
         );
+    }
+
+    public function scopedRouteProvider(): Generator
+    {
+        yield from [
+            'update palette' => [
+                'put',
+                fn () => Palette::factory()->create(),
+                fn (History $history, Palette $palette) => route('palette.update', [$history, $palette]),
+            ],
+            'delete palette' => [
+                'delete',
+                fn () => Palette::factory()->create(),
+                fn (History $history, Palette $palette) => route('palette.delete', [$history, $palette]),
+            ]
+        ];
     }
 }
