@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
     <title>{{ config('app.name') }} - Play Microscope Online</title>
+
+    <script src="https://cdn.usefathom.com/script.js" data-site="RHQXBEGX" defer></script>
 </head>
 <body class="flex flex-col h-full antialiased">
     <main class="flex-1">
