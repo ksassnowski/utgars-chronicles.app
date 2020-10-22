@@ -7,13 +7,14 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
+use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MovePeriodTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, ScopedRouteTest;
 
     private History $history;
 
@@ -227,5 +228,16 @@ class MovePeriodTest extends TestCase
         ]);
 
         $response->assertForbidden();
+    }
+
+    public function scopedRouteProvider(): Generator
+    {
+        yield from [
+            'move period' => [
+                'post',
+                fn () => Period::factory()->create(),
+                fn (History $history, Period $period) => route('history.periods.move', [$history, $period]),
+            ]
+        ];
     }
 }

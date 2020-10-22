@@ -12,8 +12,8 @@ class History extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'periods' => Period::collection($this->periods),
-            'foci' => Focus::collection($this->focus),
-            'palette' => Palette::collection($this->palette),
+            'foci' => Focus::collection($this->foci),
+            'palette' => Palette::collection($this->palettes),
             'legacies' => Legacy::collection($this->legacies),
         ];
     }

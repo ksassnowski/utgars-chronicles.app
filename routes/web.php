@@ -96,15 +96,15 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.periods.store');
 
-    Route::put('periods/{period}', 'Period\UpdatePeriodController')
+    Route::put('histories/{history}/periods/{period:id}', 'Period\UpdatePeriodController')
         ->middleware('can:updatePeriod,period')
         ->name('periods.update');
 
-    Route::delete('periods/{period}', 'Period\DeletePeriodController')
+    Route::delete('histories/{history}/periods/{period:id}', 'Period\DeletePeriodController')
         ->middleware('can:deletePeriod,period')
         ->name('periods.delete');
 
-    Route::post('histories/{history}/periods/{period}/move', 'History\MovePeriodController')
+    Route::post('histories/{history}/periods/{period:id}/move', 'History\MovePeriodController')
         ->middleware('can:modifyGame,history')
         ->name('history.periods.move');
 
