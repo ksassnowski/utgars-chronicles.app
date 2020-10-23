@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Type;
 use App\Event;
 use App\Scene;
+use App\History;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SceneFactory extends Factory
@@ -30,6 +31,7 @@ class SceneFactory extends Factory
             'type' => $this->faker->randomElement([Type::LIGHT, Type::DARK]),
             'position' => 1,
             'event_id' => Event::factory(),
+            'history_id' => History::factory(),
         ];
     }
 }
