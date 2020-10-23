@@ -136,7 +136,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:deleteScene,scene')
         ->name('scenes.delete');
 
-    Route::post('scenes/{scene}/move', 'Scene\MoveSceneController')
+    Route::post('/histories/{history}/scenes/{scene:id}/move', 'Scene\MoveSceneController')
         ->middleware('can:moveScene,scene')
         ->name('scenes.move');
 });
