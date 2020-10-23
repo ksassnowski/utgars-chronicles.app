@@ -56,18 +56,6 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.update-seed');
 
-    Route::post('histories/{history}/legacies', 'Legacy\CreateLegacyController')
-        ->middleware('can:modifyGame,history')
-        ->name('history.legacies.store');
-
-    Route::put('histories/{history}/legacies/{legacy:id}', 'Legacy\UpdateLegacyController')
-        ->middleware('can:updateLegacy,legacy')
-        ->name('legacies.update');
-
-    Route::delete('histories/{history}/legacies/{legacy:id}', 'Legacy\DeleteLegacyController')
-        ->middleware('can:deleteLegacy,legacy')
-        ->name('legacies.delete');
-
     Route::post('histories/{history}/focus', 'History\DefineFocusController')
         ->middleware('can:modifyGame,history')
         ->name('history.focus.define');
@@ -122,6 +110,15 @@ Route::group(['middleware' => 'microscope'], function () {
 
     Route::delete('histories/{history}/palette/{palette:id}', [PaletteController::class, 'destroy'])
         ->name('palette.delete');
+
+    Route::post('histories/{history}/legacies', 'Legacy\CreateLegacyController')
+        ->name('history.legacies.store');
+
+    Route::put('histories/{history}/legacies/{legacy:id}', 'Legacy\UpdateLegacyController')
+        ->name('legacies.update');
+
+    Route::delete('histories/{history}/legacies/{legacy:id}', 'Legacy\DeleteLegacyController')
+        ->name('legacies.delete');
 
     Route::post('histories/{history}/periods', 'History\CreatePeriodController')
         ->name('history.periods.store');

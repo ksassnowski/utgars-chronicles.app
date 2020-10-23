@@ -94,9 +94,21 @@ class LegacyTest extends TestCase
     public function authenticatedRoutesProvider(): Generator
     {
         yield from [
-            'create legacy' => ['post', '/histories/1/legacies'],
-            'update legacy' => ['put', '/histories/1/legacies/1'],
-            'delete legacy' => ['delete', '/histories/1/legacies/1'],
+            'create legacy' => [
+                'post',
+                fn (History $history) => route('history.legacies.store', $history),
+                fn () => History::factory()->create(),
+            ],
+            'update legacy' => [
+                'put',
+                fn (Legacy $legacy) => route('legacies.update', [$legacy->history, $legacy]),
+                fn () => Legacy::factory()->create(),
+            ],
+            'delete legacy' => [
+                'delete',
+                fn (Legacy $legacy) => route('legacies.delete', [$legacy->history, $legacy]),
+                fn () => Legacy::factory()->create(),
+            ],
         ];
     }
 
