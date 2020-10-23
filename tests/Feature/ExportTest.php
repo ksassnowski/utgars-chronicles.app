@@ -35,7 +35,11 @@ class ExportTest extends TestCase
     public function authenticatedRoutesProvider(): Generator
     {
         yield from [
-            'download export' => ['GET', '/histories/1/export'],
+            'download export' => [
+                'get',
+                fn (History $history) => route('history.export', $history),
+                fn () => History::factory()->create(),
+            ],
         ];
     }
 

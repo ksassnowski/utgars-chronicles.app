@@ -72,7 +72,11 @@ class HistoryTest extends TestCase
     {
         yield from [
             'create history' => ['post', '/histories'],
-            'update seed' => ['patch', '/histories/1/seed'],
+            'update seed' => [
+                'patch',
+                fn (History $history) => route('history.update-seed', $history),
+                fn () => History::factory()->create(),
+            ],
             'delete history' => ['delete', '/histories/1'],
         ];
     }

@@ -27,11 +27,6 @@ class HistoryPolicy
         return $this->ownsHistory($user, $history);
     }
 
-    public function modifyGame(User $user, History $history): bool
-    {
-        return $this->ownsHistory($user, $history) || $this->isPlayer($user, $history);
-    }
-
     public function kickPlayer(User $user, History $history): bool
     {
         return $this->ownsHistory($user, $history);

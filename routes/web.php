@@ -19,6 +19,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('games/{game}', 'History\ShowGameController')
         ->middleware('can:showGame,game')
         ->name('user.games.show');
+
     Route::delete('games/{game}', 'History\LeaveGameController')
         ->name('user.games.leave');
 
@@ -39,41 +40,21 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('histories/{history}', 'History\DeleteHistoryController')
         ->middleware('can:deleteHistory,history')
         ->name('history.delete');
-
-    Route::get('histories/{history}/export', 'History\ExportController')
-        ->middleware('can:modifyGame,history')
-        ->name('history.export');
-
-    Route::get('histories/{history}/sync', 'History\BoardController')
-        ->middleware('can:modifyGame,history')
-        ->name('history.sync');
-
-    Route::get('histories/{history}/play', 'History\GameController')
-        ->middleware('can:modifyGame,history')
-        ->name('history.play');
-
-    Route::patch('histories/{history}/seed', 'History\UpdateSeedController')
-        ->middleware('can:modifyGame,history')
-        ->name('history.update-seed');
-
-    Route::post('histories/{history}/events/{event:id}/scenes', 'Event\CreateSceneController')
-        ->middleware('can:createScene,event')
-        ->name('events.scenes.store');
-
-    Route::put('histories/{history}/scenes/{scene:id}', 'Scene\UpdateSceneController')
-        ->middleware('can:updateScene,scene')
-        ->name('scenes.update');
-
-    Route::delete('histories/{history}/scenes/{scene:id}', 'Scene\DeleteSceneController')
-        ->middleware('can:deleteScene,scene')
-        ->name('scenes.delete');
-
-    Route::post('/histories/{history}/scenes/{scene:id}/move', 'Scene\MoveSceneController')
-        ->middleware('can:moveScene,scene')
-        ->name('scenes.move');
 });
 
 Route::group(['middleware' => 'microscope'], function () {
+    Route::get('histories/{history}/export', 'History\ExportController')
+        ->name('history.export');
+
+    Route::get('histories/{history}/sync', 'History\BoardController')
+        ->name('history.sync');
+
+    Route::get('histories/{history}/play', 'History\GameController')
+        ->name('history.play');
+
+    Route::patch('histories/{history}/seed', 'History\UpdateSeedController')
+        ->name('history.update-seed');
+
     Route::post('histories/{history}/palette', [PaletteController::class, 'store'])
         ->name('history.palette.store');
 
@@ -124,4 +105,16 @@ Route::group(['middleware' => 'microscope'], function () {
 
     Route::delete('histories/{history}/events/{event:id}', 'Event\DeleteEventController')
         ->name('events.delete');
+
+    Route::post('histories/{history}/events/{event:id}/scenes', 'Event\CreateSceneController')
+        ->name('events.scenes.store');
+
+    Route::put('histories/{history}/scenes/{scene:id}', 'Scene\UpdateSceneController')
+        ->name('scenes.update');
+
+    Route::delete('histories/{history}/scenes/{scene:id}', 'Scene\DeleteSceneController')
+        ->name('scenes.delete');
+
+    Route::post('/histories/{history}/scenes/{scene:id}/move', 'Scene\MoveSceneController')
+        ->name('scenes.move');
 });

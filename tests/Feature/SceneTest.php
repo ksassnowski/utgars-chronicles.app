@@ -102,9 +102,21 @@ class SceneTest extends TestCase
     public function authenticatedRoutesProvider(): Generator
     {
         yield from [
-            'create scene' => ['post', '/histories/1/events/1/scenes'],
-            'update scene' => ['put', '/histories/1/scenes/1'],
-            'delete scene' => ['delete', '/histories/1/scenes/1'],
+            'create scene' => [
+                'post',
+                fn (Event $event) => route('events.scenes.store', [$event->history, $event]),
+                fn () => Event::factory()->create(),
+            ],
+            'update scene' => [
+                'put',
+                fn (Scene $scene) => route('scenes.update', [$scene->history, $scene]),
+                fn () => Scene::factory()->create(),
+            ],
+            'delete scene' => [
+                'delete',
+                fn (Scene $scene) => route('scenes.delete', [$scene->history, $scene]),
+                fn () => Scene::factory()->create(),
+            ],
         ];
     }
 
