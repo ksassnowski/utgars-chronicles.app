@@ -56,22 +56,6 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.update-seed');
 
-    Route::post('histories/{history}/periods/{period:id}/events', 'Period\CreateEventController')
-        ->middleware('can:createEvent,period')
-        ->name('periods.events.store');
-
-    Route::put('histories/{history}/events/{event:id}', 'Event\UpdateEventController')
-        ->middleware('can:updateEvent,event')
-        ->name('events.update');
-
-    Route::post('histories/{history}/events/{event:id}/move', 'Event\MoveEventController')
-        ->middleware('can:moveEvent,event')
-        ->name('events.move');
-
-    Route::delete('histories/{history}/events/{event:id}', 'Event\DeleteEventController')
-        ->middleware('can:deleteEvent,event')
-        ->name('events.delete');
-
     Route::post('histories/{history}/events/{event:id}/scenes', 'Event\CreateSceneController')
         ->middleware('can:createScene,event')
         ->name('events.scenes.store');
@@ -128,4 +112,16 @@ Route::group(['middleware' => 'microscope'], function () {
 
     Route::post('histories/{history}/periods/{period:id}/move', 'History\MovePeriodController')
         ->name('periods.move');
+
+    Route::post('histories/{history}/periods/{period:id}/events', 'Period\CreateEventController')
+        ->name('periods.events.store');
+
+    Route::put('histories/{history}/events/{event:id}', 'Event\UpdateEventController')
+        ->name('events.update');
+
+    Route::post('histories/{history}/events/{event:id}/move', 'Event\MoveEventController')
+        ->name('events.move');
+
+    Route::delete('histories/{history}/events/{event:id}', 'Event\DeleteEventController')
+        ->name('events.delete');
 });

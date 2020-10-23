@@ -36,9 +36,21 @@ class EventTest extends TestCase
     public function authenticatedRoutesProvider()
     {
         yield from [
-            'create event' => ['post', '/histories/1/periods/1/events'],
-            'update event' => ['put', '/histories/1/events/1'],
-            'delete event' => ['delete', '/histories/1/events/1'],
+            'create event' => [
+                'post',
+                fn (Period $period) => route('periods.events.store', [$period->history, $period]),
+                fn () => Period::factory()->create(),
+            ],
+            'update event' => [
+                'put',
+                fn (Event $event) => route('events.update', [$event->history, $event]),
+                fn () => Event::factory()->create(),
+            ],
+            'delete event' => [
+                'delete',
+                fn (Event $event) => route('events.delete', [$event->history, $event]),
+                fn () => Event::factory()->create(),
+            ],
         ];
     }
 
