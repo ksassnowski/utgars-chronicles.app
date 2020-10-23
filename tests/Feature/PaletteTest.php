@@ -34,9 +34,22 @@ class PaletteTest extends TestCase
     public function authenticatedRoutesProvider(): Generator
     {
         yield from [
-            'add to palette' => ['post', '/histories/1/palette'],
-            'edit palette item' => ['put', '/histories/1/palette/1'],
-            'delete palette item' => ['delete', '/histories/1/palette/1'],
+            'add to palette' => [
+                'post',
+                fn (History $history) => route('history.palette.store', $history),
+                fn () => History::factory()->create(),
+            ],
+            'edit palette item' => [
+                'put',
+                fn (Palette $palette) => route('palette.update', [$palette->history, $palette]),
+                fn () => Palette::factory()->create(),
+            ],
+            'delete palette item' => [
+                'delete',
+                fn (Palette $palette) => route('palette.delete', [$palette->history, $palette]),
+                fn () => Palette::factory()->create(),
+                'delete',
+            ],
         ];
     }
 

@@ -56,18 +56,6 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.update-seed');
 
-    Route::post('histories/{history}/palette', [PaletteController::class, 'store'])
-        ->middleware('can:modifyGame,history')
-        ->name('history.palette.store');
-
-    Route::put('histories/{history}/palette/{palette:id}', [PaletteController::class, 'update'])
-        ->middleware('can:updatePalette,palette')
-        ->name('palette.update');
-
-    Route::delete('histories/{history}/palette/{palette:id}', [PaletteController::class, 'destroy'])
-        ->middleware('can:deletePalette,palette')
-        ->name('palette.delete');
-
     Route::post('histories/{history}/legacies', 'Legacy\CreateLegacyController')
         ->middleware('can:modifyGame,history')
         ->name('history.legacies.store');
@@ -126,6 +114,15 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 Route::group(['middleware' => 'microscope'], function () {
+    Route::post('histories/{history}/palette', [PaletteController::class, 'store'])
+        ->name('history.palette.store');
+
+    Route::put('histories/{history}/palette/{palette:id}', [PaletteController::class, 'update'])
+        ->name('palette.update');
+
+    Route::delete('histories/{history}/palette/{palette:id}', [PaletteController::class, 'destroy'])
+        ->name('palette.delete');
+
     Route::post('histories/{history}/periods', 'History\CreatePeriodController')
         ->name('history.periods.store');
 
