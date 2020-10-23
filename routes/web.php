@@ -124,11 +124,11 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:deleteEvent,event')
         ->name('events.delete');
 
-    Route::post('events/{event}/scenes', 'Event\CreateSceneController')
+    Route::post('histories/{history}/events/{event:id}/scenes', 'Event\CreateSceneController')
         ->middleware('can:createScene,event')
         ->name('events.scenes.store');
 
-    Route::put('scenes/{scene}', 'Scene\UpdateSceneController')
+    Route::put('histories/{history}/scenes/{scene:id}', 'Scene\UpdateSceneController')
         ->middleware('can:updateScene,scene')
         ->name('scenes.update');
 

@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Scene;
 
 use App\Scene;
+use App\History;
 use App\Events\BoardUpdated;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\History\UpdateSceneRequest;
 
 final class UpdateSceneController
 {
-    public function __invoke(UpdateSceneRequest $request, Scene $scene): JsonResponse
+    public function __invoke(UpdateSceneRequest $request, History $history, Scene $scene): JsonResponse
     {
         $scene->update($request->validated());
 
