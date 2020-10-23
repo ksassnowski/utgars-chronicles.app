@@ -125,7 +125,6 @@ class EventTest extends TestCase
     /** @test */
     public function updateEvent(): void
     {
-        $this->withoutExceptionHandling();
         $event = Event::factory()->create([
             'period_id' => $this->period->id,
             'name' => '::old-name::',
