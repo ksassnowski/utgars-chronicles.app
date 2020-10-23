@@ -7,13 +7,12 @@ use App\History;
 use App\Palette;
 use Tests\TestCase;
 use App\PaletteType;
+use Tests\GameRouteTest;
 use Tests\ScopedRouteTest;
 use Tests\ValidateRoutesTest;
-use Tests\AuthorizeHistoryTest;
 use App\Events\ItemAddedToPalette;
 use App\Events\PaletteItemDeleted;
 use App\Events\PaletteItemUpdated;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Support\Facades\Event;
 use App\Http\Controllers\PaletteController;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,7 +21,7 @@ use App\Http\Requests\Palette\UpdatePaletteItemRequest;
 
 class PaletteTest extends TestCase
 {
-    use RefreshDatabase, AuthorizeHistoryTest, AuthenticatedRoutesTest, ValidateRoutesTest, ScopedRouteTest;
+    use RefreshDatabase, ValidateRoutesTest, ScopedRouteTest, GameRouteTest;
 
     protected function setUp(): void
     {
@@ -31,59 +30,11 @@ class PaletteTest extends TestCase
         Event::fake();
     }
 
-    public function authenticatedRoutesProvider(): Generator
-    {
-        yield from [
-            'add to palette' => [
-                'post',
-                fn (History $history) => route('history.palette.store', $history),
-                fn () => History::factory()->create(),
-            ],
-            'edit palette item' => [
-                'put',
-                fn (Palette $palette) => route('palette.update', [$palette->history, $palette]),
-                fn () => Palette::factory()->create(),
-            ],
-            'delete palette item' => [
-                'delete',
-                fn (Palette $palette) => route('palette.delete', [$palette->history, $palette]),
-                fn () => Palette::factory()->create(),
-                'delete',
-            ],
-        ];
-    }
-
     public function validationProvider(): Generator
     {
         yield from [
             'add to palette' => [PaletteController::class, 'store', CreatePaletteItemRequest::class],
             'edit palette item' => [PaletteController::class, 'update', UpdatePaletteItemRequest::class],
-        ];
-    }
-
-    public function authorizationProvider(): Generator
-    {
-        yield from [
-            'add item to palette' => [
-                ['name' => '::entry-name::', 'type' => PaletteType::NO],
-                fn (History $history) => route('history.palette.store', $history),
-                'post',
-                201,
-            ],
-            'edit palette item' => [
-                ['name' => '::entry-name::', 'type' => PaletteType::NO],
-                fn (Palette $palette) => route('palette.update', [$palette->history, $palette]),
-                'put',
-                200,
-                fn (History $history) => Palette::factory()->create(['history_id' => $history->id]),
-            ],
-            'delete palette item' => [
-                [],
-                fn (Palette $palette) => route('palette.delete', [$palette->history, $palette]),
-                'delete',
-                204,
-                fn (History $history) => Palette::factory()->create(['history_id' => $history->id]),
-            ],
         ];
     }
 
@@ -167,5 +118,12 @@ class PaletteTest extends TestCase
                 fn (History $history, Palette $palette) => route('palette.delete', [$history, $palette]),
             ]
         ];
+    }
+
+    public function gameRouteProvider(): Generator
+    {
+        yield ['history.palette.store'];
+        yield ['palette.update'];
+        yield ['palette.delete'];
     }
 }

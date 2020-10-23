@@ -8,16 +8,15 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
+use Tests\GameRouteTest;
 use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
-use Tests\AuthorizeHistoryTest;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event as EventFacade;
 
 class EventTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest, ScopedRouteTest;
+    use RefreshDatabase, ScopedRouteTest, GameRouteTest;
 
     private Period $period;
 
@@ -31,66 +30,6 @@ class EventTest extends TestCase
 
         $this->period = Period::factory()->create();
         $this->user = $this->period->history->owner;
-    }
-
-    public function authenticatedRoutesProvider()
-    {
-        yield from [
-            'create event' => [
-                'post',
-                fn (Period $period) => route('periods.events.store', [$period->history, $period]),
-                fn () => Period::factory()->create(),
-            ],
-            'update event' => [
-                'put',
-                fn (Event $event) => route('events.update', [$event->history, $event]),
-                fn () => Event::factory()->create(),
-            ],
-            'delete event' => [
-                'delete',
-                fn (Event $event) => route('events.delete', [$event->history, $event]),
-                fn () => Event::factory()->create(),
-            ],
-        ];
-    }
-
-    public function authorizationProvider(): Generator
-    {
-        yield from [
-            'create event' => [
-                ['name' => '::event-name::', 'type' => Type::DARK, 'position' => 1],
-                fn (Period $period) => route('periods.events.store', [$period->history, $period]),
-                'POST',
-                201,
-                fn (History $history) => Period::factory()->create(['history_id' => $history->id]),
-            ],
-            'edit event' => [
-                ['name' => '::event-name::', 'type' => Type::DARK],
-                fn (Event $event) => route('events.update', [$event->period->history, $event]),
-                'put',
-                200,
-                function (History $history) {
-                    $period = Period::factory()->create(['history_id' => $history->id]);
-                    return Event::factory()->create([
-                        'period_id' => $period->id,
-                        'history_id' => $period->history_id,
-                    ]);
-                },
-            ],
-            'delete event' => [
-                [],
-                fn (Event $event) => route('events.delete', [$event->period->history, $event]),
-                'delete',
-                204,
-                function (History $history) {
-                    $period = Period::factory()->create(['history_id' => $history->id]);
-                    return Event::factory()->create([
-                        'period_id' => $period->id,
-                        'history_id' => $period->history_id,
-                    ]);
-                },
-            ]
-        ];
     }
 
     /** @test */
@@ -257,5 +196,13 @@ class EventTest extends TestCase
                 fn (History $history, Event $event) => route('events.delete', [$history, $event]),
             ],
         ];
+    }
+
+    public function gameRouteProvider(): Generator
+    {
+        yield ['periods.events.store'];
+        yield ['events.update'];
+        yield ['events.delete'];
+        yield ['events.move'];
     }
 }

@@ -9,11 +9,10 @@ use Generator;
 use App\History;
 use function route;
 use Tests\TestCase;
+use Tests\GameRouteTest;
 use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
 use Tests\ValidateRoutesTest;
-use Tests\AuthorizeHistoryTest;
-use Tests\AuthenticatedRoutesTest;
 use App\Http\Requests\History\CreateSceneRequest;
 use App\Http\Requests\History\UpdateSceneRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,7 +22,7 @@ use App\Http\Controllers\Scene\UpdateSceneController;
 
 class SceneTest extends TestCase
 {
-    use RefreshDatabase, ScopedRouteTest, AuthorizeHistoryTest, AuthenticatedRoutesTest, ValidateRoutesTest;
+    use RefreshDatabase, ScopedRouteTest, GameRouteTest, ValidateRoutesTest;
 
     private Event $event;
 
@@ -57,66 +56,6 @@ class SceneTest extends TestCase
                 fn () => Scene::factory()->create(),
                 fn (History $history, Scene $scene) => route('scenes.delete', [$history, $scene]),
             ]
-        ];
-    }
-
-    public function authorizationProvider(): Generator
-    {
-        yield from [
-            'create scene' => [
-                [
-                    'question' => '::question::',
-                    'scene' => '::scene::',
-                    'answer' => '::answer::',
-                    'type' => Type::DARK,
-                    'position' => 1,
-                ],
-                fn (Event $event) => route('events.scenes.store', [$event->history, $event]),
-                'post',
-                201,
-                fn (History $history) => Event::factory()->create(['history_id' => $history->id])
-            ],
-            'update scene' => [
-                [
-                    'question' => '::question::',
-                    'scene' => '::scene::',
-                    'answer' => '::answer::',
-                    'type' => Type::DARK,
-                    'position' => 1,
-                ],
-                fn (Scene $scene) => route('scenes.update', [$scene->history, $scene]),
-                'put',
-                200,
-                fn (History $history) => Scene::factory()->create(['history_id' => $history->id]),
-            ],
-            'delete scene' => [
-                [],
-                fn (Scene $scene) => route('scenes.delete', [$scene->history, $scene]),
-                'delete',
-                204,
-                fn (History $history) => Scene::factory()->create(['history_id' => $history->id]),
-            ],
-        ];
-    }
-
-    public function authenticatedRoutesProvider(): Generator
-    {
-        yield from [
-            'create scene' => [
-                'post',
-                fn (Event $event) => route('events.scenes.store', [$event->history, $event]),
-                fn () => Event::factory()->create(),
-            ],
-            'update scene' => [
-                'put',
-                fn (Scene $scene) => route('scenes.update', [$scene->history, $scene]),
-                fn () => Scene::factory()->create(),
-            ],
-            'delete scene' => [
-                'delete',
-                fn (Scene $scene) => route('scenes.delete', [$scene->history, $scene]),
-                fn () => Scene::factory()->create(),
-            ],
         ];
     }
 
@@ -199,5 +138,13 @@ class SceneTest extends TestCase
             'id' => $scene->id,
         ]);
         EventFacade::assertDispatched(BoardUpdated::class);
+    }
+
+    public function gameRouteProvider(): Generator
+    {
+        yield ['events.scenes.store'];
+        yield ['scenes.update'];
+        yield ['scenes.delete'];
+        yield ['scenes.move'];
     }
 }

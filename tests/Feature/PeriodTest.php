@@ -8,11 +8,10 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
+use Tests\GameRouteTest;
 use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
 use Tests\ValidateRoutesTest;
-use Tests\AuthorizeHistoryTest;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Support\Facades\Event;
 use App\Http\Requests\History\CreatePeriodRequest;
 use App\Http\Requests\History\UpdatePeriodRequest;
@@ -22,7 +21,7 @@ use App\Http\Controllers\History\CreatePeriodController;
 
 class PeriodTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest, ValidateRoutesTest, ScopedRouteTest;
+    use RefreshDatabase, ValidateRoutesTest, GameRouteTest, ScopedRouteTest;
 
     private History $history;
 
@@ -34,53 +33,6 @@ class PeriodTest extends TestCase
 
         $this->user = User::factory()->create();
         $this->history = History::factory()->create(['owner_id' => $this->user->id]);
-    }
-
-    public function authenticatedRoutesProvider(): Generator
-    {
-        yield from [
-            'create period' => [
-                'post',
-                fn (History $history) => route('history.periods.store', $history),
-                fn () => History::factory()->create(),
-            ],
-            'update period' => [
-                'put',
-                fn (Period $period) => route('periods.update', [$period->history, $period]),
-                fn () => Period::factory()->create(),
-            ],
-            'delete period' => [
-                'delete',
-                fn (Period $period) => route('periods.delete', [$period->history, $period]),
-                fn () => Period::factory()->create(),
-            ],
-        ];
-    }
-
-    public function authorizationProvider(): Generator
-    {
-        yield from [
-            'create period' => [
-                ['name' => '::period-name::', 'type' => Type::DARK, 'position' => 1],
-                fn (History $history) => route('history.periods.store', $history),
-                'post',
-                201
-            ],
-            'update period' => [
-                ['name' => '::new-period-name::'],
-                fn (Period $period) => route('periods.update', [$period->history, $period]),
-                'put',
-                200,
-                fn (History $history) => Period::factory()->create(['history_id' => $history->id]),
-            ],
-            'delete period' => [
-                ['name' => '::new-period-name::'],
-                fn (Period $period) => route('periods.delete', [$period->history, $period]),
-                'delete',
-                204,
-                fn (History $history) => Period::factory()->create(['history_id' => $history->id]),
-            ],
-        ];
     }
 
     public function scopedRouteProvider(): Generator
@@ -215,5 +167,13 @@ class PeriodTest extends TestCase
 
         $this->assertEquals(1, $period1->refresh()->position);
         $this->assertEquals(2, $period3->refresh()->position);
+    }
+
+    public function gameRouteProvider(): Generator
+    {
+        yield ['history.periods.store'];
+        yield ['periods.update'];
+        yield ['periods.delete'];
+        yield ['periods.move'];
     }
 }

@@ -6,13 +6,12 @@ use Generator;
 use App\Legacy;
 use App\History;
 use Tests\TestCase;
+use Tests\GameRouteTest;
 use Tests\ScopedRouteTest;
 use App\Events\LegacyCreated;
 use App\Events\LegacyDeleted;
 use App\Events\LegacyUpdated;
 use Tests\ValidateRoutesTest;
-use Tests\AuthorizeHistoryTest;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Support\Facades\Event;
 use App\Http\Requests\Legacy\CreateLegacyRequest;
 use App\Http\Requests\Legacy\UpdateLegacyRequest;
@@ -22,7 +21,7 @@ use App\Http\Controllers\Legacy\UpdateLegacyController;
 
 class LegacyTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest, ValidateRoutesTest, ScopedRouteTest;
+    use RefreshDatabase, ValidateRoutesTest, ScopedRouteTest, GameRouteTest;
 
     protected function setUp(): void
     {
@@ -91,53 +90,6 @@ class LegacyTest extends TestCase
         );
     }
 
-    public function authenticatedRoutesProvider(): Generator
-    {
-        yield from [
-            'create legacy' => [
-                'post',
-                fn (History $history) => route('history.legacies.store', $history),
-                fn () => History::factory()->create(),
-            ],
-            'update legacy' => [
-                'put',
-                fn (Legacy $legacy) => route('legacies.update', [$legacy->history, $legacy]),
-                fn () => Legacy::factory()->create(),
-            ],
-            'delete legacy' => [
-                'delete',
-                fn (Legacy $legacy) => route('legacies.delete', [$legacy->history, $legacy]),
-                fn () => Legacy::factory()->create(),
-            ],
-        ];
-    }
-
-    public function authorizationProvider(): Generator
-    {
-        yield from [
-            'create legacy' => [
-                ['name' => '::legacy-name::'],
-                fn (History $history) => route('history.legacies.store', $history),
-                'post',
-                201,
-            ],
-            'update legacy' => [
-                ['name' => '::new-name::'],
-                fn (Legacy $legacy) => route('legacies.update', [$legacy->history, $legacy]),
-                'put',
-                200,
-                fn (History $history) => Legacy::factory()->create(['history_id' => $history->id]),
-            ],
-            'delete legacy' => [
-                [],
-                fn (Legacy $legacy) => route('legacies.delete', [$legacy->history, $legacy]),
-                'delete',
-                204,
-                fn (History $history) => Legacy::factory()->create(['history_id' => $history->id]),
-            ]
-        ];
-    }
-
     public function validationProvider(): Generator
     {
         yield from [
@@ -168,5 +120,12 @@ class LegacyTest extends TestCase
                 fn (History $history, Legacy $legacy) => route('legacies.delete', [$history, $legacy]),
             ],
         ];
+    }
+
+    public function gameRouteProvider(): Generator
+    {
+        yield ['history.legacies.store'];
+        yield ['legacies.update'];
+        yield ['legacies.delete'];
     }
 }

@@ -6,8 +6,8 @@ use App\User;
 use Generator;
 use App\History;
 use Tests\TestCase;
+use Tests\GameRouteTest;
 use Tests\ValidateRoutesTest;
-use Tests\AuthorizeHistoryTest;
 use App\Events\HistorySeedUpdated;
 use Tests\AuthenticatedRoutesTest;
 use Illuminate\Support\Facades\Event;
@@ -18,7 +18,7 @@ use App\Http\Controllers\History\UpdateSeedController;
 
 class HistoryTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, ValidateRoutesTest, AuthorizeHistoryTest;
+    use RefreshDatabase, AuthenticatedRoutesTest, ValidateRoutesTest, GameRouteTest;
 
     protected function setUp(): void
     {
@@ -72,11 +72,6 @@ class HistoryTest extends TestCase
     {
         yield from [
             'create history' => ['post', '/histories'],
-            'update seed' => [
-                'patch',
-                fn (History $history) => route('history.update-seed', $history),
-                fn () => History::factory()->create(),
-            ],
             'delete history' => ['delete', '/histories/1'],
         ];
     }
@@ -143,15 +138,8 @@ class HistoryTest extends TestCase
         ];
     }
 
-    public function authorizationProvider(): Generator
+    public function gameRouteProvider(): Generator
     {
-        yield from [
-            'update history seed' => [
-                ['name' => '::new-name::'],
-                fn (History $history) => route('history.update-seed', $history),
-                'patch',
-                200,
-            ]
-        ];
+        yield ['history.update-seed'];
     }
 }

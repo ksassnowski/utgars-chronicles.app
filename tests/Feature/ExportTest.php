@@ -7,14 +7,14 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
+use Tests\GameRouteTest;
 use App\Export\HistoryExporter;
-use Tests\AuthorizeHistoryTest;
 use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExportTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest;
+    use RefreshDatabase, AuthenticatedRoutesTest, GameRouteTest;
 
     /** @test */
     public function canDownloadExportOfHistory(): void
@@ -43,19 +43,8 @@ class ExportTest extends TestCase
         ];
     }
 
-    public function authorizationProvider(): Generator
+    public function gameRouteProvider(): Generator
     {
-        yield from [
-            'download export' => [
-                [],
-                fn (History $history) => route('history.export', $history),
-                'get',
-                200,
-                function (History $history) {
-                    $history->periods()->create(Period::factory()->make()->toArray());
-                    return $history;
-                },
-            ],
-        ];
+        yield ['history.export'];
     }
 }

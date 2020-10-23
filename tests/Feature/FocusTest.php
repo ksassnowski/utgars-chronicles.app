@@ -6,13 +6,12 @@ use App\Focus;
 use Generator;
 use App\History;
 use Tests\TestCase;
+use Tests\GameRouteTest;
 use Tests\ScopedRouteTest;
 use App\Events\FocusDefined;
 use App\Events\FocusDeleted;
 use App\Events\FocusUpdated;
 use Tests\ValidateRoutesTest;
-use Tests\AuthorizeHistoryTest;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Support\Facades\Event;
 use App\Http\Requests\History\DefineFocusRequest;
 use App\Http\Requests\History\UpdateFocusRequest;
@@ -22,60 +21,13 @@ use App\Http\Controllers\History\DefineFocusController;
 
 class FocusTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest, ValidateRoutesTest, ScopedRouteTest;
+    use RefreshDatabase, ValidateRoutesTest, ScopedRouteTest, GameRouteTest;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         Event::fake();
-    }
-
-    public function authenticatedRoutesProvider()
-    {
-        yield from [
-            'define focus' => [
-                'post',
-                fn (History $history) => route('history.focus.define', $history),
-                fn () => History::factory()->create(),
-            ],
-            'edit focus' => [
-                'put',
-                fn (Focus $focus) => route('focus.update', [$focus->history, $focus]),
-                fn () => Focus::factory()->create(),
-            ],
-            'delete focus' => [
-                'delete',
-                fn (Focus $focus) => route('focus.delete', [$focus->history, $focus]),
-                fn () => Focus::factory()->create(),
-            ],
-        ];
-    }
-
-    public function authorizationProvider(): Generator
-    {
-        yield from [
-            'define focus' => [
-                ['name' => '::focus-name::'],
-                fn (History $history) => route('history.focus.define', $history),
-                'post',
-                201,
-            ],
-            'update focus' => [
-                ['name' => '::new-name::'],
-                fn (Focus $focus) => route('focus.update', [$focus->history, $focus]),
-                'put',
-                200,
-                fn (History $history) => Focus::factory()->create(['history_id' => $history->id]),
-            ],
-            'delete focus' => [
-                [],
-                fn (Focus $focus) => route('focus.delete', [$focus->history, $focus]),
-                'delete',
-                204,
-                fn (History $history) => Focus::factory()->create(['history_id' => $history->id]),
-            ]
-        ];
     }
 
     public function validationProvider(): Generator
@@ -166,5 +118,12 @@ class FocusTest extends TestCase
                 fn (History $history, Focus $focus) => route('focus.delete', [$history, $focus]),
             ],
         ];
+    }
+
+    public function gameRouteProvider(): Generator
+    {
+        yield ['history.focus.define'];
+        yield ['focus.update'];
+        yield ['focus.delete'];
     }
 }
