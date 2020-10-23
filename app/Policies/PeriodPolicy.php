@@ -12,16 +12,6 @@ final class PeriodPolicy
         return $this->isAuthorized($user, $period);
     }
 
-    public function updatePeriod(User $user, Period $period): bool
-    {
-        return $this->isAuthorized($user, $period);
-    }
-
-    public function deletePeriod(User $user, Period $period): bool
-    {
-        return $this->isAuthorized($user, $period);
-    }
-
     private function isAuthorized(User $user, Period $period): bool
     {
         $history = $period->history;

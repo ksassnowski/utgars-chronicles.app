@@ -39,9 +39,21 @@ class PeriodTest extends TestCase
     public function authenticatedRoutesProvider(): Generator
     {
         yield from [
-            'create period' => ['post', '/histories/1/periods'],
-            'update period' => ['put', '/histories/1/periods/1'],
-            'delete period' => ['delete', '/histories/1/periods/1'],
+            'create period' => [
+                'post',
+                fn (History $history) => route('history.periods.store', $history),
+                fn () => History::factory()->create(),
+            ],
+            'update period' => [
+                'put',
+                fn (Period $period) => route('periods.update', [$period->history, $period]),
+                fn () => Period::factory()->create(),
+            ],
+            'delete period' => [
+                'delete',
+                fn (Period $period) => route('periods.delete', [$period->history, $period]),
+                fn () => Period::factory()->create(),
+            ],
         ];
     }
 

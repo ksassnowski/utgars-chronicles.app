@@ -92,22 +92,6 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:deleteFocus,focus')
         ->name('focus.delete');
 
-    Route::post('histories/{history}/periods', 'History\CreatePeriodController')
-        ->middleware('can:modifyGame,history')
-        ->name('history.periods.store');
-
-    Route::put('histories/{history}/periods/{period:id}', 'Period\UpdatePeriodController')
-        ->middleware('can:updatePeriod,period')
-        ->name('periods.update');
-
-    Route::delete('histories/{history}/periods/{period:id}', 'Period\DeletePeriodController')
-        ->middleware('can:deletePeriod,period')
-        ->name('periods.delete');
-
-    Route::post('histories/{history}/periods/{period:id}/move', 'History\MovePeriodController')
-        ->middleware('can:modifyGame,history')
-        ->name('periods.move');
-
     Route::post('histories/{history}/periods/{period:id}/events', 'Period\CreateEventController')
         ->middleware('can:createEvent,period')
         ->name('periods.events.store');
@@ -139,4 +123,18 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/histories/{history}/scenes/{scene:id}/move', 'Scene\MoveSceneController')
         ->middleware('can:moveScene,scene')
         ->name('scenes.move');
+});
+
+Route::group(['middleware' => 'microscope'], function () {
+    Route::post('histories/{history}/periods', 'History\CreatePeriodController')
+        ->name('history.periods.store');
+
+    Route::put('histories/{history}/periods/{period:id}', 'Period\UpdatePeriodController')
+        ->name('periods.update');
+
+    Route::delete('histories/{history}/periods/{period:id}', 'Period\DeletePeriodController')
+        ->name('periods.delete');
+
+    Route::post('histories/{history}/periods/{period:id}/move', 'History\MovePeriodController')
+        ->name('periods.move');
 });

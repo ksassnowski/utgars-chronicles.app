@@ -9,12 +9,13 @@ use App\History;
 use Tests\TestCase;
 use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
+use Tests\AuthorizeHistoryTest;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MovePeriodTest extends TestCase
 {
-    use RefreshDatabase, ScopedRouteTest;
+    use RefreshDatabase, ScopedRouteTest, AuthorizeHistoryTest;
 
     private History $history;
 
@@ -237,6 +238,19 @@ class MovePeriodTest extends TestCase
                 'post',
                 fn () => Period::factory()->create(),
                 fn (History $history, Period $period) => route('periods.move', [$history, $period]),
+            ]
+        ];
+    }
+
+    public function authorizationProvider(): Generator
+    {
+        yield from [
+            'move period' => [
+                ['position' => 1],
+                fn (Period $period) => route('periods.move', [$period->history, $period]),
+                'post',
+                200,
+                fn (History $history) => Period::factory()->create(['history_id' => $history->id]),
             ]
         ];
     }
