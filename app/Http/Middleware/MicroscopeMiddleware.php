@@ -16,9 +16,7 @@ class MicroscopeMiddleware
             return $next($request);
         }
 
-        if (($user = $request->user()) === null) {
-            abort(401);
-        }
+        $user = $request->user();
 
         if (!$this->canAccessHistory($user, $history)) {
             abort(403);
@@ -27,16 +25,31 @@ class MicroscopeMiddleware
         return $next($request);
     }
 
-    private function canAccessHistory(User $user, History $history): bool
+    private function canAccessHistory(?User $user, History $history): bool
     {
+        if ($user === null) {
+            return $this->canJoinPublicHistory($history);
+        }
+
         if ($history->owner_id === $user->id) {
             return true;
         }
 
-        if ($history->players()->where('user_id', $user->id)->exists()) {
+        if ($history->isPlayer($user)) {
             return true;
         }
 
         return false;
+    }
+
+    private function canJoinPublicHistory(History $history): bool
+    {
+        if (!$history->public) {
+            return false;
+        }
+
+        $invitedHistoryIds = session()->get('invited-histories');
+
+        return in_array($history->id, $invitedHistoryIds);
     }
 }

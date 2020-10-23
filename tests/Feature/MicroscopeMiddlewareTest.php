@@ -64,12 +64,23 @@ class MicroscopeMiddlewareTest extends TestCase
     }
 
     /** @test */
-    public function unauthenticatedUserCannotAccessRoute(): void
+    public function invitedGuestsCanAccessRouteForPublicHistory()
+    {
+        $history = History::factory()->public()->create();
+
+        session()->put('invited-histories', [$history->id]);
+
+        $this->get('/history/' . $history->id . '/test')
+            ->assertOk();
+    }
+
+    /** @test */
+    public function unauthenticatedUserCannotAccessRouteForPrivateHistory(): void
     {
         $history = History::factory()->create();
 
         $this->get('/history/' . $history->id . '/test')
-            ->assertUnauthorized();
+            ->assertForbidden();
     }
 
     private function setUpRoutes()
