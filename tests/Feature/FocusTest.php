@@ -34,9 +34,21 @@ class FocusTest extends TestCase
     public function authenticatedRoutesProvider()
     {
         yield from [
-            'define focus' => ['post', '/histories/1/focus'],
-            'edit focus' => ['put', '/histories/1/focus/1'],
-            'delete focus' => ['delete', '/histories/1/focus/1'],
+            'define focus' => [
+                'post',
+                fn (History $history) => route('history.focus.define', $history),
+                fn () => History::factory()->create(),
+            ],
+            'edit focus' => [
+                'put',
+                fn (Focus $focus) => route('focus.update', [$focus->history, $focus]),
+                fn () => Focus::factory()->create(),
+            ],
+            'delete focus' => [
+                'delete',
+                fn (Focus $focus) => route('focus.delete', [$focus->history, $focus]),
+                fn () => Focus::factory()->create(),
+            ],
         ];
     }
 

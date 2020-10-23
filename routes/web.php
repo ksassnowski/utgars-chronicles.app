@@ -56,18 +56,6 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:modifyGame,history')
         ->name('history.update-seed');
 
-    Route::post('histories/{history}/focus', 'History\DefineFocusController')
-        ->middleware('can:modifyGame,history')
-        ->name('history.focus.define');
-
-    Route::put('histories/{history}/focus/{focus:id}', 'Focus\UpdateFocusController')
-        ->middleware('can:editFocus,focus')
-        ->name('focus.update');
-
-    Route::delete('histories/{history}/focus/{focus:id}', 'Focus\DeleteFocusController')
-        ->middleware('can:deleteFocus,focus')
-        ->name('focus.delete');
-
     Route::post('histories/{history}/periods/{period:id}/events', 'Period\CreateEventController')
         ->middleware('can:createEvent,period')
         ->name('periods.events.store');
@@ -119,6 +107,15 @@ Route::group(['middleware' => 'microscope'], function () {
 
     Route::delete('histories/{history}/legacies/{legacy:id}', 'Legacy\DeleteLegacyController')
         ->name('legacies.delete');
+
+    Route::post('histories/{history}/focus', 'History\DefineFocusController')
+        ->name('history.focus.define');
+
+    Route::put('histories/{history}/focus/{focus:id}', 'Focus\UpdateFocusController')
+        ->name('focus.update');
+
+    Route::delete('histories/{history}/focus/{focus:id}', 'Focus\DeleteFocusController')
+        ->name('focus.delete');
 
     Route::post('histories/{history}/periods', 'History\CreatePeriodController')
         ->name('history.periods.store');
