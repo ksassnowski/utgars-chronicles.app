@@ -14,7 +14,7 @@ final class UpdatePeriodController
     {
         $period->update($request->validated());
 
-        broadcast(new BoardUpdated($period->history));
+        broadcast(new BoardUpdated($history->fresh()));
 
         return response()->json();
     }

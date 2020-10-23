@@ -12,9 +12,12 @@ final class CreateSceneController
 {
     public function __invoke(CreateSceneRequest $request, History $history, Event $event): JsonResponse
     {
-        $event->scenes()->create($request->validated());
+        $event->scenes()->create(array_merge(
+            $request->validated(),
+            ['history_id' => $history->id]
+        ));
 
-        broadcast(new BoardUpdated($event->period->history));
+        broadcast(new BoardUpdated($history->fresh()));
 
         return response()->json([], 201);
     }

@@ -63,7 +63,9 @@ class Period extends Model implements Movable
             ->where('position', '>=', $attributes['position'])
             ->update(['position' => DB::raw('position + 1')]);
 
-        return $this->events()->create($attributes);
+        return $this->events()->create(array_merge($attributes, [
+            'history_id' => $this->history->id,
+        ]));
     }
 
     protected function limitElementsToMove(Builder $query): void

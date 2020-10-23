@@ -40,6 +40,8 @@ export default {
 
     props: ['period', 'position'],
 
+    inject: ['history'],
+
     components: {
         LoadingButton,
         Modal,
@@ -60,7 +62,7 @@ export default {
         submit() {
             this.loading = true;
 
-            axios.post(this.$route('periods.events.store', this.period), this.form)
+            axios.post(this.$route('periods.events.store', [this.history, this.period]), this.form)
                 .then(() => this.$emit('close'))
                 .finally(() => this.loading = false);
         },

@@ -29,7 +29,7 @@ final class EventPolicy
 
     private function isAuthorized(User $user, Event $event): bool
     {
-        $history = $event->period->history;
+        $history = $event->history;
 
         return $history->owner_id === $user->id || $history->isPlayer($user);
     }

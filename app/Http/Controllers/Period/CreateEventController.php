@@ -14,7 +14,7 @@ final class CreateEventController
     {
         $period->insertEvent($request->validated());
 
-        broadcast(new BoardUpdated($period->history));
+        broadcast(new BoardUpdated($history->fresh()));
 
         return response()->json([], 201);
     }

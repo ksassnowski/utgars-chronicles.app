@@ -14,7 +14,7 @@ final class UpdateEventController
     {
         $event->update($request->validated());
 
-        broadcast(new BoardUpdated($event->period->history));
+        broadcast(new BoardUpdated($history->fresh()));
 
         return response()->json();
     }

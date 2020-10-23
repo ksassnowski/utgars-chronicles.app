@@ -132,7 +132,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:updateScene,scene')
         ->name('scenes.update');
 
-    Route::delete('scenes/{scene}', 'Scene\DeleteSceneController')
+    Route::delete('histories/{history}/scenes/{scene:id}', 'Scene\DeleteSceneController')
         ->middleware('can:deleteScene,scene')
         ->name('scenes.delete');
 

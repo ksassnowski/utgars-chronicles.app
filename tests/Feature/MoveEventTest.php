@@ -36,10 +36,12 @@ class MoveEventTest extends TestCase
     {
         Event::factory()->create([
             'period_id' => $this->period->id,
+            'history_id' => $this->period->history_id,
             'position' => 2
         ]);
         $event = Event::factory()->create([
             'period_id' => $this->period->id,
+            'history_id' => $this->period->history_id,
             'position' => 1
         ]);
 

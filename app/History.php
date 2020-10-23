@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 /**
  * @property User owner
@@ -44,9 +43,14 @@ class History extends Model
         return $this->hasMany(Period::class)->orderBy('position', 'ASC');
     }
 
-    public function events(): HasManyThrough
+    public function events(): HasMany
     {
-        return $this->hasManyThrough(Event::class, Period::class);
+        return $this->hasMany(Event::class);
+    }
+
+    public function scenes(): HasMany
+    {
+        return $this->hasMany(Scene::class);
     }
 
     public function foci(): HasMany

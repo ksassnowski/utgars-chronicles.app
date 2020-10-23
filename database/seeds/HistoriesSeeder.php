@@ -7,6 +7,6 @@ class HistoriesSeeder extends Seeder
 {
     public function run(): void
     {
-        factory(History::class)->create(['owner_id' => 1]);
+        History::factory()->create(['owner_id' => 1]);
     }
 }

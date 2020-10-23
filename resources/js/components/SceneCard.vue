@@ -117,6 +117,8 @@ export default {
 
     props: ['scene'],
 
+    inject: ['history'],
+
     data() {
         return {
             editing: false,
@@ -140,7 +142,7 @@ export default {
                 return;
             }
 
-            axios.delete(this.$route('scenes.delete', this.scene))
+            axios.delete(this.$route('scenes.delete', [this.history, this.scene]))
                 .then(() => this.editing = false);
         },
 
@@ -173,7 +175,7 @@ export default {
 
             this.loading = true;
 
-            axios.put(this.$route('scenes.update', this.scene), this.form)
+            axios.put(this.$route('scenes.update', [this.history, this.scene]), this.form)
                 .then(() => {
                     this.editing = false;
                     this.loading = false;

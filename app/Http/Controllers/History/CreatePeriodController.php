@@ -13,7 +13,7 @@ final class CreatePeriodController
     {
         $history->insertPeriod($request->validated());
 
-        broadcast(new BoardUpdated($history));
+        broadcast(new BoardUpdated($history->fresh()));
 
         return response()->json([], 201);
     }

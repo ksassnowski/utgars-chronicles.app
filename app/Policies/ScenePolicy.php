@@ -26,7 +26,7 @@ final class ScenePolicy
     private function isAuthorized(User $user, Scene $scene): bool
     {
         /** @var History $history */
-        $history = $scene->event->period->history;
+        $history = $scene->history;
 
         return $history->owner_id === $user->id || $history->isPlayer($user);
     }

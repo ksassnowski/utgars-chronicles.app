@@ -6,8 +6,8 @@ use App\Type;
 use App\Event;
 use App\Scene;
 use Generator;
-use App\Period;
 use App\History;
+use function route;
 use Tests\TestCase;
 use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
@@ -36,7 +36,7 @@ class SceneTest extends TestCase
         ]);
 
         $this->event = Event::factory()->create();
-        $this->user = $this->event->period->history->owner;
+        $this->user = $this->event->history->owner;
     }
 
     public function scopedRouteProvider(): Generator
@@ -51,6 +51,11 @@ class SceneTest extends TestCase
                 'put',
                 fn () => Scene::factory()->create(),
                 fn (History $history, Scene $scene) => route('scenes.update', [$history, $scene]),
+            ],
+            'delete scene' => [
+                'delete',
+                fn () => Scene::factory()->create(),
+                fn (History $history, Scene $scene) => route('scenes.delete', [$history, $scene]),
             ]
         ];
     }
@@ -66,14 +71,10 @@ class SceneTest extends TestCase
                     'type' => Type::DARK,
                     'position' => 1,
                 ],
-                fn (Event $event) => route('events.scenes.store', [$event->period->history, $event]),
+                fn (Event $event) => route('events.scenes.store', [$event->history, $event]),
                 'post',
                 201,
-                function (History $history) {
-                    $period = Period::factory()->create(['history_id' => $history->id]);
-
-                    return Event::factory()->create(['period_id' => $period->id]);
-                }
+                fn (History $history) => Event::factory()->create(['history_id' => $history->id])
             ],
             'update scene' => [
                 [
@@ -83,15 +84,18 @@ class SceneTest extends TestCase
                     'type' => Type::DARK,
                     'position' => 1,
                 ],
-                fn (Scene $scene) => route('scenes.update', [$scene->event->period->history, $scene]),
+                fn (Scene $scene) => route('scenes.update', [$scene->history, $scene]),
                 'put',
                 200,
-                function (History $history) {
-                    $period = Period::factory()->create(['history_id' => $history->id]);
-                    $event = Event::factory()->create(['period_id' => $period->id]);
-                    return Scene::factory()->create(['event_id' => $event->id]);
-                }
-            ]
+                fn (History $history) => Scene::factory()->create(['history_id' => $history->id]),
+            ],
+            'delete scene' => [
+                [],
+                fn (Scene $scene) => route('scenes.delete', [$scene->history, $scene]),
+                'delete',
+                204,
+                fn (History $history) => Scene::factory()->create(['history_id' => $history->id]),
+            ],
         ];
     }
 
@@ -100,6 +104,7 @@ class SceneTest extends TestCase
         yield from [
             'create scene' => ['post', '/histories/1/events/1/scenes'],
             'update scene' => ['put', '/histories/1/scenes/1'],
+            'delete scene' => ['delete', '/histories/1/scenes/1'],
         ];
     }
 
@@ -122,7 +127,7 @@ class SceneTest extends TestCase
     /** @test */
     public function createScene(): void
     {
-        $response = $this->login()->postJson(route('events.scenes.store', [$this->event->period->history, $this->event]), [
+        $response = $this->login()->postJson(route('events.scenes.store', [$this->event->history, $this->event]), [
             'question' => '::question::',
             'scene' => '::scene::',
             'answer' => '::answer::',
@@ -138,6 +143,7 @@ class SceneTest extends TestCase
             'type' => Type::DARK,
             'position' => 1,
             'event_id' => $this->event->id,
+            'history_id' => $this->event->history_id,
         ]);
         EventFacade::assertDispatched(BoardUpdated::class);
     }
@@ -145,11 +151,13 @@ class SceneTest extends TestCase
     /** @test */
     public function updateScene(): void
     {
-        $this->withoutExceptionHandling();
-        $scene = Scene::factory()->create(['event_id' => $this->event->id]);
+        $scene = Scene::factory()->create([
+            'event_id' => $this->event->id,
+            'history_id' => $this->event->history_id,
+        ]);
 
         $response = $this->login()
-            ->putJson(route('scenes.update', [$this->event->period->history, $scene]), [
+            ->putJson(route('scenes.update', [$scene->history, $scene]), [
                 'question' => '::new-question::',
                 'scene' => '::new-scene::',
                 'answer' => '::new-answer::',
@@ -162,6 +170,22 @@ class SceneTest extends TestCase
         $this->assertEquals('::new-scene::', $scene->scene);
         $this->assertEquals('::new-answer::', $scene->answer);
         $this->assertEquals(Type::LIGHT, $scene->type);
+        EventFacade::assertDispatched(BoardUpdated::class);
+    }
+
+    /** @test */
+    public function deleteScene(): void
+    {
+        $scene = Scene::factory()->create([
+            'history_id' => $this->event->history_id,
+        ]);
+
+        $response = $this->login()->deleteJson(route('scenes.delete', [$scene->history, $scene]));
+
+        $response->assertStatus(204);
+        $this->assertDatabaseMissing('scenes', [
+            'id' => $scene->id,
+        ]);
         EventFacade::assertDispatched(BoardUpdated::class);
     }
 }
