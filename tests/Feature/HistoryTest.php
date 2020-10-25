@@ -34,8 +34,26 @@ class HistoryTest extends TestCase
             'name' => '::history-name::',
         ]);
 
-        $this->user->refresh();
-        $this->assertTrue($this->user->histories->contains('name', '::history-name::'));
+        $this->assertDatabaseHas('histories', [
+            'name' => '::history-name::',
+            'public' => false,
+            'owner_id' => $this->user->id,
+        ]);
+    }
+
+    /** @test */
+    public function createPublicHistory(): void
+    {
+        $this->login()->post(route('history.store'), [
+            'name' => '::history-name::',
+            'public' => true,
+        ]);
+
+        $this->assertDatabaseHas('histories', [
+            'name' => '::history-name::',
+            'public' => true,
+            'owner_id' => $this->user->id,
+        ]);
     }
 
     /** @test */
