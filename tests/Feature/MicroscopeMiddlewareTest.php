@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\User;
 use App\History;
 use Tests\TestCase;
+use App\AnonymousPlayer;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -68,9 +69,10 @@ class MicroscopeMiddlewareTest extends TestCase
     {
         $history = History::factory()->public()->create();
 
-        session()->put('invited-histories', [$history->id]);
+        (new AnonymousPlayer('::id::'))->joinGame($history);
 
-        $this->get('/history/' . $history->id . '/test')
+        $this
+            ->get('/history/' . $history->id . '/test')
             ->assertOk();
     }
 
@@ -78,6 +80,17 @@ class MicroscopeMiddlewareTest extends TestCase
     public function unauthenticatedUserCannotAccessRouteForPrivateHistory(): void
     {
         $history = History::factory()->create();
+
+        $this->get('/history/' . $history->id . '/test')
+            ->assertForbidden();
+    }
+
+    /** @test */
+    public function guestsCannotAccessRouteForPrivateGameEvenIfTheyHavePreviouslyJoined(): void
+    {
+        $history = History::factory()->create();
+
+        (new AnonymousPlayer('::id::'))->joinGame($history);
 
         $this->get('/history/' . $history->id . '/test')
             ->assertForbidden();

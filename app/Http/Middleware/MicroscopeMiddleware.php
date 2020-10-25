@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\User;
 use App\History;
+use App\MicroscopePlayer;
 use Illuminate\Http\Request;
 
 class MicroscopeMiddleware
@@ -16,40 +16,17 @@ class MicroscopeMiddleware
             return $next($request);
         }
 
-        $user = $request->user();
+        /** @var MicroscopePlayer $player */
+        $player = $request->user('microscope');
 
-        if (!$this->canAccessHistory($user, $history)) {
+        if (!$history->public && $player->isGuest()) {
+            abort(403);
+        }
+
+        if (!$player->isPlayer($history)) {
             abort(403);
         }
 
         return $next($request);
-    }
-
-    private function canAccessHistory(?User $user, History $history): bool
-    {
-        if ($user === null) {
-            return $this->canJoinPublicHistory($history);
-        }
-
-        if ($history->owner_id === $user->id) {
-            return true;
-        }
-
-        if ($history->isPlayer($user)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function canJoinPublicHistory(History $history): bool
-    {
-        if (!$history->public) {
-            return false;
-        }
-
-        $invitedHistoryIds = session()->get('invited-histories');
-
-        return in_array($history->id, $invitedHistoryIds);
     }
 }
