@@ -10,15 +10,13 @@ class AnonymousPlayer implements MicroscopePlayer
     public function __construct(string $id, array $histories = [])
     {
         $this->id = $id;
-        $this->histories = collect($histories)
-            ->mapWithKeys(fn ($history) => [$history['id'] => $history['name']])
-            ->all();
+        $this->histories = $histories;
     }
 
     public function joinGame(History $history, ?string $name = null): void
     {
-        session()->push('histories', ['id' => $history->id, 'name' => $name]);
         $this->histories[$history->id] = $name;
+        session()->put('histories', $this->histories);
     }
 
     public function getAuthIdentifier()

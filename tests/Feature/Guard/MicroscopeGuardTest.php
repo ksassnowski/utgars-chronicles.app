@@ -55,7 +55,9 @@ class MicroscopeGuardTest extends TestCase
         $history = History::factory()->create();
         $request = new Request();
         $request->setUserResolver(fn () => null);
-        session()->push('histories', ['id' => $history->id, 'name' => '::name::']);
+        session()->put('histories', [
+            $history->id => '::name::',
+        ]);
         $request->setLaravelSession(session());
         $guard = new MicroscopeGuard();
 
