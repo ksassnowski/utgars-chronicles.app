@@ -1,12 +1,19 @@
 <?php declare(strict_types=1);
 
-use App\User;
-use App\Policies\HistoryPolicy;
+use App\History;
+use App\MicroscopePlayer;
 
-Broadcast::channel('history.{history}', function (User $user, \App\History $history) {
-    if ((new HistoryPolicy())->modifyGame($user, $history)) {
-        return ['id' => $user->id, 'name' => $user->name];
+Broadcast::channel('history.{history}', function (MicroscopePlayer $player, History $history) {
+    if (!$history->public && $player->isGuest()) {
+        return null;
     }
 
-    return null;
-});
+    if (!$player->isPlayer($history)) {
+        return null;
+    }
+
+    return [
+        'id' => $player->getAuthIdentifier(),
+        'name' => $player->getName($history),
+    ];
+}, ['guards' => 'microscope']);
