@@ -41,7 +41,7 @@
                     <div class="w-2/3">
                         <ul>
                             <li class="italic">
-                                {{ $page.auth.user.name }} (owner)
+                                {{ $page.props.auth.user.name }} (owner)
                             </li>
                             <li
                                 v-for="player in history.players"
@@ -197,7 +197,7 @@ export default {
 
     metaInfo() {
         return {
-            title: `${this.$page.history.name} – Utgar\'s Chronicles`
+            title: `${this.$page.props.history.name} – Utgar\'s Chronicles`
         };
     },
 

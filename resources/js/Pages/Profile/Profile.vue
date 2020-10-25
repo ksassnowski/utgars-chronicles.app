@@ -1,7 +1,9 @@
 <template>
     <div class="container mx-auto px-4">
         <div class="lg:w-3/5 mx-auto">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2 tracking-tight">Profile</h1>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2 tracking-tight">
+                Profile
+            </h1>
 
             <div class="rounded shadow-lg py-6 border border-gray-300 px-4">
                 <form @submit.prevent="changePassword" class="flex">
@@ -10,18 +12,42 @@
                     </div>
 
                     <div class="w-2/3">
-                        <div class="mb-4" :class="{ error: $page.errors.password }">
-                            <label for="password" class="label">New Password</label>
-                            <input type="password" class="input" id="password" v-model="password.form.password">
-                            <small v-if="$page.errors.password" class="text-xs text-red-500 mt-1">{{ $page.errors.password[0] }}</small>
+                        <div
+                            class="mb-4"
+                            :class="{ error: $page.props.errors.password }"
+                        >
+                            <label for="password" class="label"
+                                >New Password</label
+                            >
+                            <input
+                                type="password"
+                                class="input"
+                                id="password"
+                                v-model="password.form.password"
+                            />
+                            <small
+                                v-if="$page.props.errors.password"
+                                class="text-xs text-red-500 mt-1"
+                                >{{ $page.props.errors.password[0] }}</small
+                            >
                         </div>
 
                         <div class="mb-4">
-                            <label for="passwordConfirmation" class="label">Confirm Password</label>
-                            <input type="password" class="input" id="passwordConfirmation" v-model="password.form.password_confirmation">
+                            <label for="passwordConfirmation" class="label"
+                                >Confirm Password</label
+                            >
+                            <input
+                                type="password"
+                                class="input"
+                                id="passwordConfirmation"
+                                v-model="password.form.password_confirmation"
+                            />
                         </div>
 
-                        <LoadingButton class="px-8 py-2 bg-indigo-700 rounded text-white" :loading="password.loading">
+                        <LoadingButton
+                            class="px-8 py-2 bg-indigo-700 rounded text-white"
+                            :loading="password.loading"
+                        >
                             Change Password
                         </LoadingButton>
                     </div>
@@ -37,17 +63,17 @@ import LoadingButton from "../../components/LoadingButton";
 import Icon from "../../components/Icon";
 
 export default {
-    name: 'Profile',
+    name: "Profile",
 
     metaInfo() {
         return {
-            title: 'Profile – Utgar\'s Chronicles',
+            title: "Profile – Utgar's Chronicles"
         };
     },
 
     components: {
         Icon,
-        LoadingButton,
+        LoadingButton
     },
 
     layout: Layout,
@@ -58,9 +84,9 @@ export default {
                 loading: false,
                 form: {
                     password: null,
-                    password_confirmation: null,
-                },
-            },
+                    password_confirmation: null
+                }
+            }
         };
     },
 
@@ -68,17 +94,18 @@ export default {
         changePassword() {
             this.password.loading = true;
 
-            this.$inertia.post(this.$route('password.change'), this.password.form)
+            this.$inertia
+                .post(this.$route("password.change"), this.password.form)
                 .then(() => {
                     this.password.form = {
                         password: null,
-                        password_confirmation: null,
+                        password_confirmation: null
                     };
                 })
                 .finally(() => {
                     this.password.loading = false;
                 });
-        },
-    },
+        }
+    }
 };
 </script>
