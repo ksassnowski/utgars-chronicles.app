@@ -29,10 +29,6 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:updateVisibility,history')
         ->name('history.visibility');
 
-    Route::get('histories/{history}/invitation', 'History\AcceptInvitationController')
-        ->middleware('signed')
-        ->name('invitation.accept');
-
     Route::delete('histories/{history}/players/{player}', 'History\KickPlayerController')
         ->middleware('can:kickPlayer,history')
          ->name('history.players.kick');
@@ -45,6 +41,10 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:deleteHistory,history')
         ->name('history.delete');
 });
+
+Route::get('histories/{history}/invitation', 'History\AcceptInvitationController')
+    ->middleware(['signed', 'auth:microscope'])
+    ->name('invitation.accept');
 
 Route::group(['middleware' => 'microscope'], function () {
     Route::get('histories/{history}/export', 'History\ExportController')

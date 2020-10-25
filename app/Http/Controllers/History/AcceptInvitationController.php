@@ -13,6 +13,10 @@ class AcceptInvitationController extends Controller
 {
     public function __invoke(Request $request, History $history): RedirectResponse
     {
+        if (!$history->public && $request->user()->isGuest()) {
+            return redirect()->route('login');
+        }
+
         try {
             $history->addPlayer($request->user());
         } catch (UserIsAlreadyPlayerInHistory $e) {
