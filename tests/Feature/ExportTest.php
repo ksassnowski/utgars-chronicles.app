@@ -9,12 +9,11 @@ use App\History;
 use Tests\TestCase;
 use Tests\GameRouteTest;
 use App\Export\HistoryExporter;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExportTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, GameRouteTest;
+    use RefreshDatabase, GameRouteTest;
 
     /** @test */
     public function canDownloadExportOfHistory(): void
@@ -30,17 +29,6 @@ class ExportTest extends TestCase
         $response = $this->actingAs($history->owner)->getJson(route('history.export', $history));
 
         $response->assertOk();
-    }
-
-    public function authenticatedRoutesProvider(): Generator
-    {
-        yield from [
-            'download export' => [
-                'get',
-                fn (History $history) => route('history.export', $history),
-                fn () => History::factory()->create(),
-            ],
-        ];
     }
 
     public function gameRouteProvider(): Generator
