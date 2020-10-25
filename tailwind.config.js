@@ -1,27 +1,26 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
-  purge: {
-    content: [
-      './resources/views/**/*.blade.php',
-      './resources/js/**/*.vue'
-    ],
-    options: {
-      whitelistPatternsChildren: [
-        /tippy/,
-        /nprogress/,
-      ],
+    purge: {
+        content: [
+            "./resources/views/**/*.blade.php",
+            "./resources/js/**/*.vue"
+        ],
+        options: {
+            whitelistPatternsChildren: [/tippy/, /nprogress/]
+        }
     },
-  },
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-      },
-    }
-  },
-  variants: {
-      visibility: ['responsive', 'group-hover'],
-  },
-  plugins: []
+    theme: {
+        extend: {
+            fontFamily: {
+                sans: ["Inter var", ...defaultTheme.fontFamily.sans]
+            }
+        }
+    },
+    variants: {
+        visibility: ["responsive", "group-hover"],
+        opacity: ["disabled"],
+        cursor: ["disabled"]
+    },
+    plugins: []
 };

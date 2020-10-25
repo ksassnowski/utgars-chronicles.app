@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PaletteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\History\GuestInvitationController;
 
 Auth::routes();
 
@@ -42,9 +43,19 @@ Route::group(['middleware' => 'auth'], function () {
         ->name('history.delete');
 });
 
-Route::get('histories/{history}/invitation', 'History\AcceptInvitationController')
-    ->middleware(['signed', 'auth:microscope'])
-    ->name('invitation.accept');
+Route::group(['middleware' => 'auth:microscope'], function () {
+    Route::get('histories/{history}/invitation', 'History\AcceptInvitationController')
+        ->middleware('signed')
+        ->name('invitation.accept');
+
+    Route::get('histories/{history}/invitation/guest', [GuestInvitationController::class, 'showForm'])
+        ->middleware('signed')
+        ->name('invitation.accept.show-form');
+
+    Route::post('histories/{history}/invitation/guest', [GuestInvitationController::class, 'accept'])
+        ->middleware('signed')
+        ->name('invitation.accept.guest');
+});
 
 Route::group(['middleware' => 'microscope'], function () {
     Route::get('histories/{history}/export', 'History\ExportController')

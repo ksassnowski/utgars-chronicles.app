@@ -20,7 +20,7 @@ class AnonymousPlayerTest extends TestCase
             $history->id => '::name::'
         ]);
 
-        $this->assertEquals('::name::', $guest->getName($history));
+        $this->assertEquals('::name:: (guest)', $guest->getName($history));
     }
 
     /** @test */
@@ -32,8 +32,8 @@ class AnonymousPlayerTest extends TestCase
             $history2->id => '::history-2-name::',
         ]);
 
-        $this->assertEquals('::history-1-name::', $guest->getName($history1));
-        $this->assertEquals('::history-2-name::', $guest->getName($history2));
+        $this->assertEquals('::history-1-name:: (guest)', $guest->getName($history1));
+        $this->assertEquals('::history-2-name:: (guest)', $guest->getName($history2));
     }
 
     /** @test */
@@ -53,7 +53,7 @@ class AnonymousPlayerTest extends TestCase
         $guest->joinGame($history, '::old-name::');
         $guest->joinGame($history, '::new-name::');
 
-        $this->assertEquals('::new-name::', $guest->getName($history));
+        $this->assertEquals('::new-name:: (guest)', $guest->getName($history));
     }
 
     protected function getPlayerInstance(): MicroscopePlayer
