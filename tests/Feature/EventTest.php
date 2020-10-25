@@ -8,15 +8,15 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
+use Tests\GameRouteTest;
+use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
-use Tests\AuthorizeHistoryTest;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event as EventFacade;
 
 class EventTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest;
+    use RefreshDatabase, ScopedRouteTest, GameRouteTest;
 
     private Period $period;
 
@@ -32,53 +32,11 @@ class EventTest extends TestCase
         $this->user = $this->period->history->owner;
     }
 
-    public function authenticatedRoutesProvider()
-    {
-        yield from [
-            'create event' => ['post', '/periods/1/events'],
-            'update event' => ['put', '/events/1'],
-            'delete event' => ['delete', '/events/1'],
-        ];
-    }
-
-    public function authorizationProvider(): Generator
-    {
-        yield from [
-            'create event' => [
-                ['name' => '::event-name::', 'type' => Type::DARK, 'position' => 1],
-                fn (Period $period) => route('periods.events.store', $period),
-                'POST',
-                201,
-                fn (History $history) => Period::factory()->create(['history_id' => $history->id]),
-            ],
-            'edit event' => [
-                ['name' => '::event-name::', 'type' => Type::DARK],
-                fn (Event $event) => route('events.update', $event),
-                'put',
-                200,
-                function (History $history) {
-                    $period = Period::factory()->create(['history_id' => $history->id]);
-                    return Event::factory()->create(['period_id' => $period->id]);
-                },
-            ],
-            'delete event' => [
-                [],
-                fn (Event $event) => route('events.delete', $event),
-                'delete',
-                204,
-                function (History $history) {
-                    $period = Period::factory()->create(['history_id' => $history->id]);
-                    return Event::factory()->create(['period_id' => $period->id]);
-                },
-            ]
-        ];
-    }
-
     /** @test */
     public function createEvent(): void
     {
         $response = $this->login()->postJson(
-            route('periods.events.store', $this->period),
+            route('periods.events.store', [$this->period->history, $this->period]),
             [
                 'name' => '::event-name::',
                 'type' => Type::DARK,
@@ -87,9 +45,13 @@ class EventTest extends TestCase
         );
 
         $response->assertStatus(201);
-        $this->assertTrue(
-            $this->period->events->contains('name', '::event-name::')
-        );
+        $this->assertDatabaseHas('events', [
+            'name' => '::event-name::',
+            'type' => Type::DARK,
+            'position' => 1,
+            'period_id' => $this->period->id,
+            'history_id' => $this->period->history->id,
+        ]);
         EventFacade::assertDispatched(BoardUpdated::class);
     }
 
@@ -105,7 +67,7 @@ class EventTest extends TestCase
         ], [$attribute => $value]);
 
         $response = $this->login()->postJson(
-            route('periods.events.store', $this->period),
+            route('periods.events.store', [$this->period->history, $this->period]),
             $payload
         );
 
@@ -125,13 +87,14 @@ class EventTest extends TestCase
     public function updateEvent(): void
     {
         $event = Event::factory()->create([
+            'history_id' => $this->period->history_id,
             'period_id' => $this->period->id,
             'name' => '::old-name::',
             'type' => Type::LIGHT,
         ]);
 
         $response = $this->login()->putJson(
-            route('events.update', $event),
+            route('events.update', [$this->period->history, $event]),
             [
                 'name' => '::new-name::',
                 'type' => Type::DARK,
@@ -159,12 +122,13 @@ class EventTest extends TestCase
 
         $event = Event::factory()->create([
             'period_id' => $this->period->id,
+            'history_id' => $this->period->history_id,
             'name' => '::old-name::',
             'type' => Type::LIGHT,
         ]);
 
         $response = $this->login()->putJson(
-            route('events.update', $event),
+            route('events.update', [$this->period->history, $event]),
             $payload
         );
 
@@ -175,10 +139,13 @@ class EventTest extends TestCase
     /** @test */
     public function deleteEvent(): void
     {
-        $event = Event::factory()->create(['period_id' => $this->period->id]);
+        $event = Event::factory()->create([
+            'period_id' => $this->period->id,
+            'history_id' => $this->period->history_id,
+        ]);
 
         $response = $this->login()
-            ->deleteJson(route('events.delete', $event));
+            ->deleteJson(route('events.delete', [$this->period->history, $event]));
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('events', ['id' => $event->id]);
@@ -188,13 +155,54 @@ class EventTest extends TestCase
     /** @test */
     public function deletingAnEventReordersTheRemainingEvents(): void
     {
-        $event1 = Event::factory()->create(['period_id' => $this->period->id, 'position' => 1]);
-        $event2 = Event::factory()->create(['period_id' => $this->period->id, 'position' => 2]);
-        $event3 = Event::factory()->create(['period_id' => $this->period->id, 'position' => 3]);
+        $event1 = Event::factory()->create([
+            'period_id' => $this->period->id,
+            'history_id' => $this->period->history_id,
+            'position' => 1
+        ]);
+        $event2 = Event::factory()->create([
+            'period_id' => $this->period->id,
+            'position' => 2,
+            'history_id' => $this->period->history_id,
+        ]);
+        $event3 = Event::factory()->create([
+            'period_id' => $this->period->id,
+            'position' => 3,
+            'history_id' => $this->period->history_id,
+        ]);
 
-        $this->login()->deleteJson(route('events.delete', $event2));
+        $this->login()->deleteJson(route('events.delete', [$this->period->history, $event2]));
 
         $this->assertEquals(1, $event1->refresh()->position);
         $this->assertEquals(2, $event3->refresh()->position);
+    }
+
+    public function scopedRouteProvider(): Generator
+    {
+        yield from [
+            'create event' => [
+                'post',
+                fn () => Period::factory()->create(),
+                fn (History $history, Period $period) => route('periods.events.store', [$history, $period]),
+            ],
+            'update event' => [
+                'put',
+                fn () => Event::factory()->create(),
+                fn (History $history, Event $event) => route('events.update', [$history, $event]),
+            ],
+            'delete event' => [
+                'delete',
+                fn () => Event::factory()->create(),
+                fn (History $history, Event $event) => route('events.delete', [$history, $event]),
+            ],
+        ];
+    }
+
+    public function gameRouteProvider(): Generator
+    {
+        yield ['periods.events.store'];
+        yield ['events.update'];
+        yield ['events.delete'];
+        yield ['events.move'];
     }
 }

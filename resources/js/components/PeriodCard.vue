@@ -200,7 +200,7 @@ export default {
 
             this.loading = true;
 
-            axios.put(this.$route('periods.update', this.period), this.form)
+            axios.put(this.$route('periods.update', [this.historyId, this.period]), this.form)
                 .then(() => {
                     this.loading = false;
                     this.editing = false;
@@ -214,7 +214,7 @@ export default {
             const confirmed = confirm('Really delete this period? This will delete all events and scenes as well!');
 
             if (confirmed) {
-                axios.delete(this.$route('periods.delete', this.period))
+                axios.delete(this.$route('periods.delete', [this.historyId, this.period]))
                     .catch(console.error);
             }
         },

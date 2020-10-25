@@ -65,13 +65,15 @@ export default {
 
     props: ['event'],
 
+    inject: ['history'],
+
     components: {
         Modal,
     },
 
     computed: {
         route() {
-            return this.$route('events.scenes.store', this.event);
+            return this.$route('events.scenes.store', [this.history, this.event]);
         },
     },
 

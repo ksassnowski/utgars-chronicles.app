@@ -11,12 +11,20 @@ trait AuthenticatedRoutesTest
      * @test
      * @dataProvider authenticatedRoutesProvider
      */
-    public function authenticationTest(string $httpMethod, string $uri): void
+    public function authenticationTest(string $httpMethod, $uri, ?callable $setup = null): void
     {
         $method = "{$httpMethod}Json";
 
+        $entity = null;
+
+        if ($setup !== null) {
+            $entity = $setup();
+        }
+
+        $route = is_callable($uri) ? $uri($entity) : $uri;
+
         /** @var TestResponse $response */
-        $response = $this->$method($uri);
+        $response = $this->$method($route);
 
         $response->assertUnauthorized();
     }

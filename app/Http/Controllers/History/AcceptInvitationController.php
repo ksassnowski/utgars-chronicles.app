@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\History;
 
 use App\History;
+use App\MicroscopePlayer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use App\Exceptions\UserIsAlreadyPlayerInHistory;
@@ -13,6 +15,21 @@ class AcceptInvitationController extends Controller
 {
     public function __invoke(Request $request, History $history): RedirectResponse
     {
+        /** @var MicroscopePlayer $user */
+        $user = $request->user();
+
+        if (!$history->public && $user->isGuest()) {
+            redirect()->setIntendedUrl($request->fullUrl());
+
+            return redirect()->route('login');
+        }
+
+        if ($user->isGuest()) {
+            return redirect()->to(
+                URL::signedRoute('invitation.accept.show-form', ['history' => $history])
+            );
+        }
+
         try {
             $history->addPlayer($request->user());
         } catch (UserIsAlreadyPlayerInHistory $e) {
@@ -25,6 +42,6 @@ class AcceptInvitationController extends Controller
             ]);
         }
 
-        return redirect()->route('home');
+        return redirect()->route('user.games.show', $history);
     }
 }

@@ -123,7 +123,7 @@ export default {
 
             const promise = this.form.id === null
                 ? axios.post(this.$route('history.palette.store', this.historyId), this.form)
-                : axios.put(this.$route('palette.update', this.form.id), this.form);
+                : axios.put(this.$route('palette.update', [this.historyId, this.form.id]), this.form);
 
             promise.then(() => {
                 this.loading = false;
@@ -142,7 +142,7 @@ export default {
                 return;
             }
 
-            axios.delete(this.$route('palette.delete', this.form.id))
+            axios.delete(this.$route('palette.delete', [this.historyId, this.form.id]))
                 .then(this.close);
         },
 

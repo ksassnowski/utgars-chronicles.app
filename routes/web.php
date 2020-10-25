@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PaletteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\History\GuestInvitationController;
 
 Auth::routes();
 
@@ -19,14 +20,15 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('games/{game}', 'History\ShowGameController')
         ->middleware('can:showGame,game')
         ->name('user.games.show');
+
     Route::delete('games/{game}', 'History\LeaveGameController')
         ->name('user.games.leave');
 
-    Route::post('histories', 'History\StoreHistoryController')->name('history.store');
-
-    Route::get('histories/{history}/invitation', 'History\AcceptInvitationController')
-        ->middleware('signed')
-        ->name('invitation.accept');
+    Route::post('histories', 'History\StoreHistoryController')
+        ->name('history.store');
+    Route::patch('histories/{history}/visibility', 'History\ChangeVisibilityController')
+        ->middleware('can:updateVisibility,history')
+        ->name('history.visibility');
 
     Route::delete('histories/{history}/players/{player}', 'History\KickPlayerController')
         ->middleware('can:kickPlayer,history')
@@ -39,104 +41,95 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('histories/{history}', 'History\DeleteHistoryController')
         ->middleware('can:deleteHistory,history')
         ->name('history.delete');
+});
 
+Route::group(['middleware' => 'auth:microscope'], function () {
+    Route::get('histories/{history}/invitation', 'History\AcceptInvitationController')
+        ->middleware('signed')
+        ->name('invitation.accept');
+
+    Route::get('histories/{history}/invitation/guest', [GuestInvitationController::class, 'showForm'])
+        ->middleware('signed')
+        ->name('invitation.accept.show-form');
+
+    Route::post('histories/{history}/invitation/guest', [GuestInvitationController::class, 'accept'])
+        ->middleware('signed')
+        ->name('invitation.accept.guest');
+});
+
+Route::group(['middleware' => 'microscope'], function () {
     Route::get('histories/{history}/export', 'History\ExportController')
-        ->middleware('can:modifyGame,history')
         ->name('history.export');
 
     Route::get('histories/{history}/sync', 'History\BoardController')
-        ->middleware('can:modifyGame,history')
         ->name('history.sync');
 
     Route::get('histories/{history}/play', 'History\GameController')
-        ->middleware('can:modifyGame,history')
         ->name('history.play');
 
     Route::patch('histories/{history}/seed', 'History\UpdateSeedController')
-        ->middleware('can:modifyGame,history')
         ->name('history.update-seed');
 
     Route::post('histories/{history}/palette', [PaletteController::class, 'store'])
-        ->middleware('can:modifyGame,history')
         ->name('history.palette.store');
 
-    Route::put('palette/{palette}', [PaletteController::class, 'update'])
-        ->middleware('can:updatePalette,palette')
+    Route::put('histories/{history}/palette/{palette:id}', [PaletteController::class, 'update'])
         ->name('palette.update');
 
-    Route::delete('palette/{palette}', [PaletteController::class, 'destroy'])
-        ->middleware('can:deletePalette,palette')
+    Route::delete('histories/{history}/palette/{palette:id}', [PaletteController::class, 'destroy'])
         ->name('palette.delete');
 
     Route::post('histories/{history}/legacies', 'Legacy\CreateLegacyController')
-        ->middleware('can:modifyGame,history')
         ->name('history.legacies.store');
 
-    Route::put('legacies/{legacy}', 'Legacy\UpdateLegacyController')
-        ->middleware('can:updateLegacy,legacy')
+    Route::put('histories/{history}/legacies/{legacy:id}', 'Legacy\UpdateLegacyController')
         ->name('legacies.update');
 
-    Route::delete('legacies/{legacy}', 'Legacy\DeleteLegacyController')
-        ->middleware('can:deleteLegacy,legacy')
+    Route::delete('histories/{history}/legacies/{legacy:id}', 'Legacy\DeleteLegacyController')
         ->name('legacies.delete');
 
     Route::post('histories/{history}/focus', 'History\DefineFocusController')
-        ->middleware('can:modifyGame,history')
         ->name('history.focus.define');
 
-    Route::put('focus/{focus}', 'Focus\UpdateFocusController')
-        ->middleware('can:editFocus,focus')
+    Route::put('histories/{history}/focus/{focus:id}', 'Focus\UpdateFocusController')
         ->name('focus.update');
 
-    Route::delete('focus/{focus}', 'Focus\DeleteFocusController')
-        ->middleware('can:deleteFocus,focus')
+    Route::delete('histories/{history}/focus/{focus:id}', 'Focus\DeleteFocusController')
         ->name('focus.delete');
 
     Route::post('histories/{history}/periods', 'History\CreatePeriodController')
-        ->middleware('can:modifyGame,history')
         ->name('history.periods.store');
 
-    Route::put('periods/{period}', 'Period\UpdatePeriodController')
-        ->middleware('can:updatePeriod,period')
+    Route::put('histories/{history}/periods/{period:id}', 'Period\UpdatePeriodController')
         ->name('periods.update');
 
-    Route::delete('periods/{period}', 'Period\DeletePeriodController')
-        ->middleware('can:deletePeriod,period')
+    Route::delete('histories/{history}/periods/{period:id}', 'Period\DeletePeriodController')
         ->name('periods.delete');
 
-    Route::post('histories/{history}/periods/{period}/move', 'History\MovePeriodController')
-        ->middleware('can:modifyGame,history')
-        ->name('history.periods.move');
+    Route::post('histories/{history}/periods/{period:id}/move', 'History\MovePeriodController')
+        ->name('periods.move');
 
-    Route::post('periods/{period}/events', 'Period\CreateEventController')
-        ->middleware('can:createEvent,period')
+    Route::post('histories/{history}/periods/{period:id}/events', 'Period\CreateEventController')
         ->name('periods.events.store');
 
-    Route::put('events/{event}', 'Event\UpdateEventController')
-        ->middleware('can:updateEvent,event')
+    Route::put('histories/{history}/events/{event:id}', 'Event\UpdateEventController')
         ->name('events.update');
 
-    Route::post('events/{event}/move', 'Event\MoveEventController')
-        ->middleware('can:moveEvent,event')
+    Route::post('histories/{history}/events/{event:id}/move', 'Event\MoveEventController')
         ->name('events.move');
 
-    Route::delete('events/{event}', 'Event\DeleteEventController')
-        ->middleware('can:deleteEvent,event')
+    Route::delete('histories/{history}/events/{event:id}', 'Event\DeleteEventController')
         ->name('events.delete');
 
-    Route::post('events/{event}/scenes', 'Event\CreateSceneController')
-        ->middleware('can:createScene,event')
+    Route::post('histories/{history}/events/{event:id}/scenes', 'Event\CreateSceneController')
         ->name('events.scenes.store');
 
-    Route::put('scenes/{scene}', 'Scene\UpdateSceneController')
-        ->middleware('can:updateScene,scene')
+    Route::put('histories/{history}/scenes/{scene:id}', 'Scene\UpdateSceneController')
         ->name('scenes.update');
 
-    Route::delete('scenes/{scene}', 'Scene\DeleteSceneController')
-        ->middleware('can:deleteScene,scene')
+    Route::delete('histories/{history}/scenes/{scene:id}', 'Scene\DeleteSceneController')
         ->name('scenes.delete');
 
-    Route::post('scenes/{scene}/move', 'Scene\MoveSceneController')
-        ->middleware('can:moveScene,scene')
+    Route::post('/histories/{history}/scenes/{scene:id}/move', 'Scene\MoveSceneController')
         ->name('scenes.move');
 });

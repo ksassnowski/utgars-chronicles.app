@@ -6,10 +6,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @property History $history
+ * @property Event $event
+ */
 class Scene extends Model implements Movable
 {
-    use HasPosition;
+    use HasPosition, HasFactory;
 
     /** @var array */
     protected $guarded = [];
@@ -38,6 +43,11 @@ class Scene extends Model implements Movable
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
+    }
+
+    public function history(): BelongsTo
+    {
+        return $this->belongsTo(History::class);
     }
 
     protected function limitElementsToMove(Builder $query): void

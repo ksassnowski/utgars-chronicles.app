@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * @property Period $period
  * @property int $position
+ * @property History $history
  */
 class Event extends Model implements Movable
 {
@@ -51,6 +52,11 @@ class Event extends Model implements Movable
     public function period(): BelongsTo
     {
         return $this->belongsTo(Period::class);
+    }
+
+    public function history(): BelongsTo
+    {
+        return $this->belongsTo(History::class);
     }
 
     protected function limitElementsToMove(Builder $query): void

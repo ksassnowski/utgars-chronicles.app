@@ -12,8 +12,8 @@ final class GameController
     {
         $history->load([
             'periods.events.scenes',
-            'focus',
-            'palette',
+            'foci',
+            'palettes',
             'legacies'
         ]);
 

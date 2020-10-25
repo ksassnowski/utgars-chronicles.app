@@ -6,8 +6,8 @@ use App\User;
 use Generator;
 use App\History;
 use Tests\TestCase;
+use Tests\GameRouteTest;
 use Tests\ValidateRoutesTest;
-use Tests\AuthorizeHistoryTest;
 use App\Events\HistorySeedUpdated;
 use Tests\AuthenticatedRoutesTest;
 use Illuminate\Support\Facades\Event;
@@ -18,7 +18,7 @@ use App\Http\Controllers\History\UpdateSeedController;
 
 class HistoryTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, ValidateRoutesTest, AuthorizeHistoryTest;
+    use RefreshDatabase, AuthenticatedRoutesTest, ValidateRoutesTest, GameRouteTest;
 
     protected function setUp(): void
     {
@@ -34,8 +34,26 @@ class HistoryTest extends TestCase
             'name' => '::history-name::',
         ]);
 
-        $this->user->refresh();
-        $this->assertTrue($this->user->histories->contains('name', '::history-name::'));
+        $this->assertDatabaseHas('histories', [
+            'name' => '::history-name::',
+            'public' => false,
+            'owner_id' => $this->user->id,
+        ]);
+    }
+
+    /** @test */
+    public function createPublicHistory(): void
+    {
+        $this->login()->post(route('history.store'), [
+            'name' => '::history-name::',
+            'public' => true,
+        ]);
+
+        $this->assertDatabaseHas('histories', [
+            'name' => '::history-name::',
+            'public' => true,
+            'owner_id' => $this->user->id,
+        ]);
     }
 
     /** @test */
@@ -44,6 +62,34 @@ class HistoryTest extends TestCase
         $response = $this->login()->post(route('history.store'), []);
 
         $response->assertSessionHasErrors(['name']);
+    }
+
+    /** @test */
+    public function changePrivateGameToPublic(): void
+    {
+        $history = History::factory()->create();
+
+        $this->actingAs($history->owner)
+            ->patchJson(route('history.visibility', $history), [
+                'public' => true,
+            ]);
+
+        $history->refresh();
+        $this->assertTrue($history->public);
+    }
+
+    /** @test */
+    public function changePublicGameToPrivate(): void
+    {
+        $history = History::factory()->public()->create();
+
+        $this->actingAs($history->owner)
+            ->patchJson(route('history.visibility', $history), [
+                'public' => false,
+            ]);
+
+        $history->refresh();
+        $this->assertFalse($history->public);
     }
 
     /** @test */
@@ -72,7 +118,6 @@ class HistoryTest extends TestCase
     {
         yield from [
             'create history' => ['post', '/histories'],
-            'update seed' => ['patch', '/histories/1/seed'],
             'delete history' => ['delete', '/histories/1'],
         ];
     }
@@ -139,15 +184,8 @@ class HistoryTest extends TestCase
         ];
     }
 
-    public function authorizationProvider(): Generator
+    public function gameRouteProvider(): Generator
     {
-        yield from [
-            'update history seed' => [
-                ['name' => '::new-name::'],
-                fn (History $history) => route('history.update-seed', $history),
-                'patch',
-                200,
-            ]
-        ];
+        yield ['history.update-seed'];
     }
 }

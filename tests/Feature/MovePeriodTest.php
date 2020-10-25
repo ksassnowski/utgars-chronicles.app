@@ -7,13 +7,14 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
+use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class MovePeriodTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, ScopedRouteTest;
 
     private History $history;
 
@@ -179,7 +180,7 @@ class MovePeriodTest extends TestCase
             'position' => 1
         ]);
 
-        $this->login()->postJson(route('history.periods.move', [$this->history, $period]), [
+        $this->login()->postJson(route('periods.move', [$this->history, $period]), [
             'position' => 2,
         ]);
 
@@ -197,7 +198,7 @@ class MovePeriodTest extends TestCase
             'position' => 1
         ]);
 
-        $response = $this->login()->postJson(route('history.periods.move', [$this->history, $period]), $payload);
+        $response = $this->login()->postJson(route('periods.move', [$this->history, $period]), $payload);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('position');
@@ -222,10 +223,21 @@ class MovePeriodTest extends TestCase
             'position' => 1
         ]);
 
-        $response = $this->actingAs($otherUser)->postJson(route('history.periods.move', [$this->history, $period]), [
+        $response = $this->actingAs($otherUser)->postJson(route('periods.move', [$this->history, $period]), [
             'position' => 2,
         ]);
 
         $response->assertForbidden();
+    }
+
+    public function scopedRouteProvider(): Generator
+    {
+        yield from [
+            'move period' => [
+                'post',
+                fn () => Period::factory()->create(),
+                fn (History $history, Period $period) => route('periods.move', [$history, $period]),
+            ]
+        ];
     }
 }

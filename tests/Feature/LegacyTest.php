@@ -6,12 +6,12 @@ use Generator;
 use App\Legacy;
 use App\History;
 use Tests\TestCase;
+use Tests\GameRouteTest;
+use Tests\ScopedRouteTest;
 use App\Events\LegacyCreated;
 use App\Events\LegacyDeleted;
 use App\Events\LegacyUpdated;
 use Tests\ValidateRoutesTest;
-use Tests\AuthorizeHistoryTest;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Support\Facades\Event;
 use App\Http\Requests\Legacy\CreateLegacyRequest;
 use App\Http\Requests\Legacy\UpdateLegacyRequest;
@@ -21,7 +21,7 @@ use App\Http\Controllers\Legacy\UpdateLegacyController;
 
 class LegacyTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, AuthorizeHistoryTest, ValidateRoutesTest;
+    use RefreshDatabase, ValidateRoutesTest, ScopedRouteTest, GameRouteTest;
 
     protected function setUp(): void
     {
@@ -35,9 +35,10 @@ class LegacyTest extends TestCase
     {
         $history = History::factory()->create();
 
-        $response = $this->actingAs($history->owner)->postJson(route('history.legacies.store', $history), [
-            'name' => '::legacy-name::',
-        ]);
+        $response = $this->actingAs($history->owner)
+            ->postJson(route('history.legacies.store', $history), [
+                'name' => '::legacy-name::',
+            ]);
 
         $response->assertStatus(201);
         $history->refresh();
@@ -55,9 +56,10 @@ class LegacyTest extends TestCase
         $history = History::factory()->create();
         $legacy = $history->addLegacy('::old-name::');
 
-        $response = $this->actingAs($history->owner)->putJson(route('legacies.update', $legacy), [
-            'name' => '::new-name::'
-        ]);
+        $response = $this->actingAs($history->owner)
+            ->putJson(route('legacies.update', [$history, $legacy]), [
+                'name' => '::new-name::'
+            ]);
 
         $response->assertOk();
         $legacy->refresh();
@@ -75,7 +77,8 @@ class LegacyTest extends TestCase
         $history = History::factory()->create();
         $legacy = $history->addLegacy('::legacy-name::');
 
-        $response = $this->actingAs($history->owner)->deleteJson(route('legacies.delete', $legacy));
+        $response = $this->actingAs($history->owner)
+            ->deleteJson(route('legacies.delete', [$history, $legacy]));
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('legacies', [
@@ -85,41 +88,6 @@ class LegacyTest extends TestCase
             LegacyDeleted::class,
             fn (LegacyDeleted $event) => $event->legacyId === $legacy->id && $event->history->id === $history->id
         );
-    }
-
-    public function authenticatedRoutesProvider(): Generator
-    {
-        yield from [
-            'create legacy' => ['post', '/histories/1/legacies'],
-            'update legacy' => ['put', '/legacies/1'],
-            'delete legacy' => ['delete', '/legacies/1'],
-        ];
-    }
-
-    public function authorizationProvider(): Generator
-    {
-        yield from [
-            'create legacy' => [
-                ['name' => '::legacy-name::'],
-                fn (History $history) => route('history.legacies.store', $history),
-                'post',
-                201,
-            ],
-            'update legacy' => [
-                ['name' => '::new-name::'],
-                fn (Legacy $legacy) => route('legacies.update', $legacy),
-                'put',
-                200,
-                fn (History $history) => Legacy::factory()->create(['history_id' => $history->id]),
-            ],
-            'delete legacy' => [
-                [],
-                fn (Legacy $legacy) => route('legacies.delete', $legacy),
-                'delete',
-                204,
-                fn (History $history) => Legacy::factory()->create(['history_id' => $history->id]),
-            ]
-        ];
     }
 
     public function validationProvider(): Generator
@@ -136,5 +104,28 @@ class LegacyTest extends TestCase
                 UpdateLegacyRequest::class,
             ]
         ];
+    }
+
+    public function scopedRouteProvider(): Generator
+    {
+        yield from [
+            'update legacy' => [
+                'put',
+                fn () => Legacy::factory()->create(),
+                fn (History $history, Legacy $legacy) => route('legacies.update', [$history, $legacy]),
+            ],
+            'delete legacy' => [
+                'delete',
+                fn () => Legacy::factory()->create(),
+                fn (History $history, Legacy $legacy) => route('legacies.delete', [$history, $legacy]),
+            ],
+        ];
+    }
+
+    public function gameRouteProvider(): Generator
+    {
+        yield ['history.legacies.store'];
+        yield ['legacies.update'];
+        yield ['legacies.delete'];
     }
 }

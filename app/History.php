@@ -26,6 +26,7 @@ class History extends Model
     /** @var array */
     protected $casts = [
         'owner_id' => 'int',
+        'public' => 'bool',
     ];
 
     public function owner(): BelongsTo
@@ -43,12 +44,22 @@ class History extends Model
         return $this->hasMany(Period::class)->orderBy('position', 'ASC');
     }
 
-    public function focus(): HasMany
+    public function events(): HasMany
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function scenes(): HasMany
+    {
+        return $this->hasMany(Scene::class);
+    }
+
+    public function foci(): HasMany
     {
         return $this->hasMany(Focus::class);
     }
 
-    public function palette(): HasMany
+    public function palettes(): HasMany
     {
         return $this->hasMany(Palette::class);
     }
@@ -99,12 +110,12 @@ class History extends Model
 
     public function defineFocus(string $name): Focus
     {
-        return $this->focus()->create(['name' => $name]);
+        return $this->foci()->create(['name' => $name]);
     }
 
     public function addToPalette(string $description, string $type): Palette
     {
-        return $this->palette()->create([
+        return $this->palettes()->create([
             'name' => $description,
             'type' => $type,
         ]);

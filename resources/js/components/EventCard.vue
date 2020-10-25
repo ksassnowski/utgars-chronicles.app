@@ -110,6 +110,8 @@ export default {
 
     props: ['event', 'period'],
 
+    inject: ['history'],
+
     components: {
         Icon,
         SceneModal,
@@ -162,7 +164,7 @@ export default {
 
             this.loading = true;
 
-            axios.put(this.$route('events.update', this.event), this.form)
+            axios.put(this.$route('events.update', [this.history, this.event]), this.form)
                 .then(() => {
                     this.loading = false;
                     this.editing = false
@@ -180,7 +182,7 @@ export default {
                 return;
             }
 
-            axios.delete(this.$route('events.delete', this.event))
+            axios.delete(this.$route('events.delete', [this.history, this.event]))
                 .catch(console.error);
         },
 

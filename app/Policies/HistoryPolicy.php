@@ -7,6 +7,11 @@ use App\History;
 
 class HistoryPolicy
 {
+    public function updateVisibility(User $user, History $history): bool
+    {
+        return $this->ownsHistory($user, $history);
+    }
+
     public function deleteHistory(User $user, History $history): bool
     {
         return $this->ownsHistory($user, $history);
@@ -25,11 +30,6 @@ class HistoryPolicy
     public function updateHistory(User $user, History $history): bool
     {
         return $this->ownsHistory($user, $history);
-    }
-
-    public function modifyGame(User $user, History $history): bool
-    {
-        return $this->ownsHistory($user, $history) || $this->isPlayer($user, $history);
     }
 
     public function kickPlayer(User $user, History $history): bool

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * @property int id
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MicroscopePlayer
 {
     use Notifiable, HasFactory;
 
@@ -36,5 +36,25 @@ class User extends Authenticatable
     public function games(): BelongsToMany
     {
         return $this->belongsToMany(History::class);
+    }
+
+    public function getName(History $history): string
+    {
+        return $this->name;
+    }
+
+    public function isPlayer(History $history): bool
+    {
+        return $history->owner->is($this) || $history->isPlayer($this);
+    }
+
+    public function joinGame(History $history, ?string $name = null): void
+    {
+        $history->addPlayer($this);
+    }
+
+    public function isGuest(): bool
+    {
+        return false;
     }
 }

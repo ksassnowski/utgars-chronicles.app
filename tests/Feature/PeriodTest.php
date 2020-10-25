@@ -8,14 +8,20 @@ use Generator;
 use App\Period;
 use App\History;
 use Tests\TestCase;
+use Tests\GameRouteTest;
+use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
-use Illuminate\Testing\TestResponse;
+use Tests\ValidateRoutesTest;
 use Illuminate\Support\Facades\Event;
+use App\Http\Requests\History\CreatePeriodRequest;
+use App\Http\Requests\History\UpdatePeriodRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Http\Controllers\Period\UpdatePeriodController;
+use App\Http\Controllers\History\CreatePeriodController;
 
 class PeriodTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, ValidateRoutesTest, GameRouteTest, ScopedRouteTest;
 
     private History $history;
 
@@ -29,26 +35,19 @@ class PeriodTest extends TestCase
         $this->history = History::factory()->create(['owner_id' => $this->user->id]);
     }
 
-    /**
-     * @test
-     * @dataProvider routeProvider
-     */
-    public function authenticateRoutesTest(string $method, string $url): void
-    {
-        $method = $method . 'Json';
-
-        /** @var TestResponse $response */
-        $response = $this->{$method}($url);
-
-        $response->assertUnauthorized();
-    }
-
-    public function routeProvider()
+    public function scopedRouteProvider(): Generator
     {
         yield from [
-            'create period' => ['post', '/histories/1/periods'],
-            'update period' => ['put', '/periods/1'],
-            'delete period' => ['delete', 'periods/1'],
+            'update period' => [
+                'put',
+                fn () => Period::factory()->create(),
+                fn (History $history, Period $period) => route('periods.update', [$history, $period]),
+            ],
+            'delete period' => [
+                'delete',
+                fn () => Period::factory()->create(),
+                fn (History $history, Period $period) => route('periods.delete', [$history, $period]),
+            ],
         ];
     }
 
@@ -104,64 +103,6 @@ class PeriodTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     * @dataProvider validationProvider
-     */
-    public function validateAttributesOnCreate(string $attribute, $value): void
-    {
-        $payload = array_merge([
-            'name' => '::name::',
-            'type' => Type::LIGHT,
-        ], [$attribute => $value]);
-
-        $response = $this->login()->postJson(
-            route('history.periods.store', $this->history),
-            $payload
-        );
-
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors($attribute);
-    }
-
-    /** @test */
-    public function needToBeLoggedInToCreatePeriod(): void
-    {
-        $response = $this->postJson(route('history.periods.store', $this->history), [
-            'name' => '::period-name::',
-        ]);
-
-        $response->assertUnauthorized();
-    }
-
-    /** @test */
-    public function canOnlyCreatePeriodForOwnHistories(): void
-    {
-        $otherUser = User::factory()->create();
-
-        $response = $this->actingAs($otherUser)->postJson(route('history.periods.store', $this->history), [
-            'name' => '::period-name::',
-        ]);
-
-        $response->assertForbidden();
-    }
-
-    /** @test */
-    public function canCreatePeriodForHistoryThatIAmAPlayerOf(): void
-    {
-        $player = User::factory()->create();
-        $this->history->addPlayer($player);
-
-        $response = $this->actingAs($player)->postJson(route('history.periods.store', $this->history), [
-            'name' => '::period-name::',
-            'type' => Type::DARK,
-            'position' => 1,
-        ]);
-
-        $response->assertStatus(201);
-        $this->history->periods->contains('name', '::period-name::');
-    }
-
     /** @test */
     public function updatePeriod(): void
     {
@@ -171,7 +112,7 @@ class PeriodTest extends TestCase
             'type' => Type::DARK,
         ]);
 
-        $response = $this->login()->putJson(route('periods.update', $period), [
+        $response = $this->login()->putJson(route('periods.update', [$period->history, $period]), [
             'name' => '::new-period-name::',
             'type' => Type::LIGHT,
         ]);
@@ -184,53 +125,20 @@ class PeriodTest extends TestCase
         Event::assertDispatched(BoardUpdated::class);
     }
 
-    /**
-     * @test
-     * @dataProvider validationProvider
-     */
-    public function validateAttributes(string $attribute, $value): void
-    {
-        /** @var Period $period */
-        $period = Period::factory()->create([
-            'history_id' => $this->history->id
-        ]);
-
-        $payload = array_merge([
-            'name' => '::name::',
-            'type' => Type::LIGHT,
-        ], [$attribute => $value]);
-
-        $response = $this->login()->putJson(
-            route('periods.update', $period),
-            $payload
-        );
-
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors($attribute);
-    }
-
     public function validationProvider(): Generator
     {
         yield from [
-            'empty name' => ['name', ''],
-            'incorrect type' => ['type', 'something-else'],
+            [
+                CreatePeriodController::class,
+                '__invoke',
+                CreatePeriodRequest::class,
+            ],
+            [
+                UpdatePeriodController::class,
+                '__invoke',
+                UpdatePeriodRequest::class,
+            ]
         ];
-    }
-
-    /** @test */
-    public function canOnlyUpdatePeriodsBelongingToOwnHistory(): void
-    {
-        $otherUser = User::factory()->create();
-        /** @var Period $period */
-        $period = Period::factory()->create([
-            'history_id' => $this->history->id
-        ]);
-
-        $response = $this->actingAs($otherUser)->putJson(route('periods.update', $period), [
-            'name' => '::new-period-name::',
-        ]);
-
-        $response->assertForbidden();
     }
 
     /** @test */
@@ -241,38 +149,11 @@ class PeriodTest extends TestCase
             'history_id' => $this->history->id
         ]);
 
-        $response = $this->login()->deleteJson(route('periods.delete', $period));
+        $response = $this->login()->deleteJson(route('periods.delete', [$period->history, $period]));
 
         $response->assertStatus(204);
         $this->assertDatabaseMissing('periods', ['id' => $period->id]);
         Event::assertDispatched(BoardUpdated::class);
-    }
-
-    /** @test */
-    public function needToBeLoggedInToDeletePeriod()
-    {
-        $period = Period::factory()->create([
-            'history_id' => $this->history->id
-        ]);
-
-        $response = $this->deleteJson(route('periods.delete', $period));
-
-        $response->assertUnauthorized();
-    }
-
-    /** @test */
-    public function canOnlyDeletePeriodsBelongingToOwnHistory(): void
-    {
-        $otherUser = User::factory()->create();
-        $period = Period::factory()->create([
-            'history_id' => $this->history->id
-        ]);
-
-        $response = $this
-            ->actingAs($otherUser)
-            ->deleteJson(route('periods.delete', $period));
-
-        $response->assertForbidden();
     }
 
     /** @test */
@@ -282,9 +163,17 @@ class PeriodTest extends TestCase
         $period2 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 2]);
         $period3 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 3]);
 
-        $this->login()->deleteJson(route('periods.delete', $period2));
+        $this->login()->deleteJson(route('periods.delete', [$this->history->id, $period2]));
 
         $this->assertEquals(1, $period1->refresh()->position);
         $this->assertEquals(2, $period3->refresh()->position);
+    }
+
+    public function gameRouteProvider(): Generator
+    {
+        yield ['history.periods.store'];
+        yield ['periods.update'];
+        yield ['periods.delete'];
+        yield ['periods.move'];
     }
 }
