@@ -65,6 +65,34 @@ class HistoryTest extends TestCase
     }
 
     /** @test */
+    public function changePrivateGameToPublic(): void
+    {
+        $history = History::factory()->create();
+
+        $this->actingAs($history->owner)
+            ->patchJson(route('history.visibility', $history), [
+                'public' => true,
+            ]);
+
+        $history->refresh();
+        $this->assertTrue($history->public);
+    }
+
+    /** @test */
+    public function changePublicGameToPrivate(): void
+    {
+        $history = History::factory()->public()->create();
+
+        $this->actingAs($history->owner)
+            ->patchJson(route('history.visibility', $history), [
+                'public' => false,
+            ]);
+
+        $history->refresh();
+        $this->assertFalse($history->public);
+    }
+
+    /** @test */
     public function updateHistory(): void
     {
         $this->login();

@@ -7,6 +7,11 @@ use App\History;
 
 class HistoryPolicy
 {
+    public function updateVisibility(User $user, History $history): bool
+    {
+        return $this->ownsHistory($user, $history);
+    }
+
     public function deleteHistory(User $user, History $history): bool
     {
         return $this->ownsHistory($user, $history);

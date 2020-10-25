@@ -23,7 +23,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('games/{game}', 'History\LeaveGameController')
         ->name('user.games.leave');
 
-    Route::post('histories', 'History\StoreHistoryController')->name('history.store');
+    Route::post('histories', 'History\StoreHistoryController')
+        ->name('history.store');
+    Route::patch('histories/{history}/visibility', 'History\ChangeVisibilityController')
+        ->middleware('can:updateVisibility,history')
+        ->name('history.visibility');
 
     Route::get('histories/{history}/invitation', 'History\AcceptInvitationController')
         ->middleware('signed')

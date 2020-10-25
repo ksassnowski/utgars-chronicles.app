@@ -26,6 +26,7 @@ class History extends Model
     /** @var array */
     protected $casts = [
         'owner_id' => 'int',
+        'public' => 'bool',
     ];
 
     public function owner(): BelongsTo
