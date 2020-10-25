@@ -26,7 +26,7 @@ class AnonymousPlayer implements MicroscopePlayer
 
     public function getName(History $history): string
     {
-        return $this->histories[$history->id];
+        return $this->histories[$history->id] . ' (guest)';
     }
 
     public function isPlayer(History $history): bool
