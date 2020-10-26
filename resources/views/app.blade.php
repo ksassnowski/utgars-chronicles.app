@@ -18,7 +18,5 @@
 </head>
 <body class="flex flex-col h-full antialiased">
     @inertia
-
-    @include('partials.fathom')
 </body>
 </html>
