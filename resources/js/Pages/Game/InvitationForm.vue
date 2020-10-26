@@ -69,7 +69,9 @@ export default {
     methods: {
         submit() {
             if (this.formValid) {
-                this.$inertia.post(this.acceptUrl, this.form);
+                this.$inertia.post(this.acceptUrl, this.form, {
+                    onSuccess: window.fathom.trackGoal("UKDSEW8G", 0)
+                });
             }
         }
     }
