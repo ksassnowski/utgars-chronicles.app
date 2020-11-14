@@ -1,6 +1,6 @@
-require('./bootstrap');
+require("./bootstrap");
 
-window.Vue = require('vue');
+window.Vue = require("vue");
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -8,13 +8,14 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-import { InertiaApp } from '@inertiajs/inertia-vue';
-import PortalVue from 'portal-vue'
-import VueMeta from 'vue-meta'
-import * as Sentry from '@sentry/browser';
-import { Vue as VueIntegration } from '@sentry/integrations';
+import { App, plugin } from "@inertiajs/inertia-vue";
+import { InertiaProgress } from "@inertiajs/progress";
+import PortalVue from "portal-vue";
+import VueMeta from "vue-meta";
+import * as Sentry from "@sentry/browser";
+import { Vue as VueIntegration } from "@sentry/integrations";
 
-Vue.use(InertiaApp);
+Vue.use(plugin);
 Vue.use(PortalVue);
 Vue.use(VueMeta);
 
@@ -22,20 +23,27 @@ Vue.prototype.$route = (...args) => route(...args).url();
 
 window.Bus = new Vue();
 
-const app = document.getElementById('app');
+const app = document.getElementById("app");
+
+InertiaProgress.init({
+    delay: 250,
+    color: "#29d",
+    includeCSS: true,
+    showSpinner: false
+});
 
 new Vue({
-    render: h => h(InertiaApp, {
-        props: {
-            initialPage: JSON.parse(app.dataset.page),
-            resolveComponent: name => import(`@/Pages/${name}`).then(module => module.default),
-        },
-    }),
+    render: h =>
+        h(App, {
+            props: {
+                initialPage: JSON.parse(app.dataset.page),
+                resolveComponent: name =>
+                    import(`@/Pages/${name}`).then(module => module.default)
+            }
+        })
 }).$mount(app);
 
 Sentry.init({
     dsn: process.env.MIX_SENTRY_DSN,
-    integrations: [
-        new VueIntegration({ Vue }),
-    ],
+    integrations: [new VueIntegration({ Vue })]
 });

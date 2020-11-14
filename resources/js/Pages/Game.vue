@@ -1,24 +1,24 @@
 <template>
-    <GameBoard :history="$page.history" />
+    <GameBoard :history="$page.props.history" />
 </template>
 
 <script>
-import GameBoard from '../components/GameBoard';
-import GameLayout from './Layouts/Game';
+import GameBoard from "../components/GameBoard";
+import GameLayout from "./Layouts/Game";
 
 export default {
-    name: 'Game',
+    name: "Game",
 
     metaInfo() {
         return {
-            title: `${this.$page.history.name} – Utgar\'s Chronicles`
+            title: `${this.$page.props.history.name} – Utgar\'s Chronicles`
         };
     },
 
     layout: GameLayout,
 
     components: {
-        GameBoard,
-    },
+        GameBoard
+    }
 };
 </script>
