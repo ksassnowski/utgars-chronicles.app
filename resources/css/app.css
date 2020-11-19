@@ -6,23 +6,23 @@
 @tailwind utilities;
 
 .error .input {
-    @apply .border-red-500;
+    @apply border-red-500;
 }
 
 .error .label {
-    @apply .text-red-500;
+    @apply text-red-500;
 }
 
 .input {
-    @apply .w-full .bg-gray-200 .px-4 .py-2 .border-2 .border-transparent .rounded;
+    @apply w-full bg-gray-200 px-4 py-2 border-2 border-transparent rounded;
 }
 
 .input:focus {
-    @apply .border-indigo-400;
+    @apply border-indigo-400;
 }
 
 .label {
-    @apply .text-xs .font-semibold .tracking-wide .text-gray-600;
+    @apply text-xs font-semibold tracking-wide text-gray-600;
 }
 
 /* Make clicks pass-through */
@@ -105,7 +105,7 @@
 
 .page-header::before,
 .page-header::after {
-    @apply .absolute .inset-x-0 .top-0 .bg-indigo-800;
+    @apply absolute inset-x-0 top-0 bg-indigo-800;
     content: '';
     height: 125%;
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
@@ -129,7 +129,7 @@
 }
 
 .page-footer::before {
-    @apply .absolute .inset-x-0 .bottom-0 .bg-gray-800;
+    @apply absolute inset-x-0 bottom-0 bg-gray-800;
     content: '';
     z-index: -10;
     height: 140%;
@@ -138,7 +138,7 @@
 
 
 .history-cards li {
-    @apply .mb-4;
+    @apply mb-4;
 }
 
 @screen sm {
@@ -201,11 +201,11 @@
 }
 
 .game-card:hover .game-add-button {
-    @apply .visible;
+    @apply visible;
 }
 
 .game-add-button {
-    @apply .absolute .z-10 .invisible;
+    @apply absolute z-10 invisible;
 }
 
 .game-add-button.left,

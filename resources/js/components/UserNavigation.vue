@@ -48,7 +48,7 @@
             >
                 <InertiaLink
                     :href="$route('profile')"
-                    class="sm:px-8 py-4 sm:py-2 sm:text-sm text-indigo-100 sm:text-gray-800 block hover:bg-gray-200 inline-flex items-center"
+                    class="sm:px-8 py-4 sm:py-2 sm:text-sm text-indigo-100 sm:text-gray-800 block hover:bg-gray-100 inline-flex items-center"
                     @click="dropdownOpen = false"
                 >
                     <Icon

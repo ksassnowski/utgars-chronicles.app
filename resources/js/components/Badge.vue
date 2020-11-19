@@ -1,18 +1,18 @@
 <template>
     <div
-        class="rounded text-sm font-semibold px-3 py-1 tracking-wide text-white inline-flex items-center"
+        class="rounded text-sm font-medium px-3 py-1 text-white inline-flex items-center"
         :class="{
-            'bg-green-600 text-green-100': isSuccess,
-            'bg-orange-600 text-orange-100': isWarning
+            'bg-green-600 text-white': isSuccess,
+            'bg-orange-600 text-white': isWarning
         }"
     >
         <Icon
             v-if="icon !== null"
             :name="icon"
-            class="h-4 fill-current mr-2"
+            class="h-3 w-3 fill-current mr-2"
             :class="{
-                'text-green-300': isSuccess,
-                'text-orange-300': isWarning
+                'text-green-200': isSuccess,
+                'text-orange-200': isWarning
             }"
         />
         <slot></slot>

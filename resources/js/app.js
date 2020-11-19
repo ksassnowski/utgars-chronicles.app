@@ -1,19 +1,10 @@
 require("./bootstrap");
 
-window.Vue = require("vue");
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
-
+import Vue from "vue";
 import { App, plugin } from "@inertiajs/inertia-vue";
 import { InertiaProgress } from "@inertiajs/progress";
 import PortalVue from "portal-vue";
 import VueMeta from "vue-meta";
-import * as Sentry from "@sentry/browser";
-import { Vue as VueIntegration } from "@sentry/integrations";
 
 Vue.use(plugin);
 Vue.use(PortalVue);
@@ -42,8 +33,3 @@ new Vue({
             }
         })
 }).$mount(app);
-
-Sentry.init({
-    dsn: process.env.MIX_SENTRY_DSN,
-    integrations: [new VueIntegration({ Vue })]
-});
