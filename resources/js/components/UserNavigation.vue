@@ -58,18 +58,13 @@
                     Profile
                 </InertiaLink>
 
-                <form
-                    :action="$route('logout')"
+                <InertiaLink
+                    as="button"
                     method="POST"
-                    class="hover:bg-gray-200"
+                    :href="$route('logout')"
+                    class="sm:text-sm text-indigo-100 sm:text-indigo-600 w-full sm:px-8 py-4 sm:py-2 text-left hover:bg-gray-100"
+                    >Logout</InertiaLink
                 >
-                    <input type="hidden" name="_token" :value="token" />
-                    <button
-                        class="sm:text-sm text-indigo-100 sm:text-indigo-600 w-full sm:px-8 py-4 sm:py-2 text-left"
-                    >
-                        Logout
-                    </button>
-                </form>
             </div>
         </div>
     </div>
