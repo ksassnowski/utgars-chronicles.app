@@ -13,7 +13,7 @@
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.3.2",
-        "laravel/framework": "^8.0",
+        "laravel/framework": "^8.22.1",
         "laravel/horizon": "^5.0",
         "laravel/ui": "^3.0",
         "league/csv": "^9.6",
