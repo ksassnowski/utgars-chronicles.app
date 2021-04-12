@@ -8,7 +8,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^7.4",
+        "php": "^8.0",
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -19,7 +19,7 @@
         "league/csv": "^9.6",
         "predis/predis": "^1.1",
         "pusher/pusher-php-server": "~4.0",
-        "sentry/sentry-laravel": "2.1.0",
+        "sentry/sentry-laravel": "2.4.2",
         "tightenco/ziggy": "^0.8.1"
     },
     "require-dev": {

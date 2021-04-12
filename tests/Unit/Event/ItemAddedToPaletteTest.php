@@ -23,7 +23,7 @@ class ItemAddedToPaletteTest extends TestCase
         );
     }
 
-    protected function getChannelName(ItemAddedToPalette $event): string
+    protected function getChannelName($event): string
     {
         return 'history.123';
     }
