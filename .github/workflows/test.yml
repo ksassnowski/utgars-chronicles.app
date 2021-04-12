@@ -36,7 +36,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@master
         with:
-          php-version: 7.4
+          php-version: 8.0
           tools: prestissimo
           extensions: pdo, mysql, pdo_mysql
           coverage: none
