@@ -29,8 +29,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(HistoryExporter::class, CsvHistoryExporter::class);
 
         Collection::macro('transpose', function () {
-            if ($this->count() <= 1) {
-                $this->push([]);
+            if ($this->isEmpty()) {
+                return [];
+            }
+
+            if ($this->count() === 1) {
+                return array_map(fn (string $item) => [$item], $this->first());
             }
 
             return array_map(null, ...$this->all());
