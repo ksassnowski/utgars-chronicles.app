@@ -62,7 +62,7 @@ export default {
 
     computed: {
         formValid() {
-            return this.form;
+            return this.form.name !== null;
         }
     },
 
@@ -70,7 +70,11 @@ export default {
         submit() {
             if (this.formValid) {
                 this.$inertia.post(this.acceptUrl, this.form, {
-                    onSuccess: window.fathom.trackGoal("UKDSEW8G", 0)
+                    onSuccess: () => {
+                        if (window.fathom) {
+                            window.fathom.trackGoal("UKDSEW8G", 0);
+                        }
+                    }
                 });
             }
         }
