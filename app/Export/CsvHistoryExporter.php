@@ -11,10 +11,10 @@ final class CsvHistoryExporter implements HistoryExporter
     {
         return $history->periods
             ->map(function (Period $period) {
-                $row = [sprintf('PERIOD %s: (%s)', $period->name, $period->type)];
+                $row = [sprintf('PERIOD (%s): %s', $period->type, $period->name)];
 
                 foreach ($period->events as $event) {
-                    $row[] = sprintf('EVENT %s: (%s)', $event->type, $event->name);
+                    $row[] = sprintf('EVENT (%s): %s', $event->type, $event->name);
 
                     foreach ($event->scenes as $scene) {
                         $row[] = sprintf('SCENE (%s): %s ** %s ** %s', $scene->type, $scene->question, $scene->scene, $scene->answer);

@@ -76,13 +76,13 @@
 
                     <div class="flex justify-between items-center">
                         <div>
-                            <input type="radio" id="light" value="light" v-model="form.type">
-                            <label for="light">Light</label>
+                            <input type="radio" id="dark" value="dark" v-model="form.type">
+                            <label for="dark">Dark</label>
                         </div>
 
                         <div>
-                            <input type="radio" id="dark" value="dark" v-model="form.type">
-                            <label for="dark">Dark</label>
+                            <input type="radio" id="light" value="light" v-model="form.type">
+                            <label for="light">Light</label>
                         </div>
                     </div>
 
