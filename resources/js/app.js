@@ -10,7 +10,7 @@ Vue.use(plugin);
 Vue.use(PortalVue);
 Vue.use(VueMeta);
 
-Vue.prototype.$route = (...args) => route(...args).url();
+Vue.prototype.$route = (...args) => route(...args);
 
 window.Bus = new Vue();
 
