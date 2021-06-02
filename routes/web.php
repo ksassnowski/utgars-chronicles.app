@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PaletteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LookingForGroupController;
 use App\Http\Controllers\History\GuestInvitationController;
 
 Auth::routes();
@@ -41,6 +42,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('histories/{history}', 'History\DeleteHistoryController')
         ->middleware('can:deleteHistory,history')
         ->name('history.delete');
+
+    Route::get('/lfg', [LookingForGroupController::class, 'index'])
+        ->name('lfg.index');
 });
 
 Route::group(['middleware' => 'auth:microscope'], function () {
