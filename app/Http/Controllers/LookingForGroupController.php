@@ -22,6 +22,8 @@ class LookingForGroupController extends Controller
                 ->when($request->query('start_date'), function (Builder $query, $date) {
                     $query->where('start_date', '>=', $date);
                 })
+                ->withCount('users')
+                ->orderBy('start_date', 'ASC')
                 ->get(),
         ]);
     }
