@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 pt-8">
         <div class="lg:w-3/5 mx-auto">
             <h1 class="text-3xl font-bold text-gray-800 mb-2 tracking-tight">
                 Profile

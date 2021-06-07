@@ -1,6 +1,6 @@
 <template>
     <nav
-        class="px-4 flex flex-wrap items-center bg-indigo-800 mb-8 justify-between"
+        class="px-4 flex flex-wrap items-center bg-indigo-800 justify-between"
     >
         <InertiaLink
             :href="$route('home')"

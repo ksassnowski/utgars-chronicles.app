@@ -7,6 +7,8 @@ use App\Lfg;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\CreateLfgRequest;
 use Illuminate\Database\Eloquent\Builder;
 
 class LookingForGroupController extends Controller
@@ -22,9 +24,26 @@ class LookingForGroupController extends Controller
                 ->when($request->query('start_date'), function (Builder $query, $date) {
                     $query->where('start_date', '>=', $date);
                 })
-                ->withCount('users')
                 ->orderBy('start_date', 'ASC')
                 ->get(),
         ]);
+    }
+
+    public function show(Lfg $lfg)
+    {
+    }
+
+    public function create(): Response
+    {
+        return Inertia::render('Lfg/Create');
+    }
+
+    public function store(CreateLfgRequest $request): RedirectResponse
+    {
+        $lfg = $request->user()
+            ->lfgs()
+            ->create($request->validated());
+
+        return redirect()->route('lfg.show', $lfg);
     }
 }

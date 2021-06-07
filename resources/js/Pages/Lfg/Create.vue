@@ -1,0 +1,123 @@
+<template>
+    <form @submit.prevent="onSubmit" class="max-w-3xl mx-auto px-4 pt-8">
+        <h1 class="text-xl font-bold">Look for players</h1>
+
+        <div class="rounded shadow-lg py-6 border border-gray-100 mt-6 px-6 space-y-6">
+            <InputGroup label="Title" name="title">
+                <TextInput
+                    v-model="form.title"
+                    name="title"
+                    placeholder="Saturday Night Microscope"
+                    required
+                />
+            </InputGroup>
+
+            <InputGroup label="Date and Time" name="date">
+                <div class="flex space-x-4 items-center">
+                    <DatePicker
+                        v-model="form.start_date"
+                        type="datetime"
+                        class="w-full block flex-1"
+                        :input-attr="{ name: 'date', id: 'date' }"
+                        input-class="w-full bg-gray-100 px-4 py-2 border-2 border-transparent rounded focus:bg-white focus:border-indigo-700 placeholder-gray-400"
+                        format="YYYY-MM-DD, HH:mm"
+                        :show-second="false"
+                    />
+
+                    <span>
+                        {{ gameStartsIn }}
+                    </span>
+                </div>
+
+                <HelpText>
+                    Your current timezone is set to <strong>{{ timezone }}</strong>. If this is not correct, please go to your profile to
+                    change it. Otherwise other players might see an incorrect time.
+                </HelpText>
+            </InputGroup>
+
+            <InputGroup label="Maximum Players" name="slots">
+                <NumberInput
+                    v-model="form.slots"
+                    name="slots"
+                    :min="2"
+                    :step="1"
+                    placeholder="4"
+                    required
+                />
+            </InputGroup>
+        </div>
+
+        <div class="flex justify-end mt-6">
+            <button
+                type="submit"
+                class="bg-indigo-700 text-white px-6 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+                :disabled="!formValid"
+            >
+                Start looking for players
+            </button>
+        </div>
+    </form>
+</template>
+
+<script>
+import "vue2-datepicker/index.css";
+import DatePicker from "vue2-datepicker";
+import dayjs from "dayjs";
+
+import Layout from "@/Pages/Layouts/Layout.vue";
+import InputGroup from "@/components/UI/InputGroup.vue";
+import TextInput from "@/components/UI/TextInput.vue";
+import HelpText from "@/components/UI/HelpText.vue";
+import NumberInput from "@/components/UI/NumberInput.vue";
+
+export default {
+    name: "Create",
+
+    layout: Layout,
+
+    components: {
+        NumberInput,
+        TextInput,
+        InputGroup,
+        HelpText,
+        DatePicker,
+    },
+
+    computed: {
+        timezone() {
+            return dayjs.tz.guess();
+        },
+
+        gameStartsIn() {
+            if (this.form.date === null) {
+                return 'Please select a date';
+            }
+
+            return dayjs(this.form.date).fromNow();
+        },
+
+        formValid() {
+            return this.form.title
+                && dayjs(this.form.date).isValid()
+                && this.form.slots !== null
+                && this.form.slots >= 2;
+        },
+    },
+
+    methods: {
+        onSubmit() {
+            this.form.post(this.$route('lfg.store'));
+        }
+    },
+
+    data() {
+        return {
+            form: this.$inertia.form({
+                title: '',
+                start_date: null,
+                slots: null,
+            }),
+        };
+    },
+}
+</script>
