@@ -16,6 +16,11 @@ class CreateLfgsTable extends Migration
         Schema::create('lfgs', function (Blueprint $table) {
             $table->id();
             $table->unsignedSmallInteger('slots');
+            $table->string('title');
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
             $table->timestamp('start_date');
             $table->timestamps();
         });

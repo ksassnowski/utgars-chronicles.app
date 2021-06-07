@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Lfg;
+use App\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LfgFactory extends Factory
@@ -22,8 +23,10 @@ class LfgFactory extends Factory
     public function definition()
     {
         return [
+            'title' => $this->faker->words(3, true),
             'slots' => $this->faker->numberBetween(2, 6),
-            'start_date' => $this->faker->dateTimeBetween('now', '+2weeks', 'UTC')
+            'start_date' => $this->faker->dateTimeBetween('now', '+2weeks', 'UTC'),
+            'user_id' => User::factory(),
         ];
     }
 

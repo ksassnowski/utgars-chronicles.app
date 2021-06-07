@@ -4,9 +4,16 @@
             <InertiaLink
                 :href="$route('home')"
                 class="text-indigo-100 py-4 sm:py-6 flex items-center hover:bg-indigo-700 sm:px-4"
+                :class="{ 'bg-indigo-700': $route().current('home') }"
             >
                 Dashboard
             </InertiaLink>
+
+            <InertiaLink
+                :href="$route('lfg.index')"
+                class="text-indigo-100 py-4 sm:py-6 flex items-center hover:bg-indigo-700 sm:px-4"
+                :class="{ 'bg-indigo-700': $route().current('lfg.*') }"
+            >Find a game</InertiaLink>
         </div>
 
         <div class="sm:flex items-center relative">

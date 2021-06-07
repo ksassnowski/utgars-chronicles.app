@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 pt-8">
         <CreateHistoryModal v-if="showModal" @close="showModal = false" />
 
         <section class="mb-8">
