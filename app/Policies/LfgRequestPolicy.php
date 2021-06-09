@@ -10,7 +10,12 @@ class LfgRequestPolicy
 {
     use HandlesAuthorization;
 
-    public function accept(User $user, LfgRequest $request)
+    public function accept(User $user, LfgRequest $request): bool
+    {
+        return $user->id === $request->lfg->user_id;
+    }
+
+    public function reject(User $user, LfgRequest $request): bool
     {
         return $user->id === $request->lfg->user_id;
     }

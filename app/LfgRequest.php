@@ -4,7 +4,7 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use App\Exceptions\RequestAlreadyAcceptedException;
+use App\Exceptions\RequestAlreadyAnsweredException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -34,17 +34,30 @@ class LfgRequest extends Model
         return $this->belongsTo(Lfg::class);
     }
 
+    public function isPending(): bool
+    {
+        return $this->accepted_at === null && $this->rejected_at === null;
+    }
+
     /**
-     * @throws RequestAlreadyAcceptedException
+     * @throws RequestAlreadyAnsweredException
      */
     public function accept(): void
     {
-        if ($this->accepted_at !== null) {
-            throw new RequestAlreadyAcceptedException();
-        }
+        throw_unless($this->isPending(), RequestAlreadyAnsweredException::class);
 
         tap($this, function (LfgRequest $request) {
             $request->lfg->addPlayer($this->user);
         })->update(['accepted_at' => now()]);
+    }
+
+    /**
+     * @throws RequestAlreadyAnsweredException
+     */
+    public function reject(): void
+    {
+        throw_unless($this->isPending(), RequestAlreadyAnsweredException::class);
+
+        $this->update(['rejected_at' => now()]);
     }
 }
