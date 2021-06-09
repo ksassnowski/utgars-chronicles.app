@@ -9,9 +9,10 @@ use App\Notifications\NewLfgRequest;
 use Illuminate\Http\RedirectResponse;
 use App\Exceptions\LfgAlreadyFullException;
 use App\Notifications\LfgRequestWasAccepted;
+use App\Notifications\LfgRequestWasRejected;
 use App\Exceptions\GameAlreadyStartedException;
 use App\Exceptions\AlreadyRequestedToJoinException;
-use App\Exceptions\RequestAlreadyAcceptedException;
+use App\Exceptions\RequestAlreadyAnsweredException;
 
 class LfgRequestController extends Controller
 {
@@ -32,17 +33,34 @@ class LfgRequestController extends Controller
         return redirect()->route('lfg.requests.index');
     }
 
-    public function accept(LfgRequest $lfgRequest)
+    public function accept(LfgRequest $request)
     {
         try {
-            $lfgRequest->accept();
-        } catch (RequestAlreadyAcceptedException) {
+            $request->accept();
+        } catch (RequestAlreadyAnsweredException) {
             return redirect()->back()->withErrors([
-                'request' => __('Request has already been accepted')
+               'request' => __('Can only accept pending requests')
             ]);
         }
 
-        $lfgRequest->user->notify(new LfgRequestWasAccepted($lfgRequest));
+        if ($request->lfg->isFull()) {
+            $request->lfg->clearPendingRequests();
+        }
+
+        $request->user->notify(new LfgRequestWasAccepted($request));
+    }
+
+    public function reject(LfgRequest $request)
+    {
+        try {
+            $request->reject();
+        } catch (RequestAlreadyAnsweredException) {
+            return redirect()->back()->withErrors([
+                'request' => __('Can only reject pending requests')
+            ]);
+        }
+
+        $request->user->notify(new LfgRequestWasRejected($request));
     }
 
     private function unsuccessfulRequestResponse($exception): RedirectResponse

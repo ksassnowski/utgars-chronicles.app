@@ -4,6 +4,6 @@ namespace App\Exceptions;
 
 use Exception;
 
-class RequestAlreadyAcceptedException extends Exception
+class RequestAlreadyAnsweredException extends Exception
 {
 }

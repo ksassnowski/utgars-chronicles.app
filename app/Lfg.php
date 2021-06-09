@@ -5,6 +5,7 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\LfgAlreadyFullException;
+use Illuminate\Database\Eloquent\Collection;
 use App\Exceptions\GameAlreadyStartedException;
 use App\Exceptions\AlreadyRequestedToJoinException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int $availableSlots
  * @property User $owner
  * @property int $user_id
+ * @property Collection $requests
+ * @property Collection $pendingRequests
  */
 class Lfg extends Model
 {
@@ -45,6 +48,11 @@ class Lfg extends Model
     public function requests(): HasMany
     {
         return $this->hasMany(LfgRequest::class);
+    }
+
+    public function pendingRequests(): HasMany
+    {
+        return $this->requests()->whereNull(['accepted_at', 'rejected_at']);
     }
 
     /**
@@ -85,6 +93,11 @@ class Lfg extends Model
     public function hasStarted(): bool
     {
         return $this->start_date->isBefore(now());
+    }
+
+    public function clearPendingRequests(): void
+    {
+        $this->pendingRequests()->delete();
     }
 
     public function getAvailableSlotsAttribute(): int

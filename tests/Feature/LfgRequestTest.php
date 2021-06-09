@@ -4,12 +4,14 @@ namespace Tests\Feature;
 
 use App\Lfg;
 use App\User;
+use Generator;
 use Notification;
 use Carbon\Carbon;
 use App\LfgRequest;
 use Tests\TestCase;
 use App\Notifications\NewLfgRequest;
 use App\Notifications\LfgRequestWasAccepted;
+use App\Notifications\LfgRequestWasRejected;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 /**
@@ -103,19 +105,19 @@ class LfgRequestTest extends TestCase
     /** @test */
     public function user_can_cancel_a_pending_request(): void
     {
-        $this->markTestIncomplete();
+        self::markTestIncomplete();
     }
 
     /** @test */
     public function user_cant_cancel_an_already_rejected_request(): void
     {
-        $this->markTestIncomplete();
+        self::markTestIncomplete();
     }
 
     /** @test */
     public function user_cant_cancel_an_already_accepted_request(): void
     {
-        $this->markTestIncomplete();
+        self::markTestIncomplete();
     }
 
     /** @test */
@@ -161,37 +163,78 @@ class LfgRequestTest extends TestCase
         self::assertNull($request->fresh()->accepted_at);
     }
 
-    /** @test */
-    public function cant_accept_an_already_accepted_request(): void
+    /**
+     * @test
+     * @dataProvider notPendingRequestProvider
+     */
+    public function can_only_accept_pending_requests(callable $createRequest): void
     {
         $lfg = Lfg::factory()->create();
-        $request = LfgRequest::factory()
-            ->for($lfg)
-            ->accepted()
-            ->create();
+        $request = $createRequest($lfg);
 
         $this
             ->actingAs($lfg->owner)
             ->post(route('lfg.requests.accept', $request))
-            ->assertSessionHasErrors(['request' => 'Request has already been accepted']);
-    }
-
-    /** @test */
-    public function cant_accept_an_already_rejected_request(): void
-    {
-        $this->markTestIncomplete();
+            ->assertSessionHasErrors(['request' => 'Can only accept pending requests']);
+        Notification::assertNothingSent();
     }
 
     /** @test */
     public function can_reject_request(): void
     {
-        $this->markTestIncomplete();
+        Carbon::setTestNow(now()->startOfMinute());
+        $lfg = Lfg::factory()->create(['slots' => 2]);
+        $request = LfgRequest::factory()
+            ->for($lfg)
+            ->pending()
+            ->create();
+
+        $this
+            ->withoutExceptionHandling()
+            ->actingAs($lfg->owner)
+            ->post(route('lfg.requests.reject', $request));
+
+        self::assertFalse(
+            $lfg->users->contains($request->user),
+            'Expected user to not be a player in LFG, but was'
+        );
+        self::assertEquals(now(), $request->fresh()->rejected_at);
+    }
+
+    /**
+     * @test
+     * @dataProvider notPendingRequestProvider
+     */
+    public function can_only_reject_pending_requests(callable $createRequest): void
+    {
+        $lfg = Lfg::factory()->create();
+        $request = $createRequest($lfg);
+
+        $this
+            ->actingAs($lfg->owner)
+            ->post(route('lfg.requests.reject', $request))
+            ->assertSessionHasErrors(['request' => 'Can only reject pending requests']);
+        Notification::assertNothingSent();
     }
 
     /** @test */
     public function user_gets_notified_if_request_got_rejected(): void
     {
-        $this->markTestIncomplete();
+        $lfg = Lfg::factory()->create();
+        $request = LfgRequest::factory()
+            ->for($lfg)
+            ->pending()
+            ->create();
+
+        $this
+            ->actingAs($lfg->owner)
+            ->post(route('lfg.requests.reject', $request));
+
+        Notification::assertSentTo(
+            $request->user,
+            LfgRequestWasRejected::class,
+            fn (LfgRequestWasRejected $notification) => $notification->request->is($request)
+        );
     }
 
     /** @test */
@@ -215,20 +258,73 @@ class LfgRequestTest extends TestCase
     }
 
     /** @test */
+    public function only_owner_can_reject_requests(): void
+    {
+        $lfg = Lfg::factory()->create(['slots' => 2]);
+        $request = LfgRequest::factory()
+            ->for($lfg)
+            ->pending()
+            ->create();
+
+        $this
+            ->actingAs(User::factory()->create())
+            ->post(route('lfg.requests.reject', $request))
+            ->assertForbidden();
+        self::assertNull($request->fresh()->rejected_at);
+    }
+
+    /** @test */
     public function delete_all_pending_requests_if_last_slot_was_filled(): void
     {
-        $this->markTestIncomplete();
+        $lfg = Lfg::factory()->create(['slots' => 2]);
+        $requests = LfgRequest::factory()
+            ->count(3)
+            ->for($lfg)
+            ->pending()
+            ->create();
+
+        $this->actingAs($lfg->owner)
+            ->post(route('lfg.requests.accept', $requests->first()));
+        self::assertCount(0, $lfg->fresh()->pendingRequests);
+    }
+
+    /** @test */
+    public function does_not_delete_other_pending_requests_if_game_isnt_full_yet(): void
+    {
+        $lfg = Lfg::factory()->create(['slots' => 3]);
+        $requests = LfgRequest::factory()
+            ->count(3)
+            ->for($lfg)
+            ->pending()
+            ->create();
+
+        $this->actingAs($lfg->owner)
+            ->post(route('lfg.requests.accept', $requests->first()));
+        self::assertCount(2, $lfg->fresh()->pendingRequests);
     }
 
     /** @test */
     public function user_gets_notified_if_their_request_got_closed_because_the_last_slot_was_filled(): void
     {
-        $this->markTestIncomplete();
+        self::markTestIncomplete();
     }
 
     /** @test */
     public function delete_all_overlapping_requests_after_request_was_accepted(): void
     {
-        $this->markTestIncomplete();
+        self::markTestIncomplete();
+    }
+
+    public function notPendingRequestProvider(): Generator
+    {
+        yield from [
+            'already accepted request' => [
+                fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->accepted()->create(),
+            ],
+
+            'already rejected request' => [
+                fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->rejected()->create(),
+            ]
+        ];
     }
 }
