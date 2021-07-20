@@ -35,7 +35,7 @@
                 </div>
             </div>
 
-            <LoadingButton :loading="loading">
+            <LoadingButton :loading="form.processing">
                 Create History
             </LoadingButton>
         </form>
@@ -56,22 +56,18 @@ export default {
 
     data() {
         return {
-            loading: false,
-            form: {
+            form: this.$inertia.form({
                 name: null,
                 public: false
-            }
+            })
         };
     },
 
     methods: {
         submit() {
-            this.loading = true;
-
-            this.$inertia
-                .post(this.$route("history.store"), this.form)
-                .then(() => this.$emit("close"))
-                .finally(() => (this.loading = false));
+            this.form.post(this.$route('history.store'), {
+                onSuccess: () => this.$emit('close'),
+            });
         }
     },
 
