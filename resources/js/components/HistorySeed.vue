@@ -23,7 +23,7 @@
 <script>
 import axios from 'axios';
 
-import Icon from "./Icon";
+import Icon from "./Icon.vue";
 
 export default {
     name: 'HistorySeed',

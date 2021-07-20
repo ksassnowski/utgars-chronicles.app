@@ -23,11 +23,9 @@
 </template>
 
 <script>
-import axios from "axios";
-
-import Modal from "../Modal";
-import LoadingButton from "../LoadingButton";
-import Icon from "../Icon";
+import Modal from "../Modal.vue";
+import LoadingButton from "../LoadingButton.vue";
+import Icon from "../Icon.vue";
 
 export default {
     name: 'FeedbackModal',

@@ -1,10 +1,13 @@
-require("./bootstrap");
+import 'vite/dynamic-import-polyfill';
 
 import Vue from "vue";
 import { App, plugin } from "@inertiajs/inertia-vue";
 import { InertiaProgress } from "@inertiajs/progress";
 import PortalVue from "portal-vue";
 import VueMeta from "vue-meta";
+
+import "../css/app.css";
+import "./bootstrap";
 
 Vue.use(plugin);
 Vue.use(PortalVue);
@@ -28,8 +31,8 @@ new Vue({
         h(App, {
             props: {
                 initialPage: JSON.parse(app.dataset.page),
-                resolveComponent: name =>
-                    import(`@/Pages/${name}`).then(module => module.default)
+                resolveComponent: async (name) =>
+                    (await import(`./Pages/${name}.vue`)).default
             }
         })
 }).$mount(app);

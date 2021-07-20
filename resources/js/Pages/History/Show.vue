@@ -188,9 +188,9 @@
 </template>
 
 <script>
-import Layout from "../Layouts/Layout";
-import ConfirmAction from "../../components/ConfirmAction";
-import Badge from "../../components/Badge";
+import Layout from "../Layouts/Layout.vue";
+import ConfirmAction from "../../components/ConfirmAction.vue";
+import Badge from "../../components/Badge.vue";
 
 export default {
     name: "Show",

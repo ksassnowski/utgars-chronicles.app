@@ -3,8 +3,8 @@
 </template>
 
 <script>
-import GameBoard from "../components/GameBoard";
-import GameLayout from "./Layouts/Game";
+import GameBoard from "../components/GameBoard.vue";
+import GameLayout from "./Layouts/Game.vue";
 
 export default {
     name: "Game",

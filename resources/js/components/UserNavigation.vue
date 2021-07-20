@@ -81,8 +81,8 @@
 import Gravatar from "vue-gravatar";
 import vClickOutside from "v-click-outside";
 
-import Icon from "./Icon";
-import FeedbackModal from "./Modal/FeedbackModal";
+import Icon from "./Icon.vue";
+import FeedbackModal from "./Modal/FeedbackModal.vue";
 
 export default {
     name: "UserNavigation",

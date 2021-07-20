@@ -93,8 +93,8 @@
 </template>
 
 <script>
-import Layout from "../Layouts/Layout";
-import ConfirmAction from "../../components/ConfirmAction";
+import Layout from "../Layouts/Layout.vue";
+import ConfirmAction from "../../components/ConfirmAction.vue";
 
 export default {
     name: "ShowGame",

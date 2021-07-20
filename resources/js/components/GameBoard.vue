@@ -108,14 +108,14 @@ import each from 'lodash/each';
 import draggable from 'vuedraggable';
 import Panzoom from '@panzoom/panzoom';
 
-import PlayerList from './PlayerList';
-import PeriodCard from './PeriodCard';
-import FocusTracker from './FocusTracker';
-import Palette from './Palette';
-import LegacyTracker from './LegacyTracker';
-import Modal from './Modal';
-import GamePanel from './GamePanel';
-import HistorySeed from "./HistorySeed";
+import PlayerList from "./PlayerList.vue";
+import PeriodCard from "./PeriodCard.vue";
+import FocusTracker from "./FocusTracker.vue";
+import Palette from "./Palette.vue";
+import LegacyTracker from "./LegacyTracker.vue";
+import Modal from "./Modal.vue";
+import GamePanel from "./GamePanel.vue";
+import HistorySeed from "./HistorySeed.vue";
 
 export default {
     name: 'GameBoard',

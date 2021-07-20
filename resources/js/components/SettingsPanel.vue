@@ -22,7 +22,7 @@
 <script>
 import tippy from 'tippy.js';
 
-import ConfirmAction from '@/components/ConfirmAction';
+import ConfirmAction from '@/components/ConfirmAction.vue';
 
 export default {
     name: 'SettingsPanel',

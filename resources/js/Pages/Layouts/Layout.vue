@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import FlashMessage from "../../components/FlashMessage";
-import Navigation from "../../components/Navigation";
+import FlashMessage from "../../components/FlashMessage.vue";
+import Navigation from "../../components/Navigation.vue";
 
 export default {
     name: 'Layout',

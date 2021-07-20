@@ -102,9 +102,9 @@
 <script>
 import axios from 'axios';
 
-import SettingsPanel from './SettingsPanel';
-import Icon from './Icon';
-import LoadingButton from './LoadingButton';
+import SettingsPanel from "./SettingsPanel.vue";
+import Icon from "./Icon.vue";
+import LoadingButton from "./LoadingButton.vue";
 
 export default {
     name: 'SceneCard',
