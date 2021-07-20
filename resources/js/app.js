@@ -26,13 +26,22 @@ InertiaProgress.init({
     showSpinner: false
 });
 
+const pages = import.meta.glob('./Pages/**/*.vue');
+
 new Vue({
     render: h =>
         h(App, {
             props: {
                 initialPage: JSON.parse(app.dataset.page),
-                resolveComponent: async (name) =>
-                    (await import(`./Pages/${name}.vue`)).default
-            }
+                resolveComponent: async (name) => {
+                    const importPage = pages[`./Pages/${name}.vue`];
+
+                    if (!importPage) {
+                        throw new Error(`Unknown page ${name}. Is it located under Pages with a .vue extension?`);
+                    }
+
+                    return importPage().then(module => module.default);
+                },
+            },
         })
 }).$mount(app);
