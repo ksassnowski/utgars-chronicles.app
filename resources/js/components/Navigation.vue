@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import UserNavigation from "./UserNavigation";
+import UserNavigation from "./UserNavigation.vue";
 
 export default {
     name: "Navigation",

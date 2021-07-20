@@ -82,7 +82,7 @@
 <script>
 import axios from 'axios';
 
-import Modal from './Modal';
+import Modal from "./Modal.vue";
 
 export default {
     name: 'Palette',

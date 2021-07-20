@@ -32,8 +32,8 @@
 <script>
 import axios from 'axios';
 
-import Modal from "../Modal";
-import LoadingButton from "../LoadingButton";
+import Modal from "../Modal.vue";
+import LoadingButton from "../LoadingButton.vue";
 
 export default {
     name: "CreateEventModal",

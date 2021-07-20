@@ -36,9 +36,9 @@
 </template>
 
 <script>
-import Layout from './Layouts/Layout';
-import HistoryCard from '../components/HistoryCard';
-import CreateHistoryModal from "../components/Modal/CreateHistoryModal";
+import Layout from './Layouts/Layout.vue';
+import HistoryCard from '../components/HistoryCard.vue';
+import CreateHistoryModal from "../components/Modal/CreateHistoryModal.vue";
 
 export default {
     name: 'HomePage',

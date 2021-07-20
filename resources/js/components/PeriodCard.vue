@@ -164,12 +164,12 @@ import axios from "axios";
 import draggable from "vuedraggable";
 import sortBy from "lodash/sortBy";
 
-import EventCard from "./EventCard";
-import SettingsPanel from "./SettingsPanel";
-import Modal from "./Modal";
-import CreateEventModal from "./Modal/CreateEventModal";
-import LoadingButton from "./LoadingButton";
-import Icon from "./Icon";
+import EventCard from "./EventCard.vue";
+import SettingsPanel from "./SettingsPanel.vue";
+import Modal from "./Modal.vue";
+import CreateEventModal from "./Modal/CreateEventModal.vue";
+import LoadingButton from "./LoadingButton.vue";
+import Icon from "./Icon.vue";
 
 export default {
     name: "PeriodCard",

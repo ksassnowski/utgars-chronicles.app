@@ -58,9 +58,9 @@
 </template>
 
 <script>
-import Layout from "../Layouts/Layout";
-import LoadingButton from "../../components/LoadingButton";
-import Icon from "../../components/Icon";
+import Layout from "../Layouts/Layout.vue";
+import LoadingButton from "../../components/LoadingButton.vue";
+import Icon from "../../components/Icon.vue";
 
 export default {
     name: "Profile",

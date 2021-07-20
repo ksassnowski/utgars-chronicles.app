@@ -99,11 +99,11 @@ import axios from 'axios';
 import sortBy from 'lodash/sortBy';
 import draggable from 'vuedraggable';
 
-import LoadingButton from './LoadingButton';
-import SettingsPanel from './SettingsPanel';
-import SceneCard from './SceneCard';
-import SceneModal from "./Modal/SceneModal";
-import Icon from "./Icon";
+import LoadingButton from "./LoadingButton.vue";
+import SettingsPanel from "./SettingsPanel.vue";
+import SceneCard from "./SceneCard.vue";
+import SceneModal from "./Modal/SceneModal.vue";
+import Icon from "./Icon.vue";
 
 export default {
     name: 'EventCard',
