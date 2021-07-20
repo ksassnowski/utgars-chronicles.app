@@ -1,14 +1,12 @@
-@extends('page')
-
-@section('content')
+<template>
     <div class="pb-8">
         <header class="page-header relative px-4">
             <div class="flex items-center justify-between">
-                <a href="/" class="text-xl font-bold tracking-tight text-indigo-100">Utgar's Chronicles</a>
+                <InertiaLink href="/" class="text-xl font-bold tracking-tight text-indigo-100">Utgar's Chronicles</InertiaLink>
 
                 <nav class="px-4 py-4 flex justify-end items-center">
-                    <a href="{{ route('login') }}" class="text-indigo-100 px-4">Login</a>
-                    <a href="{{ route('register') }}" class="px-4 py-2 rounded-sm text-indigo-700 bg-white hover:bg-indigo-100">Register</a>
+                    <InertiaLink :href="$route('login')" class="text-indigo-100 px-4">Login</InertiaLink>
+                    <InertiaLink :href="$route('register')" class="px-4 py-2 rounded-sm text-indigo-700 bg-white hover:bg-indigo-100">Register</InertiaLink>
                 </nav>
             </div>
 
@@ -20,17 +18,19 @@
                         Completely for free. I just really like this game!
                     </p>
 
-                    <a
-                        href="{{ route('register') }}"
+                    <InertiaLink
+                        :href="$route('register')"
                         class="bg-gray-100 text-gray-800 font-bold text-lg px-6 py-3 rounded shadow-lg hover:bg-indigo-600 hover:text-white"
-                    >Sign Up for Free</a>
+                    >Sign Up for Free</InertiaLink>
                 </div>
             </div>
         </header>
 
         <main class="mt-32">
             <section class="container mx-auto px-4">
-                <h2 class="text-4xl font-bold text-gray-800 tracking-tight text-center mb-12">{{ __('Frequently Asked Questions') }}</h2>
+                <h2 class="text-4xl font-bold text-gray-800 tracking-tight text-center mb-12">
+                    Frequently Asked Questions
+                </h2>
 
                 <ul class="lg:px-48">
                     <li class="mb-8">
@@ -80,9 +80,22 @@
                     </li>
                 </ul>
             </section>
-
         </main>
-
-        <script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
     </div>
-@endsection
+</template>
+
+<script>
+import Layout from "./Layouts/Layout.vue";
+
+export default {
+    name: "LandingPage",
+
+    layout: Layout,
+
+    mounted() {
+        const patreonScript = document.createElement("script");
+        patreonScript.setAttribute("src", "https://c6.patreon.com/becomePatronButton.bundle.js");
+        document.body.append(patreonScript);
+    }
+}
+</script>

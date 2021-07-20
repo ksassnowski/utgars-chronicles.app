@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col" style="flex: 1 0 auto;">
-        <Navigation />
+        <Navigation v-if="$page.props.auth.user !== null" />
 
         <main class="flex-1">
             <FlashMessage />
