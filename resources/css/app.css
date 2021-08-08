@@ -5,6 +5,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    #app {
+        @apply h-full;
+    }
+}
+
 .error .input {
     @apply border-red-500;
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="w-1/2 md:w-1/4 lg:w-1/5 2xl:w-1/6 3xl:w-1/7 flex-shrink-0">
+    <div class="max-h-full flex flex-col">
         <CreateEventModal
             v-if="showModal"
             :period="period"
@@ -8,9 +8,9 @@
             @close="showModal = false"
         />
 
-        <div class="px-4 game-card">
+        <div class="game-card">
             <article
-                class="p-8 rounded-lg border border-gray-200 mb-6 shadow-lg bg-white relative panzoom-exclude group"
+                class="p-8 rounded-lg border border-gray-200 mb-6 bg-white shadow-sm relative panzoom-exclude group"
             >
                 <template v-if="!editing">
                     <button
@@ -59,15 +59,6 @@
                     <h3 class="font-bold tracking-wide text-center py-2">
                         {{ period.name }}
                     </h3>
-
-                    <div
-                        class="rounded-full w-6 h-6 border-2 border-gray-800 absolute"
-                        style="top: -12px;"
-                        :class="{
-                            'bg-white': period.type === 'light',
-                            'bg-gray-800': period.type === 'dark'
-                        }"
-                    ></div>
 
                     <p
                         class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase px-1"
@@ -145,7 +136,8 @@
         <draggable
             :list="orderedEvents"
             @change="eventMoved"
-            class="flex flex-col px-4"
+            class="overflow-x-hidden overflow-y-auto space-y-8"
+            style="flex: 1 1 auto"
             handle=".handle"
             item-key="id"
         >

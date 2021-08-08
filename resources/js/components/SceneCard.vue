@@ -1,6 +1,6 @@
 <template>
     <div :class="{ 'px-6': !editing }" class="pt-6">
-        <div class="relative pt-8 px-6 pb-6 relative shadow-lg rounded-lg border bg-white border-gray-200 text-sm w-full min-h-32 group panzoom-exclude">
+        <div class="relative pt-8 px-4 pb-6 relative shadow-sm rounded-lg border bg-white border-gray-200 text-sm w-full min-h-32 group panzoom-exclude">
             <div v-if="!editing">
                 <div class="invisible group-hover:visible absolute left-0 top-0 w-full pl-3 pr-2 pt-2 flex justify-between z-20">
                     <svg

@@ -1,6 +1,6 @@
 <template>
-    <div class="pb-6 pt-4 relative game-card">
-        <button
+    <div class="relative game-card">
+        <!--button
             title="Add event above this event"
             @click="$emit('insertEvent', event.position)"
             class="game-add-button top flex items-center text-sm font-bold text-gray-500 hover:text-indigo-700"
@@ -16,9 +16,9 @@
         >
             <Icon name="add-solid" class="fill-current w-6 mr-2" />
             Event
-        </button>
+        </button-->
 
-        <article class="relative p-8 relative shadow-lg rounded-lg border bg-white border-gray-200 text-sm w-full min-h-32 group panzoom-exclude">
+        <article class="relative p-8 relative shadow-sm rounded-lg border bg-white border-gray-200 text-sm w-full min-h-32 group panzoom-exclude">
             <template v-if="!editing">
                 <div class="invisible group-hover:visible absolute left-0 top-0 w-full pl-3 pr-2 pt-2 flex justify-between z-20">
                     <svg
@@ -47,12 +47,6 @@
                 >
                     Event
                 </p>
-
-                <div
-                    class="rounded-full border-2 border-gray-800 h-6 w-6 absolute"
-                    style="top: -12px"
-                    :class="{ 'bg-white': event.type === 'light', 'bg-gray-800': event.type === 'dark' }"
-                ></div>
             </template>
 
             <form v-else @submit.prevent="submit">
