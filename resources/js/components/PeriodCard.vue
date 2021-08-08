@@ -160,7 +160,8 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import axios from "axios";
 import draggable from "vuedraggable";
 import sortBy from "lodash/sortBy";
@@ -171,8 +172,9 @@ import Modal from "./Modal.vue";
 import CreateEventModal from "./Modal/CreateEventModal.vue";
 import LoadingButton from "./LoadingButton.vue";
 import Icon from "./Icon.vue";
+import {useEmitter} from "../composables/useEmitter";
 
-export default {
+export default defineComponent({
     name: "PeriodCard",
 
     props: ["period", "historyId"],
@@ -222,7 +224,7 @@ export default {
                 return;
             }
 
-            Bus.$emit("event.moved", {
+            this.emitter.trigger("event.moved", {
                 period: this.period,
                 event: e.moved.element,
                 position: e.moved.newIndex + 1
@@ -290,6 +292,12 @@ export default {
             this.newEventPosition = position;
             this.showModal = true;
         }
+    },
+
+    setup() {
+        return {
+            emitter: useEmitter(),
+        };
     }
-};
+});
 </script>
