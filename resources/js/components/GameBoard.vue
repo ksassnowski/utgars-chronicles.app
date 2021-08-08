@@ -37,7 +37,7 @@
         <div class="flex flex-1 flex-col">
             <div class="flex items-center px-4 mb-4">
                 <div class="flex-1">
-                    <InertiaLink :href="$route('home')" class="text-gray-800 font-semibold">&laquo; back</InertiaLink>
+                    <Link :href="$route('home')" class="text-gray-800 font-semibold">&laquo; back</Link>
                 </div>
 
                 <HistorySeed :history="internalHistory" />
@@ -57,14 +57,15 @@
                     handle=".handle"
                     class="px-4 flex w-full h-full pt-4 pb-64"
                     :class="{ 'overflow-auto': !panningEnabled }"
+                    item-key="id"
                 >
-                    <PeriodCard
-                        v-for="period in orderedPeriods"
-                        :period="period"
-                        :key="period.id"
-                        :history-id="history.id"
-                        @insertPeriod="create"
-                    />
+                    <template #item="{element}">
+                        <PeriodCard
+                            :period="element"
+                            :history-id="history.id"
+                            @insertPeriod="create"
+                        />
+                    </template>
                 </draggable>
             </div>
         </div>
@@ -107,6 +108,7 @@ import sortBy from 'lodash/sortBy';
 import each from 'lodash/each';
 import draggable from 'vuedraggable';
 import Panzoom from '@panzoom/panzoom';
+import { Link } from "@inertiajs/inertia-vue3";
 
 import PlayerList from "./PlayerList.vue";
 import PeriodCard from "./PeriodCard.vue";
@@ -116,6 +118,7 @@ import LegacyTracker from "./LegacyTracker.vue";
 import Modal from "./Modal.vue";
 import GamePanel from "./GamePanel.vue";
 import HistorySeed from "./HistorySeed.vue";
+import {useEmitter} from "../composables/useEmitter";
 
 export default {
     name: 'GameBoard',
@@ -137,6 +140,7 @@ export default {
         PlayerList,
         FocusTracker,
         Palette,
+        Link,
     },
 
     data() {
@@ -335,24 +339,26 @@ export default {
     },
 
     created() {
-        Bus.$on('event.moved', this.onEventMoved);
-        Bus.$on('scene.moved', this.onSceneMoved);
+        this.emitter.on('event.moved', this.onEventMoved);
+        this.emitter.on('scene.moved', this.onSceneMoved);
 
         Echo.join(this.channelName)
             .listen('BoardUpdated', this.resyncBoard)
             .listen('HistorySeedUpdated', this.updateSeed);
     },
 
-    beforeDestroy() {
-        Bus.$off([
-            'event.moved',
-            'scene.moved',
-        ]);
+    beforeUnmount() {
+        this.emitter.off('event.moved', this.onEventMoved)
+        this.emitter.off('scene.moved', this.onSceneMoved);
         Echo.leave(this.channelName);
 
         if (this.panzoom !== null) {
             this.panzoom.destroy();
         }
     },
+
+    setup() {
+        return { emitter: useEmitter() };
+    }
 };
 </script>

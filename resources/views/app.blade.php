@@ -20,6 +20,8 @@
 <body class="flex flex-col h-full antialiased">
     @inertia
 
+    <div id="portal-modal"></div>
+
     {{ vite_assets() }}
 </body>
 </html>

@@ -1,19 +1,19 @@
 <template>
     <div class="w-full items-center flex-grow sm:flex sm:w-auto">
         <div class="flex items-center flex-grow">
-            <InertiaLink
+            <Link
                 :href="$route('home')"
                 class="text-indigo-100 py-4 sm:py-6 flex items-center hover:bg-indigo-700 sm:px-4"
                 :class="{ 'bg-indigo-700': $route().current('home') }"
             >
                 Dashboard
-            </InertiaLink>
+            </Link>
 
-            <InertiaLink
+            <Link
                 :href="$route('lfg.index')"
                 class="text-indigo-100 py-4 sm:py-6 flex items-center hover:bg-indigo-700 sm:px-4"
                 :class="{ 'bg-indigo-700': $route().current('lfg.*') }"
-            >Find a game</InertiaLink>
+            >Find a game</Link>
         </div>
 
         <div class="sm:flex items-center relative">
@@ -53,7 +53,7 @@
                 class="border-t border-indigo-100 sm:absolute sm:bg-white sm:border sm:border-gray-300 sm:shadow-lg sm:right-0 sm:rounded sm:flex sm:flex-col sm:z-10"
                 style="top: 100%"
             >
-                <InertiaLink
+                <Link
                     :href="$route('profile')"
                     class="sm:px-8 py-4 sm:py-2 sm:text-sm text-indigo-100 sm:text-gray-800 block hover:bg-gray-100 inline-flex items-center"
                     @click="dropdownOpen = false"
@@ -63,14 +63,14 @@
                         class="fill-current h-4 w-4 sm:h-3 sm:w-3 text-indigo-300 sm:text-gray-600 mr-2"
                     />
                     Profile
-                </InertiaLink>
+                </Link>
 
-                <InertiaLink
+                <Link
                     as="button"
                     method="POST"
                     :href="$route('logout')"
                     class="sm:text-sm text-indigo-100 sm:text-indigo-600 w-full sm:px-8 py-4 sm:py-2 text-left hover:bg-gray-100"
-                    >Logout</InertiaLink
+                    >Logout</Link
                 >
             </div>
         </div>
@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import { Link } from "@inertiajs/inertia-vue3";
 import Gravatar from "vue-gravatar";
 import vClickOutside from "v-click-outside";
 
@@ -90,7 +91,8 @@ export default {
     components: {
         FeedbackModal,
         Icon,
-        Gravatar
+        Gravatar,
+        Link,
     },
 
     directives: {

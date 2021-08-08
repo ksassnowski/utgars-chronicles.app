@@ -1,4 +1,4 @@
-import { createVuePlugin } from "vite-plugin-vue2";
+import vue from "@vitejs/plugin-vue";
 import path from "path";
 
 export default ({ command }) => ({
@@ -14,8 +14,17 @@ export default ({ command }) => ({
     },
     resolve: {
         alias: {
+            vue: '@vue/compat',
             '@': path.resolve(__dirname, 'resources/js/'),
         }
     },
-    plugins: [createVuePlugin()],
+    plugins: [vue({
+        template: {
+            compilerOptions: {
+                compatConfig: {
+                    MODE: 2,
+                }
+            }
+        }
+    })],
 });

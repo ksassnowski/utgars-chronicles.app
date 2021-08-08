@@ -1,23 +1,11 @@
 import 'vite/dynamic-import-polyfill';
 
-import Vue from "vue";
-import { App, plugin } from "@inertiajs/inertia-vue";
+import { createApp, h } from "vue";
+import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { InertiaProgress } from "@inertiajs/progress";
-import PortalVue from "portal-vue";
-import VueMeta from "vue-meta";
 
 import "../css/app.css";
 import "./bootstrap";
-
-Vue.use(plugin);
-Vue.use(PortalVue);
-Vue.use(VueMeta);
-
-Vue.prototype.$route = (...args) => route(...args);
-
-window.Bus = new Vue();
-
-const app = document.getElementById("app");
 
 InertiaProgress.init({
     delay: 250,
@@ -28,20 +16,23 @@ InertiaProgress.init({
 
 const pages = import.meta.glob('./Pages/**/*.vue');
 
-new Vue({
-    render: h =>
-        h(App, {
-            props: {
-                initialPage: JSON.parse(app.dataset.page),
-                resolveComponent: async (name) => {
-                    const importPage = pages[`./Pages/${name}.vue`];
+createInertiaApp({
+    resolve: async (name) => {
+        const importPage = pages[`./Pages/${name}.vue`];
 
-                    if (!importPage) {
-                        throw new Error(`Unknown page ${name}. Is it located under Pages with a .vue extension?`);
-                    }
+        if (!importPage) {
+            throw new Error(`Unknown page ${name}. Is it located under Pages with a .vue extension?`);
+        }
 
-                    return importPage().then(module => module.default);
-                },
-            },
-        })
-}).$mount(app);
+        return importPage().then(module => module.default);
+    },
+
+    setup({ el, App, props, plugin }) {
+        createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .mixin({
+                methods: { $route: window.route }
+            })
+            .mount(el);
+    }
+});

@@ -15,9 +15,9 @@
                         {{ form.errors.password[0] }}
                     </small>
 
-                    <InertiaLink :href="$route('password.request')" class="mt-1 text-sm text-gray-600 block">
+                    <Link :href="$route('password.request')" class="mt-1 text-sm text-gray-600 block">
                         Forgot password?
-                    </InertiaLink>
+                    </Link>
                 </div>
 
                 <div class="mb-4 space-x-1">
@@ -27,21 +27,27 @@
 
                 <button type="submit" class="bg-indigo-600 w-full py-3 text-white rounded font-bold test-sm">Login</button>
 
-                <InertiaLink :href="$route('register')" class="mt-2 text-sm text-indigo-700 text-center block">
+                <Link :href="$route('register')" class="mt-2 text-sm text-indigo-700 text-center block">
                     Or create a new account
-                </InertiaLink>
+                </Link>
             </form>
         </div>
     </div>
 </template>
 
 <script>
+import { Link } from "@inertiajs/inertia-vue3";
+
 import Layout from "../Layouts/Layout.vue";
 
 export default {
     name: "Login",
 
     layout: Layout,
+
+    components: {
+        Link,
+    },
 
     data() {
         return {

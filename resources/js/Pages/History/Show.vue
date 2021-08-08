@@ -16,12 +16,12 @@
                     </div>
 
                     <div class="w-2/3">
-                        <InertiaLink
+                        <Link
                             class="bg-indigo-700 inline-block text-white text-lg font-bold px-8 py-3 rounded"
                             :href="$route('history.play', history)"
                         >
                             Join Game
-                        </InertiaLink>
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -49,19 +49,16 @@
                                 class="mt-1 group"
                             >
                                 {{ player.name }}
-                                <ConfirmAction @confirmed="kickPlayer(player)">
-                                    <button
-                                        @click="act"
-                                        slot-scope="{ act, needsConfirmation }"
-                                        class="invisible group-hover:visible inline text-sm text-red-600 ml-2"
-                                    >
-                                        {{
-                                            needsConfirmation
-                                                ? "Really kick this player?"
-                                                : "Kick"
-                                        }}
-                                    </button>
-                                </ConfirmAction>
+                                <button
+                                    @click="onClickKickPlayer(player)"
+                                    class="invisible group-hover:visible inline text-sm text-red-600 ml-2"
+                                >
+                                    {{
+                                        confirmKickPlayer
+                                            ? "Really kick this player?"
+                                            : "Kick"
+                                    }}
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -135,19 +132,16 @@
 
                     <div class="w-2/3">
                         <div class="mb-6">
-                            <ConfirmAction @confirmed="updateVisibility">
-                                <button
-                                    slot-scope="{ act, needsConfirmation }"
-                                    class="px-8 py-3 bg-indigo-700 rounded text-white font-bold inline-block"
-                                    @click="act"
-                                >
-                                    {{
-                                        needsConfirmation
-                                            ? "Click again to confirm"
-                                            : visibilityButtonText
-                                    }}
-                                </button>
-                            </ConfirmAction>
+                            <button
+                                class="px-8 py-3 bg-indigo-700 rounded text-white font-bold inline-block"
+                                @click="onClickChangeVisibility"
+                            >
+                                {{
+                                    confirmChangeVisibility
+                                        ? "Click again to confirm"
+                                        : visibilityButtonText
+                                }}
+                            </button>
 
                             <div class="mt-1">
                                 <small
@@ -167,19 +161,16 @@
                             </div>
                         </div>
 
-                        <ConfirmAction @confirmed="deleteHistory">
-                            <button
-                                slot-scope="{ act, needsConfirmation }"
-                                class="px-8 py-3 bg-red-700 rounded text-white font-bold"
-                                @click="act"
-                            >
-                                {{
-                                    needsConfirmation
-                                        ? "Are you sure?"
-                                        : "Delete history"
-                                }}
-                            </button>
-                        </ConfirmAction>
+                        <button
+                            class="px-8 py-3 bg-red-700 rounded text-white font-bold"
+                            @click="onClickDeleteHistory"
+                        >
+                            {{
+                                confirmDeleteHistory
+                                    ? "Are you sure?"
+                                    : "Delete history"
+                            }}
+                        </button>
                     </div>
                 </div>
             </section>
@@ -188,8 +179,11 @@
 </template>
 
 <script>
+import { Inertia } from "@inertiajs/inertia";
+import { Link } from "@inertiajs/inertia-vue3";
+
+import { useConfirmAction } from "@/composables/useConfirmAction";
 import Layout from "../Layouts/Layout.vue";
-import ConfirmAction from "../../components/ConfirmAction.vue";
 import Badge from "../../components/Badge.vue";
 
 export default {
@@ -207,7 +201,7 @@ export default {
 
     components: {
         Badge,
-        ConfirmAction
+        Link,
     },
 
     computed: {
@@ -218,25 +212,37 @@ export default {
         }
     },
 
-    methods: {
-        deleteHistory() {
-            this.$inertia.delete(this.$route("history.delete", this.history));
-        },
-
-        updateVisibility() {
-            this.$inertia.patch(
-                this.$route("history.visibility", this.history),
-                {
-                    public: !this.history.public
-                }
+    setup(props) {
+        const {
+            needsConfirmation: confirmChangeVisibility,
+            onClick : onClickChangeVisibility
+        } = useConfirmAction(() => {
+            Inertia.patch(
+                route("history.visibility", props.history),
+                { public: !props.history.public }
             );
-        },
+        });
 
-        kickPlayer(player) {
-            this.$inertia.delete(
-                this.$route("history.players.kick", [this.history, player])
-            );
+        const {
+            needsConfirmation: confirmKickPlayer,
+            onClick: onClickKickPlayer,
+        } = useConfirmAction((player) => Inertia.delete(
+            route("history.players.kick", [props.history, player])
+        ));
+
+        const {
+            needsConfirmation: confirmDeleteHistory,
+            onClick: onClickDeleteHistory
+        } = useConfirmAction(() => Inertia.delete(route("history.delete", props.history)));
+
+        return {
+            confirmChangeVisibility,
+            onClickChangeVisibility,
+            confirmKickPlayer,
+            onClickKickPlayer,
+            confirmDeleteHistory,
+            onClickDeleteHistory,
         }
-    }
+    },
 };
 </script>

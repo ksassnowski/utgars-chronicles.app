@@ -23,8 +23,6 @@
                 </a>
             </p>
         </footer>
-
-        <portal-target name="modal" slim></portal-target>
     </div>
 </template>
 

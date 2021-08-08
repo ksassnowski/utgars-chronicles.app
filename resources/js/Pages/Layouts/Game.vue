@@ -3,8 +3,6 @@
         <main class="flex-1 flex">
             <slot />
         </main>
-
-        <portal-target name="modal" slim></portal-target>
     </div>
 </template>
 
