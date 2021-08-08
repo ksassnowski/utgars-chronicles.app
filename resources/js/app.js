@@ -1,6 +1,6 @@
 import 'vite/dynamic-import-polyfill';
 
-import { createApp, h } from "vue";
+import { createApp, h, configureCompat } from "vue";
 import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { InertiaProgress } from "@inertiajs/progress";
 
@@ -15,6 +15,10 @@ InertiaProgress.init({
 });
 
 const pages = import.meta.glob('./Pages/**/*.vue');
+
+configureCompat({
+    MODE: 3,
+});
 
 createInertiaApp({
     resolve: async (name) => {
