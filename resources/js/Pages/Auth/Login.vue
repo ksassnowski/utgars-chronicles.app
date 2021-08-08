@@ -1,7 +1,7 @@
 <template>
     <div class="container mx-auto pt-8 px-4">
         <div class="md:w-1/2 mx-auto bg-white p-4 shadow-lg rounded border border-gray-300">
-            <form @submit.prevent="submit">
+            <form @submit.prevent="form.post($route('login'))">
                 <div class="mb-4">
                     <label class="label" for="email">Email</label>
                     <input class="input" type="email" id="email" name="email" v-model="form.email" required autofocus>
@@ -35,12 +35,13 @@
     </div>
 </template>
 
-<script>
-import { Link } from "@inertiajs/inertia-vue3";
+<script lang="ts">
+import { defineComponent } from "vue";
+import { Link, useForm } from "@inertiajs/inertia-vue3";
 
 import Layout from "../Layouts/Layout.vue";
 
-export default {
+export default defineComponent({
     name: "Login",
 
     layout: Layout,
@@ -49,20 +50,14 @@ export default {
         Link,
     },
 
-    data() {
+    setup() {
         return {
-            form: this.$inertia.form({
+            form: useForm({
                 email: '',
                 password: '',
                 remember: false,
             }),
-        }
-    },
-
-    methods: {
-        submit() {
-            this.form.post(this.$route('login'));
-        }
+        };
     }
-}
+});
 </script>
