@@ -79,9 +79,9 @@
 
 <script>
 import { Link } from "@inertiajs/inertia-vue3";
-import Gravatar from "vue-gravatar";
 import vClickOutside from "v-click-outside";
 
+import Gravatar from "./Gravatar.vue";
 import Icon from "./Icon.vue";
 import FeedbackModal from "./Modal/FeedbackModal.vue";
 
