@@ -101,18 +101,20 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import axios from 'axios';
 import sortBy from 'lodash/sortBy';
 import draggable from 'vuedraggable';
 
+import { useEmitter } from "../composables/useEmitter";
 import LoadingButton from "./LoadingButton.vue";
 import SettingsPanel from "./SettingsPanel.vue";
 import SceneCard from "./SceneCard.vue";
 import SceneModal from "./Modal/SceneModal.vue";
 import Icon from "./Icon.vue";
 
-export default {
+export default defineComponent({
     name: 'EventCard',
 
     props: ['event', 'period'],
@@ -152,7 +154,7 @@ export default {
                 return;
             }
 
-            Bus.$emit('scene.moved', {
+            this.emitter.trigger('scene.moved', {
                 period: this.period,
                 event: this.event,
                 scene: e.moved.element,
@@ -214,5 +216,11 @@ export default {
             this.selectedScene = null;
         },
     },
-};
+
+    setup() {
+        return {
+            emitter: useEmitter(),
+        };
+    },
+});
 </script>
