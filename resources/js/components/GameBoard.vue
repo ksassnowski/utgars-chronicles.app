@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col justify-between flex-1">
+    <div class="h-full flex flex-col">
         <Modal v-if="showModal" title="Add Period" @close="showModal = false">
             <form @submit.prevent="submit">
                 <div class="mb-4">
@@ -34,43 +34,43 @@
             </form>
         </Modal>
 
-        <div class="flex flex-1 flex-col">
-            <div class="flex items-center px-4 mb-4">
-                <div class="flex-1">
-                    <Link :href="$route('home')" class="text-gray-800 font-semibold">&laquo; back</Link>
-                </div>
-
-                <HistorySeed :history="internalHistory" />
-
-                <div class="flex-1 flex justify-end">
-                    <button
-                        class="px-4 py-2 bg-indigo-700 rounded text-white font-bold"
-                        @click="() => create(lastPosition + 1)"
-                    >Add Period</button>
-                </div>
+        <div class="flex items-center w-full px-4 mb-4">
+            <div class="flex-1">
+                <Link :href="$route('home')" class="text-gray-800 font-semibold">&laquo; back</Link>
             </div>
 
-            <div class="flex flex-1" id="board">
-                <draggable
-                    :list="orderedPeriods"
-                    @change="onPeriodMoved"
-                    handle=".handle"
-                    class="px-4 flex w-full h-full pt-4 pb-64"
-                    :class="{ 'overflow-auto': !panningEnabled }"
-                    item-key="id"
-                >
-                    <template #item="{element}">
+            <HistorySeed :history="internalHistory" />
+
+            <div class="flex-1 flex justify-end">
+                <button
+                    class="px-4 py-2 bg-indigo-700 rounded text-white font-bold"
+                    @click="() => create(lastPosition + 1)"
+                >Add Period</button>
+            </div>
+        </div>
+
+        <div class="flex-grow relative">
+            <draggable
+                :list="orderedPeriods"
+                @change="onPeriodMoved"
+                handle=".handle"
+                class="absolute inset-0 overflow-x-auto overflow-y-hidden whitespace-nowrap pb-4 px-3 space-x-2"
+                :class="{ 'overflow-auto': !panningEnabled }"
+                item-key="id"
+            >
+                <template #item="{element}">
+                    <div class="w-64 inline-block px-1 h-full align-top">
                         <PeriodCard
                             :period="element"
                             :history-id="history.id"
                             @insertPeriod="create"
                         />
-                    </template>
-                </draggable>
-            </div>
+                    </div>
+                </template>
+            </draggable>
         </div>
 
-        <GamePanel>
+        <!--GamePanel>
             <div class="pt-4 flex -mx-4">
                 <FocusTracker
                     class="w-1/4 px-4"
@@ -98,7 +98,7 @@
                     class="flex-grow px-4"
                 />
             </div>
-        </GamePanel>
+        </GamePanel-->
     </div>
 </template>
 
@@ -110,6 +110,7 @@ import draggable from 'vuedraggable';
 import Panzoom from '@panzoom/panzoom';
 import { Link } from "@inertiajs/inertia-vue3";
 
+import { useEmitter } from "../composables/useEmitter";
 import PlayerList from "./PlayerList.vue";
 import PeriodCard from "./PeriodCard.vue";
 import FocusTracker from "./FocusTracker.vue";
@@ -118,7 +119,6 @@ import LegacyTracker from "./LegacyTracker.vue";
 import Modal from "./Modal.vue";
 import GamePanel from "./GamePanel.vue";
 import HistorySeed from "./HistorySeed.vue";
-import {useEmitter} from "../composables/useEmitter";
 
 export default {
     name: 'GameBoard',

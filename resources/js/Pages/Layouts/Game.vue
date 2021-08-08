@@ -1,8 +1,6 @@
 <template>
-    <div class="flex flex-col flex-1 game-container pt-4">
-        <main class="flex-1 flex">
-            <slot />
-        </main>
+    <div class="h-full game-container pt-4">
+        <slot />
     </div>
 </template>
 
