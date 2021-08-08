@@ -86,8 +86,15 @@
             </form>
         </article>
 
-        <draggable :list="orderedScenes" @change="sceneMoved" handle=".handle">
-            <SceneCard v-for="scene in orderedScenes" :scene="scene" :key="scene.id" />
+        <draggable
+            :list="orderedScenes"
+            @change="sceneMoved"
+            handle=".handle"
+            item-key="id"
+        >
+            <template #item="{element}">
+                <SceneCard :scene="element" />
+            </template>
         </draggable>
 
         <SceneModal v-if="showSceneModal" :event="event" @close="closeSceneModal" />

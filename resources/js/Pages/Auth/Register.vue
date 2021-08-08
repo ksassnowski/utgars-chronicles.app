@@ -38,21 +38,27 @@
 
                 <button type="submit" class="bg-indigo-600 w-full py-3 text-white rounded font-bold test-sm">Register</button>
 
-                <InertiaLink :href="$route('login')" class="mt-2 text-sm text-indigo-700 text-center block">
+                <Link :href="$route('login')" class="mt-2 text-sm text-indigo-700 text-center block">
                     Already have an account? Log in instead
-                </InertiaLink>
+                </Link>
             </form>
         </div>
     </div>
 </template>
 
 <script>
+import { Link } from "@inertiajs/inertia-vue3";
+
 import Layout from "../Layouts/Layout.vue";
 
 export default {
     name: "Register",
 
     layout: Layout,
+
+    components: {
+        Link,
+    },
 
     data() {
         return {

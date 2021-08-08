@@ -2,11 +2,11 @@
     <div class="pb-8">
         <header class="page-header relative px-4">
             <div class="flex items-center justify-between">
-                <InertiaLink href="/" class="text-xl font-bold tracking-tight text-indigo-100">Utgar's Chronicles</InertiaLink>
+                <Link href="/" class="text-xl font-bold tracking-tight text-indigo-100">Utgar's Chronicles</Link>
 
                 <nav class="px-4 py-4 flex justify-end items-center">
-                    <InertiaLink :href="$route('login')" class="text-indigo-100 px-4">Login</InertiaLink>
-                    <InertiaLink :href="$route('register')" class="px-4 py-2 rounded-sm text-indigo-700 bg-white hover:bg-indigo-100">Register</InertiaLink>
+                    <Link :href="$route('login')" class="text-indigo-100 px-4">Login</Link>
+                    <Link :href="$route('register')" class="px-4 py-2 rounded-sm text-indigo-700 bg-white hover:bg-indigo-100">Register</Link>
                 </nav>
             </div>
 
@@ -18,10 +18,10 @@
                         Completely for free. I just really like this game!
                     </p>
 
-                    <InertiaLink
+                    <Link
                         :href="$route('register')"
                         class="bg-gray-100 text-gray-800 font-bold text-lg px-6 py-3 rounded shadow-lg hover:bg-indigo-600 hover:text-white"
-                    >Sign Up for Free</InertiaLink>
+                    >Sign Up for Free</Link>
                 </div>
             </div>
         </header>
@@ -85,12 +85,18 @@
 </template>
 
 <script>
+import { Link } from "@inertiajs/inertia-vue3";
+
 import Layout from "./Layouts/Layout.vue";
 
 export default {
     name: "LandingPage",
 
     layout: Layout,
+
+    components: {
+        Link,
+    },
 
     mounted() {
         const patreonScript = document.createElement("script");

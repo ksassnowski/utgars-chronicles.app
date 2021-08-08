@@ -8,7 +8,7 @@
             <h1 class="text-xl font-bold">Upcoming games</h1>
             <p class="text-gray-700 mt-4">
                 Check out who is looking for more people to play with. Can’t find anything? No problem! Why not
-                <InertiaLink :href="$route('lfg.create')" class="text-indigo-700 font-semibold">create a game yourself</InertiaLink>?
+                <Link :href="$route('lfg.create')" class="text-indigo-700 font-semibold">create a game yourself</Link>?
             </p>
 
             <LfgList :games="games" class="mt-8" />
@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import { Link } from "@inertiajs/inertia-vue3";
+
 import Layout from "@/Pages/Layouts/Layout.vue";
 import LfgList from "@/components/LfgList.vue";
 
@@ -25,6 +27,7 @@ export default {
 
     components: {
         LfgList,
+        Link,
     },
 
     layout: Layout,

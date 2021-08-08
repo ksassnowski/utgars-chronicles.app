@@ -147,14 +147,15 @@
             @change="eventMoved"
             class="flex flex-col px-4"
             handle=".handle"
+            item-key="id"
         >
-            <EventCard
-                v-for="event in orderedEvents"
-                :key="event.id"
-                :event="event"
-                :period="period"
-                @insertEvent="openCreateEventModal"
-            />
+            <template #item="{element}">
+                <EventCard
+                    :event="element"
+                    :period="period"
+                    @insertEvent="openCreateEventModal"
+                />
+            </template>
         </draggable>
     </div>
 </template>
