@@ -31,7 +31,10 @@ createInertiaApp({
         createApp({ render: () => h(App, props) })
             .use(plugin)
             .mixin({
-                methods: { $route: window.route }
+                methods: {
+                    $route: (...args) => window.route(...args).url(),
+                    active: (route) => window.route().current(route),
+                }
             })
             .mount(el);
     }
