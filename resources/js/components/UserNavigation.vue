@@ -4,7 +4,7 @@
             <Link
                 :href="$route('home')"
                 class="text-indigo-100 py-4 sm:py-6 flex items-center hover:bg-indigo-700 sm:px-4"
-                :class="{ 'bg-indigo-700': $route().current('home') }"
+                :class="{ 'bg-indigo-700': active('home') }"
             >
                 Dashboard
             </Link>
@@ -12,7 +12,7 @@
             <Link
                 :href="$route('lfg.index')"
                 class="text-indigo-100 py-4 sm:py-6 flex items-center hover:bg-indigo-700 sm:px-4"
-                :class="{ 'bg-indigo-700': $route().current('lfg.*') }"
+                :class="{ 'bg-indigo-700': active('lfg.*') }"
             >Find a game</Link>
         </div>
 
