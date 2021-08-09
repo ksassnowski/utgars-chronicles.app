@@ -55,7 +55,6 @@
                 @change="onPeriodMoved"
                 handle=".handle"
                 class="absolute inset-0 overflow-x-auto overflow-y-hidden whitespace-nowrap pb-4 px-3 space-x-2"
-                :class="{ 'overflow-auto': !panningEnabled }"
                 item-key="id"
             >
                 <template #item="{element}">
@@ -107,7 +106,6 @@ import axios from 'axios';
 import sortBy from 'lodash/sortBy';
 import each from 'lodash/each';
 import draggable from 'vuedraggable';
-import Panzoom from '@panzoom/panzoom';
 import { Link } from "@inertiajs/inertia-vue3";
 
 import { useEmitter } from "../composables/useEmitter";
@@ -145,7 +143,6 @@ export default {
 
     data() {
         return {
-            panzoom: null,
             internalHistory: this.history,
             periods: this.history.periods,
             showModal: false,
@@ -171,12 +168,6 @@ export default {
             }
 
             return this.orderedPeriods.slice(-1)[0].position;
-        },
-
-        panningEnabled() {
-            const urlParams = new URLSearchParams(window.location.search);
-
-            return urlParams.get('pan') === '1';
         },
 
         orderedPeriods() {
@@ -332,12 +323,6 @@ export default {
         },
     },
 
-    mounted() {
-        if (this.panningEnabled) {
-            this.panzoom = Panzoom(document.getElementById('board'));
-        }
-    },
-
     created() {
         this.emitter.on('event.moved', this.onEventMoved);
         this.emitter.on('scene.moved', this.onSceneMoved);
@@ -351,10 +336,6 @@ export default {
         this.emitter.off('event.moved', this.onEventMoved)
         this.emitter.off('scene.moved', this.onSceneMoved);
         Echo.leave(this.channelName);
-
-        if (this.panzoom !== null) {
-            this.panzoom.destroy();
-        }
     },
 
     setup() {
