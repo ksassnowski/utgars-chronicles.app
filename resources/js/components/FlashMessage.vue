@@ -1,6 +1,6 @@
 <template>
     <transition name="flash" v-if="$page.props.flash.success && show">
-        <div class="fixed pr-4 pb-6 bottom-0 right-0">
+        <div class="fixed pr-4 pb-6 bottom-0 right-0 z-20">
             <div
                 class="bg-green-600 shadow-lg rounded p-4 text-sm flex items-center justify-between text-white font-semibold"
             >

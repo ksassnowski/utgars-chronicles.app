@@ -1,5 +1,3 @@
-import 'vite/dynamic-import-polyfill';
-
 import { createApp, h } from "vue";
 import { createInertiaApp } from '@inertiajs/inertia-vue3'
 import { InertiaProgress } from "@inertiajs/progress";
@@ -14,17 +12,11 @@ InertiaProgress.init({
     showSpinner: false
 });
 
-const pages = import.meta.glob('./Pages/**/*.vue');
-
 createInertiaApp({
-    resolve: async (name) => {
-        const importPage = pages[`./Pages/${name}.vue`];
+    resolve: (name) => {
+        const pages = import.meta.glob("./Pages/**/*.vue");
 
-        if (!importPage) {
-            throw new Error(`Unknown page ${name}. Is it located under Pages with a .vue extension?`);
-        }
-
-        return importPage().then(module => module.default);
+        return pages[`./Pages/${name}.vue`]().then((module) => module.default);
     },
 
     setup({ el, App, props, plugin }) {

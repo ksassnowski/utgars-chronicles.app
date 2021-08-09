@@ -8,7 +8,7 @@
             <slot />
         </main>
 
-        <footer class="page-footer mt-20 pt-8 text-xs text-center pb-4 relative text-gray-500">
+        <footer class="mt-20 py-4 text-xs text-center relative text-gray-400 border-t border-gray-100">
             <p>
                 Created in Munich by <a href="https://twitter.com/@warsh33p" target="_blank" rel="noreferrer noopener">@warsh33p</a> &mdash; &copy; {{ new Date().getFullYear() }}
             </p>
