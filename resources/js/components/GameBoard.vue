@@ -68,36 +68,6 @@
                 </template>
             </draggable>
         </div>
-
-        <!--GamePanel>
-            <div class="pt-4 flex -mx-4">
-                <FocusTracker
-                    class="w-1/4 px-4"
-                    :channel="channelName"
-                    :foci="history.foci"
-                    :history-id="history.id"
-                />
-
-                <Palette
-                    class="w-1/3 px-4"
-                    :channel="channelName"
-                    :palette="history.palettes"
-                    :history-id="history.id"
-                />
-
-                <LegacyTracker
-                    class="w-1/4 px-4"
-                    :channel="channelName"
-                    :legacies="history.legacies"
-                    :history-id="history.id"
-                />
-
-                <PlayerList
-                    :channel="channelName"
-                    class="flex-grow px-4"
-                />
-            </div>
-        </GamePanel-->
     </div>
 </template>
 
