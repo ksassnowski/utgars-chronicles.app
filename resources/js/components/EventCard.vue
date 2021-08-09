@@ -18,7 +18,10 @@
             Event
         </button-->
 
-        <article class="relative p-8 relative shadow-sm rounded-lg border bg-white border-gray-200 text-sm w-full min-h-32 group panzoom-exclude">
+        <article
+            class="relative p-8 relative shadow-sm rounded-lg border border-gray-200 text-sm w-full min-h-32 group"
+            :class="{ 'bg-gray-700 text-white': event.type === 'dark', 'bg-white text-gray-700': event.type === 'light' }"
+        >
             <template v-if="!editing">
                 <div class="invisible group-hover:visible absolute left-0 top-0 w-full pl-3 pr-2 pt-2 flex justify-between z-20">
                     <svg
@@ -42,7 +45,8 @@
                 </div>
 
                 <p
-                    class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase px-1"
+                    class="absolute top-0 text-sm font-bold leading-loose uppercase px-1"
+                    :class="{ 'text-white bg-gray-700': event.type === 'dark', 'text-gray-700 bg-white': event.type === 'light' }"
                     style="top: -15px; right: 20px;"
                 >
                     Event

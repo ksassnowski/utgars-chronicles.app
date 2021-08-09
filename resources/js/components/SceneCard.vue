@@ -1,6 +1,9 @@
 <template>
     <div :class="{ 'px-6': !editing }" class="pt-6">
-        <div class="relative pt-8 px-4 pb-6 relative shadow-sm rounded-lg border bg-white border-gray-200 text-sm w-full min-h-32 group panzoom-exclude">
+        <div
+            class="relative pt-8 px-4 pb-6 relative shadow-sm rounded-lg border bg-white border-gray-200 text-sm w-full min-h-32 group"
+            :class="{ 'bg-white text-gray-700': scene.type === 'light', 'bg-gray-700 text-white': scene.type === 'dark' }"
+        >
             <div v-if="!editing">
                 <div class="invisible group-hover:visible absolute left-0 top-0 w-full pl-3 pr-2 pt-2 flex justify-between z-20">
                     <svg
@@ -29,7 +32,7 @@
                     <hr>
 
                     <p v-if="scene.scene" class="text-sm py-2 whitespace-pre-wrap">{{ scene.scene }}</p>
-                    <p v-else class="text-sm py-2 text-gray-600 italic">This scene has no description.</p>
+                    <p v-else class="text-sm py-2 text-gray-600 italic whitespace-normal">This scene has no description.</p>
 
                     <hr>
 
@@ -38,18 +41,12 @@
                 </template>
 
                 <p
-                    class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase px-1"
+                    class="absolute top-0 text-sm font-bold leading-loose uppercase px-1"
+                    :class="{ 'text-white': scene.tone === 'dark', 'text-gray-700': scene.type === 'light' }"
                     style="top: -15px; right: 20px;"
                 >
                     Scene
                 </p>
-
-                <div
-                    v-if="scene.type"
-                    class="rounded-full border-2 border-gray-800 h-6 w-6 absolute"
-                    style="top: -12px"
-                    :class="{ 'bg-white': scene.type === 'light', 'bg-gray-800': scene.type === 'dark' }"
-                ></div>
             </div>
 
             <form v-else @submit.prevent="submit">

@@ -10,7 +10,8 @@
 
         <div class="game-card">
             <article
-                class="p-8 rounded-lg border border-gray-200 mb-6 bg-white shadow-sm relative panzoom-exclude group"
+                class="p-8 rounded-lg border border-gray-200 mb-6 shadow-sm relative panzoom-exclude group"
+                :class="{ 'bg-gray-700 text-white': period.type === 'dark', 'bg-white text-gray-700': period.type === 'light' }"
             >
                 <template v-if="!editing">
                     <button
@@ -61,7 +62,8 @@
                     </h3>
 
                     <p
-                        class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase px-1"
+                        class="absolute top-0 text-sm font-bold leading-loose uppercase px-1"
+                        :class="{ 'text-gray-700': period.type === 'light', 'text-white': period.type === 'dark' }"
                         style="top: -15px; right: 20px;"
                     >
                         Period
