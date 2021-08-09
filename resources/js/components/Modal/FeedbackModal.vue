@@ -1,5 +1,5 @@
 <template>
-    <button @click="showModal = true" class="text-indigo-100 py-4 sm:py-6 flex items-center">
+    <button @click="showModal = true" class="text-gray-200 py-2 px-3 flex items-center text-sm font-medium hover:text-white hover:bg-gray-700 rounded-md">
         <Modal v-if="showModal" title="Submit Feedback" @close="showModal = false">
             <form @submit.prevent="submit">
                 <p class="text-gray-700 text-sm mb-4">
@@ -17,7 +17,7 @@
             </form>
         </Modal>
 
-        <Icon name="announcement" class="fill-current h-4 w-4 text-indigo-300 mr-2" />
+        <Icon name="announcement" class="fill-current h-4 w-4 text-gray-300 mr-2" />
         Send Feedback
     </button>
 </template>
