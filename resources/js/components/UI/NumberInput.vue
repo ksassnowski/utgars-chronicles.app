@@ -14,7 +14,8 @@
 </template>
 
 <script>
-import InputGroup from "./InputGroup";
+import InputGroup from "./InputGroup.vue";
+
 export default {
     name: "NumberInput",
 
