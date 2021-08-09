@@ -72,11 +72,6 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@panzoom/panzoom@^4.0.4":
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/@panzoom/panzoom/-/panzoom-4.3.2.tgz#19d13edb858d05531bac54e1f8cf51f53d0dd9fa"
-  integrity sha512-6D4UDsYXowzMJ/1XSbylRj9BGhCR7mQQ5m/s6MiKx11ThLcEiU4kgq59vhS8+RnOGA789FcdmGvK1/hIxyRD+w==
-
 "@sentry/browser@^5.11.0":
   version "5.30.0"
   resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.30.0.tgz#c28f49d551db3172080caef9f18791a7fd39e3b3"
@@ -564,10 +559,10 @@ csstype@^2.6.8:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.17.tgz#4cf30eb87e1d1a005d8b6510f95292413f6a1c0e"
   integrity sha512-u1wmTI1jJGzCJzWndZo8mk4wnPTZd1eOIYTYvuEyOQGfmDl3TrabCCfKnOC86FZwW/9djqTl933UF/cS425i9A==
 
-date-format-parse@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/date-format-parse/-/date-format-parse-0.2.6.tgz#7ed42817efb6ec39532169eada9670ae3c627aa7"
-  integrity sha512-sdxnYAWmLopeb+6Hmw+vo3or4OCJOnh4+YoJ9p+Id3o2EnNP0INpTqx7wr8UregfMpgaSZAH473R/ytiaB3gVg==
+date-fns@^2.22.1:
+  version "2.23.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.23.0.tgz#4e886c941659af0cf7b30fafdd1eaa37e88788a9"
+  integrity sha512-5ycpauovVyAk0kXNZz6ZoB9AYMZB4DObse7P3BPWmyEjXNORTI8EJ6X0uaSAq4sCHzM1uajzrkr6HnsLQpxGXA==
 
 dayjs@^1.10.5:
   version "1.10.6"
@@ -1618,12 +1613,12 @@ vue-meta@^2.3.1:
   dependencies:
     deepmerge "^4.2.2"
 
-vue2-datepicker@^3.9.0:
-  version "3.9.1"
-  resolved "https://registry.yarnpkg.com/vue2-datepicker/-/vue2-datepicker-3.9.1.tgz#00d11cf30942e850f8b1a397af3c15c7465f248e"
-  integrity sha512-LuvcgGR+sDYKcih0z+cyvYufGyBwUtIiwzJPwxE63C8gOsAWiE09KuGtZ3OxdQXJEQM2MGQ9t9t1t7382FiFOg==
+vue3-datepicker@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/vue3-datepicker/-/vue3-datepicker-0.2.5.tgz#4e31e05f713b0e6664145ea89df958b6bdd38cb2"
+  integrity sha512-knZCjq8320UjP1qPyJ62B08EUdRhMWbZOAR0gBWF+FRQTtkLv6SwgQdOdS1h0Xj7N8ov9thK1mD47gReXgQGkA==
   dependencies:
-    date-format-parse "^0.2.6"
+    date-fns "^2.22.1"
 
 vue@^3.1.0:
   version "3.1.5"
