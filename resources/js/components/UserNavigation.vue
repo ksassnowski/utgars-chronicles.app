@@ -15,22 +15,26 @@
         <div class="sm:flex items-center relative">
             <ul class="sm:mr-4">
                 <li>
-                    <FeedbackModal />
+                    <FeedbackModal>
+                        <button class="text-sm font-medium inline-flex items-center justify-center text-gray-300 py-2 px-3 hover:bg-gray-700 hover:text-white rounded-md">
+                            <Icon name="announcement" class="w-4 h-4 text-gray-400 mr-2 fill-current" />
+                            Submit Feedback
+                        </button>
+                    </FeedbackModal>
                 </li>
             </ul>
 
-            <div class="flex items-center">
-                <Gravatar
-                    :email="$page.props.auth.user.email"
-                    :size="30"
-                    class="mr-2 rounded-full border-2 border-indigo-500"
-                />
+            <Menu as="div" class="relative">
+                <MenuButton class="flex items-center">
+                    <div class="bg-gradient-to-br from-purple-400 to-indigo-700 p-[0.15rem] mr-2 rounded-full">
+                        <Gravatar
+                            :email="$page.props.auth.user.email"
+                            :size="35"
+                            class="rounded-full"
+                        />
+                    </div>
 
-                <div class="relative py-4 sm:py-6">
-                    <button
-                        @click="dropdownOpen = !dropdownOpen"
-                        class="flex items-center"
-                    >
+                    <div class="relative py-4 sm:py-6 flex items-center">
                         <span class="text-indigo-400">Hello,&nbsp;</span>
                         <span class="font-bold text-indigo-100 mr-1">{{
                             $page.props.auth.user.name
@@ -39,43 +43,52 @@
                             name="chevron-down"
                             class="h-4 w-4 fill-current text-gray-200"
                         />
-                    </button>
-                </div>
-            </div>
+                    </div>
+                </MenuButton>
 
-            <div
-                v-if="dropdownOpen"
-                v-click-outside="() => (dropdownOpen = false)"
-                class="border-t border-indigo-100 sm:absolute sm:bg-white sm:border sm:border-gray-300 sm:shadow-lg sm:right-0 sm:rounded sm:flex sm:flex-col sm:z-10"
-                style="top: 100%"
-            >
-                <Link
-                    :href="$route('profile')"
-                    class="sm:px-8 py-4 sm:py-2 sm:text-sm text-indigo-100 sm:text-gray-800 block hover:bg-gray-100 inline-flex items-center"
-                    @click="dropdownOpen = false"
+                <transition
+                    enter-active-class="transition duration-100 ease-out"
+                    enter-from-class="transform scale-95 opacity-0"
+                    enter-to-class="transform scale-100 opacity-100"
+                    leave-active-class="transition duration-100 ease-in"
+                    leave-from-class="transform scale-100 opacity-100"
+                    leave-to-class="transform scale-95 opacity-0"
                 >
-                    <Icon
-                        name="user"
-                        class="fill-current h-4 w-4 sm:h-3 sm:w-3 text-indigo-300 sm:text-gray-600 mr-2"
-                    />
-                    Profile
-                </Link>
+                    <MenuItems
+                        class="absolute right-0 origin-top-right -mt-2 w-48 bg-white rounded-md shadow-lg text-sm font-medium divide-y divide-gray-200 ring-1 ring-black ring-opacity-5"
+                    >
+                        <div class="p-1">
+                            <MenuItem class="w-full">
+                                <Link :href="$route('profile')" class="text-gray-900 flex items-center space-x-2 rounded-md p-2 hover:bg-indigo-600 hover:text-white">
+                                    <Icon
+                                        name="user"
+                                        class="fill-current h-4 w-4 sm:h-3 sm:w-3 mr-2 text-purple-400"
+                                    />
+                                    Profile
+                                </Link>
+                            </MenuItem>
+                        </div>
 
-                <Link
-                    as="button"
-                    method="POST"
-                    :href="$route('logout')"
-                    class="sm:text-sm text-indigo-100 sm:text-indigo-600 w-full sm:px-8 py-4 sm:py-2 text-left hover:bg-gray-100"
-                    >Logout</Link
-                >
-            </div>
+                        <div class="p-1">
+                            <MenuItem class="w-full">
+                                <Link
+                                    as="button"
+                                    method="POST"
+                                    :href="$route('logout')"
+                                    class="text-gray-900 flex items-center rounded-md p-2 font-medium text-sm hover:bg-indigo-600 hover:text-white"
+                                >Logout</Link>
+                            </MenuItem>
+                        </div>
+                    </MenuItems>
+                </transition>
+            </Menu>
         </div>
     </div>
 </template>
 
 <script>
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import { Link } from "@inertiajs/inertia-vue3";
-import vClickOutside from "v-click-outside";
 
 import Gravatar from "./Gravatar.vue";
 import Icon from "./Icon.vue";
@@ -91,24 +104,10 @@ export default {
         Icon,
         Gravatar,
         Link,
+        Menu,
+        MenuItems,
+        MenuItem,
+        MenuButton,
     },
-
-    directives: {
-        clickOutside: vClickOutside.directive
-    },
-
-    computed: {
-        token() {
-            return document.head
-                .querySelector("meta[name=csrf-token]")
-                .getAttribute("content");
-        }
-    },
-
-    data() {
-        return {
-            dropdownOpen: false
-        };
-    }
 };
 </script>

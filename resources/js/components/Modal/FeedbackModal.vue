@@ -1,61 +1,61 @@
 <template>
-    <button @click="showModal = true" class="text-gray-200 py-2 px-3 flex items-center text-sm font-medium hover:text-white hover:bg-gray-700 rounded-md">
-        <Modal v-if="showModal" title="Submit Feedback" @close="showModal = false">
-            <form @submit.prevent="submit">
-                <p class="text-gray-700 text-sm mb-4">
-                    Found a bug or have feedback? Please write your message below and I will get notified. Thanks for helping improve the app!
-                </p>
+    <Modal title="Submit Feedback" ref="modal">
+        <template v-slot:button="{ toggle }">
+            <div @click="toggle">
+                <slot />
+            </div>
+        </template>
 
-                <div class="mb-4">
-                    <label for="message" class="label">Message</label>
-                    <textarea id="message" rows="6" class="input" v-model="form.message" required></textarea>
-                </div>
+        <form @submit.prevent="submit">
+            <p class="text-gray-700 text-sm mb-4">
+                Found a bug or have feedback? Please write your message below and I will get notified. Thanks for helping improve the app!
+            </p>
 
-                <LoadingButton :loading="loading">
-                    Submit your feedback
-                </LoadingButton>
-            </form>
-        </Modal>
+            <div class="mb-4">
+                <label for="message" class="label">Message</label>
+                <textarea id="message" rows="6" class="input" v-model="form.message" required></textarea>
+            </div>
 
-        <Icon name="announcement" class="fill-current h-4 w-4 text-gray-300 mr-2" />
-        Send Feedback
-    </button>
+            <LoadingButton :loading="form.processing">
+                Submit your feedback
+            </LoadingButton>
+        </form>
+    </Modal>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import { useForm } from "@inertiajs/inertia-vue3";
+
 import Modal from "../Modal.vue";
 import LoadingButton from "../LoadingButton.vue";
-import Icon from "../Icon.vue";
 
-export default {
+export default defineComponent({
     name: 'FeedbackModal',
 
     components: {
-        Icon,
         LoadingButton,
-        Modal
-    },
-
-    data() {
-        return {
-            showModal: false,
-            loading: false,
-            form: {
-                message: null,
-            },
-        };
+        Modal,
     },
 
     methods: {
         async submit() {
-            this.loading = true;
-
-            await this.$inertia.post(this.$route('feedback.submit'), this.form);
-
-            this.loading = false;
-            this.showModal = false;
-            this.form.message = null;
+            this.form.post(this.$route('feedback.submit'), {
+                onSuccess: () => {
+                    this.form.message = null;
+                    this.modal.toggle();
+                },
+            });
         },
     },
-};
+
+    setup() {
+        const form = useForm({
+            message: "",
+        });
+        const modal = ref(null);
+
+        return { form, modal };
+    }
+});
 </script>

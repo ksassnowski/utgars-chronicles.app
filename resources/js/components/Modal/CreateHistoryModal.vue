@@ -1,5 +1,11 @@
 <template>
     <Modal title="Create History" @close="$emit('close')">
+        <template v-slot:button="{ toggle }">
+            <div @click="toggle">
+                <slot />
+            </div>
+        </template>
+
         <form @submit.prevent="submit">
             <div class="mb-2">
                 <label for="name" class="label">Name</label>
@@ -8,7 +14,7 @@
                     class="input"
                     id="name"
                     v-model="form.name"
-                    ref="input"
+                    :ref="input"
                     required
                 />
                 <small class="text-xs text-gray-600"
@@ -23,12 +29,15 @@
             </div>
 
             <div class="mb-4">
-                <input type="checkbox" id="public" v-model="form.public" />
-                <label
-                    for="public"
-                    class="font-semibold tracking-wide text-xs text-gray-700"
+                <div class="space-x-1">
+                    <input type="checkbox" id="public" v-model="form.public" />
+                    <label
+                        for="public"
+                        class="font-semibold tracking-wide text-xs text-gray-700"
                     >Allow guests to join?</label
-                >
+                    >
+                </div>
+
                 <div class="text-xs text-gray-600">
                     This will allow you to invite players to your game that
                     don't have a user account on Utgar's Chronicles.
@@ -42,25 +51,19 @@
     </Modal>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+
 import Modal from "../Modal.vue";
 import LoadingButton from "../LoadingButton.vue";
+import {useForm} from "@inertiajs/inertia-vue3";
 
-export default {
+export default defineComponent({
     name: "CreateHistoryModal",
 
     components: {
         LoadingButton,
         Modal
-    },
-
-    data() {
-        return {
-            form: this.$inertia.form({
-                name: null,
-                public: false
-            })
-        };
     },
 
     methods: {
@@ -71,8 +74,15 @@ export default {
         }
     },
 
-    mounted() {
-        this.$nextTick(() => this.$refs.input.focus());
-    }
-};
+    setup() {
+        const input = ref(null);
+
+        const form = useForm({
+            name: '',
+            public: false,
+        });
+
+        return { form, input };
+    },
+});
 </script>

@@ -1,39 +1,5 @@
 <template>
     <div class="h-full flex flex-col">
-        <Modal v-if="showModal" title="Add Period" @close="showModal = false">
-            <form @submit.prevent="submit">
-                <div class="mb-4">
-                    <label for="name" class="label" ref="input">Name</label>
-                    <textarea type="text" class="input" id="name" v-model="form.name" rows="5" required></textarea>
-                </div>
-
-                <div class="mb-4">
-                    <p class="label">Tone</p>
-
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <input type="radio" id="light" value="light" v-model="form.type">
-                            <label for="light">Light</label>
-                        </div>
-
-                        <div>
-                            <input type="radio" id="dark" value="dark" v-model="form.type">
-                            <label for="dark">Dark</label>
-                        </div>
-                    </div>
-                </div>
-
-                <button
-                    type="submit"
-                    class="text-white w-full rounded py-2 px-4"
-                    :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
-                    :disabled="loading"
-                >
-                    {{ loading ? 'Hang on...' : 'Save' }}
-                </button>
-            </form>
-        </Modal>
-
         <div class="flex items-center w-full px-4 mb-4">
             <div class="flex-1">
                 <Link :href="$route('home')" class="text-gray-800 font-semibold">&laquo; back</Link>
@@ -42,10 +8,12 @@
             <HistorySeed :history="internalHistory" />
 
             <div class="flex-1 flex justify-end">
-                <button
-                    class="px-4 py-2 bg-indigo-700 rounded text-white font-bold"
-                    @click="() => create(lastPosition + 1)"
-                >Add Period</button>
+                <CreatePeriodModal>
+                    <button
+                        class="px-4 py-2 bg-indigo-700 rounded text-white font-bold"
+                        @click="() => create(lastPosition + 1)"
+                    >Add Period</button>
+                </CreatePeriodModal>
             </div>
         </div>
 
@@ -87,6 +55,7 @@ import LegacyTracker from "./LegacyTracker.vue";
 import Modal from "./Modal.vue";
 import GamePanel from "./GamePanel.vue";
 import HistorySeed from "./HistorySeed.vue";
+import CreatePeriodModal from "./Modal/CreatePeriodModal";
 
 export default {
     name: 'GameBoard',
@@ -99,6 +68,7 @@ export default {
     },
 
     components: {
+        CreatePeriodModal,
         HistorySeed,
         GamePanel,
         Modal,
