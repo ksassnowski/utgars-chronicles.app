@@ -7,7 +7,7 @@
 
 @layer base {
     #app {
-        @apply h-full;
+        @apply h-full flex flex-col;
     }
 }
 
