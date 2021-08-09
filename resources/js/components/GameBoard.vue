@@ -58,7 +58,7 @@
                 item-key="id"
             >
                 <template #item="{element}">
-                    <div class="w-64 inline-block px-1 h-full align-top">
+                    <div class="w-72 inline-block px-1 h-full align-top">
                         <PeriodCard
                             :period="element"
                             :history-id="history.id"
