@@ -14,17 +14,8 @@ export default ({ command }) => ({
     },
     resolve: {
         alias: {
-            vue: '@vue/compat',
             '@': path.resolve(__dirname, 'resources/js/'),
         }
     },
-    plugins: [vue({
-        template: {
-            compilerOptions: {
-                compatConfig: {
-                    MODE: 2,
-                }
-            }
-        }
-    })],
+    plugins: [vue()],
 });

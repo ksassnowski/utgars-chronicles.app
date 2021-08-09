@@ -151,11 +151,6 @@
   resolved "https://registry.yarnpkg.com/@vitejs/plugin-vue/-/plugin-vue-1.4.0.tgz#962ae01b7fd16ad4007898c64ed639136e12215b"
   integrity sha512-RkqfJHz9wdLKBp5Yi+kQL8BAljdrvPoccQm2PTZc/UcL4EjD11xsv2PPCduYx2oV1a/bpSKA3sD5sxOHFhz+LA==
 
-"@vue/compat@^3.1.0":
-  version "3.1.5"
-  resolved "https://registry.yarnpkg.com/@vue/compat/-/compat-3.1.5.tgz#2d2e4be1ec502f111ca9f4af0d6dc648adebc5fa"
-  integrity sha512-i+XNDN7oa/fvGElA548a2YkNQAuV2KImxX0h4uxL0lyRwSbWYBW8Zc5KYxOFs8F3MsiS2EXX3JqaTOpCut/tRQ==
-
 "@vue/compiler-core@3.1.0":
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/@vue/compiler-core/-/compiler-core-3.1.0.tgz#5a79db95f57a12445fe1a55a40f34f75e2cb9ea1"
