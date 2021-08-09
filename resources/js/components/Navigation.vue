@@ -1,12 +1,12 @@
 <template>
     <nav
-        class="px-4 flex flex-wrap items-center bg-indigo-800 justify-between"
+        class="px-4 flex flex-wrap items-center bg-gray-800 justify-between"
     >
         <Link
             :href="$route('home')"
             class="text-xl font-bold tracking-tight text-white mr-8"
         >
-            Utgar's Chronicles
+            Utgar’s Chronicles
         </Link>
 
         <div class="block sm:hidden py-6">

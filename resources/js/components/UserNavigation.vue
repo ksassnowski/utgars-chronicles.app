@@ -1,24 +1,20 @@
 <template>
     <div class="w-full items-center flex-grow sm:flex sm:w-auto">
-        <div class="flex items-center flex-grow">
-            <Link
+        <div class="flex items-center flex-grow space-x-4">
+            <NavigationLink
                 :href="$route('home')"
-                class="text-indigo-100 py-4 sm:py-6 flex items-center hover:bg-indigo-700 sm:px-4"
-                :class="{ 'bg-indigo-700': active('home') }"
-            >
-                Dashboard
-            </Link>
+                :is-active="active('home')"
+            >Dashboard</NavigationLink>
 
-            <Link
+            <NavigationLink
                 :href="$route('lfg.index')"
-                class="text-indigo-100 py-4 sm:py-6 flex items-center hover:bg-indigo-700 sm:px-4"
-                :class="{ 'bg-indigo-700': active('lfg.*') }"
-            >Find a game</Link>
+                :is-active="active('lfg.*')"
+            >Find a game</NavigationLink>
         </div>
 
         <div class="sm:flex items-center relative">
             <ul class="sm:mr-4">
-                <li class="sm:px-4 hover:bg-indigo-700">
+                <li>
                     <FeedbackModal />
                 </li>
             </ul>
@@ -84,11 +80,13 @@ import vClickOutside from "v-click-outside";
 import Gravatar from "./Gravatar.vue";
 import Icon from "./Icon.vue";
 import FeedbackModal from "./Modal/FeedbackModal.vue";
+import NavigationLink from "./UI/NavigationLink.vue";
 
 export default {
     name: "UserNavigation",
 
     components: {
+        NavigationLink,
         FeedbackModal,
         Icon,
         Gravatar,
