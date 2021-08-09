@@ -14,7 +14,7 @@
 
             <InputGroup label="Date and Time" name="date">
                 <div class="flex space-x-4 items-center">
-                    <DatePicker
+                    <!--DatePicker
                         v-model="form.start_date"
                         type="datetime"
                         class="w-full block flex-1"
@@ -22,7 +22,7 @@
                         input-class="w-full bg-gray-100 px-4 py-2 border-2 border-transparent rounded focus:bg-white focus:border-indigo-700 placeholder-gray-400"
                         format="YYYY-MM-DD, HH:mm"
                         :show-second="false"
-                    />
+                    /-->
 
                     <span>
                         {{ gameStartsIn }}
@@ -60,8 +60,6 @@
 </template>
 
 <script>
-import "vue2-datepicker/index.css";
-import DatePicker from "vue2-datepicker";
 import dayjs from "dayjs";
 
 import Layout from "@/Pages/Layouts/Layout.vue";
@@ -80,7 +78,6 @@ export default {
         TextInput,
         InputGroup,
         HelpText,
-        DatePicker,
     },
 
     computed: {
