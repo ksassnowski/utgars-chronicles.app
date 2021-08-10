@@ -23,6 +23,7 @@
         "tightenco/ziggy": "^0.8.1"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.6",
         "barryvdh/laravel-ide-helper": "^2.6",
         "facade/ignition": "^2.3.6",
         "fzaninotto/faker": "^1.4",
