@@ -23,7 +23,10 @@
 
                 <div class="absolute invisible group-hover:visible flex justify-end items-center inset-x-0 bottom-0 px-2 pb-2">
                     <SceneModal :event="event">
-                        <button class="text-sm text-indigo-700">Create Scene</button>
+                        <button
+                            class="text-sm"
+                            :class="{ 'text-indigo-700': event.type === 'light', 'text-indigo-300': event.type === 'dark' }"
+                        >Add Scene</button>
                     </SceneModal>
                 </div>
 

@@ -47,7 +47,10 @@
                             :period="period"
                             :position="nextEventPosition"
                         >
-                            <button class="text-indigo-700 text-sm">
+                            <button
+                                class="text-sm"
+                                :class="{ 'text-indigo-700': period.type === 'light', 'text-indigo-300': period.type === 'dark' }"
+                            >
                                 Add Event
                             </button>
                         </CreateEventModal>
