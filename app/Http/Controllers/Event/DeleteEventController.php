@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Event;
 use App\Event;
 use App\History;
 use App\Events\BoardUpdated;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 final class DeleteEventController
 {
-    public function __invoke(History $history, Event $event): JsonResponse
+    public function __invoke(History $history, Event $event): RedirectResponse
     {
         $event->delete();
 
-        broadcast(new BoardUpdated($history->fresh()));
+        broadcast(new BoardUpdated($history->fresh()))->toOthers();
 
-        return response()->json([], 204);
+        return redirect()->back();
     }
 }

@@ -165,8 +165,7 @@ export default defineComponent({
                 return;
             }
 
-            axios.delete(this.$route('events.delete', [this.history, this.event]))
-                .catch(console.error);
+            this.$inertia.delete(this.$route('events.delete', [this.history, this.event]));
         },
 
         edit() {

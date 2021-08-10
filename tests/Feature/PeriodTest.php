@@ -153,9 +153,11 @@ class PeriodTest extends TestCase
             'history_id' => $this->history->id
         ]);
 
-        $response = $this->login()->deleteJson(route('periods.delete', [$period->history, $period]));
+        $response = $this->login()->delete(route('periods.delete', [$period->history, $period]));
 
-        $response->assertStatus(204);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseMissing('periods', ['id' => $period->id]);
         Event::assertDispatched(BoardUpdated::class);
     }
@@ -167,7 +169,7 @@ class PeriodTest extends TestCase
         $period2 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 2]);
         $period3 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 3]);
 
-        $this->login()->deleteJson(route('periods.delete', [$this->history->id, $period2]));
+        $this->login()->delete(route('periods.delete', [$this->history->id, $period2]));
 
         $this->assertEquals(1, $period1->refresh()->position);
         $this->assertEquals(2, $period3->refresh()->position);
