@@ -70,6 +70,7 @@ export default defineComponent({
 
         const submit = async () => {
             form.post(route("history.periods.store", props.history).url(), {
+                only: ["history"],
                 onSuccess: () => {
                     form.reset("name", "type");
                     modal.value.toggle();

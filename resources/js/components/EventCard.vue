@@ -126,9 +126,11 @@ export default defineComponent({
                 return;
             }
 
-            this.$inertia.post(this.$route("scenes.move", [this.history, e.moved.element]), {
-                position: e.moved.newIndex + 1,
-            })
+            this.$inertia.post(
+                this.$route("scenes.move", [this.history, e.moved.element]),
+                { position: e.moved.newIndex + 1 },
+                { only: ["history"] }
+            );
         },
 
         submit()  {
@@ -139,10 +141,10 @@ export default defineComponent({
                 return this.stopEditing();
             }
 
-            this.form.put(
-                this.$route('events.update', [this.history, this.event]),
-                { onSuccess: this.stopEditing }
-            )
+            this.form.put(this.$route('events.update', [this.history, this.event]), {
+                only: ["history"],
+                onSuccess: this.stopEditing
+            });
         },
 
         remove() {
@@ -152,7 +154,10 @@ export default defineComponent({
                 return;
             }
 
-            this.$inertia.delete(this.$route('events.delete', [this.history, this.event]));
+            this.$inertia.delete(
+                this.$route('events.delete', [this.history, this.event]),
+                { only: ["history"] }
+            );
         },
     },
 
