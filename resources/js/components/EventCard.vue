@@ -1,23 +1,5 @@
 <template>
     <div class="relative game-card">
-        <!--button
-            title="Add event above this event"
-            @click="$emit('insertEvent', event.position)"
-            class="game-add-button top flex items-center text-sm font-bold text-gray-500 hover:text-indigo-700"
-        >
-            <Icon name="add-solid" class="fill-current w-6 mr-2" />
-            Event
-        </button>
-
-        <button
-            title="Add event below this event"
-            @click="$emit('insertEvent', event.position + 1)"
-            class="game-add-button bottom flex items-center text-sm font-bold text-gray-500 hover:text-indigo-700"
-        >
-            <Icon name="add-solid" class="fill-current w-6 mr-2" />
-            Event
-        </button-->
-
         <article
             class="relative p-8 relative shadow-sm rounded-lg border border-gray-200 text-sm w-full min-h-32 group"
             :class="{ 'bg-gray-700 text-white': event.type === 'dark', 'bg-white text-gray-700': event.type === 'light' }"
@@ -26,8 +8,7 @@
                 <div class="invisible group-hover:visible absolute left-0 top-0 w-full pl-3 pr-2 pt-2 flex justify-between z-20">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        class="handle w-4 h-4 fill-current text-gray-400 cursor-move"
-                        style="margin-top: 2px"
+                        class="handle w-4 h-4 fill-current text-gray-400 cursor-move mt-[2px]"
                         viewBox="0 0 20 20"
                     ><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
 

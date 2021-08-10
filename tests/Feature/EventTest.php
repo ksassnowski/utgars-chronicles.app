@@ -44,7 +44,9 @@ class EventTest extends TestCase
             ],
         );
 
-        $response->assertStatus(201);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseHas('events', [
             'name' => '::event-name::',
             'type' => Type::DARK,
