@@ -103,7 +103,9 @@ class EventTest extends TestCase
             ]
         );
 
-        $response->assertOk();
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $event->refresh();
         $this->assertEquals('::new-name::', $event->name);
         $this->assertEquals(Type::DARK, $event->type);

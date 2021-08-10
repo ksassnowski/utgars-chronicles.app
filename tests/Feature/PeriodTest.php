@@ -121,7 +121,9 @@ class PeriodTest extends TestCase
             'type' => Type::LIGHT,
         ]);
 
-        $response->assertOk();
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
 
         $period->refresh();
         $this->assertEquals($period->name, '::new-period-name::');
