@@ -117,7 +117,9 @@ class SceneTest extends TestCase
                 'type' => Type::LIGHT
             ]);
 
-        $response->assertOk();
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $scene->refresh();
         $this->assertEquals('::new-question::', $scene->question);
         $this->assertEquals('::new-scene::', $scene->scene);
