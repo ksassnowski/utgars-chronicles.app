@@ -68,7 +68,7 @@
         </article>
 
         <draggable
-            :list="orderedScenes"
+            :list="event.scenes"
             @change="sceneMoved"
             handle=".handle"
             item-key="id"
@@ -84,10 +84,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import axios from 'axios';
-import sortBy from 'lodash/sortBy';
 import draggable from 'vuedraggable';
 
-import { useEmitter } from "../composables/useEmitter";
 import LoadingButton from "./LoadingButton.vue";
 import SettingsPanel from "./SettingsPanel.vue";
 import SceneCard from "./SceneCard.vue";
@@ -97,7 +95,10 @@ import Icon from "./Icon.vue";
 export default defineComponent({
     name: 'EventCard',
 
-    props: ['event', 'period'],
+    props: {
+        event: Object,
+        period: Object,
+    },
 
     inject: ['history'],
 
@@ -108,12 +109,6 @@ export default defineComponent({
         SceneCard,
         SettingsPanel,
         LoadingButton,
-    },
-
-    computed: {
-        orderedScenes() {
-            return sortBy(this.event.scenes, ['position']);
-        },
     },
 
     data() {
@@ -133,12 +128,9 @@ export default defineComponent({
                 return;
             }
 
-            this.emitter.trigger('scene.moved', {
-                period: this.period,
-                event: this.event,
-                scene: e.moved.element,
+            this.$inertia.post(this.$route("scenes.move", [this.history, e.moved.element]), {
                 position: e.moved.newIndex + 1,
-            });
+            })
         },
 
         submit()  {
@@ -185,12 +177,6 @@ export default defineComponent({
             this.form.name= this.event.name;
             this.editing = false;
         },
-    },
-
-    setup() {
-        return {
-            emitter: useEmitter(),
-        };
     },
 });
 </script>

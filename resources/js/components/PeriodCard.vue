@@ -107,7 +107,7 @@
         </div>
 
         <draggable
-            :list="orderedEvents"
+            :list="period.events"
             @change="eventMoved"
             class="overflow-x-hidden overflow-y-auto space-y-8"
             style="flex: 1 1 auto"
@@ -115,11 +115,7 @@
             item-key="id"
         >
             <template #item="{element}">
-                <EventCard
-                    :event="element"
-                    :period="period"
-                    @insertEvent="openCreateEventModal"
-                />
+                <EventCard :event="element" :period="period" />
             </template>
         </draggable>
     </div>
@@ -129,7 +125,6 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 import draggable from "vuedraggable";
-import sortBy from "lodash/sortBy";
 
 import EventCard from "./EventCard.vue";
 import SettingsPanel from "./SettingsPanel.vue";
@@ -137,12 +132,14 @@ import Modal from "./Modal.vue";
 import CreateEventModal from "./Modal/CreateEventModal.vue";
 import LoadingButton from "./LoadingButton.vue";
 import Icon from "./Icon.vue";
-import {useEmitter} from "../composables/useEmitter";
 
 export default defineComponent({
     name: "PeriodCard",
 
-    props: ["period", "historyId"],
+    props: {
+        period: Object,
+        historyId: Number,
+    },
 
     components: {
         Icon,
@@ -156,7 +153,7 @@ export default defineComponent({
 
     computed: {
         nextEventPosition() {
-            const last = this.orderedEvents.slice(-1)[0];
+            const last = this.period.events.slice(-1)[0];
 
             if (!last) {
                 return 1;
@@ -164,18 +161,12 @@ export default defineComponent({
 
             return last.position + 1;
         },
-
-        orderedEvents() {
-            return sortBy(this.period.events, ["position"]);
-        }
     },
 
     data() {
         return {
             editing: false,
             loading: false,
-            showModal: false,
-            newEventPosition: this.nextEventPosition,
             form: {
                 name: this.period.name,
                 type: this.period.type
@@ -189,10 +180,8 @@ export default defineComponent({
                 return;
             }
 
-            this.emitter.trigger("event.moved", {
-                period: this.period,
-                event: e.moved.element,
-                position: e.moved.newIndex + 1
+            this.$inertia.post(this.$route("events.move", [this.historyId, e.moved.element]), {
+                position: e.moved.newIndex + 1,
             });
         },
 
@@ -252,17 +241,6 @@ export default defineComponent({
                     .catch(console.error);
             }
         },
-
-        openCreateEventModal(position) {
-            this.newEventPosition = position;
-            this.showModal = true;
-        }
     },
-
-    setup() {
-        return {
-            emitter: useEmitter(),
-        };
-    }
 });
 </script>
