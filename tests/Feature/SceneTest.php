@@ -86,7 +86,9 @@ class SceneTest extends TestCase
             'position' => 1,
         ]);
 
-        $response->assertStatus(201);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseHas('scenes', [
             'question' => '::question::',
             'scene' => '::scene::',
