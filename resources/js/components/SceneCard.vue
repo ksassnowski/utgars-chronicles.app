@@ -139,8 +139,7 @@ export default {
                 return;
             }
 
-            axios.delete(this.$route('scenes.delete', [this.history, this.scene]))
-                .then(() => this.editing = false);
+            this.$inertia.delete(this.$route("scenes.delete", [this.history, this.scene]));
         },
 
         edit() {

@@ -6,16 +6,16 @@ use App\Scene;
 use App\History;
 use App\Events\BoardUpdated;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 final class DeleteSceneController
 {
-    public function __invoke(Request $request, History $history, Scene $scene): JsonResponse
+    public function __invoke(Request $request, History $history, Scene $scene): RedirectResponse
     {
         $scene->delete();
 
-        broadcast(new BoardUpdated($history->fresh()));
+        broadcast(new BoardUpdated($history->fresh()))->toOthers();
 
-        return response()->json([], 204);
+        return redirect()->back();
     }
 }
