@@ -36,8 +36,10 @@
 </template>
 
 <script>
+import { defineComponent, onBeforeUnmount } from "vue";
 import draggable from 'vuedraggable';
 import { Link } from "@inertiajs/inertia-vue3";
+import axios from "axios";
 
 import PlayerList from "./PlayerList.vue";
 import PeriodCard from "./PeriodCard.vue";
@@ -50,7 +52,7 @@ import HistorySeed from "./HistorySeed.vue";
 import CreatePeriodModal from "./Modal/CreatePeriodModal.vue";
 import PrimaryButton from "./UI/PrimaryButton.vue";
 
-export default {
+export default defineComponent({
     name: 'GameBoard',
 
     props: {
@@ -95,10 +97,6 @@ export default {
 
             return this.history.periods.slice(-1)[0].position + 1;
         },
-
-        channelName() {
-            return `history.${this.history.id}`;
-        }
     },
 
     methods: {
@@ -129,8 +127,24 @@ export default {
             .listen('HistorySeedUpdated', this.updateSeed);
     },
 
-    beforeUnmount() {
-        Echo.leave(this.channelName);
-    },
-};
+    setup(props) {
+        const channelName = `history.${props.history.id}`;
+        onBeforeUnmount(() => Echo.leave(channelName));
+
+        // In order for `broadcast()->toOthers()` to work properly, we need to
+        // ensure that every request we send includes the `X-Socket-ID` header
+        // that Laravel uses internally to exclude the current user from the
+        // broadcast.
+        // Inertia.js doesn’t add this header to the request by default,
+        // so we have to do it ourselves here. Otherwise, the user sending the
+        // request will always resync the board as well which causes weird things
+        // to happen (like the `onSuccess` callback not properly working).
+        axios.interceptors.request.use((config) => {
+            config.headers['X-Socket-ID'] = Echo.socketId();
+            return config;
+        });
+
+        return { channelName };
+    }
+});
 </script>

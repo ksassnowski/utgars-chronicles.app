@@ -94,8 +94,8 @@
                         </div>
                     </div>
 
-                    <LoadingButton :loading="loading">
-                        {{ loading ? "Hang on..." : "Save" }}
+                    <LoadingButton :loading="form.processing">
+                        Save
                     </LoadingButton>
 
                     <button
@@ -126,8 +126,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import axios from "axios";
 import draggable from "vuedraggable";
+import { useForm } from "@inertiajs/inertia-vue3";
 
 import EventCard from "./EventCard.vue";
 import SettingsPanel from "./SettingsPanel.vue";
@@ -169,11 +169,6 @@ export default defineComponent({
     data() {
         return {
             editing: false,
-            loading: false,
-            form: {
-                name: this.period.name,
-                type: this.period.type
-            }
         };
     },
 
@@ -196,8 +191,7 @@ export default defineComponent({
 
         cancel() {
             this.editing = false;
-            this.form.name = this.period.name;
-            this.form.type = this.period.type;
+            this.form.reset();
         },
 
         submit() {
@@ -209,23 +203,11 @@ export default defineComponent({
                 return;
             }
 
-            this.loading = true;
-
-            axios
-                .put(
-                    this.$route("periods.update", [
-                        this.historyId,
-                        this.period
-                    ]),
-                    this.form
-                )
-                .then(() => {
-                    this.loading = false;
+            this.form.put(this.$route("periods.update", [this.historyId, this.period]), {
+                onSuccess: () => {
                     this.editing = false;
-                })
-                .catch(() => {
-                    this.loading = false;
-                });
+                }
+            });
         },
 
         remove() {
@@ -238,5 +220,14 @@ export default defineComponent({
             }
         },
     },
+
+    setup(props) {
+        const form = useForm({
+            name: props.period.name,
+            type: props.period.type,
+        });
+
+        return { form };
+    }
 });
 </script>
