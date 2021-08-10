@@ -24,7 +24,7 @@
                         <SettingsPanel
                             v-if="!editing"
                             @delete="remove"
-                            @edit="edit"
+                            @edit="startEditing"
                         />
                     </div>
 
@@ -101,7 +101,7 @@
                     <button
                         type="button"
                         class="text-sm text-gray-700 mt-2 text-center w-full"
-                        @click="cancel"
+                        @click="stopEditing"
                     >
                         Cancel
                     </button>
@@ -125,7 +125,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import draggable from "vuedraggable";
 import { useForm } from "@inertiajs/inertia-vue3";
 
@@ -166,12 +166,6 @@ export default defineComponent({
         },
     },
 
-    data() {
-        return {
-            editing: false,
-        };
-    },
-
     methods: {
         eventMoved(e) {
             if (!e.moved) {
@@ -183,30 +177,16 @@ export default defineComponent({
             });
         },
 
-        edit() {
-            this.editing = true;
-            this.form.name = this.period.name;
-            this.form.type = this.period.type;
-        },
-
-        cancel() {
-            this.editing = false;
-            this.form.reset();
-        },
-
         submit() {
             if (
                 this.form.name === this.period.name &&
                 this.form.type === this.period.type
             ) {
-                this.editing = false;
-                return;
+                return this.stopEditing();
             }
 
             this.form.put(this.$route("periods.update", [this.historyId, this.period]), {
-                onSuccess: () => {
-                    this.editing = false;
-                }
+                onSuccess: this.stopEditing,
             });
         },
 
@@ -226,8 +206,21 @@ export default defineComponent({
             name: props.period.name,
             type: props.period.type,
         });
+        const editing = ref(false);
+        const resetForm = () => {
+            form.name = props.period.name;
+            form.type = props.period.type;
+        }
+        const startEditing = () => {
+            resetForm();
+            editing.value = true;
+        };
+        const stopEditing = () => {
+            resetForm();
+            editing.value = false;
+        }
 
-        return { form };
+        return { form, editing, startEditing, stopEditing };
     }
 });
 </script>

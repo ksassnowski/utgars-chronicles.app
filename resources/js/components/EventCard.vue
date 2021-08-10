@@ -15,7 +15,7 @@
                     <SettingsPanel
                         v-if="!editing"
                         @delete="remove"
-                        @edit="edit"
+                        @edit="startEditing"
                     />
                 </div>
 
@@ -62,8 +62,8 @@
                 </div>
 
 
-                <LoadingButton :loading="loading">
-                    {{ loading ? 'Hang on...' : 'Save' }}
+                <LoadingButton :loading="form.processing">
+                    Save
                 </LoadingButton>
 
                 <button type="button" class="w-full text-gray-700 mt-2" @click="cancel">Cancel</button>
@@ -85,8 +85,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import axios from 'axios';
+import { defineComponent, ref, toRefs } from "vue";
+import { useForm } from "@inertiajs/inertia-vue3";
 import draggable from 'vuedraggable';
 
 import LoadingButton from "./LoadingButton.vue";
@@ -117,11 +117,6 @@ export default defineComponent({
     data() {
         return {
             editing: false,
-            loading: false,
-            form: {
-                type: this.event.type,
-                name: this.event.name,
-            },
         };
     },
 
@@ -141,21 +136,13 @@ export default defineComponent({
                 this.form.type === this.event.type
                 && this.form.name === this.event.name
             ) {
-                this.editing = false;
-                return;
+                return this.stopEditing();
             }
 
-            this.loading = true;
-
-            axios.put(this.$route('events.update', [this.history, this.event]), this.form)
-                .then(() => {
-                    this.loading = false;
-                    this.editing = false
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    console.error(err);
-                });
+            this.form.put(
+                this.$route('events.update', [this.history, this.event]),
+                { onSuccess: this.stopEditing }
+            )
         },
 
         remove() {
@@ -167,18 +154,28 @@ export default defineComponent({
 
             this.$inertia.delete(this.$route('events.delete', [this.history, this.event]));
         },
-
-        edit() {
-            this.form.type = this.event.type;
-            this.form.name = this.event.name;
-            this.editing = true;
-        },
-
-        cancel() {
-            this.form.type = this.event.type;
-            this.form.name= this.event.name;
-            this.editing = false;
-        },
     },
+
+    setup(props) {
+        const form = useForm({
+            type: props.event.type,
+            name: props.event.name,
+        });
+        const resetForm = () => {
+            form.type = props.event.type;
+            form.name = props.event.name;
+        }
+        const editing = ref(false);
+        const startEditing = () => {
+            resetForm();
+            editing.value = true;
+        };
+        const stopEditing = () => {
+            resetForm();
+            editing.value = false;
+        }
+
+        return { form, startEditing, stopEditing, editing };
+    }
 });
 </script>
