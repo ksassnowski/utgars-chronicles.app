@@ -46,12 +46,12 @@ class History extends Model
 
     public function events(): HasMany
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(Event::class)->orderBy('position', 'ASC');
     }
 
     public function scenes(): HasMany
     {
-        return $this->hasMany(Scene::class);
+        return $this->hasMany(Scene::class)->orderBy('position', 'ASC');
     }
 
     public function foci(): HasMany
