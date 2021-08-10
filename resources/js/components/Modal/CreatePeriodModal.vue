@@ -1,6 +1,6 @@
 <template>
     <Modal title="Add Period" ref="modal">
-        <template v-slot="{ toggle }">
+        <template v-slot:button="{ toggle }">
             <div @click="toggle">
                 <slot/>
             </div>
@@ -16,44 +16,43 @@
                 <p class="label">Tone</p>
 
                 <div class="flex justify-between items-center">
-                    <div>
+                    <div class="space-x-1">
                         <input type="radio" id="light" value="light" v-model="form.type">
                         <label for="light">Light</label>
                     </div>
 
-                    <div>
+                    <div class="space-x-1">
                         <input type="radio" id="dark" value="dark" v-model="form.type">
                         <label for="dark">Dark</label>
                     </div>
                 </div>
             </div>
 
-            <button
-                type="submit"
-                class="text-white w-full rounded py-2 px-4"
-                :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
-                :disabled="loading"
-            >
-                {{ loading ? 'Hang on...' : 'Save' }}
-            </button>
+            <LoadingButton :loading="loading">Save</LoadingButton>
         </form>
     </Modal>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { defineComponent, ref, toRefs } from "vue";
+import axios from "axios";
 
 import Modal from "../Modal.vue";
+import LoadingButton from "../LoadingButton.vue";
 
 export default defineComponent({
     name: "CreatePeriodModal",
 
     components: {
+        LoadingButton,
         Modal,
     },
 
     props: {
+        history: {
+            type: Object,
+            required: true,
+        },
         position: {
             type: Number,
             required: true,
@@ -61,14 +60,29 @@ export default defineComponent({
     },
 
     setup(props) {
+        const { position } = toRefs(props);
         const modal = ref(null);
-        const form = useForm({
+        const loading = ref(false);
+        const form = ref({
             name: null,
             type: 'light',
-            position: props.position,
+            position: position,
         });
 
-        return { form, modal };
+        const submit = async () => {
+            loading.value = true;
+
+            try {
+                await axios.post(route("history.periods.store", props.history).url(), form.value);
+                modal.value.toggle();
+                form.value.name = null;
+                form.value.type = "light";
+            } finally {
+                loading.value = false;
+            }
+        };
+
+        return { form, loading, modal, submit };
     },
 });
 </script>
