@@ -11,12 +11,10 @@ final class GameController
     public function __invoke(History $history): Response
     {
         return Inertia::render('Game', [
-            'history' => fn () => $history->load([
-                'periods.events.scenes',
-                'foci',
-                'palettes',
-                'legacies'
-            ]),
+            'history' => fn () => $history->load(['periods.events.scenes']),
+            'foci' => fn () => $history->foci,
+            'palettes' => fn () => $history->palettes,
+            'legacies' => fn () => $history->legacies,
         ]);
     }
 }

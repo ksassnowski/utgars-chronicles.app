@@ -1,12 +1,19 @@
 <template>
-    <GameBoard :history="$page.props.history" />
+    <GameBoard
+        :history="$page.props.history"
+        :foci="$page.props.foci"
+        :legacies="$page.props.legacies"
+        :palettes="$page.props.palettes"
+    />
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
+
 import GameBoard from "../components/GameBoard.vue";
 import GameLayout from "./Layouts/Game.vue";
 
-export default {
+export default defineComponent({
     name: "Game",
 
     metaInfo() {
@@ -20,5 +27,5 @@ export default {
     components: {
         GameBoard
     }
-};
+});
 </script>

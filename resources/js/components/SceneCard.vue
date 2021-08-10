@@ -135,7 +135,10 @@ export default defineComponent({
                 return;
             }
 
-            this.$inertia.delete(this.$route("scenes.delete", [this.history, this.scene]));
+            this.$inertia.delete(
+                this.$route("scenes.delete", [this.history, this.scene]),
+                { only: ["history"] },
+            );
         },
 
         submit() {
@@ -149,6 +152,7 @@ export default defineComponent({
             }
 
             this.form.put(this.$route('scenes.update', [this.history, this.scene]), {
+                only: ["history"],
                 onSuccess: this.stopEditing,
             });
         }

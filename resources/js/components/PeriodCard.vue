@@ -172,9 +172,11 @@ export default defineComponent({
                 return;
             }
 
-            this.$inertia.post(this.$route("events.move", [this.historyId, e.moved.element]), {
-                position: e.moved.newIndex + 1,
-            });
+            this.$inertia.post(
+                this.$route("events.move", [this.historyId, e.moved.element]),
+                { position: e.moved.newIndex + 1 },
+                { only: ["history"] }
+            );
         },
 
         submit() {
@@ -186,6 +188,7 @@ export default defineComponent({
             }
 
             this.form.put(this.$route("periods.update", [this.historyId, this.period]), {
+                only: ["history"],
                 onSuccess: this.stopEditing,
             });
         },
@@ -196,7 +199,10 @@ export default defineComponent({
             );
 
             if (confirmed) {
-                this.$inertia.delete(this.$route("periods.delete", [this.historyId, this.period]));
+                this.$inertia.delete(
+                    this.$route("periods.delete", [this.historyId, this.period]),
+                    { only: ["history"] }
+                );
             }
         },
     },

@@ -36,18 +36,13 @@
 </template>
 
 <script>
-import { defineComponent, onBeforeUnmount } from "vue";
+import { defineComponent, onBeforeUnmount, provide } from "vue";
+import axios from "axios";
 import draggable from 'vuedraggable';
 import { Link } from "@inertiajs/inertia-vue3";
-import axios from "axios";
 
-import PlayerList from "./PlayerList.vue";
 import PeriodCard from "./PeriodCard.vue";
-import FocusTracker from "./FocusTracker.vue";
-import Palette from "./Palette.vue";
-import LegacyTracker from "./LegacyTracker.vue";
 import Modal from "./Modal.vue";
-import GamePanel from "./GamePanel.vue";
 import HistorySeed from "./HistorySeed.vue";
 import CreatePeriodModal from "./Modal/CreatePeriodModal.vue";
 import PrimaryButton from "./UI/PrimaryButton.vue";
@@ -60,33 +55,28 @@ export default defineComponent({
             type: Object,
             required: true,
         },
+        palettes: {
+            type: Array,
+            default: () => [],
+        },
+        foci: {
+            type: Array,
+            default: () => [],
+        },
+        legacies: {
+            type: Array,
+            default: () => [],
+        }
     },
 
     components: {
         PrimaryButton,
         CreatePeriodModal,
         HistorySeed,
-        GamePanel,
         Modal,
-        LegacyTracker,
         draggable,
         PeriodCard,
-        PlayerList,
-        FocusTracker,
-        Palette,
         Link,
-    },
-
-    data() {
-        return {
-            periods: this.history.periods,
-        };
-    },
-
-    provide() {
-        return {
-            history: this.history,
-        };
     },
 
     computed: {
@@ -115,9 +105,11 @@ export default defineComponent({
 
             const { element, newIndex } = e.moved;
 
-            this.$inertia.post(this.$route("periods.move", [this.history, element]), {
-                position: newIndex + 1,
-            });
+            this.$inertia.post(
+                this.$route("periods.move", [this.history, element]),
+                { position: newIndex + 1 },
+                { only: ["history"] }
+            );
         },
     },
 
@@ -143,6 +135,8 @@ export default defineComponent({
             config.headers['X-Socket-ID'] = Echo.socketId();
             return config;
         });
+
+        provide("history", props.history);
 
         return { channelName };
     }

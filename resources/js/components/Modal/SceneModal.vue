@@ -84,6 +84,7 @@ export default defineComponent({
         const history = inject("history");
         const submit = () => {
             form.post(route("events.scenes.store", [history, props.event]), {
+                only: ["history"],
                 onSuccess: () => {
                     form.reset();
                     modal.value.toggle();
