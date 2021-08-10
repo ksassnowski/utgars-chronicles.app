@@ -5,17 +5,17 @@ namespace App\Http\Controllers\History;
 use App\Period;
 use App\History;
 use App\Events\BoardUpdated;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\History\MovePeriodRequest;
 
 final class MovePeriodController
 {
-    public function __invoke(MovePeriodRequest $request, History $history, Period $period): JsonResponse
+    public function __invoke(MovePeriodRequest $request, History $history, Period $period): RedirectResponse
     {
         $period->move($request->position());
 
         broadcast(new BoardUpdated($history))->toOthers();
 
-        return response()->json([], 200);
+        return redirect()->back();
     }
 }
