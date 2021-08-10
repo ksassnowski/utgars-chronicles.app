@@ -1,5 +1,5 @@
 <template>
-    <div class="h-full flex flex-col">
+    <div class="h-full flex flex-col relative">
         <div class="flex items-center w-full px-4 mb-4">
             <div class="flex-1">
                 <Link :href="$route('home')" class="text-gray-800 font-semibold">&laquo; back</Link>
@@ -32,10 +32,14 @@
                 </template>
             </draggable>
         </div>
+
+        <div class="absolute right-0 bottom-0 mr-4 mb-8 z-20">
+            <FocusTracker :foci="foci" :history-id="history.id" />
+        </div>
     </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent, onBeforeUnmount, provide } from "vue";
 import axios from "axios";
 import draggable from 'vuedraggable';
@@ -46,6 +50,7 @@ import Modal from "./Modal.vue";
 import HistorySeed from "./HistorySeed.vue";
 import CreatePeriodModal from "./Modal/CreatePeriodModal.vue";
 import PrimaryButton from "./UI/PrimaryButton.vue";
+import FocusTracker from "./FocusTracker.vue";
 
 export default defineComponent({
     name: 'GameBoard',
@@ -70,6 +75,7 @@ export default defineComponent({
     },
 
     components: {
+        FocusTracker,
         PrimaryButton,
         CreatePeriodModal,
         HistorySeed,
@@ -90,8 +96,8 @@ export default defineComponent({
     },
 
     methods: {
-        resyncBoard() {
-            this.$inertia.reload({ only: ["history"] });
+        resyncBoard(...only: string[]) {
+            this.$inertia.reload({ only: only });
         },
 
         updateSeed({ name }) {
@@ -115,7 +121,8 @@ export default defineComponent({
 
     created() {
         Echo.join(this.channelName)
-            .listen('BoardUpdated', this.resyncBoard)
+            .listen('BoardUpdated', () => this.resyncBoard("history"))
+            .listen('FocusDefined', () => this.resyncBoard("foci"))
             .listen('HistorySeedUpdated', this.updateSeed);
     },
 
