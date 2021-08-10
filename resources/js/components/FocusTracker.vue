@@ -1,160 +1,143 @@
 <template>
-    <div>
-        <Modal v-if="showModal" :title="form.id === null ? 'Define Focus' : 'Edit Focus'" @close="close">
-            <form @submit.prevent="submit">
-                <div :class="{ error: errors.name }" class="mb-4">
-                    <label for="name" class="label">Title</label>
-                    <input type="text" class="input" id="name" v-model="form.name" ref="input" required>
-                    <small v-if="errors.name" class="text-xs text-red-500 mt-1">{{ errors.name[0] }}</small>
-                </div>
+    <SettingsPopover title="Focus Tracker" button-text="Focus">
+        <template #description>
+            The Lens declares the Focus of the game, the part of the history you’re going to explore next.
+        </template>
 
-                <button
-                    type="submit"
-                    class="text-white w-full rounded py-2 px-4"
-                    :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
-                    :disabled="loading"
+        <h4 class="text-sm font-medium text-gray-900">
+            Current Focus
+        </h4>
+
+        <FocusCard
+            v-if="currentFocus"
+            :focus="currentFocus"
+            class="bg-indigo-700 text-white mt-3"
+        />
+
+        <div v-else class="border-4 border-dashed rounded-xl border-gray-300 text-center p-6 mt-2">
+            <span class="font-semibold text-gray-400">No Focus defined yet</span>
+        </div>
+
+        <Disclosure v-slot="{ open, close }">
+            <div class="rounded-md bg-gray-100 hover:bg-gray-200 mt-2">
+                <DisclosureButton class="w-full text-sm flex justify-between items-center font-medium p-2">
+                    <div class="inline-flex items-center">
+                        <Icon name="add" class="w-4 h-4 fill-current text-gray-500 mr-2" />
+                        Define new focus
+                    </div>
+
+                    <Icon v-if="open" name="close" class="w-4 h-4 fill-current text-gray-500 mr-2" />
+                </DisclosureButton>
+
+                <DisclosurePanel
+                    as="form"
+                    class="px-2 pt-1 pb-2"
+                    @submit.prevent="submitNewFocusForm(close)"
                 >
-                    {{ loading ? 'Hang on...' : 'Save' }}
-                </button>
-            </form>
+                    <div>
+                        <label
+                            for="name"
+                            class="text-sm font-medium text-gray-600"
+                            :class="{ 'text-red-500': newFocusForm.errors.name }"
+                        >Name</label>
+                        <input
+                            v-model="newFocusForm.name"
+                            name="name"
+                            class="w-full rounded py-2 px-4 bg-white focus:ring-2 focus:ring-indigo-600"
+                            :class="{ 'ring-2 ring-red-500': newFocusForm.errors.name }"
+                            autofocus
+                        />
+                        <small v-if="newFocusForm.errors.name" class="mt-1 text-xs text-red-500">
+                            {{ newFocusForm.errors.name[0] }}
+                        </small>
+                    </div>
 
-            <form v-if="form.id !== null" @submit.prevent="deleteFocus" class="text-center mt-1">
-                <button class="text-red-700 text-sm">Delete Focus</button>
-            </form>
-        </Modal>
-
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="font-bold text-sm text-gray-700">Focus</h3>
-
-            <button class="text-indigo-700 text-sm" @click="create">Define Focus</button>
-        </div>
-
-        <div class="flex flex-col">
-            <div
-                v-if="currentFocus"
-                class="bg-indigo-700 rounded h-40 px-12 flex items-center justify-center text-white text-lg font-bold cursor-pointer text-center shadow-lg"
-                @click="edit(currentFocus)"
-            >
-                {{ currentFocus.name }}
+                    <LoadingButton :loading="newFocusForm.processing" class="mt-2">
+                        Define Focus
+                    </LoadingButton>
+                </DisclosurePanel>
             </div>
+        </Disclosure>
 
-            <div
-                v-else
-                class="flex items-center justify-center text-center h-40 px-12 border-4 border-dotted border-gray-500 text-lg font-bold text-gray-500"
-            >
-                No focus defined
-            </div>
-        </div>
-    </div>
+        <h4 class="text-sm font-medium text-gray-900 mt-12">
+            Previous Focus
+        </h4>
+
+        <FocusStack :foci="previousFoci" class="mt-3" />
+    </SettingsPopover>
 </template>
 
-<script>
-import axios from "axios";
+<script lang="ts">
+import { defineComponent } from "vue";
+import {
+    Popover,
+    PopoverButton,
+    PopoverOverlay,
+    PopoverPanel,
+    Disclosure,
+    DisclosureButton,
+    DisclosurePanel,
+} from "@headlessui/vue";
 
-import Modal from "./Modal.vue";
+import Icon from "./Icon.vue";
+import { useForm } from "@inertiajs/inertia-vue3";
 
-export default {
+import TextInput from "./UI/TextInput.vue";
+import PrimaryButton from "./UI/PrimaryButton.vue";
+import LoadingButton from "./LoadingButton.vue";
+import FocusStack from "./FocusStack.vue";
+import FocusCard from "./FocusCard.vue";
+import SettingsPopover from "./SettingsPopover.vue";
+
+export default defineComponent({
     name: 'FocusTracker',
 
-    props: ['channel', 'foci', 'historyId'],
-
     components: {
-        Modal,
+        SettingsPopover,
+        FocusCard,
+        FocusStack,
+        LoadingButton,
+        PrimaryButton,
+        TextInput,
+        Icon,
+        Popover,
+        PopoverButton,
+        PopoverOverlay,
+        PopoverPanel,
+        Disclosure,
+        DisclosureButton,
+        DisclosurePanel,
     },
+
+    props: ['foci', 'historyId'],
 
     computed: {
         currentFocus() {
-            if (this.internalFoci.length === 0) {
+            if (this.foci.length === 0) {
                 return null;
             }
 
-            return this.internalFoci.slice(-1)[0];
-        },
-    },
-
-    data() {
-        return {
-            showModal: false,
-            loading: false,
-            errors: {},
-            form: {
-                id: null,
-                name: null,
-            },
-            internalFoci: this.foci,
-        };
-    },
-
-    methods: {
-        create() {
-            this.reset();
-            this.showModal = true;
-            this.$nextTick(() => this.$refs.input.focus());
+            return this.foci[0];
         },
 
-        edit(focus) {
-            this.form = Object.assign({}, focus);
-            this.showModal = true;
-            this.$nextTick(() => this.$refs.input.focus());
-        },
-
-        submit() {
-            this.loading = true;
-
-            const promise = this.form.id === null
-                ? axios.post(this.$route('history.focus.define', this.historyId), this.form)
-                : axios.put(this.$route('focus.update', [this.historyId, this.form.id]), this.form);
-
-            promise.then(() => {
-                this.loading = false;
-                this.close();
-            })
-            .catch((err) => {
-                this.errors = err.response.data.errors;
-                this.loading = false;
-            });
-        },
-
-        deleteFocus() {
-            const confirmed = confirm('Do you really want to delete this focus?');
-
-            if (!confirmed) {
-                return;
-            }
-
-            axios.delete(this.$route('focus.delete', [this.historyId, this.form.id]))
-                .then(this.close);
-        },
-
-        reset() {
-            this.form.id = null;
-            this.form.name = null;
-        },
-
-        close() {
-            this.reset();
-            this.errors = {};
-            this.showModal = false;
+        previousFoci() {
+            return this.foci.slice(1);
         }
     },
 
-    created() {
-        Echo.join(this.channel)
-            .listen('FocusDefined', (e) => {
-                this.internalFoci.push(e);
-            })
-            .listen('FocusUpdated', ({ focus }) => {
-                const matchingFocus = this.internalFoci.find(f => f.id === focus.id);
-
-                if (!matchingFocus) {
-                    return;
-                }
-
-                Object.assign(matchingFocus, focus);
-            })
-            .listen('FocusDeleted', ({ id }) => {
-                this.internalFoci = this.internalFoci.filter(f => f.id !== id);
+    setup(props) {
+        const newFocusForm = useForm({ name: "" });
+        const submitNewFocusForm = (close) => {
+            newFocusForm.post(route("history.focus.define", [props.historyId]), {
+                only: ["foci", "errors"],
+                onSuccess: (page) => {
+                    newFocusForm.reset();
+                    close();
+                },
             });
+        }
+
+        return { newFocusForm, submitNewFocusForm };
     },
-};
+});
 </script>

@@ -21,7 +21,8 @@ module.exports = {
                 "3xl": "2040px"
             },
             width: {
-                "1/7": "14.2857143%"
+                "1/7": "14.2857143%",
+                "112": "28rem",
             },
             fontFamily: {
                 sans: ["Inter var", ...defaultTheme.fontFamily.sans]

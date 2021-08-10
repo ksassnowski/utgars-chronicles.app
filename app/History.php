@@ -56,7 +56,7 @@ class History extends Model
 
     public function foci(): HasMany
     {
-        return $this->hasMany(Focus::class);
+        return $this->hasMany(Focus::class)->latest();
     }
 
     public function palettes(): HasMany
