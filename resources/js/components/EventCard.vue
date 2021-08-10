@@ -22,7 +22,9 @@
                 <h4 class="text-center">{{ event.name }}</h4>
 
                 <div class="absolute invisible group-hover:visible flex justify-end items-center inset-x-0 bottom-0 px-2 pb-2">
-                    <button class="text-sm text-indigo-700" @click="createScene">Create Scene</button>
+                    <SceneModal :event="event">
+                        <button class="text-sm text-indigo-700">Create Scene</button>
+                    </SceneModal>
                 </div>
 
                 <p
@@ -76,7 +78,6 @@
             </template>
         </draggable>
 
-        <SceneModal v-if="showSceneModal" :event="event" @close="closeSceneModal" />
     </div>
 </template>
 
@@ -119,7 +120,6 @@ export default defineComponent({
         return {
             editing: false,
             loading: false,
-            showSceneModal: false,
             form: {
                 type: this.event.type,
                 name: this.event.name,
@@ -184,15 +184,6 @@ export default defineComponent({
             this.form.type = this.event.type;
             this.form.name= this.event.name;
             this.editing = false;
-        },
-
-        createScene() {
-            this.showSceneModal = true;
-        },
-
-        closeSceneModal() {
-            this.showSceneModal = false;
-            this.selectedScene = null;
         },
     },
 

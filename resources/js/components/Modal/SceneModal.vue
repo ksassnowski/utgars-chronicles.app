@@ -1,5 +1,11 @@
 <template>
-    <Modal @close="$emit('close')" title="Create Scene">
+    <Modal title="Create Scene" ref="modal">
+        <template v-slot:button="{ toggle }">
+            <div @click="toggle">
+                <slot />
+            </div>
+        </template>
+
         <form @submit.prevent="submit">
             <div class="mb-4">
                 <label for="question" class="label">Question</label>
@@ -10,19 +16,19 @@
                     v-model="form.question"
                     ref="question"
                 ></textarea>
-                <small class="text-red-600 text-xs mt-1" v-if="errors.question">{{ errors.question[0] }}</small>
+                <small class="text-red-600 text-xs mt-1" v-if="form.errors.question">{{ form.errors.question[0] }}</small>
             </div>
 
             <div class="mb-4">
                 <label for="scene" class="label">Scene</label>
                 <textarea id="scene" rows="4" class="input" v-model="form.scene"></textarea>
-                <small class="text-red-600 text-xs mt-1" v-if="errors.scene">{{ errors.scene[0] }}</small>
+                <small class="text-red-600 text-xs mt-1" v-if="form.errors.scene">{{ form.errors.scene[0] }}</small>
             </div>
 
             <div class="mb-4">
                 <label for="answer" class="label">Answer</label>
                 <textarea id="answer" rows="4" class="input" v-model="form.answer"></textarea>
-                <small class="text-red-600 text-xs mt-1" v-if="errors.answer">{{ errors.answer[0] }}</small>
+                <small class="text-red-600 text-xs mt-1" v-if="form.errors.answer">{{ errors.answer[0] }}</small>
             </div>
 
             <div class="mb-4">
@@ -40,74 +46,52 @@
                     </div>
                 </div>
 
-                <small class="text-red-600 text-xs mt-1" v-if="errors.type">{{ errors.type[0] }}</small>
+                <small class="text-red-600 text-xs mt-1" v-if="form.errors.type">{{ form.errors.type[0] }}</small>
             </div>
 
-            <button
-                type="submit"
-                class="text-white w-full rounded py-2 px-4"
-                :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
-                :disabled="loading"
-            >
-                {{ loading ? 'Hang on...' : 'Save' }}
-            </button>
+            <LoadingButton :loading="form.processing">Save</LoadingButton>
         </form>
     </Modal>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
+import { defineComponent, ref, inject } from "vue";
+import { useForm } from "@inertiajs/inertia-vue3";
 
 import Modal from "../Modal.vue";
+import LoadingButton from "../LoadingButton.vue";
 
-export default {
+export default defineComponent({
     name: 'SceneModal',
 
-    props: ['event'],
-
-    inject: ['history'],
+    props: {
+        event: Object,
+    },
 
     components: {
+        LoadingButton,
         Modal,
     },
 
-    computed: {
-        route() {
-            return this.$route('events.scenes.store', [this.history, this.event]);
-        },
-    },
-
-    data() {
-        return {
-            loading: false,
-            form: {
-                question: null,
-                type: null,
-                scene: null,
-                answer: null,
-            },
-            errors: {},
+    setup(props) {
+        const modal = ref(null);
+        const form = useForm({
+            question: null,
+            scene: null,
+            answer: null,
+            type: "light",
+        });
+        const history = inject("history");
+        const submit = () => {
+            form.post(route("events.scenes.store", [history, props.event]), {
+                onSuccess: () => {
+                    form.reset();
+                    modal.value.toggle();
+                }
+            });
         };
+
+        return { modal, form, submit };
     },
-
-    methods: {
-        submit() {
-            this.loading = true;
-
-            axios.post(this.route, this.form)
-                .then(() => {
-                    this.loading = false;
-                    this.$emit('close');
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    this.errors = err.response.data.errors;
-                });
-        },
-    },
-
-    mounted() {
-        this.$nextTick(() => this.$refs.question.focus());
-    }
-};
+});
 </script>
