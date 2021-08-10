@@ -21,7 +21,7 @@
                         <SettingsPanel
                             v-if="!editing"
                             @delete="remove"
-                            @edit="edit"
+                            @edit="startEditing"
                         />
                     </div>
                 </div>
@@ -53,19 +53,19 @@
                 <div class="mb-4">
                     <label for="question" class="label">Question</label>
                     <textarea id="question" rows="3" class="input" v-model="form.question" required></textarea>
-                    <small v-if="errors.question" class="text-red-600 text-xs mt-1">{{ errors.question[0] }}</small>
+                    <small v-if="form.errors.question" class="text-red-600 text-xs mt-1">{{ form.errors.question[0] }}</small>
                 </div>
 
                 <div class="mb-4">
                     <label for="scene" class="label">Scene</label>
                     <textarea id="scene" rows="3" class="input" v-model="form.scene"></textarea>
-                    <small v-if="errors.scene" class="text-red-600 text-xs mt-1">{{ errors.scene[0] }}</small>
+                    <small v-if="form.errors.scene" class="text-red-600 text-xs mt-1">{{ form.errors.scene[0] }}</small>
                 </div>
 
                 <div class="mb-4">
                     <label for="answer" class="label">Answer</label>
                     <textarea id="answer" rows="3" class="input" v-model="form.answer"></textarea>
-                    <small v-if="errors.answer" class="text-red-600 text-xs mt-1">{{ errors.answer[0] }}</small>
+                    <small v-if="form.errors.answer" class="text-red-600 text-xs mt-1">{{ form.errors.answer[0] }}</small>
                 </div>
 
                 <div class="mb-4">
@@ -83,27 +83,32 @@
                         </div>
                     </div>
 
-                    <small class="text-red-600 text-xs mt-1" v-if="errors.type">{{ errors.type[0] }}</small>
+                    <small class="text-red-600 text-xs mt-1" v-if="form.errors.type">{{ form.errors.type[0] }}</small>
                 </div>
 
-                <LoadingButton :loading="loading">
-                    {{ loading ? 'Hang on...' : 'Save' }}
-                </LoadingButton>
+                <LoadingButton :loading="form.processing">Save</LoadingButton>
 
-                <button type="button" class="w-full text-gray-700 text-sm mt-2" @click="cancel">Cancel</button>
+                <button
+                    type="button"
+                    class="w-full text-gray-700 text-sm mt-2"
+                    @click="stopEditing"
+                >
+                    Cancel
+                </button>
             </form>
         </div>
     </div>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
+import { defineComponent, ref } from "vue";
+import { useForm } from "@inertiajs/inertia-vue3";
 
 import SettingsPanel from "./SettingsPanel.vue";
 import Icon from "./Icon.vue";
 import LoadingButton from "./LoadingButton.vue";
 
-export default {
+export default defineComponent({
     name: 'SceneCard',
 
     components: {
@@ -118,16 +123,7 @@ export default {
 
     data() {
         return {
-            editing: false,
-            loading: false,
             open: true,
-            errors: {},
-            form: {
-                question: this.scene.question,
-                scene: this.scene.scene,
-                answer: this.scene.answer,
-                type: this.scene.type,
-            }
         };
     },
 
@@ -142,22 +138,6 @@ export default {
             this.$inertia.delete(this.$route("scenes.delete", [this.history, this.scene]));
         },
 
-        edit() {
-            this.editing = true;
-            this.form.question = this.scene.question;
-            this.form.scene = this.scene.scene;
-            this.form.answer = this.scene.answer;
-            this.form.type = this.scene.type;
-        },
-
-        cancel() {
-            this.editing = false;
-            this.form.question = this.scene.question;
-            this.form.scene = this.scene.scene;
-            this.form.answer = this.scene.answer;
-            this.form.type = this.scene.type;
-        },
-
         submit() {
             if (
                 this.form.question === this.scene.question
@@ -165,23 +145,44 @@ export default {
                 && this.form.answer === this.scene.answer
                 && this.form.type === this.scene.type
             ) {
-                this.editing = false;
-                return;
+                return this.stopEditing();
             }
 
-            this.loading = true;
-
-            axios.put(this.$route('scenes.update', [this.history, this.scene]), this.form)
-                .then(() => {
-                    this.editing = false;
-                    this.loading = false;
-                    this.errors = {};
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    this.errors = err.response.data.errors;
-                });
+            this.form.put(this.$route('scenes.update', [this.history, this.scene]), {
+                onSuccess: this.stopEditing,
+            });
         }
     },
-};
+
+    setup(props) {
+        const form = useForm({
+            question: props.scene.question,
+            scene: props.scene.scene,
+            answer: props.scene.answer,
+            type: props.scene.type,
+        });
+        const resetForm = () => {
+            form.question = props.scene.question;
+            form.scene = props.scene.scene;
+            form.answer = props.scene.answer;
+            form.type = props.scene.type;
+        };
+        const editing = ref(false);
+        const stopEditing = () => {
+            editing.value = false;
+            resetForm();
+        };
+        const startEditing = () => {
+            resetForm();
+            editing.value = true;
+        };
+
+        return {
+            form,
+            startEditing,
+            stopEditing,
+            editing,
+        };
+    },
+});
 </script>
