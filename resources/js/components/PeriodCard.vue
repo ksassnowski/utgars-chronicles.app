@@ -14,28 +14,6 @@
                 :class="{ 'bg-gray-700 text-white': period.type === 'dark', 'bg-white text-gray-700': period.type === 'light' }"
             >
                 <template v-if="!editing">
-                    <button
-                        title="Add period before this one"
-                        class="game-add-button left"
-                        @click="$emit('insertPeriod', period.position)"
-                    >
-                        <Icon
-                            name="add-solid"
-                            class="fill-current text-gray-500 hover:text-indigo-700 w-6"
-                        />
-                    </button>
-
-                    <button
-                        title="Add period after this one"
-                        class="game-add-button right"
-                        @click="$emit('insertPeriod', period.position + 1)"
-                    >
-                        <Icon
-                            name="add-solid"
-                            class="fill-current text-gray-500 hover:text-indigo-700 w-6"
-                        />
-                    </button>
-
                     <div
                         class="invisible group-hover:visible absolute left-0 top-0 w-full pl-3 pr-2 pt-2 flex justify-between z-20"
                     >
