@@ -60,7 +60,9 @@ class PeriodTest extends TestCase
             'position' => 1,
         ]);
 
-        $response->assertStatus(201);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertTrue($this->history->periods->contains('name', '::period-name::'));
         Event::assertDispatched(BoardUpdated::class);
     }
@@ -85,7 +87,9 @@ class PeriodTest extends TestCase
             'position' => 2,
         ]);
 
-        $response->assertStatus(201);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseHas('periods', [
             'name' => '::period-1::',
             'history_id' => $this->history->id,
