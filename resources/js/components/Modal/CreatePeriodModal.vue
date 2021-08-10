@@ -28,14 +28,14 @@
                 </div>
             </div>
 
-            <LoadingButton :loading="loading">Save</LoadingButton>
+            <LoadingButton :loading="form.processing">Save</LoadingButton>
         </form>
     </Modal>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, toRefs } from "vue";
-import axios from "axios";
+import { useForm } from "@inertiajs/inertia-vue3";
 
 import Modal from "../Modal.vue";
 import LoadingButton from "../LoadingButton.vue";
@@ -62,27 +62,22 @@ export default defineComponent({
     setup(props) {
         const { position } = toRefs(props);
         const modal = ref(null);
-        const loading = ref(false);
-        const form = ref({
+        const form = useForm({
             name: null,
             type: 'light',
             position: position,
         });
 
         const submit = async () => {
-            loading.value = true;
-
-            try {
-                await axios.post(route("history.periods.store", props.history).url(), form.value);
-                modal.value.toggle();
-                form.value.name = null;
-                form.value.type = "light";
-            } finally {
-                loading.value = false;
-            }
+            form.post(route("history.periods.store", props.history).url(), {
+                onSuccess: () => {
+                    form.reset("name", "type");
+                    modal.value.toggle();
+                },
+            });
         };
 
-        return { form, loading, modal, submit };
+        return { form, modal, submit };
     },
 });
 </script>
