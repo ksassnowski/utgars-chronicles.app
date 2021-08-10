@@ -1,5 +1,11 @@
 <template>
-    <Modal title="Create Event" @close="$emit('close')">
+    <Modal title="Create Event" ref="modal">
+        <template v-slot:button="{ toggle }">
+            <div @click="toggle">
+                <slot />
+            </div>
+        </template>
+
         <form @submit.prevent="submit">
             <div class="mb-4">
                 <label for="name" class="label">Name</label>
@@ -22,54 +28,52 @@
                 </div>
             </div>
 
-            <LoadingButton :loading="loading">
+            <LoadingButton :loading="form.processing">
                 Finish and add event
             </LoadingButton>
         </form>
     </Modal>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
+import { defineComponent, toRefs, ref, inject } from "vue";
+import { useForm } from "@inertiajs/inertia-vue3";
 
 import Modal from "../Modal.vue";
 import LoadingButton from "../LoadingButton.vue";
 
-export default {
+export default defineComponent({
     name: "CreateEventModal",
 
-    props: ['period', 'position'],
-
-    inject: ['history'],
+    props: {
+        period: Object,
+        position: Number,
+    },
 
     components: {
         LoadingButton,
         Modal,
     },
 
-    data() {
-        return {
-            loading: false,
-            form: {
-                name: null,
-                type: 'dark',
-                position: this.position,
-            },
-        };
-    },
+    setup(props) {
+        const modal = ref(null);
+        const { position } = toRefs(props);
+        const history = inject("history");
+        const form = useForm({
+            name: null,
+            type: "light",
+            position: position,
+        });
+        const submit = () => {
+            form.post(route("periods.events.store", [history, props.period]), {
+                onSuccess: () => {
+                    form.reset("name", "type");
+                    modal.value.toggle();
+                }
+            });
+        }
 
-    methods: {
-        submit() {
-            this.loading = true;
-
-            axios.post(this.$route('periods.events.store', [this.history, this.period]), this.form)
-                .then(() => this.$emit('close'))
-                .finally(() => this.loading = false);
-        },
-    },
-
-    mounted() {
-        this.$nextTick(() => this.$refs.input.focus());
-    },
-};
+        return { modal, form, submit };
+    }
+});
 </script>

@@ -1,12 +1,5 @@
 <template>
     <div class="max-h-full flex flex-col">
-        <CreateEventModal
-            v-if="showModal"
-            :period="period"
-            :position="newEventPosition"
-            title="Create Event"
-            @close="showModal = false"
-        />
 
         <div class="game-card">
             <article
@@ -50,14 +43,14 @@
                     <div
                         class="flex justify-end absolute inset-x-0 bottom-0 p-2 invisible group-hover:visible"
                     >
-                        <button
-                            class="text-indigo-700 text-sm"
-                            @click="
-                                () => openCreateEventModal(nextEventPosition)
-                            "
+                        <CreateEventModal
+                            :period="period"
+                            :position="nextEventPosition"
                         >
-                            Add Event
-                        </button>
+                            <button class="text-indigo-700 text-sm">
+                                Add Event
+                            </button>
+                        </CreateEventModal>
                     </div>
                 </template>
 
