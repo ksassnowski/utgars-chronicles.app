@@ -8,10 +8,9 @@
             <HistorySeed :history="internalHistory" />
 
             <div class="flex-1 flex justify-end">
-                <CreatePeriodModal>
+                <CreatePeriodModal :position="lastPosition + 1" :history="history">
                     <button
                         class="px-4 py-2 bg-indigo-700 rounded text-white font-bold"
-                        @click="() => create(lastPosition + 1)"
                     >Add Period</button>
                 </CreatePeriodModal>
             </div>
@@ -30,7 +29,6 @@
                         <PeriodCard
                             :period="element"
                             :history-id="history.id"
-                            @insertPeriod="create"
                         />
                     </div>
                 </template>
@@ -55,7 +53,7 @@ import LegacyTracker from "./LegacyTracker.vue";
 import Modal from "./Modal.vue";
 import GamePanel from "./GamePanel.vue";
 import HistorySeed from "./HistorySeed.vue";
-import CreatePeriodModal from "./Modal/CreatePeriodModal";
+import CreatePeriodModal from "./Modal/CreatePeriodModal.vue";
 
 export default {
     name: 'GameBoard',
@@ -139,14 +137,6 @@ export default {
                 .catch(() => {
                     this.loading = false;
                 });
-        },
-
-        create(position) {
-            this.form.position = position;
-            this.form.name = null;
-            this.form.tone = 'light';
-            this.showModal = true;
-            this.$nextTick(() => this.$refs.input.focus());
         },
 
         updateSeed({ name }) {
