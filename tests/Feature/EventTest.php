@@ -147,9 +147,11 @@ class EventTest extends TestCase
         ]);
 
         $response = $this->login()
-            ->deleteJson(route('events.delete', [$this->period->history, $event]));
+            ->delete(route('events.delete', [$this->period->history, $event]));
 
-        $response->assertStatus(204);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseMissing('events', ['id' => $event->id]);
         EventFacade::assertDispatched(BoardUpdated::class);
     }
@@ -173,7 +175,7 @@ class EventTest extends TestCase
             'history_id' => $this->period->history_id,
         ]);
 
-        $this->login()->deleteJson(route('events.delete', [$this->period->history, $event2]));
+        $this->login()->delete(route('events.delete', [$this->period->history, $event2]));
 
         $this->assertEquals(1, $event1->refresh()->position);
         $this->assertEquals(2, $event3->refresh()->position);

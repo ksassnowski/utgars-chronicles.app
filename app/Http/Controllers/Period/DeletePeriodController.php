@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Period;
 use App\Period;
 use App\History;
 use App\Events\BoardUpdated;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 final class DeletePeriodController
 {
-    public function __invoke(History $history, Period $period): JsonResponse
+    public function __invoke(History $history, Period $period): RedirectResponse
     {
         $period->delete();
 
-        broadcast(new BoardUpdated($history->fresh()));
+        broadcast(new BoardUpdated($history->fresh()))->toOthers();
 
-        return response()->json([], 204);
+        return redirect()->back();
     }
 }

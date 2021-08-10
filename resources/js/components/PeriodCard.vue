@@ -234,14 +234,7 @@ export default defineComponent({
             );
 
             if (confirmed) {
-                axios
-                    .delete(
-                        this.$route("periods.delete", [
-                            this.historyId,
-                            this.period
-                        ])
-                    )
-                    .catch(console.error);
+                this.$inertia.delete(this.$route("periods.delete", [this.historyId, this.period]));
             }
         },
     },
