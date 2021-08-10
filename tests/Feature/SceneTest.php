@@ -135,7 +135,9 @@ class SceneTest extends TestCase
 
         $response = $this->login()->deleteJson(route('scenes.delete', [$scene->history, $scene]));
 
-        $response->assertStatus(204);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseMissing('scenes', [
             'id' => $scene->id,
         ]);
