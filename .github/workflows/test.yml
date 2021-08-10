@@ -41,8 +41,14 @@ jobs:
           extensions: pdo, mysql, pdo_mysql
           coverage: none
 
-      - name: Install Dependencies
+      - name: Install PHP Dependencies
         run: composer install
+
+      - name: Install Javascript Dependencies
+        run: yarn install --non-interactive
+
+      - name: Compile Javascript
+        run: yarn production
 
       - name: Setup Application
         run: |
