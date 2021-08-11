@@ -1,7 +1,7 @@
 <template>
     <div class="relative game-card">
         <GameCard :type="event.type" label="Event">
-            <h3 class="text-center whitespace-normal">
+            <h3 class="text-center whitespace-normal text-sm">
                 {{ event.name }}
             </h3>
 
