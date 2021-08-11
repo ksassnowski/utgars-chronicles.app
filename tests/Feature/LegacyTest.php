@@ -40,7 +40,9 @@ class LegacyTest extends TestCase
                 'name' => '::legacy-name::',
             ]);
 
-        $response->assertStatus(201);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $history->refresh();
         $this->assertTrue($history->legacies->contains('name', '::legacy-name::'));
         Event::assertDispatched(
@@ -61,7 +63,9 @@ class LegacyTest extends TestCase
                 'name' => '::new-name::'
             ]);
 
-        $response->assertOk();
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $legacy->refresh();
         $this->assertEquals('::new-name::', $legacy->name);
         Event::assertDispatched(
@@ -80,7 +84,9 @@ class LegacyTest extends TestCase
         $response = $this->actingAs($history->owner)
             ->deleteJson(route('legacies.delete', [$history, $legacy]));
 
-        $response->assertStatus(204);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseMissing('legacies', [
             'id' => $legacy->id,
         ]);
