@@ -3,7 +3,7 @@
         <div class="game-card">
             <article
                 class="
-                    p-8
+                    p-5
                     rounded-lg
                     border border-gray-200
                     mb-4
@@ -18,149 +18,91 @@
                     'bg-white text-gray-700': period.type === 'light',
                 }"
             >
-                <template v-if="!editing">
-                    <div
+                <div
+                    class="
+                        invisible
+                        group-hover:visible
+                        absolute
+                        left-0
+                        top-0
+                        w-full
+                        pl-3
+                        pr-2
+                        pt-2
+                        flex
+                        justify-between
+                        z-20
+                    "
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
                         class="
-                            invisible
-                            group-hover:visible
-                            absolute
-                            left-0
-                            top-0
-                            w-full
-                            pl-3
-                            pr-2
-                            pt-2
-                            flex
-                            justify-between
-                            z-20
+                            handle
+                            w-4
+                            h-4
+                            fill-current
+                            text-gray-400
+                            cursor-move
                         "
+                        style="margin-top: 2px"
+                        viewBox="0 0 20 20"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="
-                                handle
-                                w-4
-                                h-4
-                                fill-current
-                                text-gray-400
-                                cursor-move
-                            "
-                            style="margin-top: 2px"
-                            viewBox="0 0 20 20"
-                        >
-                            <path
-                                d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"
-                            />
-                        </svg>
-
-                        <SettingsPanel
-                            v-if="!editing"
-                            @delete="remove"
-                            @edit="startEditing"
+                        <path
+                            d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"
                         />
-                    </div>
+                    </svg>
+                </div>
 
-                    <h3 class="font-bold tracking-wide text-center py-2">
-                        {{ period.name }}
-                    </h3>
+                <h3 class="font-bold tracking-wide text-center py-2">
+                    {{ period.name }}
+                </h3>
 
-                    <p
-                        class="
-                            absolute
-                            top-0
-                            text-sm
-                            font-bold
-                            leading-loose
-                            uppercase
-                            px-1
-                        "
-                        :class="{
-                            'text-gray-700': period.type === 'light',
-                            'text-white': period.type === 'dark',
-                        }"
-                        style="top: -15px; right: 20px"
+                <p
+                    class="
+                        absolute
+                        top-0
+                        text-sm
+                        font-bold
+                        leading-loose
+                        uppercase
+                        px-1
+                    "
+                    :class="{
+                        'text-gray-700': period.type === 'light',
+                        'text-white': period.type === 'dark',
+                    }"
+                    style="top: -15px; right: 20px"
+                >
+                    Period
+                </p>
+
+                <div
+                    class="
+                        flex
+                        justify-end
+                        absolute
+                        inset-x-0
+                        bottom-0
+                        p-2
+                        invisible
+                        group-hover:visible
+                    "
+                >
+                    <CreateEventModal
+                        :period="period"
+                        :position="nextEventPosition"
                     >
-                        Period
-                    </p>
-
-                    <div
-                        class="
-                            flex
-                            justify-end
-                            absolute
-                            inset-x-0
-                            bottom-0
-                            p-2
-                            invisible
-                            group-hover:visible
-                        "
-                    >
-                        <CreateEventModal
-                            :period="period"
-                            :position="nextEventPosition"
+                        <button
+                            class="text-sm"
+                            :class="{
+                                'text-indigo-700': period.type === 'light',
+                                'text-indigo-300': period.type === 'dark',
+                            }"
                         >
-                            <button
-                                class="text-sm"
-                                :class="{
-                                    'text-indigo-700': period.type === 'light',
-                                    'text-indigo-300': period.type === 'dark',
-                                }"
-                            >
-                                Add Event
-                            </button>
-                        </CreateEventModal>
-                    </div>
-                </template>
-
-                <form v-else @submit.prevent="submit">
-                    <div class="mb-4">
-                        <label for="name" class="label">Name</label>
-                        <textarea
-                            type="text"
-                            id="name"
-                            v-model="form.name"
-                            class="input"
-                        ></textarea>
-                    </div>
-
-                    <div class="mb-4">
-                        <p class="label">Tone</p>
-
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <label for="dark" class="label">Dark</label>
-                                <input
-                                    type="radio"
-                                    id="dark"
-                                    value="dark"
-                                    v-model="form.type"
-                                />
-                            </div>
-
-                            <div>
-                                <label for="light" class="label">Light</label>
-                                <input
-                                    type="radio"
-                                    id="light"
-                                    value="light"
-                                    v-model="form.type"
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    <LoadingButton :loading="form.processing">
-                        Save
-                    </LoadingButton>
-
-                    <button
-                        type="button"
-                        class="text-sm text-gray-700 mt-2 text-center w-full"
-                        @click="stopEditing"
-                    >
-                        Cancel
-                    </button>
-                </form>
+                            Add Event
+                        </button>
+                    </CreateEventModal>
+                </div>
             </article>
         </div>
 
@@ -180,12 +122,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent } from "vue";
 import draggable from "vuedraggable";
-import { useForm } from "@inertiajs/inertia-vue3";
 
 import EventCard from "./EventCard.vue";
-import SettingsPanel from "./SettingsPanel.vue";
 import Modal from "./Modal.vue";
 import CreateEventModal from "./Modal/CreateEventModal.vue";
 import LoadingButton from "./LoadingButton.vue";
@@ -204,7 +144,6 @@ export default defineComponent({
         LoadingButton,
         CreateEventModal,
         Modal,
-        SettingsPanel,
         draggable,
         EventCard,
     },
@@ -234,23 +173,6 @@ export default defineComponent({
             );
         },
 
-        submit() {
-            if (
-                this.form.name === this.period.name &&
-                this.form.type === this.period.type
-            ) {
-                return this.stopEditing();
-            }
-
-            this.form.put(
-                this.$route("periods.update", [this.historyId, this.period]),
-                {
-                    only: ["history"],
-                    onSuccess: this.stopEditing,
-                }
-            );
-        },
-
         remove() {
             const confirmed = confirm(
                 "Really delete this period? This will delete all events and scenes as well!"
@@ -266,28 +188,6 @@ export default defineComponent({
                 );
             }
         },
-    },
-
-    setup(props) {
-        const form = useForm({
-            name: props.period.name,
-            type: props.period.type,
-        });
-        const editing = ref(false);
-        const resetForm = () => {
-            form.name = props.period.name;
-            form.type = props.period.type;
-        };
-        const startEditing = () => {
-            resetForm();
-            editing.value = true;
-        };
-        const stopEditing = () => {
-            resetForm();
-            editing.value = false;
-        };
-
-        return { form, editing, startEditing, stopEditing };
     },
 });
 </script>
