@@ -153,6 +153,9 @@ export default defineComponent({
             .listen("ItemAddedToPalette", () => this.resyncBoard("palettes"))
             .listen("PaletteItemUpdated", () => this.resyncBoard("palettes"))
             .listen("PaletteItemDeleted", () => this.resyncBoard("palettes"))
+            .listen("LegacyCreated", () => this.resyncBoard("legacies"))
+            .listen("LegacyUpdated", () => this.resyncBoard("legacies"))
+            .listen("LegacyDeleted", () => this.resyncBoard("legacies"))
             .listen("HistorySeedUpdated", this.updateSeed);
     },
 
