@@ -2,17 +2,18 @@
     <Popover v-slot="{ open }">
         <PopoverButton
             class="
-                text-sm
-                bg-black bg-opacity-60
-                text-gray-200
-                font-medium
-                py-1
                 px-2
-                rounded-sm
-                hover:bg-opacity-80
+                sm:py-5 sm:bg-black sm:bg-opacity-10
+                text-gray-100
+                sm:w-full
+                text-xs
+                uppercase
+                font-medium
+                rounded-md
+                sm:hover:bg-opacity-20 sm:hover:text-white
+                transition
                 transform
-                hover:text-white hover:-translate-x-1
-                transition-all
+                sm:hover:-translate-x-0.5
             "
         >
             {{ buttonText }}
@@ -25,14 +26,23 @@
 
         <transition
             enter-active-class="transition duration-500 ease-in-out transform-gpu"
-            enter-from-class="translate-x-full"
-            enter-to-class="translate-x-0"
+            enter-from-class="translate-y-full sm:translate-y-0 sm:translate-x-full"
+            enter-to-class="translate-y-0 sm:translate-x-0"
             leave-active-class="transition duration-500 ease-in-out transform-gpu"
-            leave-from-class="translate-x-0"
-            leave-to-class="translate-x-full"
+            leave-from-class="translate-y-0 sm:translate-x-0"
+            leave-to-class="translate-y-full sm:translate-y-0 sm:translate-x-full"
         >
             <PopoverPanel
-                class="fixed inset-y-0 right-0 bg-white shadow-xl z-20 w-[90%]"
+                class="
+                    fixed
+                    inset-y-0
+                    right-0
+                    bg-white
+                    shadow-xl
+                    z-30
+                    mt-12
+                    sm:mt-0
+                "
                 :class="width"
             >
                 <PopoverButton
@@ -40,11 +50,10 @@
                         text-white
                         p-3
                         absolute
-                        right-full
-                        top-0
-                        -mr-1.5
-                        sm:mr-0
-                        mt-1
+                        right-0
+                        sm:right-full sm:top-0
+                        bottom-full
+                        sm:bottom-auto sm:mt-1
                     "
                 >
                     <XIcon class="w-7 h-7" />

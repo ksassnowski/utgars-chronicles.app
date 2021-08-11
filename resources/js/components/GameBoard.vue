@@ -1,64 +1,49 @@
 <template>
-    <div class="h-full flex flex-col relative">
-        <div class="flex items-center w-full px-4 mb-4">
-            <div class="flex-1">
-                <Link :href="$route('home')" class="text-gray-800 font-semibold"
-                    >&laquo; back</Link
+    <div class="h-full flex relative">
+        <GameSidebar
+            :history="history"
+            :legacies="legacies"
+            :foci="foci"
+            :palette="palettes"
+        />
+
+        <div class="pb-12 sm:pb-0 sm:pr-24 flex flex-col flex-grow">
+            <div class="flex items-center w-full px-4 mb-4">
+                <div class="flex-1">
+                    <CreatePeriodModal
+                        :position="nextPosition"
+                        :history="history"
+                    >
+                        <PrimaryButton class="flex items-center">
+                            <PlusIcon class="w-4 h-4 mr-1" />
+                            Add Period
+                        </PrimaryButton>
+                    </CreatePeriodModal>
+                </div>
+
+                <HistorySeed :history="history" />
+
+                <div class="flex-1 flex justify-end"></div>
+            </div>
+
+            <div class="flex-grow relative z-0">
+                <draggable
+                    :list="history.periods"
+                    @change="onPeriodMoved"
+                    handle=".handle"
+                    class="absolute inset-0 overflow-x-auto overflow-y-hidden whitespace-nowrap pl-2 pb-3"
+                    item-key="id"
                 >
+                    <template #item="{ element }">
+                        <div class="w-72 inline-block px-1.5 h-full align-top">
+                            <PeriodCard
+                                :period="element"
+                                :history-id="history.id"
+                            />
+                        </div>
+                    </template>
+                </draggable>
             </div>
-
-            <HistorySeed :history="history" />
-
-            <div class="flex-1 flex justify-end">
-                <CreatePeriodModal :position="nextPosition" :history="history">
-                    <PrimaryButton>Add Period</PrimaryButton>
-                </CreatePeriodModal>
-            </div>
-        </div>
-
-        <div class="flex-grow relative">
-            <draggable
-                :list="history.periods"
-                @change="onPeriodMoved"
-                handle=".handle"
-                class="
-                    absolute
-                    inset-0
-                    overflow-x-auto overflow-y-hidden
-                    whitespace-nowrap
-                    pb-4
-                    px-3
-                    space-x-2
-                "
-                item-key="id"
-            >
-                <template #item="{ element }">
-                    <div class="w-72 inline-block px-1 h-full align-top">
-                        <PeriodCard
-                            :period="element"
-                            :history-id="history.id"
-                        />
-                    </div>
-                </template>
-            </draggable>
-        </div>
-
-        <div
-            class="
-                absolute
-                right-0
-                bottom-0
-                mr-4
-                mb-8
-                z-20
-                space-y-1
-                flex flex-col
-                items-end
-            "
-        >
-            <FocusTracker :foci="foci" :history="history" />
-            <Palette :history="history" :palette="palettes" />
-            <LegacyTracker :history="history" :legacies="legacies" />
         </div>
     </div>
 </template>
@@ -68,6 +53,7 @@ import { defineComponent, onBeforeUnmount, provide } from "vue";
 import axios from "axios";
 import draggable from "vuedraggable";
 import { Link } from "@inertiajs/inertia-vue3";
+import { PlusIcon } from "@heroicons/vue/solid";
 
 import PeriodCard from "./PeriodCard.vue";
 import Modal from "./Modal.vue";
@@ -77,6 +63,7 @@ import PrimaryButton from "./UI/PrimaryButton.vue";
 import FocusTracker from "./FocusTracker.vue";
 import Palette from "./Palette.vue";
 import LegacyTracker from "./LegacyTracker.vue";
+import GameSidebar from "./GameSidebar.vue";
 
 export default defineComponent({
     name: "GameBoard",
@@ -101,9 +88,7 @@ export default defineComponent({
     },
 
     components: {
-        LegacyTracker,
-        Palette,
-        FocusTracker,
+        GameSidebar,
         PrimaryButton,
         CreatePeriodModal,
         HistorySeed,
@@ -111,6 +96,7 @@ export default defineComponent({
         draggable,
         PeriodCard,
         Link,
+        PlusIcon,
     },
 
     computed: {
