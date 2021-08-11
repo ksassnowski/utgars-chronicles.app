@@ -1,191 +1,108 @@
 <template>
-    <div>
-        <Modal v-if="showModal" @close="close" :title="form.id === null ? 'Add Item to Palette' : 'Edit Item'">
-            <form @submit.prevent="submit">
-                <div :class="{ error: errors.name }" class="mb-4">
-                    <label for="name" class="label">Description</label>
-                    <input type="text" class="input" id="name" ref="input" v-model="form.name" required>
-                    <small v-if="errors.name" class="text-xs text-red-500 mt-1">{{ errors.name[0] }}</small>
-                </div>
+    <SettingsPopover title="Palette" button-text="Palette" width="w-128">
+        <template #description>
+            The Palette is a list of things the players agree to reserve the
+            right to include or, conversely, outright ban. It gets everyone on
+            the same page about what belongs in the history and what doesn’t.
+        </template>
 
-                <div class="mb-4">
-                    <p class="label">Type</p>
-
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <input type="radio" id="yes" value="yes" v-model="form.type">
-                            <label for="yes">Yes</label>
-                        </div>
-
-                        <div>
-                            <input type="radio" id="no" value="no" v-model="form.type">
-                            <label for="no">No</label>
-                        </div>
-                    </div>
-                </div>
-
-                <button
-                    type="submit"
-                    class="text-white w-full rounded py-2 px-4"
-                    :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
-                    :disabled="loading"
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <h4
+                    class="
+                        text-lg
+                        font-medium
+                        text-gray-800
+                        inline-flex
+                        items-center
+                    "
                 >
-                    {{ loading ? 'Hang on...' : 'Save' }}
-                </button>
-            </form>
+                    <ThumbUpIcon class="w-5 h-5 text-green-500 mr-1" />
+                    Yes
+                </h4>
 
-            <form v-if="form.id !== null" @submit.prevent="deleteItem" class="text-center mt-1">
-                <button class="text-red-700 text-sm">Delete Item</button>
-            </form>
-        </Modal>
+                <PaletteItemForm :history="history" type="yes" class="mt-2" />
 
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="font-bold text-sm text-gray-700">Palette</h3>
-
-            <button class="text-indigo-700 text-sm" @click="create">Add Item</button>
-        </div>
-
-        <div class="flex justify-between -mx-2">
-            <div class="px-2">
-                <p class="font-bold mb-2">Yes</p>
-
-                <ul>
-                    <li
-                        v-for="item in yes"
+                <div class="mt-2 space-y-2">
+                    <PaletteItem
+                        v-for="item in items.yes"
                         :key="item.id"
-                        class="text-gray-800 text-sm mb-1 cursor-pointer"
-                        @click="edit(item)"
-                    >
-                        {{ item.name }}
-                    </li>
-                </ul>
+                        :item="item"
+                    />
+                </div>
             </div>
 
-            <div class="px-2">
-                <p class="font-bold mb-2">No</p>
+            <div>
+                <h4
+                    class="
+                        text-lg
+                        font-medium
+                        text-gray-800
+                        inline-flex
+                        items-center
+                    "
+                >
+                    <ThumbDownIcon class="w-5 h-5 text-red-400 mr-1" />
+                    No
+                </h4>
 
-                <ul>
-                    <li
-                        v-for="item in no"
+                <PaletteItemForm :history="history" type="no" class="mt-2" />
+
+                <div class="mt-2 space-y-3">
+                    <PaletteItem
+                        v-for="item in items.no"
                         :key="item.id"
-                        class="text-gray-800 text-sm mb-1 cursor-pointer"
-                        @click="edit(item)"
-                    >
-                        {{ item.name }}
-                    </li>
-                </ul>
+                        :item="item"
+                    />
+                </div>
             </div>
         </div>
-    </div>
+    </SettingsPopover>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
+import { defineComponent, computed } from "vue";
+import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/vue/solid";
 
-import Modal from "./Modal.vue";
+import SettingsPopover from "@/components/SettingsPopover.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
+import PaletteItemForm from "@/components/PaletteItemForm.vue";
+import PaletteItem from "@/components/PaletteItem.vue";
 
-export default {
-    name: 'Palette',
+export default defineComponent({
+    name: "Palette",
 
-    props: ['channel', 'palette', 'historyId'],
+    props: {
+        palette: Array,
+        history: Object,
+    },
 
     components: {
-        Modal,
+        PaletteItem,
+        PaletteItemForm,
+        LoadingButton,
+        SettingsPopover,
+        ThumbUpIcon,
+        ThumbDownIcon,
     },
 
-    computed: {
-        yes() {
-            return this.internalPalette.filter(i => i.type === 'yes');
-        },
+    setup(props) {
+        const partitionedItems = computed(() => {
+            return props.palette.reduce(
+                (result, item) => {
+                    if (item.type === "yes") {
+                        result.yes.push(item);
+                    } else {
+                        result.no.push(item);
+                    }
 
-        no() {
-            return this.internalPalette.filter(i => i.type === 'no');
-        },
+                    return result;
+                },
+                { yes: [], no: [] }
+            );
+        });
+
+        return { items: partitionedItems };
     },
-
-    data() {
-        return {
-            internalPalette: this.palette,
-            showModal: false,
-            loading: false,
-            errors: {},
-            form: {
-                id: null,
-                name: null,
-                type: 'yes',
-            },
-        };
-    },
-
-    methods: {
-        submit() {
-            this.loading = true;
-
-            const promise = this.form.id === null
-                ? axios.post(this.$route('history.palette.store', this.historyId), this.form)
-                : axios.put(this.$route('palette.update', [this.historyId, this.form.id]), this.form);
-
-            promise.then(() => {
-                this.loading = false;
-                this.close();
-            })
-            .catch((err) => {
-                this.loading = false;
-                this.errors = err.response.data.errors;
-            });
-        },
-
-        deleteItem() {
-            const confirmed = confirm('Do you really want to delete this item from the palette?');
-
-            if (!confirmed) {
-                return;
-            }
-
-            axios.delete(this.$route('palette.delete', [this.historyId, this.form.id]))
-                .then(this.close);
-        },
-
-        create() {
-            this.reset();
-            this.showModal = true;
-            this.$nextTick(() => this.$refs.input.focus());
-        },
-
-        edit(item) {
-            this.form = Object.assign({}, item);
-            this.showModal = true;
-            this.$nextTick(() => this.$refs.input.focus());
-        },
-
-        reset() {
-            this.form.id = null;
-            this.form.name = null;
-            this.form.type = 'yes';
-        },
-
-        close() {
-            this.reset();
-            this.errors = {};
-            this.showModal = false;
-        }
-    },
-
-    created() {
-        Echo.join(this.channel)
-            .listen('ItemAddedToPalette', item => this.internalPalette.push(item))
-            .listen('PaletteItemUpdated', (item) => {
-                const matchingItem = this.internalPalette.find(i => i.id === item.id);
-
-                if (!matchingItem) {
-                    return;
-                }
-
-                Object.assign(matchingItem, item);
-            })
-            .listen('PaletteItemDeleted', ({ id }) => {
-                this.internalPalette = this.internalPalette.filter(item => item.id !== id);
-            });
-    },
-};
+});
 </script>

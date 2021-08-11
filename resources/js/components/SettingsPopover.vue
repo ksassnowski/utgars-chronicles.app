@@ -18,7 +18,8 @@
             leave-to-class="translate-x-full"
         >
             <PopoverPanel
-                class="fixed inset-y-0 right-0 w-112 bg-white shadow-xl"
+                class="fixed inset-y-0 right-0 bg-white shadow-xl z-20"
+                :class="width"
             >
                 <PopoverButton class="text-white p-3 absolute right-full top-0 mr-1 mt-1">
                     <Icon name="close" class="fill-current w-5 h-5" />
@@ -76,6 +77,10 @@ export default defineComponent({
     props: {
         title: String,
         buttonText: String,
+        width: {
+            type: String,
+            default: 'w-112',
+        }
     }
 });
 </script>

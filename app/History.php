@@ -61,7 +61,7 @@ class History extends Model
 
     public function palettes(): HasMany
     {
-        return $this->hasMany(Palette::class);
+        return $this->hasMany(Palette::class)->latest();
     }
 
     public function legacies(): HasMany

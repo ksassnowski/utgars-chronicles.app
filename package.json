@@ -6,6 +6,7 @@
     },
     "devDependencies": {
         "@headlessui/vue": "^1.4.0",
+        "@heroicons/vue": "^1.0.3",
         "@inertiajs/inertia": "^0.10.0",
         "@inertiajs/inertia-vue3": "^0.5.2",
         "@inertiajs/progress": "^0.2.6",
@@ -21,6 +22,7 @@
         "laravel-echo": "^1.6.1",
         "lodash": "^4.17.19",
         "postcss": "^8.3.5",
+        "prettier": "2.2.1",
         "pusher-js": "^5.0.3",
         "resolve-url-loader": "^2.3.1",
         "tailwindcss": "^2.0.1",

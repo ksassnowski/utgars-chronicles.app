@@ -41,6 +41,11 @@
   resolved "https://registry.yarnpkg.com/@headlessui/vue/-/vue-1.4.0.tgz#a4a3f392d6e72923f101e307fcfa6c80c00ea446"
   integrity sha512-BBLDciyKiGK03whaSVkUacDY2Cd5AR05JCUPWQLvQ9HtjQc9tv5RyPpcdmoXJa+XWI10e3U1JxL+8FY7kJMcEQ==
 
+"@heroicons/vue@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@heroicons/vue/-/vue-1.0.3.tgz#8e8948972df7f42f00a09f68d26fbfd16bb18692"
+  integrity sha512-pj1foeBadGwRDT3ldEQ3t+C6p8Yw7LDoINvemJpH3j6Xdpm0iO4014OL288nueBnPKY7/xrHSJwy0dZIum1Eyw==
+
 "@inertiajs/inertia-vue3@^0.5.2":
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/@inertiajs/inertia-vue3/-/inertia-vue3-0.5.2.tgz#0853296142bd60440bdc283836ea09718eb2f799"
@@ -1335,6 +1340,11 @@ postcss@^8.1.10, postcss@^8.1.6, postcss@^8.2.1, postcss@^8.3.5, postcss@^8.3.6:
     colorette "^1.2.2"
     nanoid "^3.1.23"
     source-map-js "^0.6.2"
+
+prettier@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
+  integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
 
 pretty-hrtime@^1.0.3:
   version "1.0.3"

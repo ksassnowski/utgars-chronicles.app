@@ -23,6 +23,7 @@ module.exports = {
             width: {
                 "1/7": "14.2857143%",
                 "112": "28rem",
+                "128": "32rem",
             },
             fontFamily: {
                 sans: ["Inter var", ...defaultTheme.fontFamily.sans]
