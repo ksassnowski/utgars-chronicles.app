@@ -143,7 +143,7 @@
                                         class="
                                             w-5
                                             h-5
-                                            text-indigo-400
+                                            text-gray-400
                                             group-hover:text-indigo-200
                                             mr-2
                                         "
