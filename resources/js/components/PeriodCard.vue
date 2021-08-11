@@ -7,10 +7,7 @@
                 </h3>
 
                 <template #footer>
-                    <CreateEventModal
-                        :period="period"
-                        :position="nextEventPosition"
-                    >
+                    <EventModal :period="period" :position="nextEventPosition">
                         <button
                             class="text-sm"
                             :class="{
@@ -20,7 +17,7 @@
                         >
                             Add Event
                         </button>
-                    </CreateEventModal>
+                    </EventModal>
                 </template>
             </GameCard>
         </div>
@@ -47,23 +44,25 @@ import { MenuIcon } from "@heroicons/vue/solid";
 
 import EventCard from "./EventCard.vue";
 import Modal from "./Modal.vue";
-import CreateEventModal from "./Modal/CreateEventModal.vue";
+import EventModal from "./Modal/EventModal.vue";
 import LoadingButton from "./LoadingButton.vue";
 import GameCard from "./GameCard.vue";
+import PeriodModal from "./Modal/PeriodModal.vue";
 
 export default defineComponent({
     name: "PeriodCard",
 
     props: {
         period: Object,
-        historyId: Number,
+        history: Object,
     },
 
     components: {
+        PeriodModal,
         GameCard,
         MenuIcon,
         LoadingButton,
-        CreateEventModal,
+        EventModal,
         Modal,
         draggable,
         EventCard,
@@ -88,7 +87,7 @@ export default defineComponent({
             }
 
             this.$inertia.post(
-                this.$route("events.move", [this.historyId, e.moved.element]),
+                this.$route("events.move", [this.history, e.moved.element]),
                 { position: e.moved.newIndex + 1 },
                 { only: ["history"] }
             );
@@ -101,10 +100,7 @@ export default defineComponent({
 
             if (confirmed) {
                 this.$inertia.delete(
-                    this.$route("periods.delete", [
-                        this.historyId,
-                        this.period,
-                    ]),
+                    this.$route("periods.delete", [this.history, this.period]),
                     { only: ["history"] }
                 );
             }

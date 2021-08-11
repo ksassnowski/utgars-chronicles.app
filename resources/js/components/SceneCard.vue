@@ -55,11 +55,13 @@ import { MenuIcon, EyeIcon, EyeOffIcon } from "@heroicons/vue/solid";
 
 import LoadingButton from "./LoadingButton.vue";
 import GameCard from "./GameCard.vue";
+import SceneModal from "./Modal/SceneModal.vue";
 
 export default defineComponent({
     name: "SceneCard",
 
     components: {
+        SceneModal,
         GameCard,
         LoadingButton,
         MenuIcon,
@@ -67,7 +69,10 @@ export default defineComponent({
         EyeOffIcon,
     },
 
-    props: ["scene"],
+    props: {
+        scene: Object,
+        event: Object,
+    },
 
     inject: ["history"],
 

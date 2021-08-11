@@ -10,15 +10,12 @@
         <div class="pb-12 sm:pb-0 sm:pr-24 flex flex-col flex-grow">
             <div class="flex items-center w-full px-4 mb-4">
                 <div class="hidden sm:block flex-1">
-                    <CreatePeriodModal
-                        :position="nextPosition"
-                        :history="history"
-                    >
+                    <PeriodModal :position="nextPosition" :history="history">
                         <PrimaryButton class="flex items-center">
                             <PlusIcon class="w-4 h-4 mr-1" />
                             Add Period
                         </PrimaryButton>
-                    </CreatePeriodModal>
+                    </PeriodModal>
                 </div>
 
                 <HistorySeed :history="history" />
@@ -43,10 +40,7 @@
                 >
                     <template #item="{ element }">
                         <div class="w-72 inline-block px-1.5 h-full align-top">
-                            <PeriodCard
-                                :period="element"
-                                :history-id="history.id"
-                            />
+                            <PeriodCard :period="element" :history="history" />
                         </div>
                     </template>
                 </draggable>
@@ -65,11 +59,8 @@ import { PlusIcon } from "@heroicons/vue/solid";
 import PeriodCard from "./PeriodCard.vue";
 import Modal from "./Modal.vue";
 import HistorySeed from "./HistorySeed.vue";
-import CreatePeriodModal from "./Modal/CreatePeriodModal.vue";
+import PeriodModal from "./Modal/PeriodModal.vue";
 import PrimaryButton from "./UI/PrimaryButton.vue";
-import FocusTracker from "./FocusTracker.vue";
-import Palette from "./Palette.vue";
-import LegacyTracker from "./LegacyTracker.vue";
 import GameSidebar from "./GameSidebar.vue";
 
 export default defineComponent({
@@ -97,7 +88,7 @@ export default defineComponent({
     components: {
         GameSidebar,
         PrimaryButton,
-        CreatePeriodModal,
+        PeriodModal,
         HistorySeed,
         Modal,
         draggable,
