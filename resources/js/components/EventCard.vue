@@ -27,7 +27,7 @@
             item-key="id"
         >
             <template #item="{ element }">
-                <SceneCard :scene="element" />
+                <SceneCard :scene="element" :event="event" />
             </template>
         </draggable>
     </div>
@@ -42,6 +42,7 @@ import LoadingButton from "./LoadingButton.vue";
 import SceneCard from "./SceneCard.vue";
 import SceneModal from "./Modal/SceneModal.vue";
 import GameCard from "./GameCard.vue";
+import EventModal from "./Modal/EventModal.vue";
 
 export default defineComponent({
     name: "EventCard",
@@ -54,6 +55,7 @@ export default defineComponent({
     inject: ["history"],
 
     components: {
+        EventModal,
         GameCard,
         SceneModal,
         draggable,
