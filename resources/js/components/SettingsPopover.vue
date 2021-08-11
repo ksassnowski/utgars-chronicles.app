@@ -3,14 +3,14 @@
         <PopoverButton
             class="
                 px-2
-                sm:py-5 sm:bg-black sm:bg-opacity-10
+                sm:py-3 sm:bg-black sm:bg-opacity-20
                 text-gray-100
                 sm:w-full
                 text-xs
                 uppercase
                 font-medium
                 rounded-md
-                sm:hover:bg-opacity-20 sm:hover:text-white
+                sm:hover:bg-opacity-30 sm:hover:text-white
                 transition
                 transform
                 sm:hover:-translate-x-0.5
