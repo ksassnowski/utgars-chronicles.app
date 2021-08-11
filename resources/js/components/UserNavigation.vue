@@ -1,13 +1,20 @@
 <template>
     <div class="w-full items-center flex-grow sm:flex sm:w-auto">
         <div class="flex items-center flex-grow space-x-4">
-            <NavigationLink :href="$route('home')" :is-active="active('home')"
-                >Dashboard</NavigationLink
+            <NavigationLink
+                :href="$route('home')"
+                :is-active="
+                    $page.component === 'Home' ||
+                    $page.url.startsWith('/histories') ||
+                    $page.url.startsWith('/games')
+                "
             >
+                Dashboard
+            </NavigationLink>
 
             <NavigationLink
                 :href="$route('lfg.index')"
-                :is-active="active('lfg.*')"
+                :is-active="$page.url.startsWith('/lfg')"
                 >Find a game</NavigationLink
             >
         </div>
