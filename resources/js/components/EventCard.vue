@@ -22,8 +22,7 @@
         >
             <div
                 class="
-                    invisible
-                    group-hover:visible
+                    sm:invisible sm:group-hover:visible
                     absolute
                     left-0
                     top-0
@@ -36,34 +35,17 @@
                     z-20
                 "
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="
-                        handle
-                        w-4
-                        h-4
-                        fill-current
-                        text-gray-400
-                        cursor-move
-                        mt-[2px]
-                    "
-                    viewBox="0 0 20 20"
-                >
-                    <path
-                        d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"
-                    />
-                </svg>
+                <MenuIcon class="handle w-5 h-5 text-gray-400 cursor-move" />
             </div>
 
-            <h4 class="text-center whitespace-normal py-2">
+            <h4 class="text-center whitespace-normal py-3 sm:py-2">
                 {{ event.name }}
             </h4>
 
             <div
                 class="
                     absolute
-                    invisible
-                    group-hover:visible
+                    sm:invisible sm:group-hover:visible
                     flex
                     justify-end
                     items-center
@@ -122,11 +104,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import draggable from "vuedraggable";
+import { MenuIcon } from "@heroicons/vue/solid";
 
 import LoadingButton from "./LoadingButton.vue";
 import SceneCard from "./SceneCard.vue";
 import SceneModal from "./Modal/SceneModal.vue";
-import Icon from "./Icon.vue";
 
 export default defineComponent({
     name: "EventCard",
@@ -139,11 +121,11 @@ export default defineComponent({
     inject: ["history"],
 
     components: {
-        Icon,
         SceneModal,
         draggable,
         SceneCard,
         LoadingButton,
+        MenuIcon,
     },
 
     methods: {
