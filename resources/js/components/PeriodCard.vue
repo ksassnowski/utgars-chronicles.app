@@ -1,79 +1,12 @@
 <template>
     <div class="max-h-full flex flex-col">
         <div class="game-card">
-            <article
-                class="
-                    p-5
-                    rounded-lg
-                    border border-gray-200
-                    mb-4
-                    shadow-sm
-                    relative
-                    panzoom-exclude
-                    group
-                    whitespace-normal
-                "
-                :class="{
-                    'bg-gradient-to-br from-gray-600 to-gray-700 text-white':
-                        period.type === 'dark',
-                    'bg-gradient-to-br from-white to-gray-100 text-gray-700':
-                        period.type === 'light',
-                }"
-            >
-                <div
-                    class="
-                        sm:invisible sm:group-hover:visible
-                        absolute
-                        left-0
-                        top-0
-                        w-full
-                        pl-3
-                        pr-2
-                        pt-2
-                        flex
-                        justifybetween
-                        z-20
-                    "
-                >
-                    <MenuIcon
-                        class="handle w-5 h-5 text-gray-400 cursor-move"
-                    />
-                </div>
-
-                <h3 class="font-bold tracking-wide text-center py-3 sm:py-2">
+            <GameCard :type="period.type" label="Period">
+                <h3 class="font-bold tracking-wide text-center">
                     {{ period.name }}
                 </h3>
 
-                <p
-                    class="
-                        absolute
-                        top-0
-                        text-sm
-                        font-bold
-                        leading-loose
-                        uppercase
-                        px-1
-                    "
-                    :class="{
-                        'text-gray-700': period.type === 'light',
-                        'text-white': period.type === 'dark',
-                    }"
-                    style="top: -15px; right: 20px"
-                >
-                    Period
-                </p>
-
-                <div
-                    class="
-                        flex
-                        justify-end
-                        absolute
-                        inset-x-0
-                        bottom-0
-                        p-2
-                        sm:invisible sm:group-hover:visible
-                    "
-                >
+                <template #footer>
                     <CreateEventModal
                         :period="period"
                         :position="nextEventPosition"
@@ -88,8 +21,8 @@
                             Add Event
                         </button>
                     </CreateEventModal>
-                </div>
-            </article>
+                </template>
+            </GameCard>
         </div>
 
         <draggable
@@ -116,6 +49,7 @@ import EventCard from "./EventCard.vue";
 import Modal from "./Modal.vue";
 import CreateEventModal from "./Modal/CreateEventModal.vue";
 import LoadingButton from "./LoadingButton.vue";
+import GameCard from "./GameCard.vue";
 
 export default defineComponent({
     name: "PeriodCard",
@@ -126,6 +60,7 @@ export default defineComponent({
     },
 
     components: {
+        GameCard,
         MenuIcon,
         LoadingButton,
         CreateEventModal,
