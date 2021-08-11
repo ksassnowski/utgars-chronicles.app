@@ -60,20 +60,18 @@
 <script>
 import Layout from "../Layouts/Layout.vue";
 import LoadingButton from "../../components/LoadingButton.vue";
-import Icon from "../../components/Icon.vue";
 
 export default {
     name: "Profile",
 
     metaInfo() {
         return {
-            title: "Profile – Utgar's Chronicles"
+            title: "Profile – Utgar's Chronicles",
         };
     },
 
     components: {
-        Icon,
-        LoadingButton
+        LoadingButton,
     },
 
     layout: Layout,
@@ -84,9 +82,9 @@ export default {
                 loading: false,
                 form: {
                     password: null,
-                    password_confirmation: null
-                }
-            }
+                    password_confirmation: null,
+                },
+            },
         };
     },
 
@@ -99,13 +97,13 @@ export default {
                 .then(() => {
                     this.password.form = {
                         password: null,
-                        password_confirmation: null
+                        password_confirmation: null,
                     };
                 })
                 .finally(() => {
                     this.password.loading = false;
                 });
-        }
-    }
+        },
+    },
 };
 </script>
