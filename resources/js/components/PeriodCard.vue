@@ -1,18 +1,50 @@
 <template>
     <div class="max-h-full flex flex-col">
-
         <div class="game-card">
             <article
-                class="p-8 rounded-lg border border-gray-200 mb-6 shadow-sm relative panzoom-exclude group"
-                :class="{ 'bg-gray-700 text-white': period.type === 'dark', 'bg-white text-gray-700': period.type === 'light' }"
+                class="
+                    p-8
+                    rounded-lg
+                    border border-gray-200
+                    mb-4
+                    shadow-sm
+                    relative
+                    panzoom-exclude
+                    group
+                    whitespace-normal
+                "
+                :class="{
+                    'bg-gray-700 text-white': period.type === 'dark',
+                    'bg-white text-gray-700': period.type === 'light',
+                }"
             >
                 <template v-if="!editing">
                     <div
-                        class="invisible group-hover:visible absolute left-0 top-0 w-full pl-3 pr-2 pt-2 flex justify-between z-20"
+                        class="
+                            invisible
+                            group-hover:visible
+                            absolute
+                            left-0
+                            top-0
+                            w-full
+                            pl-3
+                            pr-2
+                            pt-2
+                            flex
+                            justify-between
+                            z-20
+                        "
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            class="handle w-4 h-4 fill-current text-gray-400 cursor-move"
+                            class="
+                                handle
+                                w-4
+                                h-4
+                                fill-current
+                                text-gray-400
+                                cursor-move
+                            "
                             style="margin-top: 2px"
                             viewBox="0 0 20 20"
                         >
@@ -33,15 +65,35 @@
                     </h3>
 
                     <p
-                        class="absolute top-0 text-sm font-bold leading-loose uppercase px-1"
-                        :class="{ 'text-gray-700': period.type === 'light', 'text-white': period.type === 'dark' }"
-                        style="top: -15px; right: 20px;"
+                        class="
+                            absolute
+                            top-0
+                            text-sm
+                            font-bold
+                            leading-loose
+                            uppercase
+                            px-1
+                        "
+                        :class="{
+                            'text-gray-700': period.type === 'light',
+                            'text-white': period.type === 'dark',
+                        }"
+                        style="top: -15px; right: 20px"
                     >
                         Period
                     </p>
 
                     <div
-                        class="flex justify-end absolute inset-x-0 bottom-0 p-2 invisible group-hover:visible"
+                        class="
+                            flex
+                            justify-end
+                            absolute
+                            inset-x-0
+                            bottom-0
+                            p-2
+                            invisible
+                            group-hover:visible
+                        "
                     >
                         <CreateEventModal
                             :period="period"
@@ -49,7 +101,10 @@
                         >
                             <button
                                 class="text-sm"
-                                :class="{ 'text-indigo-700': period.type === 'light', 'text-indigo-300': period.type === 'dark' }"
+                                :class="{
+                                    'text-indigo-700': period.type === 'light',
+                                    'text-indigo-300': period.type === 'dark',
+                                }"
                             >
                                 Add Event
                             </button>
@@ -112,12 +167,12 @@
         <draggable
             :list="period.events"
             @change="eventMoved"
-            class="overflow-x-hidden overflow-y-auto space-y-8"
+            class="overflow-x-hidden overflow-y-auto space-y-4"
             style="flex: 1 1 auto"
             handle=".handle"
             item-key="id"
         >
-            <template #item="{element}">
+            <template #item="{ element }">
                 <EventCard :event="element" :period="period" />
             </template>
         </draggable>
@@ -151,7 +206,7 @@ export default defineComponent({
         Modal,
         SettingsPanel,
         draggable,
-        EventCard
+        EventCard,
     },
 
     computed: {
@@ -187,10 +242,13 @@ export default defineComponent({
                 return this.stopEditing();
             }
 
-            this.form.put(this.$route("periods.update", [this.historyId, this.period]), {
-                only: ["history"],
-                onSuccess: this.stopEditing,
-            });
+            this.form.put(
+                this.$route("periods.update", [this.historyId, this.period]),
+                {
+                    only: ["history"],
+                    onSuccess: this.stopEditing,
+                }
+            );
         },
 
         remove() {
@@ -200,7 +258,10 @@ export default defineComponent({
 
             if (confirmed) {
                 this.$inertia.delete(
-                    this.$route("periods.delete", [this.historyId, this.period]),
+                    this.$route("periods.delete", [
+                        this.historyId,
+                        this.period,
+                    ]),
                     { only: ["history"] }
                 );
             }
@@ -216,7 +277,7 @@ export default defineComponent({
         const resetForm = () => {
             form.name = props.period.name;
             form.type = props.period.type;
-        }
+        };
         const startEditing = () => {
             resetForm();
             editing.value = true;
@@ -224,9 +285,9 @@ export default defineComponent({
         const stopEditing = () => {
             resetForm();
             editing.value = false;
-        }
+        };
 
         return { form, editing, startEditing, stopEditing };
-    }
+    },
 });
 </script>
