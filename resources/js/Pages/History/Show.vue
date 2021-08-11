@@ -1,10 +1,24 @@
 <template>
     <div class="container mx-auto px-4 pt-8">
         <div
-            class="rounded shadow-lg py-6 border border-gray-300 lg:w-3/5 mx-auto"
+            class="
+                rounded
+                shadow-lg
+                py-6
+                border border-gray-300
+                lg:w-3/5
+                mx-auto
+            "
         >
             <h1
-                class="font-bold text-4xl text-gray-800 px-6 mb-6 sm:mb-4 leading-tight"
+                class="
+                    font-bold
+                    text-4xl text-gray-800
+                    px-6
+                    mb-6
+                    sm:mb-4
+                    leading-tight
+                "
             >
                 {{ history.name }}
             </h1>
@@ -17,7 +31,15 @@
 
                     <div class="w-2/3">
                         <Link
-                            class="bg-indigo-700 inline-block text-white text-lg font-bold px-8 py-3 rounded"
+                            class="
+                                bg-indigo-700
+                                inline-block
+                                text-white text-lg
+                                font-bold
+                                px-8
+                                py-3
+                                rounded
+                            "
                             :href="$route('history.play', history)"
                         >
                             Join Game
@@ -51,7 +73,13 @@
                                 {{ player.name }}
                                 <button
                                     @click="onClickKickPlayer(player)"
-                                    class="invisible group-hover:visible inline text-sm text-red-600 ml-2"
+                                    class="
+                                        invisible
+                                        group-hover:visible
+                                        inline
+                                        text-sm text-red-600
+                                        ml-2
+                                    "
                                 >
                                     {{
                                         confirmKickPlayer
@@ -68,22 +96,13 @@
             <section class="py-6 border-b border-gray-200">
                 <div class="px-6 flex">
                     <div class="w-1/3 pr-4">
-                        <h2 class="text-base text-gray-700">
-                            Invite Players
-                        </h2>
+                        <h2 class="text-base text-gray-700">Invite Players</h2>
                     </div>
 
                     <div class="w-2/3">
-                        <Badge
-                            :type="history.public ? 'success' : 'warning'"
-                            :icon="history.public ? 'lock-open' : 'lock-closed'"
-                            class="mb-2"
-                            >{{
-                                history.public ? "Public game" : "Private game"
-                            }}</Badge
-                        >
+                        <GameVisibilityBadge :public="history.public" />
 
-                        <div class="mb-4">
+                        <div class="mb-4 mt-2">
                             <label for="link" class="label">Invite Link</label>
                             <input
                                 type="text"
@@ -115,7 +134,15 @@
                         <div class="mb-4">
                             <a
                                 :href="$route('history.export', history)"
-                                class="bg-indigo-700 inline-block text-white font-bold px-8 py-3 rounded"
+                                class="
+                                    bg-indigo-700
+                                    inline-block
+                                    text-white
+                                    font-bold
+                                    px-8
+                                    py-3
+                                    rounded
+                                "
                             >
                                 Export as CSV
                             </a>
@@ -133,7 +160,15 @@
                     <div class="w-2/3">
                         <div class="mb-6">
                             <button
-                                class="px-8 py-3 bg-indigo-700 rounded text-white font-bold inline-block"
+                                class="
+                                    px-8
+                                    py-3
+                                    bg-indigo-700
+                                    rounded
+                                    text-white
+                                    font-bold
+                                    inline-block
+                                "
                                 @click="onClickChangeVisibility"
                             >
                                 {{
@@ -162,7 +197,14 @@
                         </div>
 
                         <button
-                            class="px-8 py-3 bg-red-700 rounded text-white font-bold"
+                            class="
+                                px-8
+                                py-3
+                                bg-red-700
+                                rounded
+                                text-white
+                                font-bold
+                            "
                             @click="onClickDeleteHistory"
                         >
                             {{
@@ -178,20 +220,21 @@
     </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import { Link } from "@inertiajs/inertia-vue3";
 
 import { useConfirmAction } from "@/composables/useConfirmAction";
 import Layout from "../Layouts/Layout.vue";
-import Badge from "../../components/Badge.vue";
+import GameVisibilityBadge from "../../components/GameVisibilityBadge.vue";
 
-export default {
+export default defineComponent({
     name: "Show",
 
     metaInfo() {
         return {
-            title: `${this.$page.props.history.name} – Utgar\'s Chronicles`
+            title: `${this.$page.props.history.name} – Utgar\'s Chronicles`,
         };
     },
 
@@ -200,7 +243,7 @@ export default {
     layout: Layout,
 
     components: {
-        Badge,
+        GameVisibilityBadge,
         Link,
     },
 
@@ -209,31 +252,34 @@ export default {
             return this.history.public
                 ? "Make game private"
                 : "Make game public";
-        }
+        },
     },
 
     setup(props) {
         const {
             needsConfirmation: confirmChangeVisibility,
-            onClick : onClickChangeVisibility
+            onClick: onClickChangeVisibility,
         } = useConfirmAction(() => {
-            Inertia.patch(
-                route("history.visibility", props.history),
-                { public: !props.history.public }
-            );
+            Inertia.patch(route("history.visibility", props.history), {
+                public: !props.history.public,
+            });
         });
 
         const {
             needsConfirmation: confirmKickPlayer,
             onClick: onClickKickPlayer,
-        } = useConfirmAction((player) => Inertia.delete(
-            route("history.players.kick", [props.history, player])
-        ));
+        } = useConfirmAction((player) =>
+            Inertia.delete(
+                route("history.players.kick", [props.history, player])
+            )
+        );
 
         const {
             needsConfirmation: confirmDeleteHistory,
-            onClick: onClickDeleteHistory
-        } = useConfirmAction(() => Inertia.delete(route("history.delete", props.history)));
+            onClick: onClickDeleteHistory,
+        } = useConfirmAction(() =>
+            Inertia.delete(route("history.delete", props.history))
+        );
 
         return {
             confirmChangeVisibility,
@@ -242,7 +288,7 @@ export default {
             onClickKickPlayer,
             confirmDeleteHistory,
             onClickDeleteHistory,
-        }
+        };
     },
-};
+});
 </script>
