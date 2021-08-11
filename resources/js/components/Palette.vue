@@ -1,5 +1,5 @@
 <template>
-    <SettingsPopover title="Palette" button-text="Palette" width="w-128">
+    <SettingsPopover title="Palette" button-text="Palette" width="sm:w-128">
         <template #description>
             The Palette is a list of things the players agree to reserve the
             right to include or, conversely, outright ban. It gets everyone on

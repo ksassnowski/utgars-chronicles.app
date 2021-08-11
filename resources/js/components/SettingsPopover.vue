@@ -1,6 +1,20 @@
 <template>
     <Popover v-slot="{ open }">
-        <PopoverButton class="text-sm bg-black bg-opacity-60 text-gray-200 font-medium py-1 px-2 rounded-sm hover:bg-opacity-80 transform hover:text-white hover:-translate-x-1 transition-all">
+        <PopoverButton
+            class="
+                text-sm
+                bg-black bg-opacity-60
+                text-gray-200
+                font-medium
+                py-1
+                px-2
+                rounded-sm
+                hover:bg-opacity-80
+                transform
+                hover:text-white hover:-translate-x-1
+                transition-all
+            "
+        >
             {{ buttonText }}
         </PopoverButton>
 
@@ -18,16 +32,26 @@
             leave-to-class="translate-x-full"
         >
             <PopoverPanel
-                class="fixed inset-y-0 right-0 bg-white shadow-xl z-20"
+                class="fixed inset-y-0 right-0 bg-white shadow-xl z-20 w-[95%]"
                 :class="width"
             >
-                <PopoverButton class="text-white p-3 absolute right-full top-0 mr-1 mt-1">
+                <PopoverButton
+                    class="text-white p-3 absolute right-full top-0 mr-1 mt-1"
+                >
                     <Icon name="close" class="fill-current w-5 h-5" />
                 </PopoverButton>
 
                 <div class="h-full">
                     <div class="max-h-full flex flex-col">
-                        <header class="bg-gradient-to-r from-indigo-600 to-indigo-800 py-6 px-6">
+                        <header
+                            class="
+                                bg-gradient-to-r
+                                from-indigo-600
+                                to-indigo-800
+                                py-6
+                                px-6
+                            "
+                        >
                             <h3 class="font-medium text-lg text-white">
                                 {{ title }}
                             </h3>
@@ -56,7 +80,7 @@ import {
     Popover,
     PopoverButton,
     PopoverOverlay,
-    PopoverPanel
+    PopoverPanel,
 } from "@headlessui/vue";
 import Icon from "./Icon.vue";
 
@@ -79,8 +103,8 @@ export default defineComponent({
         buttonText: String,
         width: {
             type: String,
-            default: 'w-112',
-        }
-    }
+            default: "sm:w-112",
+        },
+    },
 });
 </script>
