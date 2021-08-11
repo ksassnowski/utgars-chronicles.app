@@ -19,10 +19,10 @@
                     hover:text-white
                 "
                 method="DELETE"
-                :href="$route('focus.delete', [focus.history_id, focus])"
-                :only="['foci']"
+                :href="deleteRoute"
+                :only="reloadProps"
             >
-                <Icon name="close" class="w-3 h-3 fill-current" />
+                <TrashIcon class="w-4 h-4" />
             </Link>
 
             <button
@@ -38,20 +38,17 @@
                 "
                 @click="startEditing"
             >
-                <Icon name="pencil" class="w-3 h-3 fill-current" />
+                <PencilIcon class="w-4 h-4" />
             </button>
         </div>
 
         <span v-if="!editing" class="p-6 block">
-            {{ focus.name }}
+            {{ item.name }}
         </span>
 
         <template v-else>
-            <button @click="stopEditing" class="absolute -top-6 right-2">
-                <Icon
-                    name="close"
-                    class="w-4 h-4 fill-current text-gray-400"
-                ></Icon>
+            <button @click="stopEditing" class="absolute -top-7 right-2">
+                <XIcon class="w-5 h-5 text-gray-400"></XIcon>
             </button>
 
             <form @submit.prevent="submit()">
@@ -102,29 +99,34 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
+import { TrashIcon, PencilIcon, XIcon } from "@heroicons/vue/solid";
 
 import { useEditMode } from "../composables/useEditMode";
-import Icon from "./Icon.vue";
 
 export default defineComponent({
-    name: "FocusCard",
+    name: "EditableCard",
 
     components: {
-        Icon,
         Link,
+        TrashIcon,
+        PencilIcon,
+        XIcon,
     },
 
     props: {
-        focus: Object,
+        item: Object,
+        updateRoute: String,
+        deleteRoute: String,
+        reloadProps: Array,
         buttonClasses: String,
     },
 
     setup(props) {
-        const form = useForm({ name: props.focus.name });
+        const form = useForm({ name: props.item.name });
         const { editing, startEditing, stopEditing, submit } = useEditMode(
             form,
-            route("focus.update", [props.focus.history_id, props.focus]),
-            ["errors", "foci"],
+            props.updateRoute,
+            props.reloadProps,
             "put"
         );
 

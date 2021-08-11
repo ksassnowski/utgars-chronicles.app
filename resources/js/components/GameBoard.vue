@@ -56,8 +56,9 @@
                 items-end
             "
         >
-            <FocusTracker :foci="foci" :history-id="history.id" />
+            <FocusTracker :foci="foci" :history="history" />
             <Palette :history="history" :palette="palettes" />
+            <LegacyTracker :history="history" :legacies="legacies" />
         </div>
     </div>
 </template>
@@ -75,6 +76,7 @@ import CreatePeriodModal from "./Modal/CreatePeriodModal.vue";
 import PrimaryButton from "./UI/PrimaryButton.vue";
 import FocusTracker from "./FocusTracker.vue";
 import Palette from "./Palette.vue";
+import LegacyTracker from "./LegacyTracker.vue";
 
 export default defineComponent({
     name: "GameBoard",
@@ -99,6 +101,7 @@ export default defineComponent({
     },
 
     components: {
+        LegacyTracker,
         Palette,
         FocusTracker,
         PrimaryButton,

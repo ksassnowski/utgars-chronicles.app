@@ -1,135 +1,64 @@
 <template>
-    <div>
-        <Modal v-if="showModal" @close="close" :title="form.id === null ? 'Add Legacy' : 'Edit Legacy'">
-            <form @submit.prevent="submit">
-                <div :class="{ error: errors.name }" class="mb-4">
-                    <label for="name" class="label">Name</label>
-                    <input type="text" class="input" id="name" ref="input" v-model="form.name" required>
-                    <small v-if="errors.name" class="text-xs text-red-500 mt-1">{{ errors.name[0] }}</small>
-                </div>
+    <SettingsPopover title="Legacies" button-text="Legacies">
+        <template #description>
+            Legacies are common threads that may stretch through time and
+            influence history. A Legacy can take many forms–an object, a person,
+            a place, a blood line, an organization, or even a philosophical
+            ideal.
+        </template>
 
-                <button
-                    type="submit"
-                    class="text-white w-full rounded py-2 px-4"
-                    :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
-                    :disabled="loading"
-                >
-                    {{ loading ? 'Hang on...' : 'Save' }}
-                </button>
-            </form>
+        <LegacyForm :history="history" />
 
-            <form v-if="form.id !== null" @submit.prevent="deleteLegacy" class="text-center mt-1">
-                <button class="text-red-700 text-sm">Delete Legacy</button>
-            </form>
-        </Modal>
-
-        <div class="flex items-center justify-between mb-4">
-            <h3 class="font-bold text-sm text-gray-700">Legacies</h3>
-
-            <button class="text-indigo-700 text-sm" @click="create">Add Legacy</button>
+        <div
+            v-if="legacies.length === 0"
+            class="
+                border-4 border-dashed border-gray-300
+                rounded-xl
+                px-6
+                py-12
+                text-center
+                mt-2
+            "
+        >
+            <span class="font-semibold text-gray-400"
+                >No legacies defined yet</span
+            >
         </div>
 
-        <div v-for="legacy in internalLegacies" :key="legacy.id" class="mb-2 text-sm px-2 py-2 bg-white cursor-pointer shadow rounded" @click="edit(legacy)">
-            {{ legacy.name }}
+        <div v-else class="mt-2 space-y-2">
+            <EditableCard
+                v-for="legacy in legacies"
+                :key="legacy.id"
+                :item="legacy"
+                :update-route="$route('legacies.update', [history, legacy])"
+                :delete-route="$route('legacies.delete', [history, legacy])"
+                :reload-props="['errors', 'legacies']"
+                class="bg-white text-gray-800 border border-gray-200"
+                button-classes="bg-gray-200 hover:bg-gray-300 text-gray-700 hover:text-gray-900"
+            />
         </div>
-    </div>
+    </SettingsPopover>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
+import { defineComponent } from "vue";
 
-import Modal from "./Modal.vue";
+import SettingsPopover from "@/components/SettingsPopover.vue";
+import LegacyForm from "@/components/LegacyForm.vue";
+import EditableCard from "./EditableCard.vue";
 
-export default {
-    name: 'LegacyTracker',
+export default defineComponent({
+    name: "LegacyTracker",
 
-    props: ['legacies', 'channel', 'history-id'],
+    props: {
+        legacies: Array,
+        history: Object,
+    },
 
     components: {
-        Modal,
+        EditableCard,
+        LegacyForm,
+        SettingsPopover,
     },
-
-    data() {
-        return {
-            loading: false,
-            showModal: false,
-            internalLegacies: this.legacies,
-            errors: {},
-            form: {
-                id: null,
-                name: null,
-            },
-        };
-    },
-
-    methods: {
-        submit() {
-            this.loading = true;
-
-            const promise = this.form.id === null
-                ? axios.post(this.$route('history.legacies.store', this.historyId), this.form)
-                : axios.put(this.$route('legacies.update', [this.historyId, this.form.id]), this.form);
-
-            promise.then(() => {
-                this.loading = false;
-                this.close();
-            })
-            .catch((err) => {
-                this.loading = false;
-                this.errors = err.response.data.errors;
-            });
-        },
-
-        reset() {
-            this.form.id = null;
-            this.form.name = null;
-        },
-
-        create() {
-            this.reset();
-            this.showModal = true;
-            this.$nextTick(() => this.$refs.input.focus());
-        },
-
-        edit(legacy) {
-            this.form = Object.assign({}, legacy);
-            this.showModal = true;
-            this.$nextTick(() => this.$refs.input.focus());
-        },
-
-        deleteLegacy() {
-            const confirmed = confirm('Do you really want to delete this legacy?');
-
-            if (!confirmed) {
-                return;
-            }
-
-            axios.delete(this.$route('legacies.delete', [this.historyId, this.form.id]))
-                .then(() => this.showModal = false);
-        },
-
-        close() {
-            this.reset();
-            this.errors = {};
-            this.showModal = false;
-        }
-    },
-
-    created() {
-        Echo.join(this.channel)
-            .listen('LegacyCreated', legacy => this.internalLegacies.push(legacy))
-            .listen('LegacyUpdated', (legacy) => {
-                const matchingLegacy = this.internalLegacies.find(l => l.id === legacy.id);
-
-                if (!matchingLegacy) {
-                    return;
-                }
-
-                Object.assign(matchingLegacy, legacy);
-            })
-            .listen('LegacyDeleted', ({ id }) => {
-                this.internalLegacies = this.internalLegacies.filter(l => l.id !== id);
-            });
-    },
-};
+});
 </script>

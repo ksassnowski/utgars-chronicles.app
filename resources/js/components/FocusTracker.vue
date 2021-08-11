@@ -7,9 +7,12 @@
 
         <h4 class="text-sm font-medium text-gray-900">Current Focus</h4>
 
-        <FocusCard
+        <EditableCard
             v-if="currentFocus"
-            :focus="currentFocus"
+            :item="currentFocus"
+            :update-route="$route('focus.update', [history, currentFocus])"
+            :delete-route="$route('focus.delete', [history, currentFocus])"
+            :reload-props="['errors', 'foci']"
             class="bg-indigo-700 text-white mt-3"
         />
 
@@ -131,7 +134,7 @@ import TextInput from "./UI/TextInput.vue";
 import PrimaryButton from "./UI/PrimaryButton.vue";
 import LoadingButton from "./LoadingButton.vue";
 import FocusStack from "./FocusStack.vue";
-import FocusCard from "./FocusCard.vue";
+import EditableCard from "./EditableCard.vue";
 import SettingsPopover from "./SettingsPopover.vue";
 
 export default defineComponent({
@@ -139,7 +142,7 @@ export default defineComponent({
 
     components: {
         SettingsPopover,
-        FocusCard,
+        EditableCard,
         FocusStack,
         LoadingButton,
         PrimaryButton,
@@ -154,7 +157,7 @@ export default defineComponent({
         DisclosurePanel,
     },
 
-    props: ["foci", "historyId"],
+    props: ["foci", "history"],
 
     computed: {
         currentFocus() {
@@ -173,16 +176,13 @@ export default defineComponent({
     setup(props) {
         const newFocusForm = useForm({ name: "" });
         const submitNewFocusForm = (close) => {
-            newFocusForm.post(
-                route("history.focus.define", [props.historyId]),
-                {
-                    only: ["foci", "errors"],
-                    onSuccess: (page) => {
-                        newFocusForm.reset();
-                        close();
-                    },
-                }
-            );
+            newFocusForm.post(route("history.focus.define", [props.history]), {
+                only: ["foci", "errors"],
+                onSuccess: (page) => {
+                    newFocusForm.reset();
+                    close();
+                },
+            });
         };
 
         return { newFocusForm, submitNewFocusForm };
