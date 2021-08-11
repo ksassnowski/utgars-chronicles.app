@@ -2,7 +2,9 @@
     <div class="h-full flex flex-col relative">
         <div class="flex items-center w-full px-4 mb-4">
             <div class="flex-1">
-                <Link :href="$route('home')" class="text-gray-800 font-semibold">&laquo; back</Link>
+                <Link :href="$route('home')" class="text-gray-800 font-semibold"
+                    >&laquo; back</Link
+                >
             </div>
 
             <HistorySeed :history="history" />
@@ -19,10 +21,18 @@
                 :list="history.periods"
                 @change="onPeriodMoved"
                 handle=".handle"
-                class="absolute inset-0 overflow-x-auto overflow-y-hidden whitespace-nowrap pb-4 px-3 space-x-2"
+                class="
+                    absolute
+                    inset-0
+                    overflow-x-auto overflow-y-hidden
+                    whitespace-nowrap
+                    pb-4
+                    px-3
+                    space-x-2
+                "
                 item-key="id"
             >
-                <template #item="{element}">
+                <template #item="{ element }">
                     <div class="w-72 inline-block px-1 h-full align-top">
                         <PeriodCard
                             :period="element"
@@ -33,7 +43,19 @@
             </draggable>
         </div>
 
-        <div class="absolute right-0 bottom-0 mr-4 mb-8 z-20 space-y-1 flex flex-col items-end">
+        <div
+            class="
+                absolute
+                right-0
+                bottom-0
+                mr-4
+                mb-8
+                z-20
+                space-y-1
+                flex flex-col
+                items-end
+            "
+        >
             <FocusTracker :foci="foci" :history-id="history.id" />
             <Palette :history="history" :palette="palettes" />
         </div>
@@ -43,7 +65,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, provide } from "vue";
 import axios from "axios";
-import draggable from 'vuedraggable';
+import draggable from "vuedraggable";
 import { Link } from "@inertiajs/inertia-vue3";
 
 import PeriodCard from "./PeriodCard.vue";
@@ -55,7 +77,7 @@ import FocusTracker from "./FocusTracker.vue";
 import Palette from "./Palette.vue";
 
 export default defineComponent({
-    name: 'GameBoard',
+    name: "GameBoard",
 
     props: {
         history: {
@@ -73,7 +95,7 @@ export default defineComponent({
         legacies: {
             type: Array,
             default: () => [],
-        }
+        },
     },
 
     components: {
@@ -147,13 +169,13 @@ export default defineComponent({
         // request will always resync the board as well which causes weird things
         // to happen (like the `onSuccess` callback not properly working).
         axios.interceptors.request.use((config) => {
-            config.headers['X-Socket-ID'] = Echo.socketId();
+            config.headers["X-Socket-ID"] = Echo.socketId();
             return config;
         });
 
         provide("history", props.history);
 
         return { channelName };
-    }
+    },
 });
 </script>
