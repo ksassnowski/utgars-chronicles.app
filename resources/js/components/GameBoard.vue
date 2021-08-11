@@ -9,7 +9,7 @@
 
         <div class="pb-12 sm:pb-0 sm:pr-24 flex flex-col flex-grow">
             <div class="flex items-center w-full px-4 mb-4">
-                <div class="flex-1">
+                <div class="hidden sm:block flex-1">
                     <CreatePeriodModal
                         :position="nextPosition"
                         :history="history"
@@ -23,7 +23,7 @@
 
                 <HistorySeed :history="history" />
 
-                <div class="flex-1 flex justify-end"></div>
+                <div class="flex-1 hidden sm:flex justify-end"></div>
             </div>
 
             <div class="flex-grow relative z-0">
@@ -31,7 +31,14 @@
                     :list="history.periods"
                     @change="onPeriodMoved"
                     handle=".handle"
-                    class="absolute inset-0 overflow-x-auto overflow-y-hidden whitespace-nowrap pl-2 pb-3"
+                    class="
+                        absolute
+                        inset-0
+                        overflow-x-auto overflow-y-hidden
+                        whitespace-nowrap
+                        pl-2
+                        pb-3
+                    "
                     item-key="id"
                 >
                     <template #item="{ element }">

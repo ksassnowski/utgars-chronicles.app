@@ -28,7 +28,7 @@
                     space-x-2
                     sm:space-x-0 sm:space-y-3
                     flex
-                    sm:flex-col
+                    sm:w-full sm:flex-col
                 "
             >
                 <FocusTracker :foci="foci" :history="history" />

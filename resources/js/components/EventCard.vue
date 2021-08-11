@@ -1,60 +1,11 @@
 <template>
     <div class="relative game-card">
-        <article
-            class="
-                relative
-                p-5
-                relative
-                shadow-sm
-                rounded-lg
-                border border-gray-200
-                text-sm
-                w-full
-                min-h-32
-                group
-            "
-            :class="{
-                'bg-gradient-to-br from-gray-600 to-gray-700 text-white':
-                    event.type === 'dark',
-                'bg-gradient-to-br from-white to-gray-100 text-gray-700':
-                    event.type === 'light',
-            }"
-        >
-            <div
-                class="
-                    sm:invisible sm:group-hover:visible
-                    absolute
-                    left-0
-                    top-0
-                    w-full
-                    pl-3
-                    pr-2
-                    pt-2
-                    flex
-                    justify-between
-                    z-20
-                "
-            >
-                <MenuIcon class="handle w-5 h-5 text-gray-400 cursor-move" />
-            </div>
-
-            <h4 class="text-center whitespace-normal py-3 sm:py-2">
+        <GameCard :type="event.type" label="Event">
+            <h3 class="text-center whitespace-normal">
                 {{ event.name }}
-            </h4>
+            </h3>
 
-            <div
-                class="
-                    absolute
-                    sm:invisible sm:group-hover:visible
-                    flex
-                    justify-end
-                    items-center
-                    inset-x-0
-                    bottom-0
-                    px-2
-                    pb-2
-                "
-            >
+            <template #footer>
                 <SceneModal :event="event">
                     <button
                         class="text-sm"
@@ -66,27 +17,8 @@
                         Add Scene
                     </button>
                 </SceneModal>
-            </div>
-
-            <p
-                class="
-                    absolute
-                    top-0
-                    text-sm
-                    font-bold
-                    leading-loose
-                    uppercase
-                    px-1
-                "
-                :class="{
-                    'text-white': event.type === 'dark',
-                    'text-gray-700': event.type === 'light',
-                }"
-                style="top: -15px; right: 20px"
-            >
-                Event
-            </p>
-        </article>
+            </template>
+        </GameCard>
 
         <draggable
             :list="event.scenes"
@@ -109,6 +41,7 @@ import { MenuIcon } from "@heroicons/vue/solid";
 import LoadingButton from "./LoadingButton.vue";
 import SceneCard from "./SceneCard.vue";
 import SceneModal from "./Modal/SceneModal.vue";
+import GameCard from "./GameCard.vue";
 
 export default defineComponent({
     name: "EventCard",
@@ -121,6 +54,7 @@ export default defineComponent({
     inject: ["history"],
 
     components: {
+        GameCard,
         SceneModal,
         draggable,
         SceneCard,

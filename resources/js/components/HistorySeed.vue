@@ -2,12 +2,20 @@
     <div>
         <h1
             v-if="!editing"
-            class="text-2xl font-bold text-gray-800 flex items-center"
+            class="
+                text-lg
+                sm:text-2xl
+                font-semibold
+                sm:font-bold
+                text-gray-800
+                flex
+                items-center
+            "
         >
             {{ history.name }}
 
             <button @click="startEdit" title="Edit Seed">
-                <PencilIcon class="h-5 w-5 text-gray-500 ml-4" />
+                <PencilIcon class="h-5 w-5 text-gray-500 ml-2" />
             </button>
         </h1>
 
