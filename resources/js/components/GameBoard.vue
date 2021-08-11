@@ -33,8 +33,9 @@
             </draggable>
         </div>
 
-        <div class="absolute right-0 bottom-0 mr-4 mb-8 z-20">
+        <div class="absolute right-0 bottom-0 mr-4 mb-8 z-20 space-y-1 flex flex-col items-end">
             <FocusTracker :foci="foci" :history-id="history.id" />
+            <Palette :history="history" :palette="palettes" />
         </div>
     </div>
 </template>
@@ -51,6 +52,7 @@ import HistorySeed from "./HistorySeed.vue";
 import CreatePeriodModal from "./Modal/CreatePeriodModal.vue";
 import PrimaryButton from "./UI/PrimaryButton.vue";
 import FocusTracker from "./FocusTracker.vue";
+import Palette from "./Palette.vue";
 
 export default defineComponent({
     name: 'GameBoard',
@@ -75,6 +77,7 @@ export default defineComponent({
     },
 
     components: {
+        Palette,
         FocusTracker,
         PrimaryButton,
         CreatePeriodModal,
