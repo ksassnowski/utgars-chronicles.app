@@ -57,7 +57,7 @@
                 <p class="label">Tone</p>
 
                 <div class="flex justify-between items-center">
-                    <div>
+                    <div class="space-x-1">
                         <input
                             type="radio"
                             id="light"
@@ -67,7 +67,7 @@
                         <label for="light">Light</label>
                     </div>
 
-                    <div>
+                    <div class="space-x-1">
                         <input
                             type="radio"
                             id="dark"

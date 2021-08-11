@@ -2,6 +2,12 @@
     <div class="max-h-full flex flex-col">
         <div class="game-card">
             <GameCard :type="period.type" label="Period">
+                <template #menu>
+                    <PeriodModal :period="period" :history="history">
+                        <CardButton :type="period.type" />
+                    </PeriodModal>
+                </template>
+
                 <h3 class="font-bold tracking-wide text-center">
                     {{ period.name }}
                 </h3>
@@ -48,6 +54,7 @@ import EventModal from "./Modal/EventModal.vue";
 import LoadingButton from "./LoadingButton.vue";
 import GameCard from "./GameCard.vue";
 import PeriodModal from "./Modal/PeriodModal.vue";
+import CardButton from "./CardButton.vue";
 
 export default defineComponent({
     name: "PeriodCard",
@@ -58,6 +65,7 @@ export default defineComponent({
     },
 
     components: {
+        CardButton,
         PeriodModal,
         GameCard,
         MenuIcon,

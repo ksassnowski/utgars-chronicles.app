@@ -1,22 +1,21 @@
 <template>
     <div class="mt-4 px-6">
         <GameCard :type="scene.type" label="Scene">
-            <template #menu-left>
-                <button
+            <template #menu>
+                <SceneModal :scene="scene" :event="event">
+                    <CardButton :type="scene.type" />
+                </SceneModal>
+
+                <CardButton
                     @click="open = !open"
                     :title="open ? 'Collapse Scene' : 'Expand Scene'"
-                    style="margin-top: -2px"
+                    :type="scene.type"
                 >
                     <component
                         :is="open ? 'EyeOffIcon' : 'EyeIcon'"
-                        class="w-5 h-5"
-                        :class="
-                            scene.type === 'dark'
-                                ? 'text-gray-300'
-                                : 'text-gray-500'
-                        "
+                        class="w-4 h-4"
                     />
-                </button>
+                </CardButton>
             </template>
 
             <p class="text-sm whitespace-pre-wrap" :class="{ 'pb-2': open }">
@@ -56,11 +55,13 @@ import { MenuIcon, EyeIcon, EyeOffIcon } from "@heroicons/vue/solid";
 import LoadingButton from "./LoadingButton.vue";
 import GameCard from "./GameCard.vue";
 import SceneModal from "./Modal/SceneModal.vue";
+import CardButton from "./CardButton.vue";
 
 export default defineComponent({
     name: "SceneCard",
 
     components: {
+        CardButton,
         SceneModal,
         GameCard,
         LoadingButton,
