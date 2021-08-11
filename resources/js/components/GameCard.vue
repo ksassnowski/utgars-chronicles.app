@@ -59,7 +59,8 @@
                 absolute
                 inset-x-0
                 bottom-0
-                p-2
+                py-2
+                px-3
                 md:invisible md:group-hover:visible
             "
         >
