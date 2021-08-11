@@ -92,13 +92,11 @@ import {
     PopoverPanel,
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/solid";
-import Icon from "./Icon.vue";
 
 export default defineComponent({
     name: "SettingsPopover",
 
     components: {
-        Icon,
         Popover,
         PopoverButton,
         PopoverOverlay,
