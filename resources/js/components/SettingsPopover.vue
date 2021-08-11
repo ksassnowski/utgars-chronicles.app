@@ -20,7 +20,7 @@
 
         <PopoverOverlay
             class="bg-black opacity-0"
-            :class="[open ? 'opacity-40 inset-0 fixed' : 'opacity-0']"
+            :class="[open ? 'opacity-50 inset-0 fixed' : 'opacity-0']"
         />
 
         <transition
@@ -32,13 +32,22 @@
             leave-to-class="translate-x-full"
         >
             <PopoverPanel
-                class="fixed inset-y-0 right-0 bg-white shadow-xl z-20 w-[95%]"
+                class="fixed inset-y-0 right-0 bg-white shadow-xl z-20 w-[90%]"
                 :class="width"
             >
                 <PopoverButton
-                    class="text-white p-3 absolute right-full top-0 mr-1 mt-1"
+                    class="
+                        text-white
+                        p-3
+                        absolute
+                        right-full
+                        top-0
+                        -mr-1.5
+                        sm:mr-0
+                        mt-1
+                    "
                 >
-                    <Icon name="close" class="fill-current w-5 h-5" />
+                    <XIcon class="w-7 h-7" />
                 </PopoverButton>
 
                 <div class="h-full">
@@ -82,6 +91,7 @@ import {
     PopoverOverlay,
     PopoverPanel,
 } from "@headlessui/vue";
+import { XIcon } from "@heroicons/vue/solid";
 import Icon from "./Icon.vue";
 
 export default defineComponent({
@@ -96,6 +106,7 @@ export default defineComponent({
         Disclosure,
         DisclosureButton,
         DisclosurePanel,
+        XIcon,
     },
 
     props: {
