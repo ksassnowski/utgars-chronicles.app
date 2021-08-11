@@ -14,8 +14,10 @@
                     whitespace-normal
                 "
                 :class="{
-                    'bg-gray-700 text-white': period.type === 'dark',
-                    'bg-white text-gray-700': period.type === 'light',
+                    'bg-gradient-to-br from-gray-600 to-gray-700 text-white':
+                        period.type === 'dark',
+                    'bg-gradient-to-br from-white to-gray-100 text-gray-700':
+                        period.type === 'light',
                 }"
             >
                 <div

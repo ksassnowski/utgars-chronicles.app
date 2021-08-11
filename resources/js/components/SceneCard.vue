@@ -1,8 +1,28 @@
 <template>
     <div class="mt-4 px-6">
         <div
-            class="relative pt-8 px-4 pb-6 relative shadow-sm rounded-lg border bg-white border-gray-200 text-sm w-full min-h-32 group"
-            :class="{ 'bg-white text-gray-700': scene.type === 'light', 'bg-gray-700 text-white': scene.type === 'dark' }"
+            class="
+                relative
+                pt-8
+                px-4
+                pb-6
+                relative
+                shadow-sm
+                rounded-lg
+                border
+                bg-white
+                border-gray-200
+                text-sm
+                w-full
+                min-h-32
+                group
+            "
+            :class="{
+                'bg-gradient-to-br from-gray-600 to-gray-700 text-white':
+                    scene.type === 'dark',
+                'bg-gradient-to-br from-white to-gray-100 text-gray-700':
+                    scene.type === 'light',
+            }"
         >
             <div>
                 <div

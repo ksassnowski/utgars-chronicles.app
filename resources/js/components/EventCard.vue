@@ -14,8 +14,10 @@
                 group
             "
             :class="{
-                'bg-gray-700 text-white': event.type === 'dark',
-                'bg-white text-gray-700': event.type === 'light',
+                'bg-gradient-to-br from-gray-600 to-gray-700 text-white':
+                    event.type === 'dark',
+                'bg-gradient-to-br from-white to-gray-100 text-gray-700':
+                    event.type === 'light',
             }"
         >
             <div
