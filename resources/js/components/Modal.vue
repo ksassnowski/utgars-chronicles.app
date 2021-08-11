@@ -36,14 +36,34 @@
                         leave-to="opacity-0 scale-95"
                     >
                         <div
-                            class="inline-block w-full max-w-xl p-5 my-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg"
+                            class="
+                                inline-block
+                                w-full
+                                max-w-xl
+                                p-5
+                                my-6
+                                overflow-hidden
+                                text-left
+                                align-middle
+                                transition-all
+                                transform
+                                bg-white
+                                shadow-xl
+                                rounded-lg
+                            "
                         >
-                            <DialogTitle
-                                as="h3"
-                                class="font-bold text-lg text-gray-800"
-                            >
-                                {{ title }}
-                            </DialogTitle>
+                            <div class="flex items-center justify-between">
+                                <DialogTitle
+                                    as="h3"
+                                    class="font-bold text-lg text-gray-800"
+                                >
+                                    {{ title }}
+                                </DialogTitle>
+
+                                <button @click="toggle">
+                                    <XIcon class="w-6 h-6 text-gray-400" />
+                                </button>
+                            </div>
 
                             <div class="mt-4">
                                 <slot />
@@ -65,6 +85,7 @@ import {
     TransitionRoot,
     TransitionChild,
 } from "@headlessui/vue";
+import { XIcon } from "@heroicons/vue/outline";
 
 export default defineComponent({
     name: "Modal",
@@ -81,6 +102,7 @@ export default defineComponent({
         DialogTitle,
         TransitionRoot,
         TransitionChild,
+        XIcon,
     },
 
     setup() {

@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { PencilIcon } from "@heroicons/vue/solid";
+import { PencilIcon } from "@heroicons/vue/outline";
 import axios from "axios";
 
 export default defineComponent({

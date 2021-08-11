@@ -1,6 +1,12 @@
 <template>
     <div class="relative game-card">
         <GameCard :type="event.type" label="Event">
+            <template #menu>
+                <EventModal :event="event" :period="period">
+                    <CardButton :type="event.type" />
+                </EventModal>
+            </template>
+
             <h3 class="text-center whitespace-normal text-sm">
                 {{ event.name }}
             </h3>
@@ -36,13 +42,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import draggable from "vuedraggable";
-import { MenuIcon } from "@heroicons/vue/solid";
+import { MenuIcon, PencilIcon } from "@heroicons/vue/solid";
 
 import LoadingButton from "./LoadingButton.vue";
 import SceneCard from "./SceneCard.vue";
 import SceneModal from "./Modal/SceneModal.vue";
 import GameCard from "./GameCard.vue";
 import EventModal from "./Modal/EventModal.vue";
+import CardButton from "./CardButton.vue";
 
 export default defineComponent({
     name: "EventCard",
@@ -55,6 +62,7 @@ export default defineComponent({
     inject: ["history"],
 
     components: {
+        CardButton,
         EventModal,
         GameCard,
         SceneModal,
@@ -62,6 +70,7 @@ export default defineComponent({
         SceneCard,
         LoadingButton,
         MenuIcon,
+        PencilIcon,
     },
 
     methods: {
