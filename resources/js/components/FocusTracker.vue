@@ -46,18 +46,11 @@
                     "
                 >
                     <div class="inline-flex items-center">
-                        <Icon
-                            name="add"
-                            class="w-4 h-4 fill-current text-gray-500 mr-2"
-                        />
+                        <PlusIcon class="w-4 h-4 text-gray-500 mr-2" />
                         Define new focus
                     </div>
 
-                    <Icon
-                        v-if="open"
-                        name="close"
-                        class="w-4 h-4 fill-current text-gray-500 mr-2"
-                    />
+                    <XIcon v-if="open" class="w-4 h-4 text-gray-500 mr-2" />
                 </DisclosureButton>
 
                 <DisclosurePanel
@@ -126,8 +119,7 @@ import {
     DisclosureButton,
     DisclosurePanel,
 } from "@headlessui/vue";
-
-import Icon from "./Icon.vue";
+import { XIcon, PlusIcon } from "@heroicons/vue/solid";
 import { useForm } from "@inertiajs/inertia-vue3";
 
 import TextInput from "./UI/TextInput.vue";
@@ -147,7 +139,8 @@ export default defineComponent({
         LoadingButton,
         PrimaryButton,
         TextInput,
-        Icon,
+        PlusIcon,
+        XIcon,
         Popover,
         PopoverButton,
         PopoverOverlay,
