@@ -22,8 +22,7 @@
             >
                 <div
                     class="
-                        invisible
-                        group-hover:visible
+                        sm:invisible sm:group-hover:visible
                         absolute
                         left-0
                         top-0
@@ -32,30 +31,16 @@
                         pr-2
                         pt-2
                         flex
-                        justify-between
+                        justifybetween
                         z-20
                     "
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="
-                            handle
-                            w-4
-                            h-4
-                            fill-current
-                            text-gray-400
-                            cursor-move
-                        "
-                        style="margin-top: 2px"
-                        viewBox="0 0 20 20"
-                    >
-                        <path
-                            d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"
-                        />
-                    </svg>
+                    <MenuIcon
+                        class="handle w-5 h-5 text-gray-400 cursor-move"
+                    />
                 </div>
 
-                <h3 class="font-bold tracking-wide text-center py-2">
+                <h3 class="font-bold tracking-wide text-center py-3 sm:py-2">
                     {{ period.name }}
                 </h3>
 
@@ -86,8 +71,7 @@
                         inset-x-0
                         bottom-0
                         p-2
-                        invisible
-                        group-hover:visible
+                        sm:invisible sm:group-hover:visible
                     "
                 >
                     <CreateEventModal
@@ -126,12 +110,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import draggable from "vuedraggable";
+import { MenuIcon } from "@heroicons/vue/solid";
 
 import EventCard from "./EventCard.vue";
 import Modal from "./Modal.vue";
 import CreateEventModal from "./Modal/CreateEventModal.vue";
 import LoadingButton from "./LoadingButton.vue";
-import Icon from "./Icon.vue";
 
 export default defineComponent({
     name: "PeriodCard",
@@ -142,7 +126,7 @@ export default defineComponent({
     },
 
     components: {
-        Icon,
+        MenuIcon,
         LoadingButton,
         CreateEventModal,
         Modal,

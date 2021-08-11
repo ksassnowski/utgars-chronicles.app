@@ -27,8 +27,7 @@
             <div>
                 <div
                     class="
-                        invisible
-                        group-hover:visible
+                        sm:invisible sm:group-hover:visible
                         absolute
                         left-0
                         top-0
@@ -37,41 +36,31 @@
                         pr-2
                         pt-2
                         flex
-                        justify-between
                         z-20
+                        items-center
+                        space-x-2
                     "
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="
-                            handle
-                            w-4
-                            h-4
-                            fill-current
-                            text-gray-400
-                            cursor-move
-                        "
-                        style="margin-top: 2px"
-                        viewBox="0 0 20 20"
-                    >
-                        <path
-                            d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"
-                        />
-                    </svg>
+                    <MenuIcon
+                        class="handle w-5 h-5 text-gray-400 cursor-move"
+                    />
 
-                    <div class="flex items-center">
-                        <button
-                            @click="open = !open"
-                            class="mr-2"
-                            :title="open ? 'Collapse Scene' : 'Expand Scene'"
-                            style="margin-top: -2px"
-                        >
-                            <Icon
-                                class="w-4 h-4 fill-current text-gray-600"
-                                :name="open ? 'view-hide' : 'view-show'"
-                            />
-                        </button>
-                    </div>
+                    <button
+                        @click="open = !open"
+                        class="mr-2"
+                        :title="open ? 'Collapse Scene' : 'Expand Scene'"
+                        style="margin-top: -2px"
+                    >
+                        <component
+                            :is="open ? 'EyeOffIcon' : 'EyeIcon'"
+                            class="w-5 h-5"
+                            :class="
+                                scene.type === 'dark'
+                                    ? 'text-gray-300'
+                                    : 'text-gray-500'
+                            "
+                        />
+                    </button>
                 </div>
 
                 <p
@@ -141,8 +130,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { MenuIcon, EyeIcon, EyeOffIcon } from "@heroicons/vue/solid";
 
-import Icon from "./Icon.vue";
 import LoadingButton from "./LoadingButton.vue";
 
 export default defineComponent({
@@ -150,7 +139,9 @@ export default defineComponent({
 
     components: {
         LoadingButton,
-        Icon,
+        MenuIcon,
+        EyeIcon,
+        EyeOffIcon,
     },
 
     props: ["scene"],
