@@ -1,5 +1,5 @@
 import { createApp, h } from "vue";
-import { createInertiaApp } from '@inertiajs/inertia-vue3'
+import { createInertiaApp } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
 
 import "../css/app.css";
@@ -9,12 +9,14 @@ InertiaProgress.init({
     delay: 250,
     color: "#29d",
     includeCSS: true,
-    showSpinner: false
+    showSpinner: false,
 });
+
+const pages = import.meta.glob("./Pages/**/*.vue");
 
 createInertiaApp({
     resolve: async (name) => {
-        return (await import(`./Pages/${name}.vue`)).default;
+        return (await pages[`./Pages/${name}.vue`]()).default;
     },
 
     setup({ el, App, props, plugin }) {
@@ -29,8 +31,8 @@ createInertiaApp({
                 methods: {
                     $route: (...args) => window.route(...args).url(),
                     active: (route) => window.route().current(route),
-                }
+                },
             })
             .mount(el);
-    }
+    },
 });
