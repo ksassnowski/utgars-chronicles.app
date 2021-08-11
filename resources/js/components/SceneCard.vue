@@ -7,7 +7,7 @@
                 </SceneModal>
 
                 <CardButton
-                    @click="open = !open"
+                    @click="toggle"
                     :title="open ? 'Collapse Scene' : 'Expand Scene'"
                     :type="scene.type"
                 >
@@ -49,9 +49,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref, inject } from "vue";
 import { MenuIcon, EyeIcon, EyeOffIcon } from "@heroicons/vue/solid";
 
+import { useEmitter } from "../composables/useEmitter";
 import LoadingButton from "./LoadingButton.vue";
 import GameCard from "./GameCard.vue";
 import SceneModal from "./Modal/SceneModal.vue";
@@ -75,14 +76,6 @@ export default defineComponent({
         event: Object,
     },
 
-    inject: ["history"],
-
-    data() {
-        return {
-            open: true,
-        };
-    },
-
     methods: {
         remove() {
             const confirmed = confirm(
@@ -98,6 +91,17 @@ export default defineComponent({
                 { only: ["history"] }
             );
         },
+    },
+
+    setup() {
+        const open = ref(false);
+        const toggle = () => (open.value = !open.value);
+        const history = inject("history");
+
+        const emitter = useEmitter();
+        emitter.on("scenes:toggle", toggle);
+
+        return { open, toggle, history };
     },
 });
 </script>
