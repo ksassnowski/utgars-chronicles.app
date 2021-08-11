@@ -124,9 +124,14 @@ export default defineComponent({
 
     created() {
         Echo.join(this.channelName)
-            .listen('BoardUpdated', () => this.resyncBoard("history"))
-            .listen('FocusDefined', () => this.resyncBoard("foci"))
-            .listen('HistorySeedUpdated', this.updateSeed);
+            .listen("BoardUpdated", () => this.resyncBoard("history"))
+            .listen("FocusDefined", () => this.resyncBoard("foci"))
+            .listen("FocusUpdated", () => this.resyncBoard("foci"))
+            .listen("FocusDeleted", () => this.resyncBoard("foci"))
+            .listen("ItemAddedToPalette", () => this.resyncBoard("palettes"))
+            .listen("PaletteItemUpdated", () => this.resyncBoard("palettes"))
+            .listen("PaletteItemDeleted", () => this.resyncBoard("palettes"))
+            .listen("HistorySeedUpdated", this.updateSeed);
     },
 
     setup(props) {
