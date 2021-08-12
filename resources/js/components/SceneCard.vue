@@ -76,23 +76,6 @@ export default defineComponent({
         event: Object,
     },
 
-    methods: {
-        remove() {
-            const confirmed = confirm(
-                "Are you sure you want to delete this scene?"
-            );
-
-            if (!confirmed) {
-                return;
-            }
-
-            this.$inertia.delete(
-                this.$route("scenes.delete", [this.history, this.scene]),
-                { only: ["history"] }
-            );
-        },
-    },
-
     setup() {
         const open = ref(false);
         const toggle = () => (open.value = !open.value);

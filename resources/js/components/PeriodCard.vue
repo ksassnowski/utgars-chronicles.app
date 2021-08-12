@@ -100,19 +100,6 @@ export default defineComponent({
                 { only: ["history"] }
             );
         },
-
-        remove() {
-            const confirmed = confirm(
-                "Really delete this period? This will delete all events and scenes as well!"
-            );
-
-            if (confirmed) {
-                this.$inertia.delete(
-                    this.$route("periods.delete", [this.history, this.period]),
-                    { only: ["history"] }
-                );
-            }
-        },
     },
 });
 </script>
