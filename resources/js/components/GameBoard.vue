@@ -4,6 +4,7 @@
 
         <GameSidebar
             :history="history"
+            :next-position="nextPosition"
             :legacies="legacies"
             :foci="foci"
             :palette="palettes"

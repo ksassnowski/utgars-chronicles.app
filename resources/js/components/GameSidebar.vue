@@ -21,22 +21,48 @@
         <div class="flex sm:flex-col h-full items-center justify-between">
             <div
                 class="
-                    px-4
-                    sm:px-2
-                    py-2
-                    sm:pt-12
+                    pr-4
+                    sm:pl-2 sm:pr-2 sm:pt-12
                     space-x-2
                     sm:space-x-0 sm:space-y-3
                     flex
+                    items-center
                     sm:w-full sm:flex-col
+                    flex-grow
+                    h-full
+                    sm:h-auto
                 "
             >
+                <PeriodModal
+                    class="h-full sm:hidden"
+                    :history="history"
+                    :position="nextPosition"
+                >
+                    <button
+                        class="
+                            uppercase
+                            text-gray-100
+                            hover:text-white
+                            text-xs
+                            font-medium
+                            bg-black bg-opacity-20
+                            h-full
+                            px-3
+                            inline-flex
+                            items-center
+                        "
+                    >
+                        <PlusIcon class="h-4 w-4 text-indigo-100 mr-1" />
+                        Period
+                    </button>
+                </PeriodModal>
+
                 <FocusTracker :foci="foci" :history="history" />
                 <Palette :history="history" :palette="palette" />
                 <LegacyTracker :history="history" :legacies="legacies" />
             </div>
 
-            <div class="w-full">
+            <div class="sm:w-full">
                 <button
                     v-if="$page.props.environment === 'local'"
                     @click="toggleScenes"
@@ -56,9 +82,10 @@
                         text-indigo-100
                         font-medium
                         text-xs
-                        px-4
+                        px-2.5
+                        sm:px-4
                         py-4
-                        mt-2
+                        sm:mt-2
                         justify-center
                         hover:text-white hover:bg-black hover:bg-opacity-30
                     "
@@ -74,12 +101,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { Link } from "@inertiajs/inertia-vue3";
-import { ChevronDoubleLeftIcon } from "@heroicons/vue/outline";
+import { PlusIcon, ChevronDoubleLeftIcon } from "@heroicons/vue/outline";
 
 import { useEmitter } from "../composables/useEmitter";
 import LegacyTracker from "./LegacyTracker.vue";
 import Palette from "./Palette.vue";
 import FocusTracker from "./FocusTracker.vue";
+import PeriodModal from "./Modal/PeriodModal.vue";
 
 export default defineComponent({
     name: "GameSidebar",
@@ -89,14 +117,17 @@ export default defineComponent({
         palette: Array,
         legacies: Array,
         foci: Array,
+        nextPosition: Number,
     },
 
     components: {
+        PeriodModal,
         LegacyTracker,
         Palette,
         FocusTracker,
         Link,
         ChevronDoubleLeftIcon,
+        PlusIcon,
     },
 
     setup() {

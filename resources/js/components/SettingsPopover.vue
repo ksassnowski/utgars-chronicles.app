@@ -1,10 +1,11 @@
 <template>
-    <Popover v-slot="{ open }">
+    <Popover v-slot="{ open }" class="h-full sm:h-auto sm:w-full">
         <PopoverButton
             class="
                 px-2
                 sm:py-3 sm:bg-black sm:bg-opacity-20
                 text-gray-100
+                h-full
                 sm:w-full
                 text-xs
                 uppercase
