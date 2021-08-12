@@ -36,7 +36,7 @@
                 <LegacyTracker :history="history" :legacies="legacies" />
             </div>
 
-            <div>
+            <div class="w-full">
                 <!--button @click="toggleScenes" class="text-white text-sm">
                     Toggle Scenes
                 </button-->

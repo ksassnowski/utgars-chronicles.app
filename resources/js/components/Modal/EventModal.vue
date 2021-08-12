@@ -13,7 +13,6 @@
                     type="text"
                     class="input"
                     id="name"
-                    ref="input"
                     v-model="form.name"
                     rows="5"
                     required
@@ -52,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, toRefs, ref, inject, watch } from "vue";
+import { defineComponent, toRefs, ref, inject } from "vue";
 
 import { useCreateEditForm } from "../../composables/useCreateEditForm";
 import Modal from "../Modal.vue";

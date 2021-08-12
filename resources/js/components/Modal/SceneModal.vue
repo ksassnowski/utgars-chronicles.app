@@ -14,7 +14,6 @@
                     rows="4"
                     class="input"
                     v-model="form.question"
-                    ref="question"
                 ></textarea>
                 <small
                     class="text-red-600 text-xs mt-1"

@@ -85,21 +85,6 @@ export default defineComponent({
                 { only: ["history"] }
             );
         },
-
-        remove() {
-            const confirmed = confirm(
-                "Really delete this event? All scenes belonging to this event will be deleted too!"
-            );
-
-            if (!confirmed) {
-                return;
-            }
-
-            this.$inertia.delete(
-                this.$route("events.delete", [this.history, this.event]),
-                { only: ["history"] }
-            );
-        },
     },
 });
 </script>
