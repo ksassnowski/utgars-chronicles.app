@@ -11,10 +11,9 @@
                 class="
                     rounded-md
                     bg-black bg-opacity-30
-                    invisible
-                    group-hover:visible
-                    p-2
-                    hover:bg-opacity-50
+                    md:invisible md:group-hover:visible
+                    p-1.5
+                    hover:bg-opacity-60
                     text-gray-100
                     hover:text-white
                 "
@@ -27,12 +26,11 @@
 
             <button
                 class="
-                    rounded-md
+                    rounded-lg
                     bg-black bg-opacity-30
-                    invisible
-                    group-hover:visible
-                    p-2
-                    hover:bg-opacity-50
+                    md:invisible md:group-hover:visible
+                    p-1.5
+                    hover:bg-opacity-60
                     text-gray-100
                     hover:text-white
                 "
@@ -99,7 +97,7 @@
 <script lang="ts">
 import { defineComponent, toRefs, watch } from "vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
-import { TrashIcon, PencilIcon, XIcon } from "@heroicons/vue/solid";
+import { TrashIcon, PencilIcon, XIcon } from "@heroicons/vue/outline";
 
 import { useEditMode } from "../composables/useEditMode";
 

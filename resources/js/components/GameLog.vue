@@ -1,5 +1,15 @@
 <template>
-    <div class="fixed z-30 bottom-6 right-32 space-y-2">
+    <div
+        class="
+            fixed
+            z-30
+            top-4
+            sm:top-auto sm:bottom-6
+            right-4
+            sm:right-32
+            space-y-2
+        "
+    >
         <transition-group
             enter-active-class="transition duration-300 transform ease-out"
             enter-from-class="opacity-0 translate-y-2"
@@ -14,12 +24,13 @@
                 :key="message.id"
                 class="
                     relative
-                    bg-white
+                    bg-gradient-to-r
+                    from-indigo-500
+                    to-indigo-700
                     rounded-md
-                    shadow-sm
-                    border border-gray-200
-                    pl-3
-                    pr-7
+                    shadow
+                    pl-5
+                    pr-8
                     py-3
                     text-sm text-gray-700
                     flex
@@ -30,23 +41,28 @@
             >
                 <component
                     v-if="message.icon"
-                    :is="message.icon.name"
-                    class="w-4 h-4 mr-2 mt-1"
-                    :class="message.icon.color"
+                    :is="message.icon"
+                    class="w-4 h-4 mr-2 mt-1 text-white"
                 />
 
                 <div class="flex-1">
-                    <p class="text-xs text-gray-400 tracking-tight font-normal">
+                    <p
+                        class="
+                            text-xs text-indigo-200
+                            tracking-tight
+                            font-normal
+                        "
+                    >
                         {{ message.title }}
                     </p>
-                    <p>{{ message.message }}</p>
+                    <p class="text-white">{{ message.message }}</p>
                 </div>
 
                 <button
                     @click="message.close"
                     class="absolute top-0 right-0 p-1"
                 >
-                    <XIcon class="w-4 h-4 text-gray-500" />
+                    <XIcon class="w-4 h-4 text-indigo-300" />
                 </button>
             </div>
         </transition-group>
@@ -88,11 +104,7 @@ export default defineComponent({
             this.addMessage({
                 title: "Added to Palette",
                 message: item.name,
-                icon: {
-                    name: item.type === "yes" ? "ThumbUpIcon" : "ThumbDownIcon",
-                    color:
-                        item.type === "yes" ? "text-green-500" : "text-red-500",
-                },
+                icon: item.type === "yes" ? "ThumbUpIcon" : "ThumbDownIcon",
             });
         },
 
@@ -100,11 +112,7 @@ export default defineComponent({
             this.addMessage({
                 title: "Removed from Palette",
                 message: item.name,
-                icon: {
-                    name: item.type === "yes" ? "ThumbUpIcon" : "ThumbDownIcon",
-                    color:
-                        item.type === "yes" ? "text-green-500" : "text-red-500",
-                },
+                icon: item.type === "yes" ? "ThumbUpIcon" : "ThumbDownIcon",
             });
         },
 
@@ -112,10 +120,7 @@ export default defineComponent({
             this.addMessage({
                 title: "New Legacy",
                 message: name,
-                icon: {
-                    name: "SparklesIcon",
-                    color: "text-yellow-500",
-                },
+                icon: "SparklesIcon",
             });
         },
     },
@@ -126,20 +131,14 @@ export default defineComponent({
                 this.addMessage({
                     title: "Player joined",
                     message: player.name,
-                    icon: {
-                        name: "UserAddIcon",
-                        color: "text-green-500",
-                    },
+                    icon: "UserAddIcon",
                 })
             )
             .leaving((player) =>
                 this.addMessage({
                     title: "Player left",
                     message: player.name,
-                    icon: {
-                        name: "UserRemoveIcon",
-                        color: "text-red-500",
-                    },
+                    icon: "UserRemoveIcon",
                 })
             )
             .listen("ItemAddedToPalette", this.onPaletteItemAdded)
