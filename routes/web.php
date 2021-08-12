@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\PaletteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LfgRequestController;
+use App\Http\Controllers\LookingForGroupController;
 use App\Http\Controllers\History\GuestInvitationController;
 
 Auth::routes();
@@ -41,6 +43,28 @@ Route::group(['middleware' => 'auth'], function () {
     Route::delete('histories/{history}', 'History\DeleteHistoryController')
         ->middleware('can:deleteHistory,history')
         ->name('history.delete');
+
+    if (!app()->environment('production')) {
+        Route::get('/lfg', [LookingForGroupController::class, 'index'])
+            ->name('lfg.index');
+        Route::get('/lfg/create', [LookingForGroupController::class, 'create'])
+            ->name('lfg.create');
+        Route::get('/lfg/{lfg}', [LookingForGroupController::class, 'show'])
+            ->name('lfg.show');
+        Route::post('/lfg', [LookingForGroupController::class, 'store'])
+            ->name('lfg.store');
+
+        Route::get('/lfg/requests', [LfgRequestController::class, 'index'])
+            ->name('lfg.requests.index');
+        Route::post('/lfg/{lfg}/requests', [LfgRequestController::class, 'store'])
+            ->name('lfg.requests.store');
+        Route::post('/requests/{request}/accept', [LfgRequestController::class, 'accept'])
+            ->middleware('can:accept,request')
+            ->name('lfg.requests.accept');
+        Route::post('/requests/{request}/reject', [LfgRequestController::class, 'reject'])
+            ->middleware('can:reject,request')
+            ->name('lfg.requests.reject');
+    }
 });
 
 Route::group(['middleware' => 'auth:microscope'], function () {

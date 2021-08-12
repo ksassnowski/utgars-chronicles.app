@@ -4,18 +4,18 @@ namespace App\Http\Controllers\History;
 
 use App\History;
 use App\Events\FocusDefined;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\History\DefineFocusRequest;
 
 class DefineFocusController extends Controller
 {
-    public function __invoke(DefineFocusRequest $request, History $history): JsonResponse
+    public function __invoke(DefineFocusRequest $request, History $history): RedirectResponse
     {
         $focus = $history->defineFocus($request->name());
 
-        broadcast(new FocusDefined($history, $focus));
+        broadcast(new FocusDefined($history, $focus))->toOthers();
 
-        return response()->json([], 201);
+        return redirect()->back();
     }
 }

@@ -1,72 +1,90 @@
 <template>
     <div>
-        <h1 v-if="!editing" class="text-2xl font-bold text-gray-800 flex items-center">
+        <h1
+            v-if="!editing"
+            class="
+                text-lg
+                sm:text-2xl
+                font-semibold
+                sm:font-bold
+                text-gray-800
+                flex
+                items-center
+            "
+        >
             {{ history.name }}
 
-            <button @click="startEdit" title="Edit Seed">
-                <Icon name="pencil" class="fill-current h-4 w-4 text-gray-500 ml-4" />
+            <button @click="startEditing" title="Edit Seed">
+                <PencilIcon class="h-5 w-5 text-gray-500 ml-2" />
             </button>
         </h1>
 
-        <form v-else @submit.prevent="submit" class="flex items-center">
-            <input type="text" id="name" class="input" ref="input" v-model="form.name">
+        <form v-else @submit.prevent="() => submit()" class="flex items-center">
+            <input
+                type="text"
+                id="name"
+                class="input"
+                ref="input"
+                v-model="form.name"
+            />
 
-            <button class="text-sm text-indigo-700 px-2" :disabled="loading">
-                {{ loading ? 'Saving...' : 'Save' }}
+            <button
+                class="text-sm text-indigo-700 px-2"
+                :disabled="form.processing"
+            >
+                {{ form.processing ? "Saving..." : "Save" }}
             </button>
 
-            <button type="button" class="text-sm text-gray-500 px-2" @click="cancel">Cancel</button>
+            <button
+                type="button"
+                class="text-sm text-gray-500 px-2"
+                @click="stopEditing"
+            >
+                Cancel
+            </button>
         </form>
     </div>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
+import { defineComponent, reactive, watch } from "vue";
+import { PencilIcon } from "@heroicons/vue/outline";
 
-import Icon from "./Icon";
+import { useEditMode } from "../composables/useEditMode";
+import { useForm } from "@inertiajs/inertia-vue3";
 
-export default {
-    name: 'HistorySeed',
+type History = { name: string };
+
+export default defineComponent({
+    name: "HistorySeed",
 
     components: {
-        Icon
+        PencilIcon,
     },
 
-    props: ['history'],
+    props: ["history"],
 
-    data() {
+    setup(props) {
+        const history = reactive(props.history);
+        const form = useForm({ name: history.name });
+        const { editing, startEditing, stopEditing, submit } = useEditMode(
+            form,
+            route("history.update-seed", history),
+            ["errors", "history"],
+            "patch"
+        );
+
+        watch(history, (newHistory) => {
+            form.name = newHistory.name;
+        });
+
         return {
-            loading: false,
-            editing: false,
-            form: {
-                name: this.history.name,
-            },
+            form,
+            editing,
+            startEditing,
+            stopEditing,
+            submit: submit(),
         };
     },
-
-    methods: {
-        startEdit() {
-            this.form.name = this.history.name;
-            this.editing = true;
-            this.$nextTick(() => this.$refs.input.focus());
-        },
-
-        cancel() {
-            this.form.name = this.history.name;
-            this.editing = false;
-        },
-
-        submit() {
-            if (this.form.name === this.history.name) {
-                this.editing = false;
-                return;
-            }
-
-            axios.patch(this.$route('history.update-seed', this.history), this.form)
-                .then(() => this.editing = false)
-                .catch(console.error)
-                .finally(() => this.loading = false);
-        },
-    },
-}
+});
 </script>

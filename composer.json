@@ -12,7 +12,7 @@
         "doctrine/dbal": "^2.10",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "inertiajs/inertia-laravel": "^0.3.2",
+        "inertiajs/inertia-laravel": "^0.4.2",
         "laravel/framework": "^8.22.1",
         "laravel/horizon": "^5.0",
         "laravel/ui": "^3.0",
@@ -23,6 +23,7 @@
         "tightenco/ziggy": "^0.8.1"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.6",
         "barryvdh/laravel-ide-helper": "^2.6",
         "facade/ignition": "^2.3.6",
         "fzaninotto/faker": "^1.4",
@@ -49,12 +50,16 @@
         "classmap": [
             "database/seeds",
             "database/factories"
+        ],
+        "files": [
+            "app/helpers.php"
         ]
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
-            "Database\\Factories\\": "database/factories/"
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeds/"
         }
     },
     "minimum-stability": "dev",

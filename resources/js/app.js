@@ -1,35 +1,38 @@
-require("./bootstrap");
-
-import Vue from "vue";
-import { App, plugin } from "@inertiajs/inertia-vue";
+import { createApp, h } from "vue";
+import { createInertiaApp } from "@inertiajs/inertia-vue3";
 import { InertiaProgress } from "@inertiajs/progress";
-import PortalVue from "portal-vue";
-import VueMeta from "vue-meta";
 
-Vue.use(plugin);
-Vue.use(PortalVue);
-Vue.use(VueMeta);
-
-Vue.prototype.$route = (...args) => route(...args).url();
-
-window.Bus = new Vue();
-
-const app = document.getElementById("app");
+import "../css/app.css";
+import "./bootstrap";
 
 InertiaProgress.init({
     delay: 250,
     color: "#29d",
     includeCSS: true,
-    showSpinner: false
+    showSpinner: false,
 });
 
-new Vue({
-    render: h =>
-        h(App, {
-            props: {
-                initialPage: JSON.parse(app.dataset.page),
-                resolveComponent: name =>
-                    import(`@/Pages/${name}`).then(module => module.default)
-            }
-        })
-}).$mount(app);
+const pages = import.meta.glob("./Pages/**/*.vue");
+
+createInertiaApp({
+    resolve: async (name) => {
+        return (await pages[`./Pages/${name}.vue`]()).default;
+    },
+
+    setup({ el, App, props, plugin }) {
+        createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .directive("focus", {
+                mounted(el) {
+                    el.focus();
+                },
+            })
+            .mixin({
+                methods: {
+                    $route: (...args) => window.route(...args).url(),
+                    active: (route) => window.route().current(route),
+                },
+            })
+            .mount(el);
+    },
+});

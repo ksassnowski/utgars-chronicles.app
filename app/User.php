@@ -38,6 +38,11 @@ class User extends Authenticatable implements MicroscopePlayer
         return $this->belongsToMany(History::class);
     }
 
+    public function lfgs(): HasMany
+    {
+        return $this->hasMany(Lfg::class);
+    }
+
     public function getName(History $history): string
     {
         return $this->name;

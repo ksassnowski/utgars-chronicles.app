@@ -57,7 +57,9 @@ class FocusTest extends TestCase
                 'name' => '::focus-name::',
             ]);
 
-        $response->assertStatus(201);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $history->refresh();
         $this->assertTrue($history->foci->contains('name', '::focus-name::'));
         Event::assertDispatched(
@@ -78,7 +80,9 @@ class FocusTest extends TestCase
                 'name' => '::new-name::',
             ]);
 
-        $response->assertOk();
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertEquals('::new-name::', $focus->refresh()->name);
         Event::assertDispatched(
             FocusUpdated::class,
@@ -96,7 +100,9 @@ class FocusTest extends TestCase
         $response = $this->actingAs($history->owner)
             ->deleteJson(route('focus.delete', [$history, $focus]));
 
-        $response->assertStatus(204);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseMissing('foci', ['id' => $focus->id]);
         Event::assertDispatched(
             FocusDeleted::class,

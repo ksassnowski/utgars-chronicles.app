@@ -46,27 +46,27 @@ class History extends Model
 
     public function events(): HasMany
     {
-        return $this->hasMany(Event::class);
+        return $this->hasMany(Event::class)->orderBy('position', 'ASC');
     }
 
     public function scenes(): HasMany
     {
-        return $this->hasMany(Scene::class);
+        return $this->hasMany(Scene::class)->orderBy('position', 'ASC');
     }
 
     public function foci(): HasMany
     {
-        return $this->hasMany(Focus::class);
+        return $this->hasMany(Focus::class)->latest();
     }
 
     public function palettes(): HasMany
     {
-        return $this->hasMany(Palette::class);
+        return $this->hasMany(Palette::class)->latest();
     }
 
     public function legacies(): HasMany
     {
-        return $this->hasMany(Legacy::class);
+        return $this->hasMany(Legacy::class)->latest();
     }
 
     public function insertPeriod(array $attributes): Period

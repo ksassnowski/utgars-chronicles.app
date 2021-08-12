@@ -48,7 +48,9 @@ class PaletteTest extends TestCase
             'type' => PaletteType::YES,
         ]);
 
-        $response->assertStatus(201);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseHas('palettes', [
             'history_id' => $history->id,
             'name' => '::entry-name::',
@@ -75,7 +77,9 @@ class PaletteTest extends TestCase
             'type' => PaletteType::NO,
         ]);
 
-        $response->assertOk();
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $item->refresh();
         $this->assertEquals('::new-name::', $item->name);
         $this->assertEquals(PaletteType::NO, $item->type);
@@ -94,13 +98,15 @@ class PaletteTest extends TestCase
         $response = $this->actingAs($history->owner)
             ->deleteJson(route('palette.delete', [$history, $item]));
 
-        $response->assertStatus(204);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseMissing('palettes', [
             'id' => $item->id,
         ]);
         Event::assertDispatched(
             PaletteItemDeleted::class,
-            fn (PaletteItemDeleted $event) => $event->itemId === $item->id && $event->history->id === $history->id
+            fn (PaletteItemDeleted $event) => $event->item->id === $item->id && $event->history->id === $history->id
         );
     }
 

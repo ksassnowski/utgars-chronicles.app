@@ -28,7 +28,7 @@
             <div class="flex justify-end">
                 <button
                     class="bg-indigo-700 text-white font-bold px-6 py-3 rounded disabled:opacity-50 disabled:cursor-not-allowed"
-                    :disabled="!formValid"
+                    :disabled="!formValid || form.processing"
                 >
                     Join Game
                 </button>
@@ -54,9 +54,9 @@ export default {
 
     data() {
         return {
-            form: {
+            form: this.$inertia.form({
                 name: null
-            }
+            })
         };
     },
 
@@ -69,7 +69,7 @@ export default {
     methods: {
         submit() {
             if (this.formValid) {
-                this.$inertia.post(this.acceptUrl, this.form, {
+                this.form.post(this.acceptUrl, {
                     onSuccess: () => {
                         if (window.fathom) {
                             window.fathom.trackGoal("UKDSEW8G", 0);

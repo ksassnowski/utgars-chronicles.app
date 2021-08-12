@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class PageController extends Controller
 {
-    public function __invoke(): View
+    public function __invoke(): Response
     {
-        return view('landing-page');
+        return Inertia::render('LandingPage');
     }
 }

@@ -60,7 +60,9 @@ class PeriodTest extends TestCase
             'position' => 1,
         ]);
 
-        $response->assertStatus(201);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertTrue($this->history->periods->contains('name', '::period-name::'));
         Event::assertDispatched(BoardUpdated::class);
     }
@@ -85,7 +87,9 @@ class PeriodTest extends TestCase
             'position' => 2,
         ]);
 
-        $response->assertStatus(201);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseHas('periods', [
             'name' => '::period-1::',
             'history_id' => $this->history->id,
@@ -117,7 +121,9 @@ class PeriodTest extends TestCase
             'type' => Type::LIGHT,
         ]);
 
-        $response->assertOk();
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
 
         $period->refresh();
         $this->assertEquals($period->name, '::new-period-name::');
@@ -149,9 +155,11 @@ class PeriodTest extends TestCase
             'history_id' => $this->history->id
         ]);
 
-        $response = $this->login()->deleteJson(route('periods.delete', [$period->history, $period]));
+        $response = $this->login()->delete(route('periods.delete', [$period->history, $period]));
 
-        $response->assertStatus(204);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseMissing('periods', ['id' => $period->id]);
         Event::assertDispatched(BoardUpdated::class);
     }
@@ -163,7 +171,7 @@ class PeriodTest extends TestCase
         $period2 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 2]);
         $period3 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 3]);
 
-        $this->login()->deleteJson(route('periods.delete', [$this->history->id, $period2]));
+        $this->login()->delete(route('periods.delete', [$this->history->id, $period2]));
 
         $this->assertEquals(1, $period1->refresh()->position);
         $this->assertEquals(2, $period3->refresh()->position);

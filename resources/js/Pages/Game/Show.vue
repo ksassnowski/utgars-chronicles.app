@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto px-4 pt-8">
         <div
             class="rounded shadow-lg py-6 border border-gray-300 lg:w-3/5 mx-auto"
         >
@@ -8,12 +8,12 @@
                     {{ game.name }}
                 </h1>
 
-                <InertiaLink
+                <Link
                     class="bg-indigo-700 text-white text-lg font-bold px-8 py-3 rounded"
                     :href="$route('history.play', game)"
                 >
                     Join Game
-                </InertiaLink>
+                </Link>
             </header>
 
             <section class="py-6 border-b border-gray-200">
@@ -93,8 +93,10 @@
 </template>
 
 <script>
-import Layout from "../Layouts/Layout";
-import ConfirmAction from "../../components/ConfirmAction";
+import { Link } from "@inertiajs/inertia-vue3";
+
+import Layout from "../Layouts/Layout.vue";
+import ConfirmAction from "../../components/ConfirmAction.vue";
 
 export default {
     name: "ShowGame",
@@ -104,7 +106,8 @@ export default {
     props: ["game"],
 
     components: {
-        ConfirmAction
+        ConfirmAction,
+        Link,
     },
 
     methods: {

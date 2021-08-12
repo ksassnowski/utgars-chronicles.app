@@ -1,113 +1,163 @@
 <template>
-    <Modal @close="$emit('close')" title="Create Scene">
+    <Modal :title="title" ref="modal">
+        <template v-slot:button="{ toggle }">
+            <div @click="toggle">
+                <slot />
+            </div>
+        </template>
+
         <form @submit.prevent="submit">
             <div class="mb-4">
                 <label for="question" class="label">Question</label>
                 <textarea
+                    v-focus
                     id="question"
                     rows="4"
                     class="input"
                     v-model="form.question"
-                    ref="question"
                 ></textarea>
-                <small class="text-red-600 text-xs mt-1" v-if="errors.question">{{ errors.question[0] }}</small>
+                <small
+                    class="text-red-600 text-xs mt-1"
+                    v-if="form.errors.question"
+                    >{{ form.errors.question[0] }}</small
+                >
             </div>
 
             <div class="mb-4">
                 <label for="scene" class="label">Scene</label>
-                <textarea id="scene" rows="4" class="input" v-model="form.scene"></textarea>
-                <small class="text-red-600 text-xs mt-1" v-if="errors.scene">{{ errors.scene[0] }}</small>
+                <textarea
+                    id="scene"
+                    rows="4"
+                    class="input"
+                    v-model="form.scene"
+                ></textarea>
+                <small
+                    class="text-red-600 text-xs mt-1"
+                    v-if="form.errors.scene"
+                    >{{ form.errors.scene[0] }}</small
+                >
             </div>
 
             <div class="mb-4">
                 <label for="answer" class="label">Answer</label>
-                <textarea id="answer" rows="4" class="input" v-model="form.answer"></textarea>
-                <small class="text-red-600 text-xs mt-1" v-if="errors.answer">{{ errors.answer[0] }}</small>
+                <textarea
+                    id="answer"
+                    rows="4"
+                    class="input"
+                    v-model="form.answer"
+                ></textarea>
+                <small
+                    class="text-red-600 text-xs mt-1"
+                    v-if="form.errors.answer"
+                    >{{ errors.answer[0] }}</small
+                >
             </div>
 
             <div class="mb-4">
                 <p class="label">Tone</p>
 
                 <div class="flex justify-between items-center">
-                    <div>
-                        <input type="radio" id="light" value="light" v-model="form.type">
+                    <div class="space-x-1">
+                        <input
+                            type="radio"
+                            id="light"
+                            value="light"
+                            v-model="form.type"
+                        />
                         <label for="light">Light</label>
                     </div>
 
-                    <div>
-                        <input type="radio" id="dark" value="dark" v-model="form.type">
+                    <div class="space-x-1">
+                        <input
+                            type="radio"
+                            id="dark"
+                            value="dark"
+                            v-model="form.type"
+                        />
                         <label for="dark">Dark</label>
                     </div>
                 </div>
 
-                <small class="text-red-600 text-xs mt-1" v-if="errors.type">{{ errors.type[0] }}</small>
+                <small
+                    class="text-red-600 text-xs mt-1"
+                    v-if="form.errors.type"
+                    >{{ form.errors.type[0] }}</small
+                >
             </div>
 
-            <button
-                type="submit"
-                class="text-white w-full rounded py-2 px-4"
-                :class="{ 'bg-indigo-400 cursor-not-allowed': loading, 'bg-indigo-700 ': !loading }"
-                :disabled="loading"
-            >
-                {{ loading ? 'Hang on...' : 'Save' }}
-            </button>
+            <div class="text-center">
+                <LoadingButton :loading="form.processing">Save</LoadingButton>
+
+                <Link
+                    v-if="scene.id"
+                    as="button"
+                    method="DELETE"
+                    :href="$route('scenes.delete', [scene.history_id, scene])"
+                    class="text-sm text-red-500 py-1 mt-1 px-2 inline-block"
+                    :only="['errors', 'history']"
+                    @before="confirmDelete"
+                >
+                    Delete Scene
+                </Link>
+            </div>
         </form>
     </Modal>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
+import { defineComponent, ref, inject, toRefs } from "vue";
+import { Link } from "@inertiajs/inertia-vue3";
 
-import Modal from '../Modal';
+import { useCreateEditForm } from "../../composables/useCreateEditForm";
+import Modal from "../Modal.vue";
+import LoadingButton from "../LoadingButton.vue";
 
-export default {
-    name: 'SceneModal',
+export default defineComponent({
+    name: "SceneModal",
 
-    props: ['event'],
-
-    inject: ['history'],
-
-    components: {
-        Modal,
-    },
-
-    computed: {
-        route() {
-            return this.$route('events.scenes.store', [this.history, this.event]);
+    props: {
+        event: Object,
+        scene: {
+            type: Object,
+            default: () => ({
+                question: "",
+                scene: "",
+                answer: "",
+                type: "light",
+            }),
         },
     },
 
-    data() {
-        return {
-            loading: false,
-            form: {
-                question: null,
-                type: null,
-                scene: null,
-                answer: null,
-            },
-            errors: {},
-        };
+    components: {
+        LoadingButton,
+        Modal,
+        Link,
     },
 
     methods: {
-        submit() {
-            this.loading = true;
-
-            axios.post(this.route, this.form)
-                .then(() => {
-                    this.loading = false;
-                    this.$emit('close');
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    this.errors = err.response.data.errors;
-                });
+        confirmDelete() {
+            return confirm("Are you sure you want to delete this scene?");
         },
     },
 
-    mounted() {
-        this.$nextTick(() => this.$refs.question.focus());
-    }
-};
+    setup(props) {
+        const modal = ref(null);
+        const { scene } = toRefs(props);
+        const history = inject("history");
+
+        const { form, submit } = useCreateEditForm(
+            scene,
+            ["question", "scene", "answer", "type"],
+            route("events.scenes.store", [history, props.event]),
+            () => route("scenes.update", [history, scene.value])
+        );
+
+        return {
+            modal,
+            form,
+            submit: submit(() => modal.value.toggle()),
+            title: scene.value.id ? "Edit Scene" : "Create Scene",
+        };
+    },
+});
 </script>

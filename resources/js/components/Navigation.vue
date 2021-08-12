@@ -1,13 +1,13 @@
 <template>
     <nav
-        class="px-4 flex flex-wrap items-center bg-indigo-800 mb-8 justify-between"
+        class="px-4 flex flex-wrap items-center bg-gray-800 justify-between"
     >
-        <InertiaLink
+        <Link
             :href="$route('home')"
             class="text-xl font-bold tracking-tight text-white mr-8"
         >
-            Utgar's Chronicles
-        </InertiaLink>
+            Utgar’s Chronicles
+        </Link>
 
         <div class="block sm:hidden py-6">
             <button
@@ -30,13 +30,16 @@
 </template>
 
 <script>
-import UserNavigation from "./UserNavigation";
+import { Link } from "@inertiajs/inertia-vue3";
+
+import UserNavigation from "./UserNavigation.vue";
 
 export default {
     name: "Navigation",
 
     components: {
-        UserNavigation
+        Link,
+        UserNavigation,
     },
 
     data() {

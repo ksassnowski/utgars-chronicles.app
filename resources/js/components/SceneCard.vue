@@ -1,191 +1,90 @@
 <template>
-    <div :class="{ 'px-6': !editing }" class="pt-6">
-        <div class="relative pt-8 px-6 pb-6 relative shadow-lg rounded-lg border bg-white border-gray-200 text-sm w-full min-h-32 group panzoom-exclude">
-            <div v-if="!editing">
-                <div class="invisible group-hover:visible absolute left-0 top-0 w-full pl-3 pr-2 pt-2 flex justify-between z-20">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="handle w-4 h-4 fill-current text-gray-400 cursor-move"
-                        style="margin-top: 2px"
-                        viewBox="0 0 20 20"
-                    ><path d="M0 3h20v2H0V3zm0 4h20v2H0V7zm0 4h20v2H0v-2zm0 4h20v2H0v-2z"/></svg>
+    <div class="mt-4 px-6">
+        <GameCard :type="scene.type" label="Scene">
+            <template #menu>
+                <SceneModal :scene="scene" :event="event">
+                    <CardButton :type="scene.type" />
+                </SceneModal>
 
-                    <div class="flex items-center">
-                        <button @click="open = !open" class="mr-2" :title="open ? 'Collapse Scene' : 'Expand Scene'" style="margin-top: -2px;">
-                            <Icon class="w-4 h-4 fill-current text-gray-600" :name="open ? 'view-hide' : 'view-show'" />
-                        </button>
-
-                        <SettingsPanel
-                            v-if="!editing"
-                            @delete="remove"
-                            @edit="edit"
-                        />
-                    </div>
-                </div>
-
-                <p class="text-sm whitespace-pre-wrap" :class="{ 'pb-2': open }">{{ scene.question }}</p>
-
-                <template v-if="open">
-                    <hr>
-
-                    <p v-if="scene.scene" class="text-sm py-2 whitespace-pre-wrap">{{ scene.scene }}</p>
-                    <p v-else class="text-sm py-2 text-gray-600 italic">This scene has no description.</p>
-
-                    <hr>
-
-                    <p v-if="scene.answer" class="text-sm pt-2 whitespace-pre-wrap">{{ scene.answer }}</p>
-                    <p v-else class="text-sm pt-2 text-gray-600 italic">This scene has not been answered yet.</p>
-                </template>
-
-                <p
-                    class="absolute top-0 text-sm bg-white text-gray-700 font-bold leading-loose uppercase px-1"
-                    style="top: -15px; right: 20px;"
+                <CardButton
+                    @click="toggle"
+                    :title="open ? 'Collapse Scene' : 'Expand Scene'"
+                    :type="scene.type"
                 >
-                    Scene
+                    <component
+                        :is="open ? 'EyeOffIcon' : 'EyeIcon'"
+                        class="w-4 h-4"
+                    />
+                </CardButton>
+            </template>
+
+            <p class="text-sm whitespace-pre-wrap" :class="{ 'pb-2': open }">
+                {{ scene.question }}
+            </p>
+
+            <template v-if="open">
+                <hr />
+
+                <p v-if="scene.scene" class="text-sm py-2 whitespace-pre-wrap">
+                    {{ scene.scene }}
+                </p>
+                <p
+                    v-else
+                    class="text-sm py-2 text-gray-600 italic whitespace-normal"
+                >
+                    This scene has no description.
                 </p>
 
-                <div
-                    v-if="scene.type"
-                    class="rounded-full border-2 border-gray-800 h-6 w-6 absolute"
-                    style="top: -12px"
-                    :class="{ 'bg-white': scene.type === 'light', 'bg-gray-800': scene.type === 'dark' }"
-                ></div>
-            </div>
+                <hr />
 
-            <form v-else @submit.prevent="submit">
-                <div class="mb-4">
-                    <label for="question" class="label">Question</label>
-                    <textarea id="question" rows="3" class="input" v-model="form.question" required></textarea>
-                    <small v-if="errors.question" class="text-red-600 text-xs mt-1">{{ errors.question[0] }}</small>
-                </div>
-
-                <div class="mb-4">
-                    <label for="scene" class="label">Scene</label>
-                    <textarea id="scene" rows="3" class="input" v-model="form.scene"></textarea>
-                    <small v-if="errors.scene" class="text-red-600 text-xs mt-1">{{ errors.scene[0] }}</small>
-                </div>
-
-                <div class="mb-4">
-                    <label for="answer" class="label">Answer</label>
-                    <textarea id="answer" rows="3" class="input" v-model="form.answer"></textarea>
-                    <small v-if="errors.answer" class="text-red-600 text-xs mt-1">{{ errors.answer[0] }}</small>
-                </div>
-
-                <div class="mb-4">
-                    <p class="label">Tone</p>
-
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <input type="radio" id="dark" value="dark" v-model="form.type">
-                            <label for="dark">Dark</label>
-                        </div>
-
-                        <div>
-                            <input type="radio" id="light" value="light" v-model="form.type">
-                            <label for="light">Light</label>
-                        </div>
-                    </div>
-
-                    <small class="text-red-600 text-xs mt-1" v-if="errors.type">{{ errors.type[0] }}</small>
-                </div>
-
-                <LoadingButton :loading="loading">
-                    {{ loading ? 'Hang on...' : 'Save' }}
-                </LoadingButton>
-
-                <button type="button" class="w-full text-gray-700 text-sm mt-2" @click="cancel">Cancel</button>
-            </form>
-        </div>
+                <p v-if="scene.answer" class="text-sm pt-2 whitespace-pre-wrap">
+                    {{ scene.answer }}
+                </p>
+                <p v-else class="text-sm pt-2 text-gray-600 italic">
+                    This scene has not been answered yet.
+                </p>
+            </template>
+        </GameCard>
     </div>
 </template>
 
-<script>
-import axios from 'axios';
+<script lang="ts">
+import { defineComponent, ref, inject, onUnmounted } from "vue";
+import { MenuIcon, EyeIcon, EyeOffIcon } from "@heroicons/vue/solid";
 
-import SettingsPanel from './SettingsPanel';
-import Icon from './Icon';
-import LoadingButton from './LoadingButton';
+import { useEmitter } from "../composables/useEmitter";
+import LoadingButton from "./LoadingButton.vue";
+import GameCard from "./GameCard.vue";
+import SceneModal from "./Modal/SceneModal.vue";
+import CardButton from "./CardButton.vue";
 
-export default {
-    name: 'SceneCard',
+export default defineComponent({
+    name: "SceneCard",
 
     components: {
+        CardButton,
+        SceneModal,
+        GameCard,
         LoadingButton,
-        Icon,
-        SettingsPanel,
+        MenuIcon,
+        EyeIcon,
+        EyeOffIcon,
     },
 
-    props: ['scene'],
-
-    inject: ['history'],
-
-    data() {
-        return {
-            editing: false,
-            loading: false,
-            open: true,
-            errors: {},
-            form: {
-                question: this.scene.question,
-                scene: this.scene.scene,
-                answer: this.scene.answer,
-                type: this.scene.type,
-            }
-        };
+    props: {
+        scene: Object,
+        event: Object,
     },
 
-    methods: {
-        remove() {
-            const confirmed = confirm('Are you sure you want to delete this scene?');
+    setup() {
+        const open = ref(false);
+        const toggle = () => (open.value = !open.value);
+        const history = inject("history");
 
-            if (!confirmed) {
-                return;
-            }
+        const emitter = useEmitter();
+        onUnmounted(emitter.on("scenes:toggle", toggle));
 
-            axios.delete(this.$route('scenes.delete', [this.history, this.scene]))
-                .then(() => this.editing = false);
-        },
-
-        edit() {
-            this.editing = true;
-            this.form.question = this.scene.question;
-            this.form.scene = this.scene.scene;
-            this.form.answer = this.scene.answer;
-            this.form.type = this.scene.type;
-        },
-
-        cancel() {
-            this.editing = false;
-            this.form.question = this.scene.question;
-            this.form.scene = this.scene.scene;
-            this.form.answer = this.scene.answer;
-            this.form.type = this.scene.type;
-        },
-
-        submit() {
-            if (
-                this.form.question === this.scene.question
-                && this.form.scene === this.scene.scene
-                && this.form.answer === this.scene.answer
-                && this.form.type === this.scene.type
-            ) {
-                this.editing = false;
-                return;
-            }
-
-            this.loading = true;
-
-            axios.put(this.$route('scenes.update', [this.history, this.scene]), this.form)
-                .then(() => {
-                    this.editing = false;
-                    this.loading = false;
-                    this.errors = {};
-                })
-                .catch((err) => {
-                    this.loading = false;
-                    this.errors = err.response.data.errors;
-                });
-        }
+        return { open, toggle, history };
     },
-};
+});
 </script>

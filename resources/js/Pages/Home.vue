@@ -1,17 +1,14 @@
 <template>
-    <div class="container mx-auto px-4">
-        <CreateHistoryModal v-if="showModal" @close="showModal = false" />
-
+    <div class="container mx-auto px-4 pt-8">
         <section class="mb-8">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="font-bold text-xl">
                     Histories
                 </h2>
 
-                <button
-                    @click="showModal = true"
-                    class="px-4 py-2 bg-indigo-700 text-white rounded"
-                >Start new history</button>
+                <CreateHistoryModal>
+                    <PrimaryButton>Start new history</PrimaryButton>
+                </CreateHistoryModal>
             </div>
 
             <ul class="history-cards">
@@ -36,9 +33,10 @@
 </template>
 
 <script>
-import Layout from './Layouts/Layout';
-import HistoryCard from '../components/HistoryCard';
-import CreateHistoryModal from "../components/Modal/CreateHistoryModal";
+import Layout from './Layouts/Layout.vue';
+import HistoryCard from '../components/HistoryCard.vue';
+import CreateHistoryModal from "../components/Modal/CreateHistoryModal.vue";
+import PrimaryButton from "../components/UI/PrimaryButton.vue";
 
 export default {
     name: 'HomePage',
@@ -54,6 +52,7 @@ export default {
     props: ['histories', 'games'],
 
     components: {
+        PrimaryButton,
         CreateHistoryModal,
         HistoryCard,
     },

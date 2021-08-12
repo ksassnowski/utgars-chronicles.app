@@ -86,7 +86,9 @@ class SceneTest extends TestCase
             'position' => 1,
         ]);
 
-        $response->assertStatus(201);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseHas('scenes', [
             'question' => '::question::',
             'scene' => '::scene::',
@@ -115,7 +117,9 @@ class SceneTest extends TestCase
                 'type' => Type::LIGHT
             ]);
 
-        $response->assertOk();
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $scene->refresh();
         $this->assertEquals('::new-question::', $scene->question);
         $this->assertEquals('::new-scene::', $scene->scene);
@@ -133,7 +137,9 @@ class SceneTest extends TestCase
 
         $response = $this->login()->deleteJson(route('scenes.delete', [$scene->history, $scene]));
 
-        $response->assertStatus(204);
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $this->assertDatabaseMissing('scenes', [
             'id' => $scene->id,
         ]);
