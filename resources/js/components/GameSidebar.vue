@@ -37,9 +37,13 @@
             </div>
 
             <div class="w-full">
-                <!--button @click="toggleScenes" class="text-white text-sm">
+                <button
+                    v-if="$page.props.environment === 'local'"
+                    @click="toggleScenes"
+                    class="hidden sm:block text-white text-sm"
+                >
                     Toggle Scenes
-                </button-->
+                </button>
 
                 <Link
                     :href="$route('home')"
