@@ -13,6 +13,7 @@
             </NavigationLink>
 
             <NavigationLink
+                v-if="$page.props.environment === 'local'"
                 :href="$route('lfg.index')"
                 :is-active="$page.url.startsWith('/lfg')"
                 >Find a game</NavigationLink
