@@ -66,7 +66,7 @@ class History extends Model
 
     public function legacies(): HasMany
     {
-        return $this->hasMany(Legacy::class);
+        return $this->hasMany(Legacy::class)->latest();
     }
 
     public function insertPeriod(array $attributes): Period
