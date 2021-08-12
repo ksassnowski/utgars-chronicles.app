@@ -3,6 +3,8 @@
 namespace Tests\Unit\Event;
 
 use App\History;
+use App\Palette;
+use App\PaletteType;
 use PHPUnit\Framework\TestCase;
 use App\Events\PaletteItemDeleted;
 
@@ -14,14 +16,15 @@ class PaletteItemDeletedTest extends TestCase
     public function broadcastCorrectAttributes(): void
     {
         $this->assertEquals([
-            'id' => 123,
+            'name' => '::name::',
+            'type' => PaletteType::YES,
         ], $this->createEvent()->broadcastWith());
     }
 
     protected function createEvent()
     {
         return new PaletteItemDeleted(
-            123,
+            new Palette(['name' => '::name::', 'type' => PaletteType::YES]),
             new History(['id' => 999])
         );
     }

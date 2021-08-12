@@ -106,7 +106,7 @@ class PaletteTest extends TestCase
         ]);
         Event::assertDispatched(
             PaletteItemDeleted::class,
-            fn (PaletteItemDeleted $event) => $event->itemId === $item->id && $event->history->id === $history->id
+            fn (PaletteItemDeleted $event) => $event->item->id === $item->id && $event->history->id === $history->id
         );
     }
 
