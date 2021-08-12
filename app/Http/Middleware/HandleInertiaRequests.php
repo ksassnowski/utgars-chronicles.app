@@ -39,6 +39,7 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request)
     {
         return array_merge(parent::share($request), [
+            'environment' => fn () => app()->environment(),
             'auth' => function () use ($request) {
                 return [
                     'user' => !$request->routeIs('invitation.accept.show-form') && Auth::user() ? [
