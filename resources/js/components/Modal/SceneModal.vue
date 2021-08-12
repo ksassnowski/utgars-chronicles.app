@@ -10,6 +10,7 @@
             <div class="mb-4">
                 <label for="question" class="label">Question</label>
                 <textarea
+                    v-focus
                     id="question"
                     rows="4"
                     class="input"
@@ -84,13 +85,28 @@
                 >
             </div>
 
-            <LoadingButton :loading="form.processing">Save</LoadingButton>
+            <div class="text-center">
+                <LoadingButton :loading="form.processing">Save</LoadingButton>
+
+                <Link
+                    v-if="scene.id"
+                    as="button"
+                    method="DELETE"
+                    :href="$route('scenes.delete', [scene.history_id, scene])"
+                    class="text-sm text-red-500 py-1 mt-1 px-2 inline-block"
+                    :only="['errors', 'history']"
+                    @before="confirmDelete"
+                >
+                    Delete Scene
+                </Link>
+            </div>
         </form>
     </Modal>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, inject, toRefs } from "vue";
+import { Link } from "@inertiajs/inertia-vue3";
 
 import { useCreateEditForm } from "../../composables/useCreateEditForm";
 import Modal from "../Modal.vue";
@@ -115,6 +131,13 @@ export default defineComponent({
     components: {
         LoadingButton,
         Modal,
+        Link,
+    },
+
+    methods: {
+        confirmDelete() {
+            return confirm("Are you sure you want to delete this scene?");
+        },
     },
 
     setup(props) {

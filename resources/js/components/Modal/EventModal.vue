@@ -10,6 +10,7 @@
             <div class="mb-4">
                 <label for="name" class="label">Name</label>
                 <textarea
+                    v-focus
                     type="text"
                     class="input"
                     id="name"
@@ -45,13 +46,28 @@
                 </div>
             </div>
 
-            <LoadingButton :loading="form.processing"> Save </LoadingButton>
+            <div class="text-center">
+                <LoadingButton :loading="form.processing"> Save </LoadingButton>
+
+                <Link
+                    v-if="event.id"
+                    as="button"
+                    method="DELETE"
+                    :href="$route('events.delete', [event.history_id, event])"
+                    class="text-sm text-red-500 py-1 mt-1 px-2 inline-block"
+                    :only="['errors', 'history']"
+                    @before="confirmDelete"
+                >
+                    Delete Event
+                </Link>
+            </div>
         </form>
     </Modal>
 </template>
 
 <script lang="ts">
 import { defineComponent, toRefs, ref, inject } from "vue";
+import { Link } from "@inertiajs/inertia-vue3";
 
 import { useCreateEditForm } from "../../composables/useCreateEditForm";
 import Modal from "../Modal.vue";
@@ -78,6 +94,15 @@ export default defineComponent({
     components: {
         LoadingButton,
         Modal,
+        Link,
+    },
+
+    methods: {
+        confirmDelete() {
+            return confirm(
+                "Really delete this event? All scenes belonging to this event will be deleted too!"
+            );
+        },
     },
 
     setup(props) {
