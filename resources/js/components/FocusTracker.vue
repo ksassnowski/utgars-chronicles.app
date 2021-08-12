@@ -171,18 +171,15 @@ export default defineComponent({
         );
         const previousFoci = computed(() => foci.value.slice(1));
 
-        watch(currentFocus, (newFocus) => {
-            if (newFocus === null) {
+        watch(currentFocus, (newFocus, oldFocus) => {
+            if (newFocus === null || newFocus.name === oldFocus.name) {
                 return;
             }
 
             addMessage({
                 title: "Current Focus",
                 message: newFocus.name,
-                icon: {
-                    name: "ExclamationCircleIcon",
-                    color: "text-indigo-400",
-                },
+                icon: "ExclamationCircleIcon",
             });
         });
 

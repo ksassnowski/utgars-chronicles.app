@@ -52,17 +52,18 @@
                 @click.stop
                 class="
                     absolute
-                    invisible
-                    group-hover:visible
+                    md:invisible md:group-hover:visible
                     top-0
                     right-0
                     p-1
                     mt-1.5
                     mr-1.5
-                    bg-black bg-opacity-50
-                    text-gray-200
+                    bg-black bg-opacity-30
+                    text-gray-100
+                    md:text-gray-200
                     rounded
-                    hover:bg-opacity-80 hover:text-white
+                    hover:bg-opacity-60
+                    md:hover:text-white
                     transition
                 "
             >
@@ -75,7 +76,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
-import { TrashIcon } from "@heroicons/vue/solid";
+import { TrashIcon } from "@heroicons/vue/outline";
 
 import { useEditMode } from "../composables/useEditMode";
 

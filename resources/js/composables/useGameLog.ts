@@ -1,11 +1,10 @@
 import { ref } from "vue";
 
-type Icon = { name: string; color: string };
 type Message = {
     id: string;
     title: string;
     message: string;
-    icon: Icon | null;
+    icon: string;
     close: () => void;
 };
 
@@ -25,7 +24,7 @@ export const useGameLog = (function () {
         const close = () => removeMessage(id);
         messages.value.push({ id, close, ...message });
 
-        setTimeout(close, 3000);
+        setTimeout(close, 4000);
 
         return close;
     };
