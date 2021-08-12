@@ -101,11 +101,13 @@ class HistoryTest extends TestCase
             'name' => '::old-name::',
         ]);
 
-        $response = $this->patchJson(route('history.update-seed', $history), [
+        $response = $this->patch(route('history.update-seed', $history), [
             'name' => '::new-name::',
         ]);
 
-        $response->assertOk();
+        $response
+            ->assertRedirect()
+            ->assertSessionHasNoErrors();
         $history->refresh();
         $this->assertEquals('::new-name::', $history->name);
         Event::assertDispatched(
