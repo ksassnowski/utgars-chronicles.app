@@ -109,7 +109,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, watch, computed, toRefs } from "vue";
 import {
     Popover,
     PopoverButton,
@@ -122,6 +122,7 @@ import {
 import { XIcon, PlusIcon } from "@heroicons/vue/solid";
 import { useForm } from "@inertiajs/inertia-vue3";
 
+import { useGameLog } from "../composables/useGameLog";
 import TextInput from "./UI/TextInput.vue";
 import PrimaryButton from "./UI/PrimaryButton.vue";
 import LoadingButton from "./LoadingButton.vue";
@@ -152,21 +153,8 @@ export default defineComponent({
 
     props: ["foci", "history"],
 
-    computed: {
-        currentFocus() {
-            if (this.foci.length === 0) {
-                return null;
-            }
-
-            return this.foci[0];
-        },
-
-        previousFoci() {
-            return this.foci.slice(1);
-        },
-    },
-
     setup(props) {
+        const { foci } = toRefs(props);
         const newFocusForm = useForm({ name: "" });
         const submitNewFocusForm = (close) => {
             newFocusForm.post(route("history.focus.define", [props.history]), {
@@ -177,8 +165,28 @@ export default defineComponent({
                 },
             });
         };
+        const { addMessage } = useGameLog();
+        const currentFocus = computed(() =>
+            foci.value.length === 0 ? null : foci.value[0]
+        );
+        const previousFoci = computed(() => foci.value.slice(1));
 
-        return { newFocusForm, submitNewFocusForm };
+        watch(currentFocus, (newFocus) => {
+            if (newFocus === null) {
+                return;
+            }
+
+            addMessage({
+                title: "Current Focus",
+                message: newFocus.name,
+                icon: {
+                    name: "ExclamationCircleIcon",
+                    color: "text-indigo-400",
+                },
+            });
+        });
+
+        return { newFocusForm, currentFocus, previousFoci, submitNewFocusForm };
     },
 });
 </script>
