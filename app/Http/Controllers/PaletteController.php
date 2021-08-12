@@ -35,7 +35,7 @@ class PaletteController extends Controller
     {
         $palette->delete();
 
-        broadcast(new PaletteItemDeleted($palette->id, $palette->history))->toOthers();
+        broadcast(new PaletteItemDeleted($palette, $palette->history))->toOthers();
 
         return redirect()->back();
     }
