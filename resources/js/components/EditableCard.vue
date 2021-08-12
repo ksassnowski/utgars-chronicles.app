@@ -97,7 +97,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, watch } from "vue";
+import { defineComponent, toRefs, watch } from "vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 import { TrashIcon, PencilIcon, XIcon } from "@heroicons/vue/solid";
 
