@@ -1,7 +1,7 @@
 <template>
     <Modal :title="title" ref="modal">
         <template v-slot:button="{ toggle }">
-            <div @click="toggle">
+            <div @click="toggle" v-bind="$attrs">
                 <slot />
             </div>
         </template>
