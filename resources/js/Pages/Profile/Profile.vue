@@ -6,7 +6,7 @@
             </h1>
 
             <div class="rounded shadow-lg py-6 border border-gray-300 px-4">
-                <form @submit.prevent="changePassword" class="flex">
+                <form @submit.prevent="submit" class="flex">
                     <div class="w-1/3 pr-4">
                         <p class="text-lg text-gray-800">Change Password</p>
                     </div>
@@ -14,7 +14,7 @@
                     <div class="w-2/3">
                         <div
                             class="mb-4"
-                            :class="{ error: $page.props.errors.password }"
+                            :class="{ error: form.errors.password }"
                         >
                             <label for="password" class="label"
                                 >New Password</label
@@ -23,12 +23,12 @@
                                 type="password"
                                 class="input"
                                 id="password"
-                                v-model="password.form.password"
+                                v-model="form.password"
                             />
                             <small
-                                v-if="$page.props.errors.password"
+                                v-if="form.errors.password"
                                 class="text-xs text-red-500 mt-1"
-                                >{{ $page.props.errors.password[0] }}</small
+                                >{{ form.errors.password[0] }}</small
                             >
                         </div>
 
@@ -40,13 +40,13 @@
                                 type="password"
                                 class="input"
                                 id="passwordConfirmation"
-                                v-model="password.form.password_confirmation"
+                                v-model="form.password_confirmation"
                             />
                         </div>
 
                         <LoadingButton
                             class="px-8 py-2 bg-indigo-700 rounded text-white"
-                            :loading="password.loading"
+                            :loading="form.processing"
                         >
                             Change Password
                         </LoadingButton>
@@ -57,11 +57,14 @@
     </div>
 </template>
 
-<script>
-import Layout from "../Layouts/Layout.vue";
-import LoadingButton from "../../components/LoadingButton.vue";
+<script lang="ts">
+import { defineComponent } from "vue";
+import { useForm } from "@inertiajs/inertia-vue3";
 
-export default {
+import Layout from "@/Pages/Layouts/Layout.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
+
+export default defineComponent({
     name: "Profile",
 
     metaInfo() {
@@ -88,22 +91,20 @@ export default {
         };
     },
 
-    methods: {
-        changePassword() {
-            this.password.loading = true;
+    setup() {
+        const form = useForm({
+            password: null,
+            password_confirmation: null,
+        });
+        const submit = () => {
+            form.post(route("password.change"), {
+                onSuccess: () => {
+                    form.reset();
+                },
+            });
+        };
 
-            this.$inertia
-                .post(this.$route("password.change"), this.password.form)
-                .then(() => {
-                    this.password.form = {
-                        password: null,
-                        password_confirmation: null,
-                    };
-                })
-                .finally(() => {
-                    this.password.loading = false;
-                });
-        },
+        return { form, submit };
     },
-};
+});
 </script>
