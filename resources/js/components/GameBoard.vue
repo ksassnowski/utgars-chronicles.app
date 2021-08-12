@@ -1,5 +1,7 @@
 <template>
     <div class="h-full flex relative">
+        <GameLog />
+
         <GameSidebar
             :history="history"
             :legacies="legacies"
@@ -62,6 +64,7 @@ import HistorySeed from "./HistorySeed.vue";
 import PeriodModal from "./Modal/PeriodModal.vue";
 import PrimaryButton from "./UI/PrimaryButton.vue";
 import GameSidebar from "./GameSidebar.vue";
+import GameLog from "./GameLog.vue";
 
 export default defineComponent({
     name: "GameBoard",
@@ -86,6 +89,7 @@ export default defineComponent({
     },
 
     components: {
+        GameLog,
         GameSidebar,
         PrimaryButton,
         PeriodModal,
@@ -164,6 +168,7 @@ export default defineComponent({
         });
 
         provide("history", props.history);
+        provide("channelName", channelName);
 
         return { channelName };
     },
