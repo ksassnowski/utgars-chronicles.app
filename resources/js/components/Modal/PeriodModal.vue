@@ -10,6 +10,7 @@
             <div class="mb-4">
                 <label for="name" class="label" ref="input">Name</label>
                 <textarea
+                    v-focus
                     type="text"
                     class="input"
                     id="name"
@@ -45,13 +46,28 @@
                 </div>
             </div>
 
-            <LoadingButton :loading="form.processing">Save</LoadingButton>
+            <div class="text-center">
+                <LoadingButton :loading="form.processing">Save</LoadingButton>
+
+                <Link
+                    v-if="period.id"
+                    as="button"
+                    method="DELETE"
+                    :href="$route('periods.delete', [history, period])"
+                    class="text-sm text-red-500 py-1 mt-1 px-2 inline-block"
+                    :only="['errors', 'history']"
+                    @before="confirmDelete"
+                >
+                    Delete Period
+                </Link>
+            </div>
         </form>
     </Modal>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, toRefs } from "vue";
+import { Link } from "@inertiajs/inertia-vue3";
 
 import { useCreateEditForm } from "../../composables/useCreateEditForm";
 import Modal from "../Modal.vue";
@@ -63,6 +79,7 @@ export default defineComponent({
     components: {
         LoadingButton,
         Modal,
+        Link,
     },
 
     props: {
@@ -80,6 +97,14 @@ export default defineComponent({
                 name: "",
                 type: "light",
             }),
+        },
+    },
+
+    methods: {
+        confirmDelete() {
+            return confirm(
+                "Really delete this period? All events and scenes inside of this period will be deleted as well."
+            );
         },
     },
 
