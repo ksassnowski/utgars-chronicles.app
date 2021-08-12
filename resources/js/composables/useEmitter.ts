@@ -11,6 +11,8 @@ class Emitter {
         }
 
         this.handlers[event].push(handler);
+
+        return () => this.off(event, handler);
     }
 
     public off(event: string, handler: EventHandler) {
@@ -25,7 +27,6 @@ class Emitter {
 
     public trigger(event: string, payload: any = null) {
         if (!this.handlers[event]) {
-            console.warn(`No handlers registered for event ${event}`);
             return;
         }
 

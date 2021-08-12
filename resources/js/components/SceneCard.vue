@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, inject } from "vue";
+import { defineComponent, ref, inject, onUnmounted } from "vue";
 import { MenuIcon, EyeIcon, EyeOffIcon } from "@heroicons/vue/solid";
 
 import { useEmitter } from "../composables/useEmitter";
@@ -82,7 +82,7 @@ export default defineComponent({
         const history = inject("history");
 
         const emitter = useEmitter();
-        emitter.on("scenes:toggle", toggle);
+        onUnmounted(emitter.on("scenes:toggle", toggle));
 
         return { open, toggle, history };
     },
