@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\History;
 
 use App\History;
-use Illuminate\Http\JsonResponse;
 use App\Events\HistorySeedUpdated;
+use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\History\UpdateSeedRequest;
 
 final class UpdateSeedController
 {
-    public function __invoke(UpdateSeedRequest $request, History $history): JsonResponse
+    public function __invoke(UpdateSeedRequest $request, History $history): RedirectResponse
     {
         $history->update($request->validated());
 
-        broadcast(new HistorySeedUpdated($history));
+        broadcast(new HistorySeedUpdated($history))->toOthers();
 
-        return response()->json();
+        return redirect()->back();
     }
 }

@@ -51,7 +51,7 @@
                 <XIcon class="w-5 h-5 text-gray-400"></XIcon>
             </button>
 
-            <form @submit.prevent="submit()">
+            <form @submit.prevent="submit">
                 <div class="px-6 pt-6">
                     <label for="name" class="sr-only">Name</label>
                     <input
@@ -97,7 +97,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive, toRefs, watch } from "vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 import { TrashIcon, PencilIcon, XIcon } from "@heroicons/vue/solid";
 
@@ -122,7 +122,8 @@ export default defineComponent({
     },
 
     setup(props) {
-        const form = useForm({ name: props.item.name });
+        const { item } = toRefs(props);
+        const form = useForm({ name: item.value.name });
         const { editing, startEditing, stopEditing, submit } = useEditMode(
             form,
             props.updateRoute,
@@ -134,12 +135,14 @@ export default defineComponent({
             props.buttonClasses ||
             "bg-indigo-500 bg-opacity-70 hover:bg-opacity-60 text-gray-100 hover:text-white";
 
+        watch(item, (newItem) => (form.name = newItem.name));
+
         return {
             form,
             editing,
             startEditing,
             stopEditing,
-            submit,
+            submit: submit(),
             buttonClasses,
         };
     },
