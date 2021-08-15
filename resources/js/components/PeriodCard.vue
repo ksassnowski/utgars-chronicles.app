@@ -1,6 +1,6 @@
 <template>
     <div class="max-h-full flex flex-col">
-        <div class="game-card">
+        <div class="relative group">
             <GameCard :type="period.type" label="Period">
                 <template #menu>
                     <PeriodModal :period="period" :history="history">
@@ -13,6 +13,17 @@
                 </h3>
 
                 <template #footer>
+                    <PeriodModal :history="history" :position="period.position">
+                        <CardButton
+                            :type="period.type"
+                            class="flex items-center -space-x-0.5"
+                            title="Add Period before"
+                        >
+                            <ArrowSmLeftIcon class="w-4 h-4" />
+                            <PlusIcon class="w-3 h-3" />
+                        </CardButton>
+                    </PeriodModal>
+
                     <EventModal :period="period" :position="nextEventPosition">
                         <button
                             class="text-sm"
@@ -24,6 +35,20 @@
                             Add Event
                         </button>
                     </EventModal>
+
+                    <PeriodModal
+                        :history="history"
+                        :position="period.position + 1"
+                    >
+                        <CardButton
+                            :type="period.type"
+                            class="flex items-center -space-x-0.5"
+                            title="Add period after"
+                        >
+                            <PlusIcon class="w-3 h-3" />
+                            <ArrowSmRightIcon class="w-4 h-4" />
+                        </CardButton>
+                    </PeriodModal>
                 </template>
             </GameCard>
         </div>
@@ -31,7 +56,7 @@
         <draggable
             :list="period.events"
             @change="eventMoved"
-            class="overflow-x-hidden overflow-y-auto space-y-4"
+            class="overflow-x-hidden overflow-y-auto space-y-4 pt-4"
             style="flex: 1 1 auto"
             handle=".handle"
             item-key="id"
@@ -46,7 +71,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import draggable from "vuedraggable";
-import { MenuIcon } from "@heroicons/vue/solid";
+import {
+    PlusIcon,
+    MenuIcon,
+    ArrowSmLeftIcon,
+    ArrowSmRightIcon,
+} from "@heroicons/vue/outline";
 
 import EventCard from "./EventCard.vue";
 import Modal from "./Modal.vue";
@@ -65,6 +95,9 @@ export default defineComponent({
     },
 
     components: {
+        ArrowSmLeftIcon,
+        ArrowSmRightIcon,
+        PlusIcon,
         CardButton,
         PeriodModal,
         GameCard,
