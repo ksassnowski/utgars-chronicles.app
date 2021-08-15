@@ -5,7 +5,6 @@
             px-3
             rounded-lg
             border
-            mb-4
             shadow-sm
             relative
             panzoom-exclude
@@ -55,7 +54,7 @@
             v-if="$slots.footer"
             class="
                 flex
-                justify-end
+                justify-between
                 absolute
                 inset-x-0
                 bottom-0
