@@ -1,5 +1,5 @@
 <template>
-    <div class="relative game-card">
+    <div class="relative group">
         <GameCard :type="event.type" label="Event">
             <template #menu>
                 <EventModal :event="event" :period="period">
@@ -12,6 +12,17 @@
             </h3>
 
             <template #footer>
+                <EventModal :period="period" :position="event.position">
+                    <CardButton
+                        :type="event.type"
+                        class="flex items-center -space-x-0.5"
+                        title="Add event before"
+                    >
+                        <ArrowSmUpIcon class="w-4 h-4" />
+                        <PlusIcon class="w-3 h-3" />
+                    </CardButton>
+                </EventModal>
+
                 <SceneModal :event="event">
                     <button
                         class="text-sm"
@@ -23,6 +34,17 @@
                         Add Scene
                     </button>
                 </SceneModal>
+
+                <EventModal :period="period" :position="event.position + 1">
+                    <CardButton
+                        :type="event.type"
+                        class="flex items-center -space-x-0.5"
+                        title="Add event after"
+                    >
+                        <PlusIcon class="w-3 h-3" />
+                        <ArrowSmDownIcon class="w-4 h-4" />
+                    </CardButton>
+                </EventModal>
             </template>
         </GameCard>
 
@@ -42,7 +64,13 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import draggable from "vuedraggable";
-import { MenuIcon, PencilIcon } from "@heroicons/vue/solid";
+import {
+    MenuIcon,
+    PencilIcon,
+    ArrowSmUpIcon,
+    ArrowSmDownIcon,
+    PlusIcon,
+} from "@heroicons/vue/outline";
 
 import LoadingButton from "./LoadingButton.vue";
 import SceneCard from "./SceneCard.vue";
@@ -71,6 +99,9 @@ export default defineComponent({
         LoadingButton,
         MenuIcon,
         PencilIcon,
+        ArrowSmUpIcon,
+        ArrowSmDownIcon,
+        PlusIcon,
     },
 
     methods: {
