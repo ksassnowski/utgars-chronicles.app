@@ -22,7 +22,7 @@
         "laravel-mix": "6.0.0-beta.14",
         "lodash": "^4.17.19",
         "portal-vue": "^2.1.7",
-        "postcss": "^8.1.7",
+        "postcss": "^8.2.13",
         "pusher-js": "^5.0.3",
         "resolve-url-loader": "^2.3.1",
         "tailwindcss": "^2.0.1",
