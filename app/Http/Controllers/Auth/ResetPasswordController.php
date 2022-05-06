@@ -1,13 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use Inertia\Inertia;
-use Inertia\Response;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class ResetPasswordController extends Controller
 {
@@ -20,7 +22,7 @@ class ResetPasswordController extends Controller
     | and uses a simple trait to include this behavior. You're free to
     | explore this trait and override any methods you wish to tweak.
     |
-    */
+     */
 
     use ResetsPasswords;
 
@@ -37,7 +39,7 @@ class ResetPasswordController extends Controller
 
         return Inertia::render('Auth/Reset', [
             'token' => $token,
-            'email' => $request->email
+            'email' => $request->email,
         ]);
     }
 }

@@ -1,27 +1,35 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Generator;
-use App\History;
-use App\Palette;
-use Tests\TestCase;
-use App\PaletteType;
-use Tests\GameRouteTest;
-use Tests\ScopedRouteTest;
-use Tests\ValidateRoutesTest;
 use App\Events\ItemAddedToPalette;
 use App\Events\PaletteItemDeleted;
 use App\Events\PaletteItemUpdated;
-use Illuminate\Support\Facades\Event;
+use App\History;
 use App\Http\Controllers\PaletteController;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Http\Requests\Palette\CreatePaletteItemRequest;
 use App\Http\Requests\Palette\UpdatePaletteItemRequest;
+use App\Palette;
+use App\PaletteType;
+use Generator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Tests\GameRouteTest;
+use Tests\ScopedRouteTest;
+use Tests\TestCase;
+use Tests\ValidateRoutesTest;
 
-class PaletteTest extends TestCase
+/**
+ * @internal
+ */
+final class PaletteTest extends TestCase
 {
-    use RefreshDatabase, ValidateRoutesTest, ScopedRouteTest, GameRouteTest;
+    use RefreshDatabase;
+    use ValidateRoutesTest;
+    use ScopedRouteTest;
+    use GameRouteTest;
 
     protected function setUp(): void
     {
@@ -38,8 +46,7 @@ class PaletteTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function addToPalette()
+    public function testAddToPalette(): void
     {
         $history = History::factory()->create();
 
@@ -58,15 +65,14 @@ class PaletteTest extends TestCase
         ]);
         Event::assertDispatched(
             ItemAddedToPalette::class,
-            function (ItemAddedToPalette $event) use ($history) {
-                return $event->item->name === '::entry-name::'
-                    && $event->item->type === PaletteType::YES;
-            }
+            static function (ItemAddedToPalette $event) {
+                return '::entry-name::' === $event->item->name
+                    && PaletteType::YES === $event->item->type;
+            },
         );
     }
 
-    /** @test */
-    public function editPaletteItem(): void
+    public function testEditPaletteItem(): void
     {
         /** @var History $history */
         $history = History::factory()->create();
@@ -81,16 +87,15 @@ class PaletteTest extends TestCase
             ->assertRedirect()
             ->assertSessionHasNoErrors();
         $item->refresh();
-        $this->assertEquals('::new-name::', $item->name);
-        $this->assertEquals(PaletteType::NO, $item->type);
+        self::assertEquals('::new-name::', $item->name);
+        self::assertEquals(PaletteType::NO, $item->type);
         Event::assertDispatched(
             PaletteItemUpdated::class,
-            fn (PaletteItemUpdated $event) => $event->item->id === $item->id
+            static fn (PaletteItemUpdated $event) => $event->item->id === $item->id,
         );
     }
 
-    /** @test */
-    public function deletePaletteItem()
+    public function testDeletePaletteItem(): void
     {
         $history = History::factory()->create();
         $item = $history->addToPalette('::old-name::', PaletteType::YES);
@@ -106,7 +111,7 @@ class PaletteTest extends TestCase
         ]);
         Event::assertDispatched(
             PaletteItemDeleted::class,
-            fn (PaletteItemDeleted $event) => $event->item->id === $item->id && $event->history->id === $history->id
+            static fn (PaletteItemDeleted $event) => $event->item->id === $item->id && $event->history->id === $history->id,
         );
     }
 
@@ -115,21 +120,23 @@ class PaletteTest extends TestCase
         yield from [
             'update palette' => [
                 'put',
-                fn () => Palette::factory()->create(),
-                fn (History $history, Palette $palette) => route('palette.update', [$history, $palette]),
+                static fn () => Palette::factory()->create(),
+                static fn (History $history, Palette $palette) => route('palette.update', [$history, $palette]),
             ],
             'delete palette' => [
                 'delete',
-                fn () => Palette::factory()->create(),
-                fn (History $history, Palette $palette) => route('palette.delete', [$history, $palette]),
-            ]
+                static fn () => Palette::factory()->create(),
+                static fn (History $history, Palette $palette) => route('palette.delete', [$history, $palette]),
+            ],
         ];
     }
 
     public function gameRouteProvider(): Generator
     {
         yield ['history.palette.store'];
+
         yield ['palette.update'];
+
         yield ['palette.delete'];
     }
 }

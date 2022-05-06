@@ -1,20 +1,24 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature\Event;
 
+use App\Events\LegacyDeleted;
 use App\History;
 use Tests\TestCase;
-use App\Events\LegacyDeleted;
 use Tests\Unit\Event\BroadcastingEventTest;
 
-class LegacyDeletedTest extends TestCase
+/**
+ * @internal
+ */
+final class LegacyDeletedTest extends TestCase
 {
     use BroadcastingEventTest;
 
-    /** @test */
-    public function broadcastCorrectAttributes(): void
+    public function testBroadcastCorrectAttributes(): void
     {
-        $this->assertEquals([
+        self::assertEquals([
             'id' => 123,
         ], $this->createEvent()->broadcastWith());
     }

@@ -1,19 +1,23 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Unit\Event;
 
+use App\Events\HistorySeedUpdated;
 use App\History;
 use PHPUnit\Framework\TestCase;
-use App\Events\HistorySeedUpdated;
 
-class HistorySeedUpdatedTest extends TestCase
+/**
+ * @internal
+ */
+final class HistorySeedUpdatedTest extends TestCase
 {
     use BroadcastingEventTest;
 
-    /** @test */
-    public function broadcastCorrectAttributes(): void
+    public function testBroadcastCorrectAttributes(): void
     {
-        $this->assertEquals([
+        self::assertEquals([
             'name' => '::new-name::',
         ], $this->createEvent()->broadcastWith());
     }
@@ -24,7 +28,7 @@ class HistorySeedUpdatedTest extends TestCase
             new History([
                 'id' => 123,
                 'name' => '::new-name::',
-            ])
+            ]),
         );
     }
 

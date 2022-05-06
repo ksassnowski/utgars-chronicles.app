@@ -1,25 +1,27 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use App\Exceptions\LfgAlreadyFullException;
-use Illuminate\Database\Eloquent\Collection;
-use App\Exceptions\GameAlreadyStartedException;
 use App\Exceptions\AlreadyRequestedToJoinException;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Exceptions\GameAlreadyStartedException;
+use App\Exceptions\LfgAlreadyFullException;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property Carbon $start_date
- * @property int $availableSlots
- * @property User $owner
- * @property int $user_id
- * @property Collection $requests
+ * @property int        $availableSlots
+ * @property User       $owner
  * @property Collection $pendingRequests
+ * @property Collection $requests
+ * @property Carbon     $start_date
+ * @property int        $user_id
  */
 class Lfg extends Model
 {
@@ -28,7 +30,7 @@ class Lfg extends Model
     protected $guarded = [];
 
     protected $appends = [
-        'availableSlots'
+        'availableSlots',
     ];
 
     protected $casts = [
@@ -56,7 +58,7 @@ class Lfg extends Model
     }
 
     /**
-     * @throws LfgAlreadyFullException|GameAlreadyStartedException|AlreadyRequestedToJoinException
+     * @throws AlreadyRequestedToJoinException|GameAlreadyStartedException|LfgAlreadyFullException
      */
     public function requestToJoin(User $user, ?string $message): LfgRequest
     {
@@ -87,7 +89,7 @@ class Lfg extends Model
 
     public function isFull(): bool
     {
-        return $this->availableSlots === 0;
+        return 0 === $this->availableSlots;
     }
 
     public function hasStarted(): bool

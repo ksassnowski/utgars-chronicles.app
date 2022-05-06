@@ -1,39 +1,41 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature\Rules;
 
 use App\Event;
-use App\Period;
 use App\History;
-use Tests\TestCase;
+use App\Period;
 use App\Rules\ValidPosition;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-class ValidPositionTest extends TestCase
+/**
+ * @internal
+ */
+final class ValidPositionTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function canOnlyInsertIntoPositionOneIfBoardIsEmpty(): void
+    public function testCanOnlyInsertIntoPositionOneIfBoardIsEmpty(): void
     {
         $history = History::factory()->create();
         $rule = new ValidPosition('periods', 'history_id', $history->id);
 
-        $this->assertTrue($rule->passes('position', 1));
-        $this->assertFalse($rule->passes('position', 2));
+        self::assertTrue($rule->passes('position', 1));
+        self::assertFalse($rule->passes('position', 2));
     }
 
-    /** @test */
-    public function cannotBeLargerThanTheMaxPositionPlusOne(): void
+    public function testCannotBeLargerThanTheMaxPositionPlusOne(): void
     {
         $period = Period::factory()->create(['position' => 1]);
         $rule = new ValidPosition('periods', 'history_id', $period->history_id);
 
-        $this->assertFalse($rule->passes('position', 3));
+        self::assertFalse($rule->passes('position', 3));
     }
 
-    /** @test */
-    public function onlyLooksAtTheMaxPositionOfTheSameHistory(): void
+    public function testOnlyLooksAtTheMaxPositionOfTheSameHistory(): void
     {
         $history1 = History::factory()->create();
         $history2 = History::factory()->create();
@@ -48,11 +50,10 @@ class ValidPositionTest extends TestCase
 
         $rule = new ValidPosition('periods', 'history_id', $history1->id);
 
-        $this->assertTrue($rule->passes('position', 3));
+        self::assertTrue($rule->passes('position', 3));
     }
 
-    /** @test */
-    public function worksForDifferentEntities(): void
+    public function testWorksForDifferentEntities(): void
     {
         $period1 = Period::factory()->create();
         $period2 = Period::factory()->create();
@@ -67,6 +68,6 @@ class ValidPositionTest extends TestCase
 
         $rule = new ValidPosition('events', 'period_id', $period1->id);
 
-        $this->assertTrue($rule->passes('position', 3));
+        self::assertTrue($rule->passes('position', 3));
     }
 }

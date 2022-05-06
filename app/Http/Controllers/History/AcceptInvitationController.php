@@ -1,15 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\History;
 
+use App\Exceptions\OwnerCannotJoinOwnGameAsPlayer;
+use App\Exceptions\UserIsAlreadyPlayerInHistory;
 use App\History;
+use App\Http\Controllers\Controller;
 use App\MicroscopePlayer;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use App\Exceptions\UserIsAlreadyPlayerInHistory;
-use App\Exceptions\OwnerCannotJoinOwnGameAsPlayer;
 
 class AcceptInvitationController extends Controller
 {
@@ -26,7 +28,7 @@ class AcceptInvitationController extends Controller
 
         if ($user->isGuest()) {
             return redirect()->to(
-                URL::signedRoute('invitation.accept.show-form', ['history' => $history])
+                URL::signedRoute('invitation.accept.show-form', ['history' => $history]),
             );
         }
 

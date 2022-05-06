@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App;
 
 class AnonymousPlayer implements MicroscopePlayer
 {
     private string $id;
+
     private array $histories;
 
     public function __construct(string $id, array $histories = [])
@@ -31,7 +34,7 @@ class AnonymousPlayer implements MicroscopePlayer
 
     public function isPlayer(History $history): bool
     {
-        return array_key_exists($history->id, $this->histories);
+        return \array_key_exists($history->id, $this->histories);
     }
 
     public function isGuest(): bool

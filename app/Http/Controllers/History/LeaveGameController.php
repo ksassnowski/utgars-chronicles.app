@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\History;
 
-use App\History;
-use Illuminate\Http\Request;
 use App\Exceptions\UserIsNotAPlayer;
+use App\History;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class LeaveGameController extends Controller
 {

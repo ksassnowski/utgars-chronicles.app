@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\History;
 use App\MicroscopePlayer;
+use Closure;
 use Illuminate\Http\Request;
 
 class MicroscopeMiddleware
@@ -12,7 +14,7 @@ class MicroscopeMiddleware
     public function handle(Request $request, Closure $next)
     {
         /** @var History $history */
-        if (($history = $request->route('history')) === null) {
+        if (null === ($history = $request->route('history'))) {
             return $next($request);
         }
 

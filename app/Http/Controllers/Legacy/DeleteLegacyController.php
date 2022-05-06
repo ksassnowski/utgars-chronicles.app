@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Legacy;
 
-use App\Legacy;
-use App\History;
-use Illuminate\Http\Request;
 use App\Events\LegacyDeleted;
+use App\History;
+use App\Legacy;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 final class DeleteLegacyController
 {

@@ -1,21 +1,25 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Unit\Event;
 
+use App\Events\PaletteItemDeleted;
 use App\History;
 use App\Palette;
 use App\PaletteType;
 use PHPUnit\Framework\TestCase;
-use App\Events\PaletteItemDeleted;
 
-class PaletteItemDeletedTest extends TestCase
+/**
+ * @internal
+ */
+final class PaletteItemDeletedTest extends TestCase
 {
     use BroadcastingEventTest;
 
-    /** @test */
-    public function broadcastCorrectAttributes(): void
+    public function testBroadcastCorrectAttributes(): void
     {
-        $this->assertEquals([
+        self::assertEquals([
             'name' => '::name::',
             'type' => PaletteType::YES,
         ], $this->createEvent()->broadcastWith());
@@ -25,7 +29,7 @@ class PaletteItemDeletedTest extends TestCase
     {
         return new PaletteItemDeleted(
             new Palette(['name' => '::name::', 'type' => PaletteType::YES]),
-            new History(['id' => 999])
+            new History(['id' => 999]),
         );
     }
 

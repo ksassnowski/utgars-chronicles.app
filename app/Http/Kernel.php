@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http;
 
-use App\Http\Middleware\MicroscopeMiddleware;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\MicroscopeMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel

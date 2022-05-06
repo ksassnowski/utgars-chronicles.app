@@ -1,28 +1,32 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Unit\Event;
 
-use App\History;
 use App\Events\FocusDeleted;
+use App\History;
 use PHPUnit\Framework\TestCase;
 
-class FocusDeletedTest extends TestCase
+/**
+ * @internal
+ */
+final class FocusDeletedTest extends TestCase
 {
     use BroadcastingEventTest;
 
-    /** @test */
-    public function broadcastCorrectData(): void
+    public function testBroadcastCorrectData(): void
     {
         $event = $this->createEvent();
 
-        $this->assertEquals(['id' => $event->focusId], $event->broadcastWith());
+        self::assertEquals(['id' => $event->focusId], $event->broadcastWith());
     }
 
     protected function createEvent()
     {
         return new FocusDeleted(
             new History(['id' => 123]),
-            5
+            5,
         );
     }
 

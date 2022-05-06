@@ -1,44 +1,42 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App;
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\DB;
 
 /**
+ * @property Event   $event
  * @property History $history
- * @property Event $event
  */
 class Scene extends Model implements Movable
 {
-    use HasPosition, HasFactory;
+    use HasPosition;
+    use HasFactory;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $guarded = [];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $hidden = [
         'event',
     ];
 
-    /** @var array  */
+    /**
+     * @var array
+     */
     protected $casts = [
         'position' => 'int',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        self::creating(function (Scene $scene) {
-            $scene->position = DB::table('scenes')
-                    ->where('event_id', $scene->event_id)
-                    ->max('position') + 1;
-        });
-    }
 
     public function event(): BelongsTo
     {
@@ -48,6 +46,17 @@ class Scene extends Model implements Movable
     public function history(): BelongsTo
     {
         return $this->belongsTo(History::class);
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::creating(static function (self $scene): void {
+            $scene->position = DB::table('scenes')
+                ->where('event_id', $scene->event_id)
+                ->max('position') + 1;
+        });
     }
 
     protected function limitElementsToMove(Builder $query): void

@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Focus;
 
+use App\Events\FocusUpdated;
 use App\Focus;
 use App\History;
-use App\Events\FocusUpdated;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\History\UpdateFocusRequest;
+use Illuminate\Http\RedirectResponse;
 
 final class UpdateFocusController
 {

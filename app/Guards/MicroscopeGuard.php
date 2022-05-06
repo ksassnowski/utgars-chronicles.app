@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Guards;
 
@@ -12,7 +14,7 @@ class MicroscopeGuard
     {
         return $request->user() ?: new AnonymousPlayer(
             $request->session()->getId(),
-            $request->session()->get('histories', [])
+            $request->session()->get('histories', []),
         );
     }
 }

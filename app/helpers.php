@@ -1,7 +1,9 @@
-<?php declare(strict_types=1);
+<?php
 
-use Illuminate\Support\HtmlString;
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\HtmlString;
 
 function vite_assets(): HtmlString
 {
@@ -16,14 +18,14 @@ function vite_assets(): HtmlString
     }
 
     if ($devServerIsRunning) {
-        return new HtmlString(<<<HTML
+        return new HtmlString(<<<'HTML'
             <script type="module" src="http://localhost:3000/@vite/client"></script>
             <script type="module" src="http://localhost:3000/resources/js/app.js"></script>
         HTML);
     }
 
-    $manifest = json_decode(file_get_contents(
-        public_path('build/manifest.json')
+    $manifest = \json_decode(\file_get_contents(
+        public_path('build/manifest.json'),
     ), true);
 
     return new HtmlString(<<<HTML

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Requests;
 
@@ -9,7 +11,7 @@ class SubmitFeedbackRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'message' => ['required', 'string']
+            'message' => ['required', 'string'],
         ];
     }
 

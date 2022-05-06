@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property int $id
@@ -35,7 +37,7 @@ trait HasPosition
         $query->whereBetween('position', [$startPosition, $endPosition])
             ->where('id', '!=', $this->id)
             ->update([
-                'position' => DB::raw($updateStmt)
+                'position' => DB::raw($updateStmt),
             ]);
 
         $this->save();

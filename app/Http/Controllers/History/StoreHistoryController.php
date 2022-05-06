@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\History;
 
+use App\Http\Requests\History\CreateHistoryRequest;
 use App\User;
 use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\History\CreateHistoryRequest;
 
 final class StoreHistoryController
 {

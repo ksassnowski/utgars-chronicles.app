@@ -1,22 +1,24 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AlreadyRequestedToJoinException;
+use App\Exceptions\GameAlreadyStartedException;
+use App\Exceptions\LfgAlreadyFullException;
+use App\Exceptions\RequestAlreadyAnsweredException;
 use App\Lfg;
 use App\LfgRequest;
-use Illuminate\Http\Request;
-use App\Notifications\NewLfgRequest;
-use Illuminate\Http\RedirectResponse;
-use App\Exceptions\LfgAlreadyFullException;
 use App\Notifications\LfgRequestWasAccepted;
 use App\Notifications\LfgRequestWasRejected;
-use App\Exceptions\GameAlreadyStartedException;
-use App\Exceptions\AlreadyRequestedToJoinException;
-use App\Exceptions\RequestAlreadyAnsweredException;
+use App\Notifications\NewLfgRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class LfgRequestController extends Controller
 {
-    public function index()
+    public function index(): void
     {
     }
 
@@ -24,7 +26,7 @@ class LfgRequestController extends Controller
     {
         try {
             $lfgRequest = $lfg->requestToJoin($request->user(), $request->post('message'));
-        } catch (AlreadyRequestedToJoinException | LfgAlreadyFullException | GameAlreadyStartedException $e) {
+        } catch (AlreadyRequestedToJoinException|LfgAlreadyFullException|GameAlreadyStartedException $e) {
             return $this->unsuccessfulRequestResponse($e);
         }
 
@@ -39,7 +41,7 @@ class LfgRequestController extends Controller
             $request->accept();
         } catch (RequestAlreadyAnsweredException) {
             return redirect()->back()->withErrors([
-               'request' => __('Can only accept pending requests')
+                'request' => __('Can only accept pending requests'),
             ]);
         }
 
@@ -56,7 +58,7 @@ class LfgRequestController extends Controller
             $request->reject();
         } catch (RequestAlreadyAnsweredException) {
             return redirect()->back()->withErrors([
-                'request' => __('Can only reject pending requests')
+                'request' => __('Can only reject pending requests'),
             ]);
         }
 
@@ -65,7 +67,7 @@ class LfgRequestController extends Controller
 
     private function unsuccessfulRequestResponse($exception): RedirectResponse
     {
-        $message = match (get_class($exception)) {
+        $message = match ($exception::class) {
             AlreadyRequestedToJoinException::class => 'You already have a pending request for this game',
             LfgAlreadyFullException::class => 'Game is already full',
             GameAlreadyStartedException::class => 'Game has already happened',

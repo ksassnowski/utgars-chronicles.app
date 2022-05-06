@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Legacy;
 
-use App\History;
 use App\Events\LegacyCreated;
+use App\History;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Legacy\CreateLegacyRequest;
+use Illuminate\Http\RedirectResponse;
 
 class CreateLegacyController extends Controller
 {

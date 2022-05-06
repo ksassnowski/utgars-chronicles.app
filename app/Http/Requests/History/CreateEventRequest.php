@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Requests\History;
 
-use App\Type;
 use App\Rules\ValidPosition;
-use Illuminate\Validation\Rule;
+use App\Type;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateEventRequest extends FormRequest
 {
@@ -18,8 +20,8 @@ class CreateEventRequest extends FormRequest
                 'required',
                 'integer',
                 'min:0',
-                new ValidPosition('events', 'period_id', $this->route('period')->id)
-            ]
+                new ValidPosition('events', 'period_id', $this->route('period')->id),
+            ],
         ];
     }
 }

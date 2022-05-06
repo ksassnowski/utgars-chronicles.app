@@ -1,23 +1,27 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
 use App\Lfg;
-use App\User;
-use Generator;
-use Notification;
-use Carbon\Carbon;
 use App\LfgRequest;
-use Tests\TestCase;
-use App\Notifications\NewLfgRequest;
 use App\Notifications\LfgRequestWasAccepted;
 use App\Notifications\LfgRequestWasRejected;
+use App\Notifications\NewLfgRequest;
+use App\User;
+use Carbon\Carbon;
+use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Notification;
+use Tests\TestCase;
 
 /**
  * @group Lfg
+ *
+ * @internal
  */
-class LfgRequestTest extends TestCase
+final class LfgRequestTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -28,8 +32,7 @@ class LfgRequestTest extends TestCase
         Notification::fake();
     }
 
-    /** @test */
-    public function send_request_for_upcoming_game(): void
+    public function testSendRequestForUpcomingGame(): void
     {
         $lfg = Lfg::factory()->create();
 
@@ -49,8 +52,7 @@ class LfgRequestTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function cannot_send_request_if_have_already_send_a_request_for_the_same_game_previously(): void
+    public function testCannotSendRequestIfHaveAlreadySendARequestForTheSameGamePreviously(): void
     {
         $request = LfgRequest::factory()->create();
 
@@ -60,8 +62,7 @@ class LfgRequestTest extends TestCase
         self::assertFalse($request->lfg->users->contains($this->user));
     }
 
-    /** @test */
-    public function cannot_send_request_to_lfg_with_no_open_slots(): void
+    public function testCannotSendRequestToLfgWithNoOpenSlots(): void
     {
         $lfg = Lfg::factory()
             // Only add one extra user since the owner of the lfg
@@ -75,8 +76,7 @@ class LfgRequestTest extends TestCase
         self::assertFalse($lfg->users->contains($this->user));
     }
 
-    /** @test */
-    public function cannot_send_request_to_game_that_has_already_started(): void
+    public function testCannotSendRequestToGameThatHasAlreadyStarted(): void
     {
         $lfg = Lfg::factory()->past()->create();
 
@@ -86,8 +86,7 @@ class LfgRequestTest extends TestCase
         self::assertFalse($lfg->users->contains($this->user));
     }
 
-    /** @test */
-    public function owner_gets_notified_of_new_requests(): void
+    public function testOwnerGetsNotifiedOfNewRequests(): void
     {
         $lfg = Lfg::factory()->create();
 
@@ -98,30 +97,26 @@ class LfgRequestTest extends TestCase
             $lfg->owner,
             NewLfgRequest::class,
             fn (NewLfgRequest $notification) => $notification->request->user->is($this->user)
-                && $notification->request->lfg->is($lfg)
+                && $notification->request->lfg->is($lfg),
         );
     }
 
-    /** @test */
-    public function user_can_cancel_a_pending_request(): void
+    public function testUserCanCancelAPendingRequest(): void
     {
         self::markTestIncomplete();
     }
 
-    /** @test */
-    public function user_cant_cancel_an_already_rejected_request(): void
+    public function testUserCantCancelAnAlreadyRejectedRequest(): void
     {
         self::markTestIncomplete();
     }
 
-    /** @test */
-    public function user_cant_cancel_an_already_accepted_request(): void
+    public function testUserCantCancelAnAlreadyAcceptedRequest(): void
     {
         self::markTestIncomplete();
     }
 
-    /** @test */
-    public function can_accept_pending_requests(): void
+    public function testCanAcceptPendingRequests(): void
     {
         Carbon::setTestNow(now()->startOfMinute());
         $lfg = Lfg::factory()->create(['slots' => 2]);
@@ -137,13 +132,12 @@ class LfgRequestTest extends TestCase
 
         self::assertTrue(
             $lfg->users->contains($request->user),
-            'Expected user to be a player in LFG, but wasn\'t'
+            'Expected user to be a player in LFG, but wasn\'t',
         );
         self::assertEquals(now(), $request->fresh()->accepted_at);
     }
 
-    /** @test */
-    public function only_owner_can_accept_requests(): void
+    public function testOnlyOwnerCanAcceptRequests(): void
     {
         $lfg = Lfg::factory()->create(['slots' => 2]);
         $request = LfgRequest::factory()
@@ -158,16 +152,15 @@ class LfgRequestTest extends TestCase
 
         self::assertFalse(
             $lfg->users->contains($request->user),
-            'Expected user to not be a player in LFG, but was'
+            'Expected user to not be a player in LFG, but was',
         );
         self::assertNull($request->fresh()->accepted_at);
     }
 
     /**
-     * @test
      * @dataProvider notPendingRequestProvider
      */
-    public function can_only_accept_pending_requests(callable $createRequest): void
+    public function testCanOnlyAcceptPendingRequests(callable $createRequest): void
     {
         $lfg = Lfg::factory()->create();
         $request = $createRequest($lfg);
@@ -179,8 +172,7 @@ class LfgRequestTest extends TestCase
         Notification::assertNothingSent();
     }
 
-    /** @test */
-    public function can_reject_request(): void
+    public function testCanRejectRequest(): void
     {
         Carbon::setTestNow(now()->startOfMinute());
         $lfg = Lfg::factory()->create(['slots' => 2]);
@@ -196,16 +188,15 @@ class LfgRequestTest extends TestCase
 
         self::assertFalse(
             $lfg->users->contains($request->user),
-            'Expected user to not be a player in LFG, but was'
+            'Expected user to not be a player in LFG, but was',
         );
         self::assertEquals(now(), $request->fresh()->rejected_at);
     }
 
     /**
-     * @test
      * @dataProvider notPendingRequestProvider
      */
-    public function can_only_reject_pending_requests(callable $createRequest): void
+    public function testCanOnlyRejectPendingRequests(callable $createRequest): void
     {
         $lfg = Lfg::factory()->create();
         $request = $createRequest($lfg);
@@ -217,8 +208,7 @@ class LfgRequestTest extends TestCase
         Notification::assertNothingSent();
     }
 
-    /** @test */
-    public function user_gets_notified_if_request_got_rejected(): void
+    public function testUserGetsNotifiedIfRequestGotRejected(): void
     {
         $lfg = Lfg::factory()->create();
         $request = LfgRequest::factory()
@@ -233,12 +223,11 @@ class LfgRequestTest extends TestCase
         Notification::assertSentTo(
             $request->user,
             LfgRequestWasRejected::class,
-            fn (LfgRequestWasRejected $notification) => $notification->request->is($request)
+            static fn (LfgRequestWasRejected $notification) => $notification->request->is($request),
         );
     }
 
-    /** @test */
-    public function user_gets_notified_if_request_got_accepted(): void
+    public function testUserGetsNotifiedIfRequestGotAccepted(): void
     {
         $lfg = Lfg::factory()->create();
         $request = LfgRequest::factory()
@@ -253,12 +242,11 @@ class LfgRequestTest extends TestCase
         Notification::assertSentTo(
             $request->user,
             LfgRequestWasAccepted::class,
-            fn (LfgRequestWasAccepted $notification) => $notification->request->is($request)
+            static fn (LfgRequestWasAccepted $notification) => $notification->request->is($request),
         );
     }
 
-    /** @test */
-    public function only_owner_can_reject_requests(): void
+    public function testOnlyOwnerCanRejectRequests(): void
     {
         $lfg = Lfg::factory()->create(['slots' => 2]);
         $request = LfgRequest::factory()
@@ -273,8 +261,7 @@ class LfgRequestTest extends TestCase
         self::assertNull($request->fresh()->rejected_at);
     }
 
-    /** @test */
-    public function delete_all_pending_requests_if_last_slot_was_filled(): void
+    public function testDeleteAllPendingRequestsIfLastSlotWasFilled(): void
     {
         $lfg = Lfg::factory()->create(['slots' => 2]);
         $requests = LfgRequest::factory()
@@ -288,8 +275,7 @@ class LfgRequestTest extends TestCase
         self::assertCount(0, $lfg->fresh()->pendingRequests);
     }
 
-    /** @test */
-    public function does_not_delete_other_pending_requests_if_game_isnt_full_yet(): void
+    public function testDoesNotDeleteOtherPendingRequestsIfGameIsntFullYet(): void
     {
         $lfg = Lfg::factory()->create(['slots' => 3]);
         $requests = LfgRequest::factory()
@@ -303,14 +289,12 @@ class LfgRequestTest extends TestCase
         self::assertCount(2, $lfg->fresh()->pendingRequests);
     }
 
-    /** @test */
-    public function user_gets_notified_if_their_request_got_closed_because_the_last_slot_was_filled(): void
+    public function testUserGetsNotifiedIfTheirRequestGotClosedBecauseTheLastSlotWasFilled(): void
     {
         self::markTestIncomplete();
     }
 
-    /** @test */
-    public function delete_all_overlapping_requests_after_request_was_accepted(): void
+    public function testDeleteAllOverlappingRequestsAfterRequestWasAccepted(): void
     {
         self::markTestIncomplete();
     }
@@ -319,12 +303,12 @@ class LfgRequestTest extends TestCase
     {
         yield from [
             'already accepted request' => [
-                fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->accepted()->create(),
+                static fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->accepted()->create(),
             ],
 
             'already rejected request' => [
-                fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->rejected()->create(),
-            ]
+                static fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->rejected()->create(),
+            ],
         ];
     }
 }

@@ -1,15 +1,20 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\User;
-use App\History;
-use Tests\TestCase;
 use App\AnonymousPlayer;
-use Illuminate\Support\Facades\Route;
+use App\History;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Route;
+use Tests\TestCase;
 
-class MicroscopeMiddlewareTest extends TestCase
+/**
+ * @internal
+ */
+final class MicroscopeMiddlewareTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -20,8 +25,7 @@ class MicroscopeMiddlewareTest extends TestCase
         $this->setUpRoutes();
     }
 
-    /** @test */
-    public function ownerOfHistoryCanAccessRoute(): void
+    public function testOwnerOfHistoryCanAccessRoute(): void
     {
         $history = History::factory()->create();
 
@@ -30,8 +34,7 @@ class MicroscopeMiddlewareTest extends TestCase
             ->assertOk();
     }
 
-    /** @test */
-    public function otherUserCannotAccessRoute(): void
+    public function testOtherUserCannotAccessRoute(): void
     {
         $user = User::factory()->create();
         $history = History::factory()->create();
@@ -41,8 +44,7 @@ class MicroscopeMiddlewareTest extends TestCase
             ->assertForbidden();
     }
 
-    /** @test */
-    public function playerOfHistoryCanAccessRoute(): void
+    public function testPlayerOfHistoryCanAccessRoute(): void
     {
         /** @var History $history */
         $history = History::factory()->create();
@@ -54,8 +56,7 @@ class MicroscopeMiddlewareTest extends TestCase
             ->assertOk();
     }
 
-    /** @test */
-    public function fallThroughIfRouteDoesNotContainHistory(): void
+    public function testFallThroughIfRouteDoesNotContainHistory(): void
     {
         $user = User::factory()->create();
 
@@ -64,8 +65,7 @@ class MicroscopeMiddlewareTest extends TestCase
             ->assertOk();
     }
 
-    /** @test */
-    public function invitedGuestsCanAccessRouteForPublicHistory()
+    public function testInvitedGuestsCanAccessRouteForPublicHistory(): void
     {
         $history = History::factory()->public()->create();
 
@@ -76,8 +76,7 @@ class MicroscopeMiddlewareTest extends TestCase
             ->assertOk();
     }
 
-    /** @test */
-    public function unauthenticatedUserCannotAccessRouteForPrivateHistory(): void
+    public function testUnauthenticatedUserCannotAccessRouteForPrivateHistory(): void
     {
         $history = History::factory()->create();
 
@@ -85,8 +84,7 @@ class MicroscopeMiddlewareTest extends TestCase
             ->assertForbidden();
     }
 
-    /** @test */
-    public function guestsCannotAccessRouteForPrivateGameEvenIfTheyHavePreviouslyJoined(): void
+    public function testGuestsCannotAccessRouteForPrivateGameEvenIfTheyHavePreviouslyJoined(): void
     {
         $history = History::factory()->create();
 
@@ -96,13 +94,13 @@ class MicroscopeMiddlewareTest extends TestCase
             ->assertForbidden();
     }
 
-    private function setUpRoutes()
+    private function setUpRoutes(): void
     {
-        Route::get('/history/{history}/test', function (History $history) {
+        Route::get('/history/{history}/test', static function (History $history) {
             return response('', 200);
         })->middleware(['web', 'microscope']);
 
-        Route::get('/derp', function () {
+        Route::get('/derp', static function () {
             return response('', 200);
         })->middleware(['web', 'microscope']);
     }

@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubmitFeedbackRequest;
+use App\Notifications\FeedbackSubmitted;
 use App\User;
 use Illuminate\Http\RedirectResponse;
-use App\Notifications\FeedbackSubmitted;
-use App\Http\Requests\SubmitFeedbackRequest;
 
 final class FeedbackController
 {

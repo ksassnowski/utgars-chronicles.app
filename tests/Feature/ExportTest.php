@@ -1,22 +1,27 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Mockery;
-use Generator;
-use App\Period;
-use App\History;
-use Tests\TestCase;
-use Tests\GameRouteTest;
 use App\Export\HistoryExporter;
+use App\History;
+use App\Period;
+use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Mockery;
+use Tests\GameRouteTest;
+use Tests\TestCase;
 
-class ExportTest extends TestCase
+/**
+ * @internal
+ */
+final class ExportTest extends TestCase
 {
-    use RefreshDatabase, GameRouteTest;
+    use RefreshDatabase;
+    use GameRouteTest;
 
-    /** @test */
-    public function canDownloadExportOfHistory(): void
+    public function testCanDownloadExportOfHistory(): void
     {
         $history = History::factory()->create();
         $history->periods()->create(Period::factory()->make()->toArray());

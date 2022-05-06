@@ -1,18 +1,22 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Unit\Event;
 
+use App\Events\FocusDefined;
 use App\Focus;
 use App\History;
-use App\Events\FocusDefined;
-use PHPUnit\Framework\TestCase;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use PHPUnit\Framework\TestCase;
 
-class FocusDefinedTest extends TestCase
+/**
+ * @internal
+ */
+final class FocusDefinedTest extends TestCase
 {
-    /** @test */
-    public function broadCastWithCorrectData(): void
+    public function testBroadCastWithCorrectData(): void
     {
         $history = new History();
         $focus = new Focus(['name' => '::focus-name::']);
@@ -21,27 +25,25 @@ class FocusDefinedTest extends TestCase
 
         $event = new FocusDefined($history, $focus);
 
-        $this->assertEquals([
+        self::assertEquals([
             'id' => 999,
             'name' => '::focus-name::',
         ], $event->broadcastWith());
     }
 
-    /** @test */
-    public function broadcastOnCorrectChannel(): void
+    public function testBroadcastOnCorrectChannel(): void
     {
         $history = new History(['id' => 1]);
 
         $event = new FocusDefined($history, new Focus());
 
-        $this->assertEquals(new PresenceChannel('history.1'), $event->broadcastOn());
+        self::assertEquals(new PresenceChannel('history.1'), $event->broadcastOn());
     }
 
-    /** @test */
-    public function eventShouldBroadcast(): void
+    public function testEventShouldBroadcast(): void
     {
         $event = new FocusDefined(new History(), new Focus());
 
-        $this->assertInstanceOf(ShouldBroadcast::class, $event);
+        self::assertInstanceOf(ShouldBroadcast::class, $event);
     }
 }

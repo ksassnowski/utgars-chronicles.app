@@ -1,23 +1,26 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Generator;
 use Carbon\Carbon;
-use Tests\TestCase;
+use Generator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 /**
  * @group Lfg
+ *
+ * @internal
  */
-class CreateLfgTest extends TestCase
+final class CreateLfgTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function it_creates_a_new_lfg_for_a_user(): void
+    public function testItCreatesANewLfgForAUser(): void
     {
         Carbon::setTestNow(now());
         $startDate = now()->addDays(2);
@@ -39,10 +42,9 @@ class CreateLfgTest extends TestCase
     }
 
     /**
-     * @test
      * @dataProvider validationProvider
      */
-    public function validation_tests(array $payload, string $expectedErrorKey): void
+    public function testValidationTests(array $payload, string $expectedErrorKey): void
     {
         $this->login()
             ->post(route('lfg.store'), $payload)
@@ -64,12 +66,12 @@ class CreateLfgTest extends TestCase
             ],
 
             'start_date in past' => [
-                array_merge($validPayload, ['start_date' => now()->subDay()]),
+                \array_merge($validPayload, ['start_date' => now()->subDay()]),
                 'start_date',
             ],
 
             'start_date not a valid date' => [
-                array_merge($validPayload, ['start_date' => '::not-a-date::']),
+                \array_merge($validPayload, ['start_date' => '::not-a-date::']),
                 'start_date',
             ],
 
@@ -79,7 +81,7 @@ class CreateLfgTest extends TestCase
             ],
 
             'slots less than 2' => [
-                array_merge($validPayload, ['slots' => 1]),
+                \array_merge($validPayload, ['slots' => 1]),
                 'slots',
             ],
 
@@ -89,12 +91,12 @@ class CreateLfgTest extends TestCase
             ],
 
             'title too short' => [
-                array_merge($validPayload, ['title' => Str::repeat('a', 4)]),
+                \array_merge($validPayload, ['title' => Str::repeat('a', 4)]),
                 'title',
             ],
 
             'title too long' => [
-                array_merge($validPayload, ['title' => Str::repeat('a', 256)]),
+                \array_merge($validPayload, ['title' => Str::repeat('a', 256)]),
                 'title',
             ],
         ];

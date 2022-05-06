@@ -1,51 +1,47 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property Collection $events
- * @property History $history
- * @property string $name
- * @property int $position
- * @property User $user
+ * @property History    $history
+ * @property string     $name
+ * @property int        $position
+ * @property User       $user
  */
 class Period extends Model implements Movable
 {
-    use HasPosition, HasFactory;
+    use HasPosition;
+    use HasFactory;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $guarded = [];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $hidden = [
         'history',
     ];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $casts = [
         'position' => 'int',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        self::deleted(function (Period $period) {
-            Period::where('history_id', $period->history_id)
-                ->where('position', '>', $period->position)
-                ->update([
-                    'position' => DB::raw('position - 1')
-                ]);
-        });
-    }
 
     public function history(): BelongsTo
     {
@@ -63,9 +59,22 @@ class Period extends Model implements Movable
             ->where('position', '>=', $attributes['position'])
             ->update(['position' => DB::raw('position + 1')]);
 
-        return $this->events()->create(array_merge($attributes, [
+        return $this->events()->create(\array_merge($attributes, [
             'history_id' => $this->history->id,
         ]));
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::deleted(static function (self $period): void {
+            self::where('history_id', $period->history_id)
+                ->where('position', '>', $period->position)
+                ->update([
+                    'position' => DB::raw('position - 1'),
+                ]);
+        });
     }
 
     protected function limitElementsToMove(Builder $query): void

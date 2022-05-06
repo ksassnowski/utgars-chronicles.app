@@ -1,20 +1,24 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Unit\Event;
 
+use App\Events\PaletteItemUpdated;
 use App\Palette;
 use App\PaletteType;
 use PHPUnit\Framework\TestCase;
-use App\Events\PaletteItemUpdated;
 
-class PaletteItemUpdatedTest extends TestCase
+/**
+ * @internal
+ */
+final class PaletteItemUpdatedTest extends TestCase
 {
     use BroadcastingEventTest;
 
-    /** @test */
-    public function broadcastCorrectAttributes(): void
+    public function testBroadcastCorrectAttributes(): void
     {
-        $this->assertEquals([
+        self::assertEquals([
             'id' => 123,
             'name' => '::new-name::',
             'type' => PaletteType::YES,
@@ -29,7 +33,7 @@ class PaletteItemUpdatedTest extends TestCase
                 'name' => '::new-name::',
                 'type' => PaletteType::YES,
                 'history_id' => 999,
-            ])
+            ]),
         );
     }
 

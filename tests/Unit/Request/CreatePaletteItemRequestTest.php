@@ -1,14 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Unit\Request;
 
+use App\Http\Requests\Palette\CreatePaletteItemRequest;
 use App\PaletteType;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use PHPUnit\Framework\TestCase;
-use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Requests\Palette\CreatePaletteItemRequest;
 
-class CreatePaletteItemRequestTest extends TestCase
+/**
+ * @internal
+ */
+final class CreatePaletteItemRequestTest extends TestCase
 {
     use FormRequestTest;
 

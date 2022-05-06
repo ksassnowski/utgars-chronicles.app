@@ -1,60 +1,61 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature\Guard;
 
-use App\User;
-use App\History;
-use Tests\TestCase;
 use App\AnonymousPlayer;
-use Illuminate\Http\Request;
 use App\Guards\MicroscopeGuard;
+use App\History;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Request;
+use Tests\TestCase;
 
-class MicroscopeGuardTest extends TestCase
+/**
+ * @internal
+ */
+final class MicroscopeGuardTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function itReturnsTheAuthenticatedUserIfThereIsOne(): void
+    public function testItReturnsTheAuthenticatedUserIfThereIsOne(): void
     {
         $user = User::factory()->create();
         $request = new Request();
-        $request->setUserResolver(fn () => $user);
+        $request->setUserResolver(static fn () => $user);
         $guard = new MicroscopeGuard();
 
-        $this->assertEquals($user, $guard($request));
+        self::assertEquals($user, $guard($request));
     }
 
-    /** @test */
-    public function returnsAnAnonymousUserIfNoUserExists(): void
+    public function testReturnsAnAnonymousUserIfNoUserExists(): void
     {
         $request = new Request();
-        $request->setUserResolver(fn () => null);
+        $request->setUserResolver(static fn () => null);
         $request->setLaravelSession(session());
         $guard = new MicroscopeGuard();
 
-        $this->assertInstanceOf(AnonymousPlayer::class, $guard($request));
+        self::assertInstanceOf(AnonymousPlayer::class, $guard($request));
     }
 
-    /** @test */
-    public function itUsesTheSessionIdAsTheAnonymousUsersIdentifier(): void
+    public function testItUsesTheSessionIdAsTheAnonymousUsersIdentifier(): void
     {
         $request = new Request();
-        $request->setUserResolver(fn () => null);
+        $request->setUserResolver(static fn () => null);
         $request->setLaravelSession(session());
         $guard = new MicroscopeGuard();
 
         $player = $guard($request);
 
-        $this->assertEquals(session()->getId(), $player->getAuthIdentifier());
+        self::assertEquals(session()->getId(), $player->getAuthIdentifier());
     }
 
-    /** @test */
-    public function populatesTheGuestsHistoriesFromTheSession(): void
+    public function testPopulatesTheGuestsHistoriesFromTheSession(): void
     {
         $history = History::factory()->create();
         $request = new Request();
-        $request->setUserResolver(fn () => null);
+        $request->setUserResolver(static fn () => null);
         session()->put('histories', [
             $history->id => '::name::',
         ]);
@@ -63,6 +64,6 @@ class MicroscopeGuardTest extends TestCase
 
         $player = $guard($request);
 
-        $this->assertTrue($player->isPlayer($history));
+        self::assertTrue($player->isPlayer($history));
     }
 }

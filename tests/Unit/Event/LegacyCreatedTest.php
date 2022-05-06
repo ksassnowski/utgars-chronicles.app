@@ -1,19 +1,23 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Unit\Event;
 
-use App\Legacy;
 use App\Events\LegacyCreated;
+use App\Legacy;
 use PHPUnit\Framework\TestCase;
 
-class LegacyCreatedTest extends TestCase
+/**
+ * @internal
+ */
+final class LegacyCreatedTest extends TestCase
 {
     use BroadcastingEventTest;
 
-    /** @test */
-    public function broadcastCorrectAttributes()
+    public function testBroadcastCorrectAttributes(): void
     {
-        $this->assertEquals([
+        self::assertEquals([
             'id' => 999,
             'name' => '::legacy-name::',
         ], $this->createEvent()->broadcastWith());
@@ -26,7 +30,7 @@ class LegacyCreatedTest extends TestCase
                 'id' => 999,
                 'name' => '::legacy-name::',
                 'history_id' => 123,
-            ])
+            ]),
         );
     }
 

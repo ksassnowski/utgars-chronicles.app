@@ -1,27 +1,35 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use Generator;
-use App\Legacy;
-use App\History;
-use Tests\TestCase;
-use Tests\GameRouteTest;
-use Tests\ScopedRouteTest;
 use App\Events\LegacyCreated;
 use App\Events\LegacyDeleted;
 use App\Events\LegacyUpdated;
-use Tests\ValidateRoutesTest;
-use Illuminate\Support\Facades\Event;
-use App\Http\Requests\Legacy\CreateLegacyRequest;
-use App\Http\Requests\Legacy\UpdateLegacyRequest;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\History;
 use App\Http\Controllers\Legacy\CreateLegacyController;
 use App\Http\Controllers\Legacy\UpdateLegacyController;
+use App\Http\Requests\Legacy\CreateLegacyRequest;
+use App\Http\Requests\Legacy\UpdateLegacyRequest;
+use App\Legacy;
+use Generator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Tests\GameRouteTest;
+use Tests\ScopedRouteTest;
+use Tests\TestCase;
+use Tests\ValidateRoutesTest;
 
-class LegacyTest extends TestCase
+/**
+ * @internal
+ */
+final class LegacyTest extends TestCase
 {
-    use RefreshDatabase, ValidateRoutesTest, ScopedRouteTest, GameRouteTest;
+    use RefreshDatabase;
+    use ValidateRoutesTest;
+    use ScopedRouteTest;
+    use GameRouteTest;
 
     protected function setUp(): void
     {
@@ -30,8 +38,7 @@ class LegacyTest extends TestCase
         Event::fake();
     }
 
-    /** @test */
-    public function createLegacy(): void
+    public function testCreateLegacy(): void
     {
         $history = History::factory()->create();
 
@@ -44,15 +51,14 @@ class LegacyTest extends TestCase
             ->assertRedirect()
             ->assertSessionHasNoErrors();
         $history->refresh();
-        $this->assertTrue($history->legacies->contains('name', '::legacy-name::'));
+        self::assertTrue($history->legacies->contains('name', '::legacy-name::'));
         Event::assertDispatched(
             LegacyCreated::class,
-            fn (LegacyCreated $event) => $event->legacy->name === '::legacy-name::' && $event->legacy->history_id === $history->id
+            static fn (LegacyCreated $event) => '::legacy-name::' === $event->legacy->name && $event->legacy->history_id === $history->id,
         );
     }
 
-    /** @test */
-    public function updateLegacy(): void
+    public function testUpdateLegacy(): void
     {
         /** @var History $history */
         $history = History::factory()->create();
@@ -60,22 +66,21 @@ class LegacyTest extends TestCase
 
         $response = $this->actingAs($history->owner)
             ->putJson(route('legacies.update', [$history, $legacy]), [
-                'name' => '::new-name::'
+                'name' => '::new-name::',
             ]);
 
         $response
             ->assertRedirect()
             ->assertSessionHasNoErrors();
         $legacy->refresh();
-        $this->assertEquals('::new-name::', $legacy->name);
+        self::assertEquals('::new-name::', $legacy->name);
         Event::assertDispatched(
             LegacyUpdated::class,
-            fn (LegacyUpdated $event) => $event->legacy->id === $legacy->id
+            static fn (LegacyUpdated $event) => $event->legacy->id === $legacy->id,
         );
     }
 
-    /** @test */
-    public function deleteLegacy(): void
+    public function testDeleteLegacy(): void
     {
         /** @var History $history */
         $history = History::factory()->create();
@@ -92,7 +97,7 @@ class LegacyTest extends TestCase
         ]);
         Event::assertDispatched(
             LegacyDeleted::class,
-            fn (LegacyDeleted $event) => $event->legacyId === $legacy->id && $event->history->id === $history->id
+            static fn (LegacyDeleted $event) => $event->legacyId === $legacy->id && $event->history->id === $history->id,
         );
     }
 
@@ -108,7 +113,7 @@ class LegacyTest extends TestCase
                 UpdateLegacyController::class,
                 '__invoke',
                 UpdateLegacyRequest::class,
-            ]
+            ],
         ];
     }
 
@@ -117,13 +122,13 @@ class LegacyTest extends TestCase
         yield from [
             'update legacy' => [
                 'put',
-                fn () => Legacy::factory()->create(),
-                fn (History $history, Legacy $legacy) => route('legacies.update', [$history, $legacy]),
+                static fn () => Legacy::factory()->create(),
+                static fn (History $history, Legacy $legacy) => route('legacies.update', [$history, $legacy]),
             ],
             'delete legacy' => [
                 'delete',
-                fn () => Legacy::factory()->create(),
-                fn (History $history, Legacy $legacy) => route('legacies.delete', [$history, $legacy]),
+                static fn () => Legacy::factory()->create(),
+                static fn (History $history, Legacy $legacy) => route('legacies.delete', [$history, $legacy]),
             ],
         ];
     }
@@ -131,7 +136,9 @@ class LegacyTest extends TestCase
     public function gameRouteProvider(): Generator
     {
         yield ['history.legacies.store'];
+
         yield ['legacies.update'];
+
         yield ['legacies.delete'];
     }
 }

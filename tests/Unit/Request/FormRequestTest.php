@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Unit\Request;
 
@@ -6,7 +8,9 @@ use Illuminate\Foundation\Http\FormRequest;
 
 trait FormRequestTest
 {
-    /** @test */
+    /**
+     * @test
+     */
     public function validationRules(): void
     {
         $this->assertEquals($this->rules(), $this->getRequest()->rules());

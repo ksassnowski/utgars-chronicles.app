@@ -1,20 +1,24 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\User;
 use App\History;
-use function route;
-use Tests\TestCase;
-use Illuminate\Support\Facades\URL;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\URL;
+use Tests\TestCase;
+use function route;
 
-class InvitationTest extends TestCase
+/**
+ * @internal
+ */
+final class InvitationTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function acceptInvitation(): void
+    public function testAcceptInvitation(): void
     {
         $history = History::factory()->create();
         $invitedUser = User::factory()->create();
@@ -24,11 +28,10 @@ class InvitationTest extends TestCase
         ]));
 
         $history->refresh();
-        $this->assertTrue($history->isPlayer($invitedUser));
+        self::assertTrue($history->isPlayer($invitedUser));
     }
 
-    /** @test */
-    public function onlyALoggedInUserCanAcceptAnInvitation(): void
+    public function testOnlyALoggedInUserCanAcceptAnInvitation(): void
     {
         $history = History::factory()->create();
 
@@ -39,8 +42,7 @@ class InvitationTest extends TestCase
         $response->assertRedirect(route('login'));
     }
 
-    /** @test */
-    public function cannotAcceptAnInvitationTwice(): void
+    public function testCannotAcceptAnInvitationTwice(): void
     {
         $history = History::factory()->create();
         $invitedUser = User::factory()->create();
@@ -51,12 +53,11 @@ class InvitationTest extends TestCase
         ]));
 
         $response->assertSessionHasErrors([
-            'invitation' => __('You are already a player in this game')
+            'invitation' => __('You are already a player in this game'),
         ]);
     }
 
-    /** @test */
-    public function ownerCannotAcceptInvitationToTheirOwnGame(): void
+    public function testOwnerCannotAcceptInvitationToTheirOwnGame(): void
     {
         $history = History::factory()->create();
 
@@ -65,12 +66,11 @@ class InvitationTest extends TestCase
         ]));
 
         $response->assertSessionHasErrors([
-            'invitation' => __('You cannot accept an invitation to your own game')
+            'invitation' => __('You cannot accept an invitation to your own game'),
         ]);
     }
 
-    /** @test */
-    public function guestCanJoinPublicGame(): void
+    public function testGuestCanJoinPublicGame(): void
     {
         $history = History::factory()->public()->create();
 
@@ -81,8 +81,7 @@ class InvitationTest extends TestCase
         $response->assertSessionHas('histories', [$history->id => '::name::']);
     }
 
-    /** @test */
-    public function cannotAcceptGuestInvitationAsAuthenticatedUser(): void
+    public function testCannotAcceptGuestInvitationAsAuthenticatedUser(): void
     {
         $user = User::factory()->create();
         $history = History::factory()->public()->create();
@@ -95,8 +94,7 @@ class InvitationTest extends TestCase
         $response->assertForbidden();
     }
 
-    /** @test */
-    public function cannotAcceptGuestInvitationForPrivateGame(): void
+    public function testCannotAcceptGuestInvitationForPrivateGame(): void
     {
         $history = History::factory()->create();
 

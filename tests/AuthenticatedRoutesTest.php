@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests;
 
@@ -10,6 +12,8 @@ trait AuthenticatedRoutesTest
     /**
      * @test
      * @dataProvider authenticatedRoutesProvider
+     *
+     * @param mixed $uri
      */
     public function authenticationTest(string $httpMethod, $uri, ?callable $setup = null): void
     {
@@ -17,14 +21,14 @@ trait AuthenticatedRoutesTest
 
         $entity = null;
 
-        if ($setup !== null) {
+        if (null !== $setup) {
             $entity = $setup();
         }
 
-        $route = is_callable($uri) ? $uri($entity) : $uri;
+        $route = \is_callable($uri) ? $uri($entity) : $uri;
 
         /** @var TestResponse $response */
-        $response = $this->$method($route);
+        $response = $this->{$method}($route);
 
         $response->assertUnauthorized();
     }

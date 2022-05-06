@@ -1,22 +1,29 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Type;
 use App\Event;
-use Generator;
-use App\Period;
-use App\History;
-use Tests\TestCase;
-use Tests\GameRouteTest;
-use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
+use App\History;
+use App\Period;
+use App\Type;
+use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event as EventFacade;
+use Tests\GameRouteTest;
+use Tests\ScopedRouteTest;
+use Tests\TestCase;
 
-class EventTest extends TestCase
+/**
+ * @internal
+ */
+final class EventTest extends TestCase
 {
-    use RefreshDatabase, ScopedRouteTest, GameRouteTest;
+    use RefreshDatabase;
+    use ScopedRouteTest;
+    use GameRouteTest;
 
     private Period $period;
 
@@ -32,8 +39,7 @@ class EventTest extends TestCase
         $this->user = $this->period->history->owner;
     }
 
-    /** @test */
-    public function createEvent(): void
+    public function testCreateEvent(): void
     {
         $response = $this->login()->postJson(
             route('periods.events.store', [$this->period->history, $this->period]),
@@ -58,19 +64,20 @@ class EventTest extends TestCase
     }
 
     /**
-     * @test
      * @dataProvider validationProvider
+     *
+     * @param mixed $value
      */
-    public function validationTest(string $attribute, $value)
+    public function testValidationTest(string $attribute, $value): void
     {
-        $payload = array_merge([
+        $payload = \array_merge([
             'name' => '::event-name::',
             'type' => Type::DARK,
         ], [$attribute => $value]);
 
         $response = $this->login()->postJson(
             route('periods.events.store', [$this->period->history, $this->period]),
-            $payload
+            $payload,
         );
 
         $response->assertStatus(422);
@@ -85,8 +92,7 @@ class EventTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function updateEvent(): void
+    public function testUpdateEvent(): void
     {
         $event = Event::factory()->create([
             'history_id' => $this->period->history_id,
@@ -100,26 +106,27 @@ class EventTest extends TestCase
             [
                 'name' => '::new-name::',
                 'type' => Type::DARK,
-            ]
+            ],
         );
 
         $response
             ->assertRedirect()
             ->assertSessionHasNoErrors();
         $event->refresh();
-        $this->assertEquals('::new-name::', $event->name);
-        $this->assertEquals(Type::DARK, $event->type);
+        self::assertEquals('::new-name::', $event->name);
+        self::assertEquals(Type::DARK, $event->type);
 
         EventFacade::assertDispatched(BoardUpdated::class);
     }
 
     /**
-     * @test
      * @dataProvider validationProvider
+     *
+     * @param mixed $value
      */
-    public function validateAttributesOnUpdate(string $attribute, $value)
+    public function testValidateAttributesOnUpdate(string $attribute, $value): void
     {
-        $payload = array_merge([
+        $payload = \array_merge([
             'name' => '::new-name::',
             'type' => Type::DARK,
         ], [$attribute => $value]);
@@ -133,15 +140,14 @@ class EventTest extends TestCase
 
         $response = $this->login()->putJson(
             route('events.update', [$this->period->history, $event]),
-            $payload
+            $payload,
         );
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors($attribute);
     }
 
-    /** @test */
-    public function deleteEvent(): void
+    public function testDeleteEvent(): void
     {
         $event = Event::factory()->create([
             'period_id' => $this->period->id,
@@ -158,13 +164,12 @@ class EventTest extends TestCase
         EventFacade::assertDispatched(BoardUpdated::class);
     }
 
-    /** @test */
-    public function deletingAnEventReordersTheRemainingEvents(): void
+    public function testDeletingAnEventReordersTheRemainingEvents(): void
     {
         $event1 = Event::factory()->create([
             'period_id' => $this->period->id,
             'history_id' => $this->period->history_id,
-            'position' => 1
+            'position' => 1,
         ]);
         $event2 = Event::factory()->create([
             'period_id' => $this->period->id,
@@ -179,8 +184,8 @@ class EventTest extends TestCase
 
         $this->login()->delete(route('events.delete', [$this->period->history, $event2]));
 
-        $this->assertEquals(1, $event1->refresh()->position);
-        $this->assertEquals(2, $event3->refresh()->position);
+        self::assertEquals(1, $event1->refresh()->position);
+        self::assertEquals(2, $event3->refresh()->position);
     }
 
     public function scopedRouteProvider(): Generator
@@ -188,18 +193,18 @@ class EventTest extends TestCase
         yield from [
             'create event' => [
                 'post',
-                fn () => Period::factory()->create(),
-                fn (History $history, Period $period) => route('periods.events.store', [$history, $period]),
+                static fn () => Period::factory()->create(),
+                static fn (History $history, Period $period) => route('periods.events.store', [$history, $period]),
             ],
             'update event' => [
                 'put',
-                fn () => Event::factory()->create(),
-                fn (History $history, Event $event) => route('events.update', [$history, $event]),
+                static fn () => Event::factory()->create(),
+                static fn (History $history, Event $event) => route('events.update', [$history, $event]),
             ],
             'delete event' => [
                 'delete',
-                fn () => Event::factory()->create(),
-                fn (History $history, Event $event) => route('events.delete', [$history, $event]),
+                static fn () => Event::factory()->create(),
+                static fn (History $history, Event $event) => route('events.delete', [$history, $event]),
             ],
         ];
     }
@@ -207,8 +212,11 @@ class EventTest extends TestCase
     public function gameRouteProvider(): Generator
     {
         yield ['periods.events.store'];
+
         yield ['events.update'];
+
         yield ['events.delete'];
+
         yield ['events.move'];
     }
 }
