@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -21,7 +22,9 @@ final class HomeController extends Controller
 {
     public function __invoke(Request $request): Response
     {
+        /** @var User $user */
         $user = $request->user();
+
         $user->load(['histories', 'games']);
 
         return Inertia::render('Home', [

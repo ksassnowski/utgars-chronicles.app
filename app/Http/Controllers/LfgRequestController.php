@@ -22,6 +22,7 @@ use App\LfgRequest;
 use App\Notifications\LfgRequestWasAccepted;
 use App\Notifications\LfgRequestWasRejected;
 use App\Notifications\NewLfgRequest;
+use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Throwable;
@@ -34,11 +35,14 @@ final class LfgRequestController extends Controller
 
     public function store(Request $request, Lfg $lfg): RedirectResponse
     {
+        /** @var User $user */
+        $user = $request->user();
+
         try {
             /** @var string $message */
             $message = $request->post('message');
 
-            $lfgRequest = $lfg->requestToJoin($request->user(), $message);
+            $lfgRequest = $lfg->requestToJoin($user, $message);
         } catch (AlreadyRequestedToJoinException|LfgAlreadyFullException|GameAlreadyStartedException $e) {
             return $this->unsuccessfulRequestResponse($e);
         }

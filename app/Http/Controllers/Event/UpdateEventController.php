@@ -25,7 +25,7 @@ final class UpdateEventController
     {
         $event->update($request->validated());
 
-        broadcast(new BoardUpdated($history->fresh()))->toOthers();
+        broadcast(new BoardUpdated($history->refresh()))->toOthers();
 
         return redirect()->back();
     }

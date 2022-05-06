@@ -16,6 +16,7 @@ namespace App\Http\Controllers\History;
 use App\Exceptions\UserIsNotAPlayer;
 use App\History;
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -23,8 +24,11 @@ class LeaveGameController extends Controller
 {
     public function __invoke(Request $request, History $game): RedirectResponse
     {
+        /** @var User $user */
+        $user = $request->user();
+
         try {
-            $game->removePlayer($request->user());
+            $game->removePlayer($user);
         } catch (UserIsNotAPlayer $exception) {
             return redirect()
                 ->route('home')

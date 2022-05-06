@@ -25,7 +25,10 @@ final class FeedbackController
         /** @var User $admin */
         $admin = User::where('email', config('app.admin_email'))->first();
 
-        $admin->notify(new FeedbackSubmitted($request->user(), $request->message()));
+        /** @var User $user */
+        $user = $request->user();
+
+        $admin->notify(new FeedbackSubmitted($user, $request->message()));
 
         return back()->with('success', 'Thank you for your feedback!');
     }

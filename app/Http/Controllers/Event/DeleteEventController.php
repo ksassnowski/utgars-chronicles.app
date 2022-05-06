@@ -24,7 +24,7 @@ final class DeleteEventController
     {
         $event->delete();
 
-        broadcast(new BoardUpdated($history->fresh()))->toOthers();
+        broadcast(new BoardUpdated($history->refresh()))->toOthers();
 
         return redirect()->back();
     }

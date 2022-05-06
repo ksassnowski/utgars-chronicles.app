@@ -20,7 +20,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ResetPasswordController extends Controller
+final class ResetPasswordController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -44,11 +44,12 @@ class ResetPasswordController extends Controller
 
     public function showResetForm(Request $request): Response
     {
+        /** @phpstan-ignore-next-line */
         $token = $request->route()->parameter('token');
 
         return Inertia::render('Auth/Reset', [
             'token' => $token,
-            'email' => $request->email,
+            'email' => $request->get('email'),
         ]);
     }
 }

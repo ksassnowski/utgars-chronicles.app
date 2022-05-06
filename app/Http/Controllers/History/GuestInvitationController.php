@@ -17,6 +17,7 @@ use App\History;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\History\AcceptGuestInvitationRequest;
 use App\Http\Requests\History\ShowInvitationFormRequest;
+use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
@@ -42,7 +43,10 @@ final class GuestInvitationController extends Controller
         AcceptGuestInvitationRequest $request,
         History $history,
     ): RedirectResponse {
-        $request->user()->joinGame($history, $request->name());
+        /** @var User $user */
+        $user = $request->user();
+
+        $user->joinGame($history, $request->name());
 
         return redirect()->route('history.play', $history);
     }
