@@ -97,7 +97,7 @@ jobs:
 
   deploy:
     if: contains(github.ref, 'master')
-    needs: test
+    needs: [test, phpstan]
     runs-on: ubuntu-latest
     name: Deploy
     steps:
