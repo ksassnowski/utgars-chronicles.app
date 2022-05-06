@@ -33,9 +33,13 @@ function vite_assets(): HtmlString
         HTML);
     }
 
-    $manifest = \json_decode(\file_get_contents(
-        public_path('build/manifest.json'),
-    ), true);
+    $manifestJson = \file_get_contents(public_path('build/manifest.json'));
+
+    if ($manifestJson === false) {
+        throw new RuntimeException('Unable to load manifest.json');
+    }
+
+    $manifest = \json_decode($manifestJson, true);
 
     return new HtmlString(<<<HTML
         <script type="module" src="/build/{$manifest['resources/js/app.js']['file']}" defer></script>

@@ -35,7 +35,10 @@ final class LfgRequestController extends Controller
     public function store(Request $request, Lfg $lfg): RedirectResponse
     {
         try {
-            $lfgRequest = $lfg->requestToJoin($request->user(), $request->post('message'));
+            /** @var string $message */
+            $message = $request->post('message');
+
+            $lfgRequest = $lfg->requestToJoin($request->user(), $message);
         } catch (AlreadyRequestedToJoinException|LfgAlreadyFullException|GameAlreadyStartedException $e) {
             return $this->unsuccessfulRequestResponse($e);
         }
