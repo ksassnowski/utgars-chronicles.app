@@ -17,7 +17,7 @@
         "laravel/ui": "^3.0",
         "league/csv": "^9.6",
         "predis/predis": "^1.1",
-        "pusher/pusher-php-server": "~4.0",
+        "pusher/pusher-php-server": "^7.0",
         "sentry/sentry-laravel": "^2.12.0",
         "symfony/http-client": "^6.0",
         "symfony/mailgun-mailer": "^6.0",
@@ -91,15 +91,15 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "cs": [
-            "mkdir -p .build/php-cs-fixer",
-            "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --diff --verbose"
-        ],
         "analyse": [
             "vendor/bin/phpstan analyze"
         ],
         "analyze": [
             "vendor/bin/phpstan analyze"
+        ],
+        "cs": [
+            "mkdir -p .build/php-cs-fixer",
+            "vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --diff --verbose"
         ]
     }
 }
