@@ -33,7 +33,7 @@ jobs:
           key: "${{ hashFiles('composer.lock') }}"
 
       - name: Install dependencies
-        run: composer update --prefer-stable --no-interaction --prefer-source
+        run: composer install --no-interaction --prefer-source
 
       - name: Run phpstan
         run: composer analyze
@@ -77,7 +77,7 @@ jobs:
           key: "${{ hashFiles('composer.lock') }}"
 
       - name: Install composer dependencies
-        run: composer install --prefer-stable --no-interaction --prefer-source
+        run: composer install --no-interaction --prefer-source
 
       - name: Install Javascript Dependencies
         run: yarn install --non-interactive
