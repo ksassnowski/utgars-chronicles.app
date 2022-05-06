@@ -12,64 +12,96 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @property int owner_id
- * @property User owner
+ * @property int $owner_id
+ * @property User $owner
+ * @property Collection<int, User> $players
+ * @property Collection<int, Focus> $foci
+ * @property Collection<int, Period> $periods
+ * @property Collection<int, Event> $events
+ * @property Collection<int, Scene> $scenes
+ * @property Collection<int, Palette> $palettes
+ * @property Collection<int, Legacy> $legacies
  */
 class History extends Model
 {
     use HasFactory;
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected $guarded = [];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'owner_id' => 'int',
         'public' => 'bool',
     ];
 
+    /**
+     * @return BelongsTo<User, History>
+     */
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return BelongsToMany<User>
+     */
     public function players(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }
 
+    /**
+     * @return HasMany<Period>
+     */
     public function periods(): HasMany
     {
         return $this->hasMany(Period::class)->orderBy('position', 'ASC');
     }
 
+    /**
+     * @return HasMany<Event>
+     */
     public function events(): HasMany
     {
         return $this->hasMany(Event::class)->orderBy('position', 'ASC');
     }
 
+    /**
+     * @return HasMany<Scene>
+     */
     public function scenes(): HasMany
     {
         return $this->hasMany(Scene::class)->orderBy('position', 'ASC');
     }
 
+    /**
+     * @return HasMany<Focus>
+     */
     public function foci(): HasMany
     {
         return $this->hasMany(Focus::class)->latest();
     }
 
+    /**
+     * @return HasMany<Palette>
+     */
     public function palettes(): HasMany
     {
         return $this->hasMany(Palette::class)->latest();
     }
 
+    /**
+     * @return HasMany<Legacy>
+     */
     public function legacies(): HasMany
     {
         return $this->hasMany(Legacy::class)->latest();

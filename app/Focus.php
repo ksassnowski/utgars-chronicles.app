@@ -9,17 +9,22 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property History history
+ * @property int $id
+ * @property string $name
+ * @property History $history
  */
 class Focus extends Model
 {
     use HasFactory;
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected $guarded = [];
 
+    /**
+     * @return BelongsTo<History, Focus>
+     */
     public function history(): BelongsTo
     {
         return $this->belongsTo(History::class);

@@ -15,8 +15,9 @@ use App\Notifications\LfgRequestWasRejected;
 use App\Notifications\NewLfgRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Throwable;
 
-class LfgRequestController extends Controller
+final class LfgRequestController extends Controller
 {
     public function index(): void
     {
@@ -65,12 +66,13 @@ class LfgRequestController extends Controller
         $request->user->notify(new LfgRequestWasRejected($request));
     }
 
-    private function unsuccessfulRequestResponse($exception): RedirectResponse
+    private function unsuccessfulRequestResponse(Throwable $exception): RedirectResponse
     {
         $message = match ($exception::class) {
             AlreadyRequestedToJoinException::class => 'You already have a pending request for this game',
             LfgAlreadyFullException::class => 'Game is already full',
             GameAlreadyStartedException::class => 'Game has already happened',
+            default => 'An unknown error occurred',
         };
 
         return redirect()->back()->withErrors(['lfg' => __($message)]);

@@ -19,6 +19,7 @@ class CreatePeriodRequest extends FormRequest
                 'required',
                 'integer',
                 'min:0',
+                /** @phpstan-ignore-next-line */
                 new ValidPosition('periods', 'history_id', $this->route('history')->id),
             ],
         ];

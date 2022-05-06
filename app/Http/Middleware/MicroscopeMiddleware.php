@@ -8,13 +8,19 @@ use App\History;
 use App\MicroscopePlayer;
 use Closure;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-class MicroscopeMiddleware
+final class MicroscopeMiddleware
 {
-    public function handle(Request $request, Closure $next)
+    /**
+     * @param Closure(Request): Response $next
+     */
+    public function handle(Request $request, Closure $next): Response
     {
-        /** @var History $history */
-        if (null === ($history = $request->route('history'))) {
+        /** @var History|null $history */
+        $history = $request->route('history');
+
+        if (null === $history) {
             return $next($request);
         }
 

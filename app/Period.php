@@ -13,10 +13,11 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @property Collection $events
- * @property History    $history
+ * @property int $id
  * @property string     $name
  * @property int        $position
+ * @property Collection<int, Event> $events
+ * @property History    $history
  * @property User       $user
  */
 class Period extends Model implements Movable
@@ -25,29 +26,35 @@ class Period extends Model implements Movable
     use HasFactory;
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected $guarded = [];
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'history',
     ];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'position' => 'int',
     ];
 
+    /**
+     * @return BelongsTo<History, Period>
+     */
     public function history(): BelongsTo
     {
         return $this->belongsTo(History::class);
     }
 
+    /**
+     * @return HasMany<Event>
+     */
     public function events(): HasMany
     {
         return $this->hasMany(Event::class)->orderBy('position', 'ASC');

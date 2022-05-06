@@ -12,9 +12,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
+ * @property int $id
+ * @property string $name
+ * @property string $type
+ * @property int     $position
  * @property History $history
  * @property Period  $period
- * @property int     $position
  */
 class Event extends Model implements Movable
 {
@@ -22,19 +25,19 @@ class Event extends Model implements Movable
     use HasFactory;
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected $guarded = [];
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'period',
     ];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'position' => 'int',
