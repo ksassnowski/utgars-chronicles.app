@@ -1,30 +1,34 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
 use App\Lfg;
 use App\User;
 use Generator;
-use Tests\TestCase;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia;
+use Tests\AuthenticatedRoutesTest;
+use Tests\TestCase;
 
-class SearchGameTest extends TestCase
+/**
+ * @internal
+ */
+final class SearchGameTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest;
+    use RefreshDatabase;
+    use AuthenticatedRoutesTest;
 
-    /** @test */
-    public function it_returns_an_empty_response_if_no_games_exist(): void
+    public function testItReturnsAnEmptyResponseIfNoGamesExist(): void
     {
         $this
             ->login()
             ->get(route('lfg.index'))
-            ->assertInertia(fn (AssertableInertia $page) => $page->where('games', []));
+            ->assertInertia(static fn (AssertableInertia $page) => $page->where('games', []));
     }
 
-    /** @test */
-    public function it_returns_all_games_for_an_unfiltered_request(): void
+    public function testItReturnsAllGamesForAnUnfilteredRequest(): void
     {
         Lfg::factory()->count(3)->create();
 
@@ -32,12 +36,11 @@ class SearchGameTest extends TestCase
             ->login()
             ->get(route('lfg.index'))
             ->assertInertia(
-                fn (AssertableInertia $page) => $page->has('games', 3)
+                static fn (AssertableInertia $page) => $page->has('games', 3),
             );
     }
 
-    /** @test */
-    public function it_shows_only_games_with_open_slots(): void
+    public function testItShowsOnlyGamesWithOpenSlots(): void
     {
         $gameWithAvailableSlots = Lfg::factory(['slots' => 3])
             ->has(User::factory()->count(2))
@@ -49,13 +52,12 @@ class SearchGameTest extends TestCase
         $this->login()
             ->get(route('lfg.index'))
             ->assertInertia(
-                fn (AssertableInertia $page) => $page->has('games', 1)
-                    ->where('games.0.id', $gameWithAvailableSlots->id)
+                static fn (AssertableInertia $page) => $page->has('games', 1)
+                    ->where('games.0.id', $gameWithAvailableSlots->id),
             );
     }
 
-    /** @test */
-    public function it_only_shows_games_after_the_selected_start_date(): void
+    public function testItOnlyShowsGamesAfterTheSelectedStartDate(): void
     {
         $this->travelTo(now());
 
@@ -65,29 +67,27 @@ class SearchGameTest extends TestCase
 
         $this->login()
             ->get(route('lfg.index', ['start_date' => now()->subDay()->toIso8601String()]))
-            ->assertInertia(fn (AssertableInertia $page) => $page->has('games', 1));
+            ->assertInertia(static fn (AssertableInertia $page) => $page->has('games', 1));
 
         $this->login()
             ->get(route('lfg.index', ['start_date' => now()->addDay()->toIso8601String()]))
-            ->assertInertia(fn (AssertableInertia $page) => $page->has('games', 0));
+            ->assertInertia(static fn (AssertableInertia $page) => $page->has('games', 0));
     }
 
-    /** @test */
-    public function start_date_needs_to_be_a_valid_date(): void
+    public function testStartDateNeedsToBeAValidDate(): void
     {
         $this->login()
             ->get(route('lfg.index', ['start_date' => '::not-a-valid-date::']))
             ->assertSessionHasErrors('start_date');
     }
 
-    /** @test */
-    public function it_does_not_show_games_that_lie_in_the_past(): void
+    public function testItDoesNotShowGamesThatLieInThePast(): void
     {
         Lfg::factory()->past()->create();
 
         $this->login()
             ->get(route('lfg.index'))
-            ->assertInertia(fn (AssertableInertia $page) => $page->has('games', 0));
+            ->assertInertia(static fn (AssertableInertia $page) => $page->has('games', 0));
     }
 
     public function authenticatedRoutesProvider(): Generator

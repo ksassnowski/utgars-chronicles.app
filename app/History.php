@@ -1,29 +1,35 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App;
 
-use Illuminate\Support\Facades\DB;
-use App\Exceptions\UserIsNotAPlayer;
-use Illuminate\Database\Eloquent\Model;
-use App\Exceptions\UserIsAlreadyPlayerInHistory;
 use App\Exceptions\OwnerCannotJoinOwnGameAsPlayer;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Exceptions\UserIsAlreadyPlayerInHistory;
+use App\Exceptions\UserIsNotAPlayer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\DB;
 
 /**
- * @property User owner
  * @property int owner_id
+ * @property User owner
  */
 class History extends Model
 {
     use HasFactory;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $guarded = [];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $casts = [
         'owner_id' => 'int',
         'public' => 'bool',
@@ -72,15 +78,15 @@ class History extends Model
     public function insertPeriod(array $attributes): Period
     {
         Period::where('history_id', $this->id)
-           ->where('position', '>=', $attributes['position'])
-           ->update(['position' => DB::raw('position + 1')]);
+            ->where('position', '>=', $attributes['position'])
+            ->update(['position' => DB::raw('position + 1')]);
 
         return $this->periods()->create($attributes);
     }
 
     /**
-     * @throws UserIsAlreadyPlayerInHistory
      * @throws OwnerCannotJoinOwnGameAsPlayer
+     * @throws UserIsAlreadyPlayerInHistory
      */
     public function addPlayer(User $user): void
     {

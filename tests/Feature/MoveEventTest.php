@@ -1,23 +1,30 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\User;
 use App\Event;
-use Generator;
-use App\Period;
-use App\History;
-use Tests\TestCase;
-use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
+use App\History;
+use App\Period;
+use App\User;
+use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event as EventFacade;
+use Tests\ScopedRouteTest;
+use Tests\TestCase;
 
-class MoveEventTest extends TestCase
+/**
+ * @internal
+ */
+final class MoveEventTest extends TestCase
 {
-    use RefreshDatabase, ScopedRouteTest;
+    use RefreshDatabase;
+    use ScopedRouteTest;
 
     private History $history;
+
     private Period $period;
 
     protected function setUp(): void
@@ -31,23 +38,22 @@ class MoveEventTest extends TestCase
         $this->period = Period::factory()->create(['history_id' => $this->history->id]);
     }
 
-    /** @test */
-    public function broadcastEventAfterEventWasMoved(): void
+    public function testBroadcastEventAfterEventWasMoved(): void
     {
         Event::factory()->create([
             'period_id' => $this->period->id,
             'history_id' => $this->period->history_id,
-            'position' => 2
+            'position' => 2,
         ]);
         $event = Event::factory()->create([
             'period_id' => $this->period->id,
             'history_id' => $this->period->history_id,
-            'position' => 1
+            'position' => 1,
         ]);
 
         $this->login()->postJson(
             route('events.move', [$this->period->history, $event]),
-            ['position' => 2]
+            ['position' => 2],
         );
 
         EventFacade::assertDispatched(BoardUpdated::class);
@@ -58,9 +64,9 @@ class MoveEventTest extends TestCase
         yield from [
             'move event' => [
                 'post',
-                fn () => Event::factory()->create(),
-                fn (History $history, Event $event) => route('events.move', [$history, $event])
-            ]
+                static fn () => Event::factory()->create(),
+                static fn (History $history, Event $event) => route('events.move', [$history, $event]),
+            ],
         ];
     }
 }

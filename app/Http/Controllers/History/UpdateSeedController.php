@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\History;
 
-use App\History;
 use App\Events\HistorySeedUpdated;
-use Illuminate\Http\RedirectResponse;
+use App\History;
 use App\Http\Requests\History\UpdateSeedRequest;
+use Illuminate\Http\RedirectResponse;
 
 final class UpdateSeedController
 {

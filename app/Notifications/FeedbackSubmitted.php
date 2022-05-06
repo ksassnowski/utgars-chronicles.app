@@ -1,18 +1,21 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Notifications;
 
 use App\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
 
 class FeedbackSubmitted extends Notification implements ShouldQueue
 {
     use Queueable;
 
     public User $user;
+
     public string $message;
 
     public function __construct(User $user, string $message)
@@ -28,7 +31,7 @@ class FeedbackSubmitted extends Notification implements ShouldQueue
 
     public function toMail($notifiable): MailMessage
     {
-        return (new MailMessage)
+        return (new MailMessage())
             ->subject('New Feedback Submitted')
             ->markdown('mail.feedback', [
                 'user' => $this->user,

@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Listeners;
 
-use DB;
-use App\Scene;
 use App\Events\SceneDeleted;
+use App\Scene;
+use DB;
 
 final class ReorderScenes
 {

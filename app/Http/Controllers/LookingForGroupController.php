@@ -1,15 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use DB;
+use App\Http\Requests\CreateLfgRequest;
 use App\Lfg;
+use DB;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
-use App\Http\Requests\CreateLfgRequest;
-use Illuminate\Database\Eloquent\Builder;
 
 class LookingForGroupController extends Controller
 {
@@ -21,7 +23,7 @@ class LookingForGroupController extends Controller
             'games' => Lfg::query()
                 ->has('users', '<', DB::raw('lfgs.slots'))
                 ->where('start_date', '>=', now())
-                ->when($request->query('start_date'), function (Builder $query, $date) {
+                ->when($request->query('start_date'), static function (Builder $query, $date): void {
                     $query->where('start_date', '>=', $date);
                 })
                 ->orderBy('start_date', 'ASC')
@@ -29,7 +31,7 @@ class LookingForGroupController extends Controller
         ]);
     }
 
-    public function show(Lfg $lfg)
+    public function show(Lfg $lfg): void
     {
     }
 

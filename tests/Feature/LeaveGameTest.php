@@ -1,17 +1,23 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\History;
 use App\User;
 use Generator;
-use App\History;
-use Tests\TestCase;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\AuthenticatedRoutesTest;
+use Tests\TestCase;
 
-class LeaveGameTest extends TestCase
+/**
+ * @internal
+ */
+final class LeaveGameTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest;
+    use RefreshDatabase;
+    use AuthenticatedRoutesTest;
 
     public function authenticatedRoutesProvider(): Generator
     {
@@ -20,11 +26,11 @@ class LeaveGameTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function leaveGame(): void
+    public function testLeaveGame(): void
     {
         /** @var History $game */
         $game = History::factory()->create();
+
         /** @var User $player */
         $player = User::factory()->create();
         $game->addPlayer($player);
@@ -32,14 +38,14 @@ class LeaveGameTest extends TestCase
         $response = $this->actingAs($player)->deleteJson(route('user.games.leave', $game));
 
         $response->assertRedirect(route('home'));
-        $this->assertFalse($player->refresh()->games->contains('id', $game->id));
+        self::assertFalse($player->refresh()->games->contains('id', $game->id));
     }
 
-    /** @test */
-    public function canOnlyLeaveGamesOfWhichYouAreAPlayer(): void
+    public function testCanOnlyLeaveGamesOfWhichYouAreAPlayer(): void
     {
         /** @var History $game */
         $game = History::factory()->create();
+
         /** @var User $player */
         $player = User::factory()->create();
 

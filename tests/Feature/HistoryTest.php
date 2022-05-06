@@ -1,24 +1,32 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Events\HistorySeedUpdated;
+use App\Exceptions\UserIsAlreadyPlayerInHistory;
+use App\History;
+use App\Http\Controllers\History\UpdateSeedController;
+use App\Http\Requests\History\UpdateSeedRequest;
 use App\User;
 use Generator;
-use App\History;
-use Tests\TestCase;
-use Tests\GameRouteTest;
-use Tests\ValidateRoutesTest;
-use App\Events\HistorySeedUpdated;
-use Tests\AuthenticatedRoutesTest;
-use Illuminate\Support\Facades\Event;
-use App\Exceptions\UserIsAlreadyPlayerInHistory;
-use App\Http\Requests\History\UpdateSeedRequest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Http\Controllers\History\UpdateSeedController;
+use Illuminate\Support\Facades\Event;
+use Tests\AuthenticatedRoutesTest;
+use Tests\GameRouteTest;
+use Tests\TestCase;
+use Tests\ValidateRoutesTest;
 
-class HistoryTest extends TestCase
+/**
+ * @internal
+ */
+final class HistoryTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, ValidateRoutesTest, GameRouteTest;
+    use RefreshDatabase;
+    use AuthenticatedRoutesTest;
+    use ValidateRoutesTest;
+    use GameRouteTest;
 
     protected function setUp(): void
     {
@@ -27,8 +35,7 @@ class HistoryTest extends TestCase
         Event::fake();
     }
 
-    /** @test */
-    public function createANewHistoryForUser(): void
+    public function testCreateANewHistoryForUser(): void
     {
         $this->login()->post(route('history.store'), [
             'name' => '::history-name::',
@@ -41,8 +48,7 @@ class HistoryTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function createPublicHistory(): void
+    public function testCreatePublicHistory(): void
     {
         $this->login()->post(route('history.store'), [
             'name' => '::history-name::',
@@ -56,16 +62,14 @@ class HistoryTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function nameIsRequired(): void
+    public function testNameIsRequired(): void
     {
         $response = $this->login()->post(route('history.store'), []);
 
         $response->assertSessionHasErrors(['name']);
     }
 
-    /** @test */
-    public function changePrivateGameToPublic(): void
+    public function testChangePrivateGameToPublic(): void
     {
         $history = History::factory()->create();
 
@@ -75,11 +79,10 @@ class HistoryTest extends TestCase
             ]);
 
         $history->refresh();
-        $this->assertTrue($history->public);
+        self::assertTrue($history->public);
     }
 
-    /** @test */
-    public function changePublicGameToPrivate(): void
+    public function testChangePublicGameToPrivate(): void
     {
         $history = History::factory()->public()->create();
 
@@ -89,11 +92,10 @@ class HistoryTest extends TestCase
             ]);
 
         $history->refresh();
-        $this->assertFalse($history->public);
+        self::assertFalse($history->public);
     }
 
-    /** @test */
-    public function updateHistory(): void
+    public function testUpdateHistory(): void
     {
         $this->login();
         $history = History::factory()->create([
@@ -109,10 +111,10 @@ class HistoryTest extends TestCase
             ->assertRedirect()
             ->assertSessionHasNoErrors();
         $history->refresh();
-        $this->assertEquals('::new-name::', $history->name);
+        self::assertEquals('::new-name::', $history->name);
         Event::assertDispatched(
             HistorySeedUpdated::class,
-            fn (HistorySeedUpdated $event) => $event->history->id === $history->id && $event->history->name === '::new-name::'
+            static fn (HistorySeedUpdated $event) => $event->history->id === $history->id && '::new-name::' === $event->history->name,
         );
     }
 
@@ -124,23 +126,21 @@ class HistoryTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function addNewPlayerToHistory(): void
+    public function testAddNewPlayerToHistory(): void
     {
         /** @var History $history */
         $history = History::factory()->create();
         $player = User::factory()->create();
 
-        $this->assertNull($history->players->first(fn (User $p) => $p->id === $player->id));
+        self::assertNull($history->players->first(static fn (User $p) => $p->id === $player->id));
 
         $history->addPlayer($player);
 
         $history->refresh();
-        $this->assertNotNull($history->players->first(fn (User $p) => $p->id === $player->id));
+        self::assertNotNull($history->players->first(static fn (User $p) => $p->id === $player->id));
     }
 
-    /** @test */
-    public function cantAddSamePlayerTwice(): void
+    public function testCantAddSamePlayerTwice(): void
     {
         $this->expectException(UserIsAlreadyPlayerInHistory::class);
 
@@ -151,8 +151,7 @@ class HistoryTest extends TestCase
         $history->addPlayer($player);
     }
 
-    /** @test */
-    public function deleteHistory(): void
+    public function testDeleteHistory(): void
     {
         $history = History::factory()->create();
 
@@ -164,8 +163,7 @@ class HistoryTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function onlyOwnerCanDeleteHistory(): void
+    public function testOnlyOwnerCanDeleteHistory(): void
     {
         $baddie = User::factory()->create();
         $history = History::factory()->create();

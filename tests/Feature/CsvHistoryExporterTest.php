@@ -1,28 +1,32 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Type;
 use App\Event;
-use App\Period;
-use App\History;
-use Tests\TestCase;
 use App\Export\CsvHistoryExporter;
+use App\History;
+use App\Period;
+use App\Type;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
-class CsvHistoryExporterTest extends TestCase
+/**
+ * @internal
+ */
+final class CsvHistoryExporterTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
-    public function exportPeriodsInCorrectOrder(): void
+    public function testExportPeriodsInCorrectOrder(): void
     {
         $history = History::factory()->create();
         Period::factory()->create([
             'history_id' => $history->id,
             'name' => '::period-1::',
             'type' => Type::DARK,
-            'position' => 2
+            'position' => 2,
         ]);
         Period::factory()->create([
             'history_id' => $history->id,
@@ -41,12 +45,11 @@ class CsvHistoryExporterTest extends TestCase
 
         self::assertEquals(
             [['PERIOD (light): ::period-2::', 'PERIOD (dark): ::period-1::', 'PERIOD (dark): ::period-3::']],
-            $result
+            $result,
         );
     }
 
-    /** @test */
-    public function exportEventsInCorrectOrder(): void
+    public function testExportEventsInCorrectOrder(): void
     {
         $history = History::factory()->create();
         Period::factory()->create([
@@ -84,12 +87,11 @@ class CsvHistoryExporterTest extends TestCase
                 ['EVENT (dark): ::event-2::', null],
                 ['EVENT (light): ::event-1::', null],
             ],
-            $result
+            $result,
         );
     }
 
-    /** @test */
-    public function handleHistoryWithOnlyASinglePeriod(): void
+    public function testHandleHistoryWithOnlyASinglePeriod(): void
     {
         $history = History::factory()->create();
         $period = Period::factory()->create([
@@ -113,7 +115,7 @@ class CsvHistoryExporterTest extends TestCase
                 ['PERIOD (dark): ::period-1::'],
                 ['EVENT (dark): ::event-1::'],
             ],
-            $result
+            $result,
         );
     }
 }

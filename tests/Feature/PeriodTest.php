@@ -1,27 +1,35 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\Events\BoardUpdated;
+use App\History;
+use App\Http\Controllers\History\CreatePeriodController;
+use App\Http\Controllers\Period\UpdatePeriodController;
+use App\Http\Requests\History\CreatePeriodRequest;
+use App\Http\Requests\History\UpdatePeriodRequest;
+use App\Period;
 use App\Type;
 use App\User;
 use Generator;
-use App\Period;
-use App\History;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
 use Tests\GameRouteTest;
 use Tests\ScopedRouteTest;
-use App\Events\BoardUpdated;
+use Tests\TestCase;
 use Tests\ValidateRoutesTest;
-use Illuminate\Support\Facades\Event;
-use App\Http\Requests\History\CreatePeriodRequest;
-use App\Http\Requests\History\UpdatePeriodRequest;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Http\Controllers\Period\UpdatePeriodController;
-use App\Http\Controllers\History\CreatePeriodController;
 
-class PeriodTest extends TestCase
+/**
+ * @internal
+ */
+final class PeriodTest extends TestCase
 {
-    use RefreshDatabase, ValidateRoutesTest, GameRouteTest, ScopedRouteTest;
+    use RefreshDatabase;
+    use ValidateRoutesTest;
+    use GameRouteTest;
+    use ScopedRouteTest;
 
     private History $history;
 
@@ -40,19 +48,18 @@ class PeriodTest extends TestCase
         yield from [
             'update period' => [
                 'put',
-                fn () => Period::factory()->create(),
-                fn (History $history, Period $period) => route('periods.update', [$history, $period]),
+                static fn () => Period::factory()->create(),
+                static fn (History $history, Period $period) => route('periods.update', [$history, $period]),
             ],
             'delete period' => [
                 'delete',
-                fn () => Period::factory()->create(),
-                fn (History $history, Period $period) => route('periods.delete', [$history, $period]),
+                static fn () => Period::factory()->create(),
+                static fn (History $history, Period $period) => route('periods.delete', [$history, $period]),
             ],
         ];
     }
 
-    /** @test */
-    public function createPeriodForHistory(): void
+    public function testCreatePeriodForHistory(): void
     {
         $response = $this->login()->postJson(route('history.periods.store', $this->history), [
             'name' => '::period-name::',
@@ -63,12 +70,11 @@ class PeriodTest extends TestCase
         $response
             ->assertRedirect()
             ->assertSessionHasNoErrors();
-        $this->assertTrue($this->history->periods->contains('name', '::period-name::'));
+        self::assertTrue($this->history->periods->contains('name', '::period-name::'));
         Event::assertDispatched(BoardUpdated::class);
     }
 
-    /** @test */
-    public function createPeriodBetweenTwoPeriods(): void
+    public function testCreatePeriodBetweenTwoPeriods(): void
     {
         Period::factory()->create([
             'name' => '::period-1::',
@@ -78,7 +84,7 @@ class PeriodTest extends TestCase
         Period::factory()->create([
             'name' => '::period-2::',
             'history_id' => $this->history->id,
-            'position' => 2
+            'position' => 2,
         ]);
 
         $response = $this->login()->postJson(route('history.periods.store', $this->history), [
@@ -107,8 +113,7 @@ class PeriodTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function updatePeriod(): void
+    public function testUpdatePeriod(): void
     {
         /** @var Period $period */
         $period = Period::factory()->create([
@@ -126,8 +131,8 @@ class PeriodTest extends TestCase
             ->assertSessionHasNoErrors();
 
         $period->refresh();
-        $this->assertEquals($period->name, '::new-period-name::');
-        $this->assertEquals($period->type, Type::LIGHT);
+        self::assertEquals($period->name, '::new-period-name::');
+        self::assertEquals($period->type, Type::LIGHT);
         Event::assertDispatched(BoardUpdated::class);
     }
 
@@ -143,16 +148,15 @@ class PeriodTest extends TestCase
                 UpdatePeriodController::class,
                 '__invoke',
                 UpdatePeriodRequest::class,
-            ]
+            ],
         ];
     }
 
-    /** @test */
-    public function deletePeriod(): void
+    public function testDeletePeriod(): void
     {
         /** @var Period $period */
         $period = Period::factory()->create([
-            'history_id' => $this->history->id
+            'history_id' => $this->history->id,
         ]);
 
         $response = $this->login()->delete(route('periods.delete', [$period->history, $period]));
@@ -164,8 +168,7 @@ class PeriodTest extends TestCase
         Event::assertDispatched(BoardUpdated::class);
     }
 
-    /** @test */
-    public function deletingPeriodReordersTheRemainingPeriods(): void
+    public function testDeletingPeriodReordersTheRemainingPeriods(): void
     {
         $period1 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 1]);
         $period2 = Period::factory()->create(['history_id' => $this->history->id, 'position' => 2]);
@@ -173,15 +176,18 @@ class PeriodTest extends TestCase
 
         $this->login()->delete(route('periods.delete', [$this->history->id, $period2]));
 
-        $this->assertEquals(1, $period1->refresh()->position);
-        $this->assertEquals(2, $period3->refresh()->position);
+        self::assertEquals(1, $period1->refresh()->position);
+        self::assertEquals(2, $period3->refresh()->position);
     }
 
     public function gameRouteProvider(): Generator
     {
         yield ['history.periods.store'];
+
         yield ['periods.update'];
+
         yield ['periods.delete'];
+
         yield ['periods.move'];
     }
 }

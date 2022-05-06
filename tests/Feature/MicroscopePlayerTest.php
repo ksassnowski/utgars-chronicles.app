@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
@@ -10,7 +12,9 @@ trait MicroscopePlayerTest
 {
     use RefreshDatabase;
 
-    /** @test */
+    /**
+     * @test
+     */
     public function isPlayerInGameAfterJoining(): void
     {
         $history = History::factory()->create();
@@ -21,7 +25,9 @@ trait MicroscopePlayerTest
         $this->assertTrue($player->isPlayer($history));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function isNotAPlayerInGamesTheyHaventJoined(): void
     {
         $history = History::factory()->create();
@@ -30,7 +36,9 @@ trait MicroscopePlayerTest
         $this->assertFalse($player->isPlayer($history));
     }
 
-    /** @test */
+    /**
+     * @test
+     */
     public function isNotAPlayerInDifferentHistory(): void
     {
         [$history, $otherHistory] = History::factory(2)->create();

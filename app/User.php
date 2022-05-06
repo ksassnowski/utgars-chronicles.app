@@ -1,29 +1,38 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * @property int id
  */
 class User extends Authenticatable implements MicroscopePlayer
 {
-    use Notifiable, HasFactory;
+    use Notifiable;
+    use HasFactory;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $guarded = [];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

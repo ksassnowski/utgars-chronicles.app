@@ -1,12 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\MicroscopePlayer;
 use App\User;
 use Tests\TestCase;
-use App\MicroscopePlayer;
 
-class UserTest extends TestCase
+/**
+ * @internal
+ */
+final class UserTest extends TestCase
 {
     use MicroscopePlayerTest;
 

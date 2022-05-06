@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Focus;
 
+use App\Events\FocusDeleted;
 use App\Focus;
 use App\History;
-use App\Events\FocusDeleted;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 final class DeleteFocusController
 {

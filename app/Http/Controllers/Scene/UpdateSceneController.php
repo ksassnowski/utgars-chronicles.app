@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Scene;
 
-use App\Scene;
-use App\History;
 use App\Events\BoardUpdated;
-use Illuminate\Http\RedirectResponse;
+use App\History;
 use App\Http\Requests\History\UpdateSceneRequest;
+use App\Scene;
+use Illuminate\Http\RedirectResponse;
 
 final class UpdateSceneController
 {

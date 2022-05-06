@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Export\HistoryExporter;
 use App\Export\CsvHistoryExporter;
+use App\Export\HistoryExporter;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
@@ -11,20 +13,15 @@ class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
-        //
     }
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->app->bind(HistoryExporter::class, CsvHistoryExporter::class);
 
@@ -34,10 +31,10 @@ class AppServiceProvider extends ServiceProvider
             }
 
             if ($this->count() === 1) {
-                return array_map(fn (string $item) => [$item], $this->first());
+                return \array_map(static fn (string $item) => [$item], $this->first());
             }
 
-            return array_map(null, ...$this->all());
+            return \array_map(null, ...$this->all());
         });
     }
 }

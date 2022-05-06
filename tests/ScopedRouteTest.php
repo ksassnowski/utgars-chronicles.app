@@ -1,9 +1,11 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests;
 
-use Generator;
 use App\History;
+use Generator;
 
 trait ScopedRouteTest
 {
@@ -14,7 +16,7 @@ trait ScopedRouteTest
     public function routeIsCorrectlyScoped(
         string $httpMethod,
         callable $setup,
-        callable $getRoute
+        callable $getRoute,
     ): void {
         $history = History::factory()->create();
         $entity = $setup();

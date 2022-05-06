@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Listeners;
 
@@ -7,7 +9,7 @@ use App\Events\EventDeleted;
 
 class ReorderEvents
 {
-    public function handle(EventDeleted $event)
+    public function handle(EventDeleted $event): void
     {
         Event::where('period_id', $event->period->id)
             ->where('position', '>', $event->position)

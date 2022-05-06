@@ -1,13 +1,15 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Legacy;
 
-use App\Legacy;
-use App\History;
 use App\Events\LegacyUpdated;
+use App\History;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\Legacy\UpdateLegacyRequest;
+use App\Legacy;
+use Illuminate\Http\RedirectResponse;
 
 class UpdateLegacyController extends Controller
 {

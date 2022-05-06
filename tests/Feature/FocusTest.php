@@ -1,27 +1,35 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Focus;
-use Generator;
-use App\History;
-use Tests\TestCase;
-use Tests\GameRouteTest;
-use Tests\ScopedRouteTest;
 use App\Events\FocusDefined;
 use App\Events\FocusDeleted;
 use App\Events\FocusUpdated;
-use Tests\ValidateRoutesTest;
-use Illuminate\Support\Facades\Event;
-use App\Http\Requests\History\DefineFocusRequest;
-use App\Http\Requests\History\UpdateFocusRequest;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Focus;
+use App\History;
 use App\Http\Controllers\Focus\UpdateFocusController;
 use App\Http\Controllers\History\DefineFocusController;
+use App\Http\Requests\History\DefineFocusRequest;
+use App\Http\Requests\History\UpdateFocusRequest;
+use Generator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Tests\GameRouteTest;
+use Tests\ScopedRouteTest;
+use Tests\TestCase;
+use Tests\ValidateRoutesTest;
 
-class FocusTest extends TestCase
+/**
+ * @internal
+ */
+final class FocusTest extends TestCase
 {
-    use RefreshDatabase, ValidateRoutesTest, ScopedRouteTest, GameRouteTest;
+    use RefreshDatabase;
+    use ValidateRoutesTest;
+    use ScopedRouteTest;
+    use GameRouteTest;
 
     protected function setUp(): void
     {
@@ -46,8 +54,7 @@ class FocusTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function defineFocusForHistory(): void
+    public function testDefineFocusForHistory(): void
     {
         /** @var History $history */
         $history = History::factory()->create();
@@ -61,15 +68,14 @@ class FocusTest extends TestCase
             ->assertRedirect()
             ->assertSessionHasNoErrors();
         $history->refresh();
-        $this->assertTrue($history->foci->contains('name', '::focus-name::'));
+        self::assertTrue($history->foci->contains('name', '::focus-name::'));
         Event::assertDispatched(
             FocusDefined::class,
-            fn (FocusDefined $e) => $e->history->id === $history->id && $e->focus->name === '::focus-name::'
+            static fn (FocusDefined $e) => $e->history->id === $history->id && '::focus-name::' === $e->focus->name,
         );
     }
 
-    /** @test */
-    public function updateFocus()
+    public function testUpdateFocus(): void
     {
         /** @var History $history */
         $history = History::factory()->create();
@@ -83,15 +89,14 @@ class FocusTest extends TestCase
         $response
             ->assertRedirect()
             ->assertSessionHasNoErrors();
-        $this->assertEquals('::new-name::', $focus->refresh()->name);
+        self::assertEquals('::new-name::', $focus->refresh()->name);
         Event::assertDispatched(
             FocusUpdated::class,
-            fn (FocusUpdated $e) => $e->focus->name === '::new-name::' && $e->focus->id === $focus->id
+            static fn (FocusUpdated $e) => '::new-name::' === $e->focus->name && $e->focus->id === $focus->id,
         );
     }
 
-    /** @test */
-    public function deleteFocus(): void
+    public function testDeleteFocus(): void
     {
         /** @var History $history */
         $history = History::factory()->create();
@@ -106,7 +111,7 @@ class FocusTest extends TestCase
         $this->assertDatabaseMissing('foci', ['id' => $focus->id]);
         Event::assertDispatched(
             FocusDeleted::class,
-            fn (FocusDeleted $e) => $e->history->id === $history->id && $e->focusId === $focus->id
+            static fn (FocusDeleted $e) => $e->history->id === $history->id && $e->focusId === $focus->id,
         );
     }
 
@@ -115,13 +120,13 @@ class FocusTest extends TestCase
         yield from [
             'update focus' => [
                 'put',
-                fn () => Focus::factory()->create(),
-                fn (History $history, Focus $focus) => route('focus.update', [$history, $focus]),
+                static fn () => Focus::factory()->create(),
+                static fn (History $history, Focus $focus) => route('focus.update', [$history, $focus]),
             ],
             'delete focus' => [
                 'delete',
-                fn () => Focus::factory()->create(),
-                fn (History $history, Focus $focus) => route('focus.delete', [$history, $focus]),
+                static fn () => Focus::factory()->create(),
+                static fn (History $history, Focus $focus) => route('focus.delete', [$history, $focus]),
             ],
         ];
     }
@@ -129,7 +134,9 @@ class FocusTest extends TestCase
     public function gameRouteProvider(): Generator
     {
         yield ['history.focus.define'];
+
         yield ['focus.update'];
+
         yield ['focus.delete'];
     }
 }

@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Event;
 
 use App\Event;
-use App\History;
 use App\Events\BoardUpdated;
+use App\History;
 use Illuminate\Http\RedirectResponse;
 
 final class DeleteEventController

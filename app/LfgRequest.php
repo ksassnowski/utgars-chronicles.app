@@ -1,24 +1,27 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use App\Exceptions\RequestAlreadyAnsweredException;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property Lfg $lfg
- * @property User $user
  * @property ?Carbon $accepted_at
+ * @property Lfg     $lfg
  * @property ?Carbon $rejected_at
+ * @property User    $user
  */
 class LfgRequest extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
     protected $casts = [
         'accepted_at' => 'datetime',
         'rejected_at' => 'datetime',
@@ -36,7 +39,7 @@ class LfgRequest extends Model
 
     public function isPending(): bool
     {
-        return $this->accepted_at === null && $this->rejected_at === null;
+        return null === $this->accepted_at && null === $this->rejected_at;
     }
 
     /**
@@ -46,7 +49,7 @@ class LfgRequest extends Model
     {
         throw_unless($this->isPending(), RequestAlreadyAnsweredException::class);
 
-        tap($this, function (LfgRequest $request) {
+        tap($this, function (self $request): void {
             $request->lfg->addPlayer($this->user);
         })->update(['accepted_at' => now()]);
     }

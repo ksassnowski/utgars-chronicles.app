@@ -1,15 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\History;
-use App\Palette;
 use App\Events\ItemAddedToPalette;
 use App\Events\PaletteItemDeleted;
 use App\Events\PaletteItemUpdated;
-use Illuminate\Http\RedirectResponse;
+use App\History;
 use App\Http\Requests\Palette\CreatePaletteItemRequest;
 use App\Http\Requests\Palette\UpdatePaletteItemRequest;
+use App\Palette;
+use Illuminate\Http\RedirectResponse;
 
 class PaletteController extends Controller
 {

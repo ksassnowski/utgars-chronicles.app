@@ -1,28 +1,36 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Type;
 use App\Event;
-use App\Scene;
-use Generator;
-use App\History;
-use function route;
-use Tests\TestCase;
-use Tests\GameRouteTest;
-use Tests\ScopedRouteTest;
 use App\Events\BoardUpdated;
-use Tests\ValidateRoutesTest;
-use App\Http\Requests\History\CreateSceneRequest;
-use App\Http\Requests\History\UpdateSceneRequest;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Event as EventFacade;
+use App\History;
 use App\Http\Controllers\Event\CreateSceneController;
 use App\Http\Controllers\Scene\UpdateSceneController;
+use App\Http\Requests\History\CreateSceneRequest;
+use App\Http\Requests\History\UpdateSceneRequest;
+use App\Scene;
+use App\Type;
+use Generator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event as EventFacade;
+use Tests\GameRouteTest;
+use Tests\ScopedRouteTest;
+use Tests\TestCase;
+use Tests\ValidateRoutesTest;
+use function route;
 
-class SceneTest extends TestCase
+/**
+ * @internal
+ */
+final class SceneTest extends TestCase
 {
-    use RefreshDatabase, ScopedRouteTest, GameRouteTest, ValidateRoutesTest;
+    use RefreshDatabase;
+    use ScopedRouteTest;
+    use GameRouteTest;
+    use ValidateRoutesTest;
 
     private Event $event;
 
@@ -43,19 +51,19 @@ class SceneTest extends TestCase
         yield from [
             'create scene' => [
                 'post',
-                fn () => Event::factory()->create(),
-                fn (History $history, Event $event) => route('events.scenes.store', [$history, $event]),
+                static fn () => Event::factory()->create(),
+                static fn (History $history, Event $event) => route('events.scenes.store', [$history, $event]),
             ],
             'update scene' => [
                 'put',
-                fn () => Scene::factory()->create(),
-                fn (History $history, Scene $scene) => route('scenes.update', [$history, $scene]),
+                static fn () => Scene::factory()->create(),
+                static fn (History $history, Scene $scene) => route('scenes.update', [$history, $scene]),
             ],
             'delete scene' => [
                 'delete',
-                fn () => Scene::factory()->create(),
-                fn (History $history, Scene $scene) => route('scenes.delete', [$history, $scene]),
-            ]
+                static fn () => Scene::factory()->create(),
+                static fn (History $history, Scene $scene) => route('scenes.delete', [$history, $scene]),
+            ],
         ];
     }
 
@@ -75,8 +83,7 @@ class SceneTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function createScene(): void
+    public function testCreateScene(): void
     {
         $response = $this->login()->postJson(route('events.scenes.store', [$this->event->history, $this->event]), [
             'question' => '::question::',
@@ -101,8 +108,7 @@ class SceneTest extends TestCase
         EventFacade::assertDispatched(BoardUpdated::class);
     }
 
-    /** @test */
-    public function updateScene(): void
+    public function testUpdateScene(): void
     {
         $scene = Scene::factory()->create([
             'event_id' => $this->event->id,
@@ -114,22 +120,21 @@ class SceneTest extends TestCase
                 'question' => '::new-question::',
                 'scene' => '::new-scene::',
                 'answer' => '::new-answer::',
-                'type' => Type::LIGHT
+                'type' => Type::LIGHT,
             ]);
 
         $response
             ->assertRedirect()
             ->assertSessionHasNoErrors();
         $scene->refresh();
-        $this->assertEquals('::new-question::', $scene->question);
-        $this->assertEquals('::new-scene::', $scene->scene);
-        $this->assertEquals('::new-answer::', $scene->answer);
-        $this->assertEquals(Type::LIGHT, $scene->type);
+        self::assertEquals('::new-question::', $scene->question);
+        self::assertEquals('::new-scene::', $scene->scene);
+        self::assertEquals('::new-answer::', $scene->answer);
+        self::assertEquals(Type::LIGHT, $scene->type);
         EventFacade::assertDispatched(BoardUpdated::class);
     }
 
-    /** @test */
-    public function deleteScene(): void
+    public function testDeleteScene(): void
     {
         $scene = Scene::factory()->create([
             'history_id' => $this->event->history_id,
@@ -149,8 +154,11 @@ class SceneTest extends TestCase
     public function gameRouteProvider(): Generator
     {
         yield ['events.scenes.store'];
+
         yield ['scenes.update'];
+
         yield ['scenes.delete'];
+
         yield ['scenes.move'];
     }
 }

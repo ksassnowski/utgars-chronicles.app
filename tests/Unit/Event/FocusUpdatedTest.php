@@ -1,19 +1,24 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Unit\Event;
 
-use App\Focus;
 use App\Events\FocusUpdated;
+use App\Focus;
 use PHPUnit\Framework\TestCase;
 
-class FocusUpdatedTest extends TestCase
+/**
+ * @internal
+ */
+final class FocusUpdatedTest extends TestCase
 {
     use BroadcastingEventTest;
 
     protected function createEvent()
     {
         return new FocusUpdated(
-            new Focus(['name' => '::new-name::', 'history_id' => 123])
+            new Focus(['name' => '::new-name::', 'history_id' => 123]),
         );
     }
 

@@ -1,12 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\History;
 
-use App\History;
 use App\Events\FocusDefined;
+use App\History;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
 use App\Http\Requests\History\DefineFocusRequest;
+use Illuminate\Http\RedirectResponse;
 
 class DefineFocusController extends Controller
 {

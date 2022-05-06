@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\History;
 
-use App\History;
 use App\Events\BoardUpdated;
-use Illuminate\Http\RedirectResponse;
+use App\History;
 use App\Http\Requests\History\CreatePeriodRequest;
+use Illuminate\Http\RedirectResponse;
 
 final class CreatePeriodController
 {

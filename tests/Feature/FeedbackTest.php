@@ -1,21 +1,28 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\User;
-use Generator;
-use Tests\TestCase;
-use Tests\ValidateRoutesTest;
-use Tests\AuthenticatedRoutesTest;
-use App\Notifications\FeedbackSubmitted;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Requests\SubmitFeedbackRequest;
-use Illuminate\Support\Facades\Notification;
+use App\Notifications\FeedbackSubmitted;
+use App\User;
+use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Notification;
+use Tests\AuthenticatedRoutesTest;
+use Tests\TestCase;
+use Tests\ValidateRoutesTest;
 
-class FeedbackTest extends TestCase
+/**
+ * @internal
+ */
+final class FeedbackTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest, ValidateRoutesTest;
+    use RefreshDatabase;
+    use AuthenticatedRoutesTest;
+    use ValidateRoutesTest;
 
     public function authenticatedRoutesProvider(): Generator
     {
@@ -24,23 +31,22 @@ class FeedbackTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function submitFeedback(): void
+    public function testSubmitFeedback(): void
     {
         Notification::fake();
         $adminUser = User::factory()->create(['email' => 'admin@email.com']);
         config(['app.admin_email' => 'admin@email.com']);
 
         $this->login()->post(route('feedback.submit'), [
-            'message' => '::message::'
+            'message' => '::message::',
         ]);
 
         Notification::assertSentTo(
             [$adminUser],
             FeedbackSubmitted::class,
             function (FeedbackSubmitted $notification) {
-                return $notification->message === '::message::' && $notification->user->id === $this->user->id;
-            }
+                return '::message::' === $notification->message && $notification->user->id === $this->user->id;
+            },
         );
     }
 

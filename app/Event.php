@@ -1,48 +1,44 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App;
 
 use DB;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property Period $period
- * @property int $position
  * @property History $history
+ * @property Period  $period
+ * @property int     $position
  */
 class Event extends Model implements Movable
 {
-    use HasPosition, HasFactory;
+    use HasPosition;
+    use HasFactory;
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $guarded = [];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $hidden = [
         'period',
     ];
 
-    /** @var array */
+    /**
+     * @var array
+     */
     protected $casts = [
         'position' => 'int',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        self::deleted(function (Event $event) {
-            Event::where('period_id', $event->period_id)
-                ->where('position', '>', $event->position)
-                ->update([
-                    'position' => DB::raw('position - 1')
-                ]);
-        });
-    }
 
     public function scenes(): HasMany
     {
@@ -57,6 +53,19 @@ class Event extends Model implements Movable
     public function history(): BelongsTo
     {
         return $this->belongsTo(History::class);
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        self::deleted(static function (self $event): void {
+            self::where('period_id', $event->period_id)
+                ->where('position', '>', $event->position)
+                ->update([
+                    'position' => DB::raw('position - 1'),
+                ]);
+        });
     }
 
     protected function limitElementsToMove(Builder $query): void

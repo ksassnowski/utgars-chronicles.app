@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Listeners;
 
-use DB;
-use App\Period;
 use App\Events\PeriodDeleted;
+use App\Period;
+use DB;
 
 final class ReorderPeriods
 {

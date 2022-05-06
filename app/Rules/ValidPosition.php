@@ -1,14 +1,18 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Rules;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
 class ValidPosition implements Rule
 {
     private int $relatedId;
+
     private string $table;
+
     private string $relatedColumn;
 
     public function __construct(string $table, string $relatedColumn, int $relatedId)
@@ -24,11 +28,11 @@ class ValidPosition implements Rule
             ->where($this->relatedColumn, $this->relatedId)
             ->max('position');
 
-        if ($maxPosition === null) {
-            return $value === 1;
+        if (null === $maxPosition) {
+            return 1 === $value;
         }
 
-        return ($value - $maxPosition) <= 1;
+        return 1 >= ($value - $maxPosition);
     }
 
     public function message(): string

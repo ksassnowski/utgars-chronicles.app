@@ -1,12 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Unit\Request;
 
-use PHPUnit\Framework\TestCase;
-use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Requests\Legacy\UpdateLegacyRequest;
+use Illuminate\Foundation\Http\FormRequest;
+use PHPUnit\Framework\TestCase;
 
-class UpdateLegacyRequestTest extends TestCase
+/**
+ * @internal
+ */
+final class UpdateLegacyRequestTest extends TestCase
 {
     use FormRequestTest;
 

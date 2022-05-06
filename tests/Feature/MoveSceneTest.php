@@ -1,25 +1,31 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\History;
 use App\Scene;
 use Generator;
-use App\History;
-use Tests\TestCase;
-use Tests\ScopedRouteTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\ScopedRouteTest;
+use Tests\TestCase;
 
-class MoveSceneTest extends TestCase
+/**
+ * @internal
+ */
+final class MoveSceneTest extends TestCase
 {
-    use RefreshDatabase, ScopedRouteTest;
+    use RefreshDatabase;
+    use ScopedRouteTest;
 
     public function scopedRouteProvider(): Generator
     {
         yield from [
             'move scene' => [
                 'post',
-                fn () => Scene::factory()->create(),
-                fn (History $history, Scene $scene) => route('scenes.move', [$history, $scene]),
+                static fn () => Scene::factory()->create(),
+                static fn (History $history, Scene $scene) => route('scenes.move', [$history, $scene]),
             ],
         ];
     }

@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace App\Http\Controllers\History;
 
-use App\User;
 use App\History;
-use Illuminate\Http\Request;
+use App\User;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 final class KickPlayerController
 {

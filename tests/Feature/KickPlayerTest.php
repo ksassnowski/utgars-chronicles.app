@@ -1,17 +1,23 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\History;
 use App\User;
 use Generator;
-use App\History;
-use Tests\TestCase;
-use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\AuthenticatedRoutesTest;
+use Tests\TestCase;
 
-class KickPlayerTest extends TestCase
+/**
+ * @internal
+ */
+final class KickPlayerTest extends TestCase
 {
-    use RefreshDatabase, AuthenticatedRoutesTest;
+    use RefreshDatabase;
+    use AuthenticatedRoutesTest;
 
     public function authenticatedRoutesProvider(): Generator
     {
@@ -20,27 +26,27 @@ class KickPlayerTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function kickPlayer(): void
+    public function testKickPlayer(): void
     {
         /** @var History $history */
         $history = History::factory()->create();
+
         /** @var User $kickedPlayer */
         $kickedPlayer = User::factory()->create();
         $history->addPlayer($kickedPlayer);
-        $this->assertTrue($history->players->contains('id', $kickedPlayer->id));
+        self::assertTrue($history->players->contains('id', $kickedPlayer->id));
 
         $response = $this->actingAs($history->owner)->deleteJson(route('history.players.kick', [$history, $kickedPlayer]));
 
         $response->assertRedirect(route('history.show', $history));
-        $this->assertFalse($history->refresh()->players->contains('id', $kickedPlayer->id));
+        self::assertFalse($history->refresh()->players->contains('id', $kickedPlayer->id));
     }
 
-    /** @test */
-    public function onlyOwnerCanKickPlayers(): void
+    public function testOnlyOwnerCanKickPlayers(): void
     {
         /** @var History $history */
         $history = History::factory()->create();
+
         /** @var User $kickedPlayer */
         $player = User::factory()->create();
         $history->addPlayer($player);
