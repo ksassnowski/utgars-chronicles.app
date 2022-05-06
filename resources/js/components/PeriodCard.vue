@@ -1,5 +1,5 @@
 <template>
-    <div class="max-h-full flex flex-col">
+    <div class="max-h-full flex flex-col overflow-x-hidden overflow-y-auto space-y-4 pt-4">
         <div class="relative group">
             <GameCard :type="period.type" label="Period">
                 <template #menu>
@@ -56,7 +56,7 @@
         <draggable
             :list="period.events"
             @change="eventMoved"
-            class="overflow-x-hidden overflow-y-auto space-y-4 pt-4"
+            class="space-y-4"
             style="flex: 1 1 auto"
             handle=".handle"
             item-key="id"
