@@ -19,3 +19,4 @@ yarn-error.log
 .vapor/
 .env.production
 .env.staging
+.build/
