@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * Copyright (c) 2022 Kai Sassnowski
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/ksassnowski/utgars-chronicles.app
+ */
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,12 +21,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
 
 /**
- * @property int $id
- * @property string $email
- * @property string $name
- * @property Collection<int, History> $histories
+ * @property string                   $email
  * @property Collection<int, History> $games
- * @property Collection<int, Lfg> $lfgs
+ * @property Collection<int, History> $histories
+ * @property int                      $id
+ * @property Collection<int, Lfg>     $lfgs
+ * @property string                   $name
  */
 class User extends Authenticatable implements MicroscopePlayer
 {
