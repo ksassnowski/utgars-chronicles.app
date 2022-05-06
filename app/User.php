@@ -9,9 +9,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 
 /**
- * @property int id
+ * @property int $id
+ * @property string $email
+ * @property string $name
+ * @property Collection<int, History> $histories
+ * @property Collection<int, History> $games
+ * @property Collection<int, Lfg> $lfgs
  */
 class User extends Authenticatable implements MicroscopePlayer
 {
@@ -19,34 +25,43 @@ class User extends Authenticatable implements MicroscopePlayer
     use HasFactory;
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected $guarded = [];
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'password', 'remember_token',
     ];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return HasMany<History>
+     */
     public function histories(): HasMany
     {
         return $this->hasMany(History::class, 'owner_id');
     }
 
+    /**
+     * @return BelongsToMany<History>
+     */
     public function games(): BelongsToMany
     {
         return $this->belongsToMany(History::class);
     }
 
+    /**
+     * @return HasMany<Lfg>
+     */
     public function lfgs(): HasMany
     {
         return $this->hasMany(Lfg::class);

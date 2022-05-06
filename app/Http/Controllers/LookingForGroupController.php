@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class LookingForGroupController extends Controller
+final class LookingForGroupController extends Controller
 {
     public function index(Request $request): Response
     {
@@ -21,6 +21,7 @@ class LookingForGroupController extends Controller
 
         return Inertia::render('Lfg/Index', [
             'games' => Lfg::query()
+                /** @phpstan-ignore-next-line */
                 ->has('users', '<', DB::raw('lfgs.slots'))
                 ->where('start_date', '>=', now())
                 ->when($request->query('start_date'), static function (Builder $query, $date): void {

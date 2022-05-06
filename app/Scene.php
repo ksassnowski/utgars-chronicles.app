@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -20,29 +21,35 @@ class Scene extends Model implements Movable
     use HasFactory;
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected $guarded = [];
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'event',
     ];
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'position' => 'int',
     ];
 
+    /**
+     * @return BelongsTo<Event, Scene>
+     */
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
     }
 
+    /**
+     * @return BelongsTo<History, Scene>
+     */
     public function history(): BelongsTo
     {
         return $this->belongsTo(History::class);

@@ -20,6 +20,7 @@ class CreateEventRequest extends FormRequest
                 'required',
                 'integer',
                 'min:0',
+                /** @phpstan-ignore-next-line */
                 new ValidPosition('events', 'period_id', $this->route('period')->id),
             ],
         ];

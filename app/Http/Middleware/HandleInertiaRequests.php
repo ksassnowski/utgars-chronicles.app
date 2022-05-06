@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 
-class HandleInertiaRequests extends Middleware
+final class HandleInertiaRequests extends Middleware
 {
     /**
      * The root template that's loaded on the first page visit.
@@ -24,10 +24,8 @@ class HandleInertiaRequests extends Middleware
      * Determines the current asset version.
      *
      * @see https://inertiajs.com/asset-versioning
-     *
-     * @return null|string
      */
-    public function version(Request $request)
+    public function version(Request $request): ?string
     {
         return parent::version($request);
     }
@@ -37,17 +35,20 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/shared-data
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function share(Request $request)
+    public function share(Request $request): array
     {
         return \array_merge(parent::share($request), [
             'environment' => static fn () => app()->environment(),
             'auth' => static function () use ($request) {
                 return [
                     'user' => !$request->routeIs('invitation.accept.show-form') && Auth::user() ? [
+                        /** @phpstan-ignore-next-line  */
                         'id' => Auth::user()->id,
+                        /** @phpstan-ignore-next-line  */
                         'name' => Auth::user()->name,
+                        /** @phpstan-ignore-next-line  */
                         'email' => Auth::user()->email,
                     ] : null,
                 ];

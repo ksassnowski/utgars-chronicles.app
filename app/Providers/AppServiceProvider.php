@@ -26,14 +26,18 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(HistoryExporter::class, CsvHistoryExporter::class);
 
         Collection::macro('transpose', function () {
+            /** @phpstan-ignore-next-line */
             if ($this->isEmpty()) {
                 return [];
             }
 
+            /** @phpstan-ignore-next-line */
             if ($this->count() === 1) {
+                /** @phpstan-ignore-next-line */
                 return \array_map(static fn (string $item) => [$item], $this->first());
             }
 
+            /** @phpstan-ignore-next-line */
             return \array_map(null, ...$this->all());
         });
     }
