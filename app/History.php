@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * Copyright (c) 2022 Kai Sassnowski
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/ksassnowski/utgars-chronicles.app
+ */
+
 namespace App;
 
 use App\Exceptions\OwnerCannotJoinOwnGameAsPlayer;
@@ -16,15 +25,15 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @property int $owner_id
- * @property User $owner
- * @property Collection<int, User> $players
- * @property Collection<int, Focus> $foci
- * @property Collection<int, Period> $periods
- * @property Collection<int, Event> $events
- * @property Collection<int, Scene> $scenes
+ * @property Collection<int, Event>   $events
+ * @property Collection<int, Focus>   $foci
+ * @property Collection<int, Legacy>  $legacies
+ * @property User                     $owner
+ * @property int                      $owner_id
  * @property Collection<int, Palette> $palettes
- * @property Collection<int, Legacy> $legacies
+ * @property Collection<int, Period>  $periods
+ * @property Collection<int, User>    $players
+ * @property Collection<int, Scene>   $scenes
  */
 class History extends Model
 {

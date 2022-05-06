@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/**
+ * Copyright (c) 2022 Kai Sassnowski
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/ksassnowski/utgars-chronicles.app
+ */
+
 namespace App;
 
 use DB;
@@ -12,12 +21,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property int $id
- * @property string $name
- * @property string $type
- * @property int     $position
  * @property History $history
+ * @property int     $id
+ * @property string  $name
  * @property Period  $period
+ * @property int     $position
+ * @property string  $type
  */
 class Event extends Model implements Movable
 {
