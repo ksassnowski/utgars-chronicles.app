@@ -2,19 +2,18 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-    mode: "jit",
-
     important: true,
 
-    purge: {
-        content: [
-            "./resources/views/**/*.blade.php",
-            "./resources/js/**/*.vue",
-        ],
-        options: {
-            whitelistPatternsChildren: [/nprogress/],
-        },
-    },
+    content: [
+        "./resources/views/**/*.blade.php",
+        "./resources/js/**/*.vue",
+    ],
+
+    safelist: [
+        {
+            pattern: /nprogress/,
+        }
+    ],
 
     theme: {
         extend: {

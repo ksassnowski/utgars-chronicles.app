@@ -29,7 +29,7 @@ createInertiaApp({
             })
             .mixin({
                 methods: {
-                    $route: (...args) => window.route(...args).url(),
+                    $route: (...args) => window.route(...args),
                     active: (route) => window.route().current(route),
                 },
             })
