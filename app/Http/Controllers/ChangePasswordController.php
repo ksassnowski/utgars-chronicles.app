@@ -14,13 +14,17 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangePasswordRequest;
+use App\User;
 use Illuminate\Http\RedirectResponse;
 
 final class ChangePasswordController extends Controller
 {
     public function __invoke(ChangePasswordRequest $request): RedirectResponse
     {
-        $request->user()->update([
+        /** @var User $user */
+        $user = $request->user();
+
+        $user->update([
             'password' => bcrypt($request->password()),
         ]);
 

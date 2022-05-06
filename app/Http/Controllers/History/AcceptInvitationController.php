@@ -22,7 +22,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 
-class AcceptInvitationController extends Controller
+final class AcceptInvitationController extends Controller
 {
     public function __invoke(Request $request, History $history): RedirectResponse
     {
@@ -42,6 +42,7 @@ class AcceptInvitationController extends Controller
         }
 
         try {
+            /** @phpstan-ignore-next-line */
             $history->addPlayer($request->user());
         } catch (UserIsAlreadyPlayerInHistory $e) {
             return redirect()->route('home')->withErrors([

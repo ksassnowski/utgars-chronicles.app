@@ -15,6 +15,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateLfgRequest;
 use App\Lfg;
+use App\User;
 use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -52,7 +53,10 @@ final class LookingForGroupController extends Controller
 
     public function store(CreateLfgRequest $request): RedirectResponse
     {
-        $lfg = $request->user()
+        /** @var User $user */
+        $user = $request->user();
+
+        $lfg = $user
             ->lfgs()
             ->create($request->validated());
 

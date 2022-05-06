@@ -35,7 +35,7 @@ function vite_assets(): HtmlString
 
     $manifestJson = \file_get_contents(public_path('build/manifest.json'));
 
-    if ($manifestJson === false) {
+    if (false === $manifestJson) {
         throw new RuntimeException('Unable to load manifest.json');
     }
 
