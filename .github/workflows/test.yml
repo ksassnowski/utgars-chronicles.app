@@ -1,18 +1,45 @@
-on:
-  push:
-    branches:
-      - master
-      - develop
-  pull_request:
-    branches:
-      - master
+name: Tests
 
+on: [push, pull_request]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  phpstan:
+    runs-on: 'ubuntu-latest'
+
     name: Test
 
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          coverage: none
+          extensions: pdo, mysql, pdo_mysql
+
+      - name: "Validate composer.json and composer.lock"
+        run: "composer validate --strict"
+
+      - name: "Determine composer cache directory"
+        id: "determine-composer-cache-directory"
+        run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
+
+      - name: "Cache dependencies installed with composer"
+        uses: "actions/cache@v2.1.6"
+        with:
+          path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
+          key: "${{ hashFiles('composer.lock') }}"
+
+      - name: Install dependencies
+        run: composer update --prefer-stable --no-interaction --prefer-source
+
+      - name: Run phpstan
+        run: composer analyze
+
+  test:
+    runs-on: 'ubuntu-latest'
     services:
       mysql:
         image: mysql:5.7
@@ -23,26 +50,34 @@ jobs:
           - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+    name: Test
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@master
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Cache dependencies
-        uses: actions/cache@v1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          path: ~/.composer/cache/files
-          key: dependencies-laravel--composer-${{ hashFiles('**/composer.lock') }}
-
-      - name: Install PHP
-        uses: shivammathur/setup-php@master
-        with:
-          php-version: 8.0
-          tools: prestissimo
-          extensions: pdo, mysql, pdo_mysql
+          php-version: 8.1
           coverage: none
+          extensions: pdo, mysql, pdo_mysql
 
-      - name: Install PHP Dependencies
-        run: composer install
+      - name: "Validate composer.json and composer.lock"
+        run: "composer validate --strict"
+
+      - name: "Determine composer cache directory"
+        id: "determine-composer-cache-directory"
+        run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
+
+      - name: "Cache dependencies installed with composer"
+        uses: "actions/cache@v2.1.6"
+        with:
+          path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
+          key: "${{ hashFiles('composer.lock') }}"
+
+      - name: Install composer dependencies
+        run: composer install --prefer-stable --no-interaction --prefer-source
 
       - name: Install Javascript Dependencies
         run: yarn install --non-interactive
