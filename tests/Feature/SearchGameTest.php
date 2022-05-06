@@ -6,9 +6,9 @@ use App\Lfg;
 use App\User;
 use Generator;
 use Tests\TestCase;
-use Inertia\Testing\Assert;
 use Tests\AuthenticatedRoutesTest;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Inertia\Testing\AssertableInertia;
 
 class SearchGameTest extends TestCase
 {
@@ -20,7 +20,7 @@ class SearchGameTest extends TestCase
         $this
             ->login()
             ->get(route('lfg.index'))
-            ->assertInertia(fn (Assert $page) => $page->where('games', []));
+            ->assertInertia(fn (AssertableInertia $page) => $page->where('games', []));
     }
 
     /** @test */
@@ -32,7 +32,7 @@ class SearchGameTest extends TestCase
             ->login()
             ->get(route('lfg.index'))
             ->assertInertia(
-                fn (Assert $page) => $page->has('games', 3)
+                fn (AssertableInertia $page) => $page->has('games', 3)
             );
     }
 
@@ -49,7 +49,7 @@ class SearchGameTest extends TestCase
         $this->login()
             ->get(route('lfg.index'))
             ->assertInertia(
-                fn (Assert $page) => $page->has('games', 1)
+                fn (AssertableInertia $page) => $page->has('games', 1)
                     ->where('games.0.id', $gameWithAvailableSlots->id)
             );
     }
@@ -65,11 +65,11 @@ class SearchGameTest extends TestCase
 
         $this->login()
             ->get(route('lfg.index', ['start_date' => now()->toIso8601String()]))
-            ->assertInertia(fn (Assert $page) => $page->has('games', 1));
+            ->assertInertia(fn (AssertableInertia $page) => $page->has('games', 1));
 
         $this->login()
             ->get(route('lfg.index', ['start_date' => now()->addDay()->toIso8601String()]))
-            ->assertInertia(fn (Assert $page) => $page->has('games', 0));
+            ->assertInertia(fn (AssertableInertia $page) => $page->has('games', 0));
     }
 
     /** @test */
@@ -87,7 +87,7 @@ class SearchGameTest extends TestCase
 
         $this->login()
             ->get(route('lfg.index'))
-            ->assertInertia(fn (Assert $page) => $page->has('games', 0));
+            ->assertInertia(fn (AssertableInertia $page) => $page->has('games', 0));
     }
 
     public function authenticatedRoutesProvider(): Generator
