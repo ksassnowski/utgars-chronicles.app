@@ -17,9 +17,9 @@ use App\History;
 use App\MicroscopePlayer;
 use Illuminate\Foundation\Http\FormRequest;
 
-class AcceptGuestInvitationRequest extends FormRequest
+final class AcceptGuestInvitationRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         /** @var History $history */
         $history = $this->route('history');
@@ -31,14 +31,12 @@ class AcceptGuestInvitationRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
+     * @return array<string, array<int, string>>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => ['required'],
         ];
     }
 

@@ -18,6 +18,9 @@ use App\Period;
 
 final class CsvHistoryExporter implements HistoryExporter
 {
+    /**
+     * @return array<int, array<int, string>>
+     */
     public function export(History $history): array
     {
         return $history->periods

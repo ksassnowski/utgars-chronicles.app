@@ -14,30 +14,32 @@ declare(strict_types=1);
 namespace App\Events;
 
 use App\Palette;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PaletteItemUpdated implements ShouldBroadcastNow
+final class PaletteItemUpdated implements ShouldBroadcastNow
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
-    public Palette $item;
-
-    public function __construct(Palette $item)
-    {
-        $this->item = $item;
+    public function __construct(
+        public readonly Palette $item,
+    ) {
     }
 
-    public function broadcastOn()
+    public function broadcastOn(): Channel
     {
         return new PresenceChannel('history.' . $this->item->history_id);
     }
 
+    /**
+     * @return array<string, int|string>
+     */
     public function broadcastWith(): array
     {
         return [

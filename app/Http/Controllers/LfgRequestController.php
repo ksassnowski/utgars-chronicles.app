@@ -45,7 +45,7 @@ final class LfgRequestController extends Controller
         return redirect()->route('lfg.requests.index');
     }
 
-    public function accept(LfgRequest $request)
+    public function accept(LfgRequest $request): RedirectResponse
     {
         try {
             $request->accept();
@@ -60,9 +60,11 @@ final class LfgRequestController extends Controller
         }
 
         $request->user->notify(new LfgRequestWasAccepted($request));
+
+        return redirect()->back();
     }
 
-    public function reject(LfgRequest $request)
+    public function reject(LfgRequest $request): RedirectResponse
     {
         try {
             $request->reject();
@@ -73,6 +75,8 @@ final class LfgRequestController extends Controller
         }
 
         $request->user->notify(new LfgRequestWasRejected($request));
+
+        return redirect()->back();
     }
 
     private function unsuccessfulRequestResponse(Throwable $exception): RedirectResponse

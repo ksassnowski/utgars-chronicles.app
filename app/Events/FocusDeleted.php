@@ -21,20 +21,16 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class FocusDeleted implements ShouldBroadcastNow
+final class FocusDeleted implements ShouldBroadcastNow
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
-    public History $history;
-
-    public int $focusId;
-
-    public function __construct(History $history, int $focusId)
-    {
-        $this->history = $history;
-        $this->focusId = $focusId;
+    public function __construct(
+        public readonly History $history,
+        public readonly int $focusId,
+    ) {
     }
 
     public function broadcastOn(): Channel
@@ -42,6 +38,9 @@ class FocusDeleted implements ShouldBroadcastNow
         return new PresenceChannel('history.' . $this->history->id);
     }
 
+    /**
+     * @return array<string, int|string>
+     */
     public function broadcastWith(): array
     {
         return ['id' => $this->focusId];

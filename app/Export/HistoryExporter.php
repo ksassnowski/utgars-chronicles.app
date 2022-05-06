@@ -17,5 +17,8 @@ use App\History;
 
 interface HistoryExporter
 {
+    /**
+     * @return array<int, array<int, string>>
+     */
     public function export(History $history): array;
 }

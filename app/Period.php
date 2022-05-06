@@ -69,6 +69,9 @@ class Period extends Model implements Movable
         return $this->hasMany(Event::class)->orderBy('position', 'ASC');
     }
 
+    /**
+     * @param array{position: int, name: string, type: "dark"|"light"} $attributes
+     */
     public function insertEvent(array $attributes): Event
     {
         Event::where('period_id', $this->id)
@@ -93,6 +96,9 @@ class Period extends Model implements Movable
         });
     }
 
+    /**
+     * @param Builder<Period> $query
+     */
     protected function limitElementsToMove(Builder $query): void
     {
         $query->where('history_id', $this->history->id);

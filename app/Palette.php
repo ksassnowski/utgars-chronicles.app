@@ -18,10 +18,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property History    $history
- * @property int        $id
- * @property string     $name
- * @property "no"|"yes" $type
+ * @property History $history
+ * @property int     $history_id
+ * @property int     $id
+ * @property string  $name
+ * @property string  $type
  */
 class Palette extends Model
 {

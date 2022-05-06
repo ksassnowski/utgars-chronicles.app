@@ -15,8 +15,11 @@ namespace App\Http\Requests\History;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DefineFocusRequest extends FormRequest
+final class DefineFocusRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<int, string>>
+     */
     public function rules(): array
     {
         return [

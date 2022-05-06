@@ -27,12 +27,14 @@ use Illuminate\Support\Facades\DB;
 /**
  * @property Collection<int, Event>   $events
  * @property Collection<int, Focus>   $foci
+ * @property int                      $id
  * @property Collection<int, Legacy>  $legacies
  * @property User                     $owner
  * @property int                      $owner_id
  * @property Collection<int, Palette> $palettes
  * @property Collection<int, Period>  $periods
  * @property Collection<int, User>    $players
+ * @property bool                     $public
  * @property Collection<int, Scene>   $scenes
  */
 class History extends Model
@@ -116,6 +118,9 @@ class History extends Model
         return $this->hasMany(Legacy::class)->latest();
     }
 
+    /**
+     * @param array{position: int, type: "dark"|"light", name: string} $attributes
+     */
     public function insertPeriod(array $attributes): Period
     {
         Period::where('history_id', $this->id)

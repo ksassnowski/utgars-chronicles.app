@@ -15,12 +15,15 @@ namespace App\Http\Requests\History;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateHistoryRequest extends FormRequest
+final class CreateHistoryRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<int, string>>
+     */
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => ['required'],
             'public' => ['nullable', 'boolean'],
         ];
     }

@@ -18,12 +18,15 @@ use App\Type;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateEventRequest extends FormRequest
+final class CreateEventRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<int, mixed>>
+     */
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => ['required'],
             'type' => ['required', Rule::in([Type::DARK, Type::LIGHT])],
             'position' => [
                 'required',

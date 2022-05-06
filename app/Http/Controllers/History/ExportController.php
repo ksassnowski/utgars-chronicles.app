@@ -19,17 +19,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use League\Csv\Writer;
 use SplTempFileObject;
+use Symfony\Component\HttpFoundation\Response;
 
 final class ExportController extends Controller
 {
-    private HistoryExporter $exporter;
-
-    public function __construct(HistoryExporter $exporter)
+    public function __construct(private HistoryExporter $exporter)
     {
-        $this->exporter = $exporter;
     }
 
-    public function __invoke(Request $request, History $history)
+    public function __invoke(Request $request, History $history): Response
     {
         if ($history->periods()->count() === 0) {
             return redirect()->back()->with('error', __('Cannot export an empty game'));

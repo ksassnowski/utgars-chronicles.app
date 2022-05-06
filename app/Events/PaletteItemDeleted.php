@@ -21,13 +21,15 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 
-class PaletteItemDeleted implements ShouldBroadcastNow
+final class PaletteItemDeleted implements ShouldBroadcastNow
 {
     use Dispatchable;
     use InteractsWithSockets;
 
-    public function __construct(public Palette $item, public History $history)
-    {
+    public function __construct(
+        public readonly Palette $item,
+        public readonly History $history,
+    ) {
     }
 
     public function broadcastOn(): Channel
@@ -35,6 +37,9 @@ class PaletteItemDeleted implements ShouldBroadcastNow
         return new PresenceChannel('history.' . $this->history->id);
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function broadcastWith(): array
     {
         return [

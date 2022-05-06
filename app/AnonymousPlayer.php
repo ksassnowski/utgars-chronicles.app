@@ -13,16 +13,13 @@ declare(strict_types=1);
 
 namespace App;
 
-class AnonymousPlayer implements MicroscopePlayer
+final class AnonymousPlayer implements MicroscopePlayer
 {
-    private string $id;
-
-    private array $histories;
-
-    public function __construct(string $id, array $histories = [])
+    /**
+     * @param array<int, null|string> $histories
+     */
+    public function __construct(private string $id, private array $histories = [])
     {
-        $this->id = $id;
-        $this->histories = $histories;
     }
 
     public function joinGame(History $history, ?string $name = null): void
@@ -31,7 +28,7 @@ class AnonymousPlayer implements MicroscopePlayer
         session()->put('histories', $this->histories);
     }
 
-    public function getAuthIdentifier()
+    public function getAuthIdentifier(): string
     {
         return $this->id;
     }

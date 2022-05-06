@@ -21,20 +21,16 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class LegacyDeleted implements ShouldBroadcastNow
+final class LegacyDeleted implements ShouldBroadcastNow
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
-    public int $legacyId;
-
-    public History $history;
-
-    public function __construct(int $legacyId, History $history)
-    {
-        $this->legacyId = $legacyId;
-        $this->history = $history;
+    public function __construct(
+        public readonly int $legacyId,
+        public readonly History $history,
+    ) {
     }
 
     public function broadcastOn(): Channel
@@ -42,6 +38,9 @@ class LegacyDeleted implements ShouldBroadcastNow
         return new PresenceChannel('history.' . $this->history->id);
     }
 
+    /**
+     * @return array<string, int|string>
+     */
     public function broadcastWith(): array
     {
         return [

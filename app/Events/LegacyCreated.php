@@ -21,17 +21,15 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class LegacyCreated implements ShouldBroadcastNow
+final class LegacyCreated implements ShouldBroadcastNow
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
-    public Legacy $legacy;
-
-    public function __construct(Legacy $legacy)
-    {
-        $this->legacy = $legacy;
+    public function __construct(
+        public readonly Legacy $legacy,
+    ) {
     }
 
     public function broadcastOn(): Channel
@@ -39,6 +37,9 @@ class LegacyCreated implements ShouldBroadcastNow
         return new PresenceChannel('history.' . $this->legacy->history_id);
     }
 
+    /**
+     * @return array<string, int|string>
+     */
     public function broadcastWith(): array
     {
         return $this->legacy->only(['id', 'name']);
