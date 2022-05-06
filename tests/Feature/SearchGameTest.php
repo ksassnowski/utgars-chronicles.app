@@ -64,7 +64,7 @@ class SearchGameTest extends TestCase
         ]);
 
         $this->login()
-            ->get(route('lfg.index', ['start_date' => now()->toIso8601String()]))
+            ->get(route('lfg.index', ['start_date' => now()->subDay()->toIso8601String()]))
             ->assertInertia(fn (AssertableInertia $page) => $page->has('games', 1));
 
         $this->login()
