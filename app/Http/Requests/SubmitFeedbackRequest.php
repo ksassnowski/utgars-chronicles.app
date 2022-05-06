@@ -29,6 +29,7 @@ final class SubmitFeedbackRequest extends FormRequest
 
     public function message(): string
     {
+        /** @phpstan-ignore-next-line */
         return $this->post('message');
     }
 }
