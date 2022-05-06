@@ -25,42 +25,64 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * @property int        $availableSlots
- * @property User       $owner
- * @property Collection $pendingRequests
- * @property Collection $requests
- * @property Carbon     $start_date
- * @property int        $user_id
+ * @property int                         $availableSlots
+ * @property int                         $id
+ * @property User                        $owner
+ * @property Collection<int, LfgRequest> $pendingRequests
+ * @property Collection<int, LfgRequest> $requests
+ * @property Carbon                      $start_date
+ * @property int                         $user_id
  */
 class Lfg extends Model
 {
     use HasFactory;
 
+    /**
+     * @var array<int, string>
+     */
     protected $guarded = [];
 
+    /**
+     * @var array<int, string>
+     */
     protected $appends = [
         'availableSlots',
     ];
 
+    /**
+     * @var array<string, string>
+     */
     protected $casts = [
         'start_date' => 'datetime',
     ];
 
+    /**
+     * @return BelongsTo<User, Lfg>
+     */
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * @return BelongsToMany<User>
+     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
     }
 
+    /**
+     * @return HasMany<LfgRequest>
+     */
     public function requests(): HasMany
     {
         return $this->hasMany(LfgRequest::class);
     }
 
+    /**
+     * @return HasMany<LfgRequest>
+     */
     public function pendingRequests(): HasMany
     {
         return $this->requests()->whereNull(['accepted_at', 'rejected_at']);

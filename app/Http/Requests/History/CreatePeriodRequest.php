@@ -17,12 +17,15 @@ use App\Rules\ValidPosition;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreatePeriodRequest extends FormRequest
+final class CreatePeriodRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<int, mixed>>
+     */
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => ['required'],
             'type' => ['required', Rule::in(['light', 'dark'])],
             'position' => [
                 'required',

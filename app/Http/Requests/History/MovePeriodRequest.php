@@ -15,8 +15,11 @@ namespace App\Http\Requests\History;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MovePeriodRequest extends FormRequest
+final class MovePeriodRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<int, string>>
+     */
     public function rules(): array
     {
         return [

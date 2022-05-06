@@ -16,11 +16,12 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ForgotPasswordController extends Controller
+final class ForgotPasswordController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +41,7 @@ class ForgotPasswordController extends Controller
         return Inertia::render('Auth/Email');
     }
 
-    protected function sendResetLinkResponse(Request $request, $response)
+    protected function sendResetLinkResponse(Request $request, mixed $response): JsonResponse|RedirectResponse
     {
         return $request->wantsJson()
             ? new JsonResponse(['message' => trans($response)], 200)

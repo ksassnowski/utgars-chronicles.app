@@ -19,26 +19,25 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class FeedbackSubmitted extends Notification implements ShouldQueue
+final class FeedbackSubmitted extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public User $user;
-
-    public string $message;
-
-    public function __construct(User $user, string $message)
-    {
-        $this->user = $user;
-        $this->message = $message;
+    public function __construct(
+        public readonly User $user,
+        public readonly string $message,
+    ) {
     }
 
-    public function via($notifiable): array
+    /**
+     * @return array<string>
+     */
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    public function toMail($notifiable): MailMessage
+    public function toMail(mixed $notifiable): MailMessage
     {
         return (new MailMessage())
             ->subject('New Feedback Submitted')

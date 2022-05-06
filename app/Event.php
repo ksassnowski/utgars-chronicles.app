@@ -19,14 +19,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 /**
- * @property History $history
- * @property int     $id
- * @property string  $name
- * @property Period  $period
- * @property int     $position
- * @property string  $type
+ * @property History                $history
+ * @property int                    $id
+ * @property string                 $name
+ * @property Period                 $period
+ * @property int                    $position
+ * @property Collection<int, Scene> $scenes
+ * @property string                 $type
  */
 class Event extends Model implements Movable
 {
@@ -52,16 +54,25 @@ class Event extends Model implements Movable
         'position' => 'int',
     ];
 
+    /**
+     * @return HasMany<Scene>
+     */
     public function scenes(): HasMany
     {
         return $this->hasMany(Scene::class)->orderBy('position', 'ASC');
     }
 
+    /**
+     * @return BelongsTo<Period, Event>
+     */
     public function period(): BelongsTo
     {
         return $this->belongsTo(Period::class);
     }
 
+    /**
+     * @return BelongsTo<History, Event>
+     */
     public function history(): BelongsTo
     {
         return $this->belongsTo(History::class);
@@ -80,6 +91,9 @@ class Event extends Model implements Movable
         });
     }
 
+    /**
+     * @param Builder<Event> $query
+     */
     protected function limitElementsToMove(Builder $query): void
     {
         $query->where('period_id', $this->period->id);

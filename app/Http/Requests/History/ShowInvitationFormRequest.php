@@ -17,9 +17,9 @@ use App\History;
 use App\MicroscopePlayer;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ShowInvitationFormRequest extends FormRequest
+final class ShowInvitationFormRequest extends FormRequest
 {
-    public function authorize()
+    public function authorize(): bool
     {
         /** @var History $history */
         $history = $this->route('history');
@@ -30,7 +30,10 @@ class ShowInvitationFormRequest extends FormRequest
         return $history->public && $user->isGuest();
     }
 
-    public function rules()
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function rules(): array
     {
         return [];
     }

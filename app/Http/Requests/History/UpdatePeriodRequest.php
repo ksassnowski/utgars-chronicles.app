@@ -17,13 +17,16 @@ use App\Type;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UpdatePeriodRequest extends FormRequest
+final class UpdatePeriodRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<int, mixed>>
+     */
     public function rules(): array
     {
         return [
-            'type' => Rule::in([Type::LIGHT, Type::DARK]),
-            'name' => 'required',
+            'type' => [Rule::in([Type::LIGHT, Type::DARK])],
+            'name' => ['required'],
         ];
     }
 }

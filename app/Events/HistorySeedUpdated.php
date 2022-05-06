@@ -21,17 +21,15 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class HistorySeedUpdated implements ShouldBroadcastNow
+final class HistorySeedUpdated implements ShouldBroadcastNow
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
-    public History $history;
-
-    public function __construct(History $history)
-    {
-        $this->history = $history;
+    public function __construct(
+        public readonly History $history,
+    ) {
     }
 
     public function broadcastOn(): Channel
@@ -39,6 +37,9 @@ class HistorySeedUpdated implements ShouldBroadcastNow
         return new PresenceChannel('history.' . $this->history->id);
     }
 
+    /**
+     * @return array<string, int|string>
+     */
     public function broadcastWith(): array
     {
         return [

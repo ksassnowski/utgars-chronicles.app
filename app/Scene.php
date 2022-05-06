@@ -74,6 +74,9 @@ class Scene extends Model implements Movable
         });
     }
 
+    /**
+     * @param Builder<Scene> $query
+     */
     protected function limitElementsToMove(Builder $query): void
     {
         $query->where('event_id', $this->event->id);

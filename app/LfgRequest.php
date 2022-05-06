@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property ?Carbon $accepted_at
+ * @property int     $id
  * @property Lfg     $lfg
  * @property ?Carbon $rejected_at
  * @property User    $user
@@ -29,18 +30,30 @@ class LfgRequest extends Model
 {
     use HasFactory;
 
+    /**
+     * @var array<int, string>
+     */
     protected $guarded = [];
 
+    /**
+     * @var array<string, string>
+     */
     protected $casts = [
         'accepted_at' => 'datetime',
         'rejected_at' => 'datetime',
     ];
 
+    /**
+     * @return BelongsTo<User, LfgRequest>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return BelongsTo<Lfg, LfgRequest>
+     */
     public function lfg(): BelongsTo
     {
         return $this->belongsTo(Lfg::class);
@@ -56,7 +69,9 @@ class LfgRequest extends Model
      */
     public function accept(): void
     {
-        throw_unless($this->isPending(), RequestAlreadyAnsweredException::class);
+        if (!$this->isPending()) {
+            throw new RequestAlreadyAnsweredException();
+        }
 
         tap($this, function (self $request): void {
             $request->lfg->addPlayer($this->user);
@@ -68,7 +83,9 @@ class LfgRequest extends Model
      */
     public function reject(): void
     {
-        throw_unless($this->isPending(), RequestAlreadyAnsweredException::class);
+        if (!$this->isPending()) {
+            throw new RequestAlreadyAnsweredException();
+        }
 
         $this->update(['rejected_at' => now()]);
     }

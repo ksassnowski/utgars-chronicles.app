@@ -17,6 +17,9 @@ interface MicroscopePlayer
 {
     public function joinGame(History $app, ?string $name = null): void;
 
+    /**
+     * @return string
+     */
     public function getAuthIdentifier();
 
     public function getName(History $history): string;

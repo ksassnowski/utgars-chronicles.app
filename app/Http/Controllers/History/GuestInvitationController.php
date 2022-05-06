@@ -17,22 +17,31 @@ use App\History;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\History\AcceptGuestInvitationRequest;
 use App\Http\Requests\History\ShowInvitationFormRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\URL;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class GuestInvitationController extends Controller
+final class GuestInvitationController extends Controller
 {
-    public function showForm(ShowInvitationFormRequest $request, History $history): Response
-    {
+    public function showForm(
+        ShowInvitationFormRequest $request,
+        History $history,
+    ): Response {
         return Inertia::render('Game/InvitationForm', [
-            'acceptUrl' => URL::signedRoute('invitation.accept.guest', ['history' => $history], now()->addMinutes(5)),
+            'acceptUrl' => URL::signedRoute(
+                'invitation.accept.guest',
+                ['history' => $history],
+                now()->addMinutes(5),
+            ),
             'inviteeName' => $history->owner->name,
         ]);
     }
 
-    public function accept(AcceptGuestInvitationRequest $request, History $history)
-    {
+    public function accept(
+        AcceptGuestInvitationRequest $request,
+        History $history,
+    ): RedirectResponse {
         $request->user()->joinGame($history, $request->name());
 
         return redirect()->route('history.play', $history);

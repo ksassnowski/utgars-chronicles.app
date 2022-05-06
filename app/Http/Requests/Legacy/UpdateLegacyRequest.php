@@ -15,8 +15,11 @@ namespace App\Http\Requests\Legacy;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateLegacyRequest extends FormRequest
+final class UpdateLegacyRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<int, string>>
+     */
     public function rules(): array
     {
         return [

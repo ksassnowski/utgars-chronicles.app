@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property History $history
+ * @property int     $history_id
  * @property int     $id
  * @property string  $name
  */

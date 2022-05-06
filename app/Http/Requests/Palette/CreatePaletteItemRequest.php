@@ -17,8 +17,11 @@ use App\PaletteType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreatePaletteItemRequest extends FormRequest
+final class CreatePaletteItemRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<int, mixed>>
+     */
     public function rules(): array
     {
         return [

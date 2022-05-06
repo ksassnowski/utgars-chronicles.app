@@ -20,7 +20,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 
-class LfgRequestWasAccepted extends Notification implements ShouldQueue
+final class LfgRequestWasAccepted extends Notification implements ShouldQueue
 {
     use Queueable;
     use SerializesModels;
@@ -30,25 +30,14 @@ class LfgRequestWasAccepted extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
+     * @return array<string>
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return \Illuminate\Notifications\Messages\MailMessage
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): MailMessage
     {
         return (new MailMessage())
             ->line('The introduction to the notification.')
@@ -57,13 +46,9 @@ class LfgRequestWasAccepted extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray($notifiable)
+    public function toArray(mixed $notifiable): array
     {
         return [
         ];

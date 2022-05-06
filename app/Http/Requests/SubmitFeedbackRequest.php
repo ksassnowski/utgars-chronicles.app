@@ -15,8 +15,11 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SubmitFeedbackRequest extends FormRequest
+final class SubmitFeedbackRequest extends FormRequest
 {
+    /**
+     * @return array<string, array<string>>
+     */
     public function rules(): array
     {
         return [
