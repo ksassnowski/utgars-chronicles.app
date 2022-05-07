@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\CardType;
 use App\Events\BoardUpdated;
 use App\History;
 use App\Http\Controllers\History\CreatePeriodController;
@@ -20,7 +21,6 @@ use App\Http\Controllers\Period\UpdatePeriodController;
 use App\Http\Requests\History\CreatePeriodRequest;
 use App\Http\Requests\History\UpdatePeriodRequest;
 use App\Period;
-use App\Type;
 use App\User;
 use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -72,7 +72,7 @@ final class PeriodTest extends TestCase
     {
         $response = $this->login()->postJson(route('history.periods.store', $this->history), [
             'name' => '::period-name::',
-            'type' => Type::LIGHT,
+            'type' => CardType::Light,
             'position' => 1,
         ]);
 
@@ -98,7 +98,7 @@ final class PeriodTest extends TestCase
 
         $response = $this->login()->postJson(route('history.periods.store', $this->history), [
             'name' => '::period-3::',
-            'type' => Type::LIGHT,
+            'type' => CardType::Light,
             'position' => 2,
         ]);
 
@@ -127,12 +127,12 @@ final class PeriodTest extends TestCase
         /** @var Period $period */
         $period = Period::factory()->create([
             'history_id' => $this->history->id,
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
         ]);
 
         $response = $this->login()->putJson(route('periods.update', [$period->history, $period]), [
             'name' => '::new-period-name::',
-            'type' => Type::LIGHT,
+            'type' => CardType::Light,
         ]);
 
         $response
@@ -141,7 +141,7 @@ final class PeriodTest extends TestCase
 
         $period->refresh();
         self::assertEquals($period->name, '::new-period-name::');
-        self::assertEquals($period->type, Type::LIGHT);
+        self::assertEquals($period->type, CardType::Light);
         Event::assertDispatched(BoardUpdated::class);
     }
 

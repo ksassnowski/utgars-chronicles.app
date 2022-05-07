@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\CardType;
 use App\Event;
 use App\Events\BoardUpdated;
 use App\History;
 use App\Period;
-use App\Type;
 use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event as EventFacade;
@@ -54,7 +54,7 @@ final class EventTest extends TestCase
             route('periods.events.store', [$this->period->history, $this->period]),
             [
                 'name' => '::event-name::',
-                'type' => Type::DARK,
+                'type' => CardType::Dark,
                 'position' => 1,
             ],
         );
@@ -64,7 +64,7 @@ final class EventTest extends TestCase
             ->assertSessionHasNoErrors();
         $this->assertDatabaseHas('events', [
             'name' => '::event-name::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
             'position' => 1,
             'period_id' => $this->period->id,
             'history_id' => $this->period->history->id,
@@ -81,7 +81,7 @@ final class EventTest extends TestCase
     {
         $payload = \array_merge([
             'name' => '::event-name::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
         ], [$attribute => $value]);
 
         $response = $this->login()->postJson(
@@ -107,14 +107,14 @@ final class EventTest extends TestCase
             'history_id' => $this->period->history_id,
             'period_id' => $this->period->id,
             'name' => '::old-name::',
-            'type' => Type::LIGHT,
+            'type' => CardType::Light,
         ]);
 
         $response = $this->login()->putJson(
             route('events.update', [$this->period->history, $event]),
             [
                 'name' => '::new-name::',
-                'type' => Type::DARK,
+                'type' => CardType::Dark,
             ],
         );
 
@@ -123,7 +123,7 @@ final class EventTest extends TestCase
             ->assertSessionHasNoErrors();
         $event->refresh();
         self::assertEquals('::new-name::', $event->name);
-        self::assertEquals(Type::DARK, $event->type);
+        self::assertEquals(CardType::Dark, $event->type);
 
         EventFacade::assertDispatched(BoardUpdated::class);
     }
@@ -137,14 +137,14 @@ final class EventTest extends TestCase
     {
         $payload = \array_merge([
             'name' => '::new-name::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
         ], [$attribute => $value]);
 
         $event = Event::factory()->create([
             'period_id' => $this->period->id,
             'history_id' => $this->period->history_id,
             'name' => '::old-name::',
-            'type' => Type::LIGHT,
+            'type' => CardType::Light,
         ]);
 
         $response = $this->login()->putJson(

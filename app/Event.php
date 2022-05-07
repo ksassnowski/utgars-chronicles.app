@@ -28,7 +28,7 @@ use Illuminate\Support\Collection;
  * @property Period                 $period
  * @property int                    $position
  * @property Collection<int, Scene> $scenes
- * @property string                 $type
+ * @property CardType               $type
  */
 class Event extends Model implements Movable
 {
@@ -51,6 +51,7 @@ class Event extends Model implements Movable
      * @var array<string, string>
      */
     protected $casts = [
+        'type' => CardType::class,
         'position' => 'int',
     ];
 

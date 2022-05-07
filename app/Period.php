@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\DB;
  * @property int                    $id
  * @property string                 $name
  * @property int                    $position
+ * @property CardType               $type
  * @property User                   $user
  */
 class Period extends Model implements Movable
@@ -50,6 +51,7 @@ class Period extends Model implements Movable
      * @var array<string, string>
      */
     protected $casts = [
+        'type' => CardType::class,
         'position' => 'int',
     ];
 

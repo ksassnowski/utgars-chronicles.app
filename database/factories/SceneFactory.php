@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Type;
+use App\CardType;
 use App\Event;
 use App\Scene;
 use App\History;
@@ -28,7 +28,7 @@ class SceneFactory extends Factory
             'question' => $this->faker->sentence . '?',
             'scene' => $this->faker->paragraph,
             'answer' => $this->faker->paragraph,
-            'type' => $this->faker->randomElement([Type::LIGHT, Type::DARK]),
+            'type' => $this->faker->randomElement([CardType::Light, CardType::Dark]),
             'position' => 1,
             'event_id' => Event::factory(),
             'history_id' => History::factory(),

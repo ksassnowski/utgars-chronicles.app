@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace App;
 
-abstract class Type
+enum CardType: string
 {
-    public const LIGHT = 'light';
-    public const DARK = 'dark';
+    case Light = 'light';
+
+    case Dark = 'dark';
 }

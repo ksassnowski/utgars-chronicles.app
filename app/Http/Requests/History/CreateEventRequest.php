@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\History;
 
+use App\CardType;
 use App\Rules\ValidPosition;
-use App\Type;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 final class CreateEventRequest extends FormRequest
 {
@@ -27,7 +27,7 @@ final class CreateEventRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'type' => ['required', Rule::in([Type::DARK, Type::LIGHT])],
+            'type' => ['required', new Enum(CardType::class)],
             'position' => [
                 'required',
                 'integer',

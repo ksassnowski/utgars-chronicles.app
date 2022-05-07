@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Type;
+use App\CardType;
 use App\Event;
 use App\Period;
 use App\History;
@@ -16,7 +16,7 @@ class EventFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence,
-            'type' => $this->faker->randomElement([Type::LIGHT, Type::DARK]),
+            'type' => $this->faker->randomElement([CardType::Light, CardType::Dark]),
             'position' => 1,
             'period_id' => fn () => Period::factory(),
             'history_id' => fn () => History::factory(),

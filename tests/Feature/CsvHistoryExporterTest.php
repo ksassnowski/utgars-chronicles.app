@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\CardType;
 use App\Event;
 use App\Export\CsvHistoryExporter;
 use App\History;
 use App\Period;
-use App\Type;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -34,19 +34,19 @@ final class CsvHistoryExporterTest extends TestCase
         Period::factory()->create([
             'history_id' => $history->id,
             'name' => '::period-1::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
             'position' => 2,
         ]);
         Period::factory()->create([
             'history_id' => $history->id,
             'name' => '::period-2::',
-            'type' => Type::LIGHT,
+            'type' => CardType::Light,
             'position' => 1,
         ]);
         Period::factory()->create([
             'history_id' => $history->id,
             'name' => '::period-3::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
             'position' => 3,
         ]);
 
@@ -64,27 +64,27 @@ final class CsvHistoryExporterTest extends TestCase
         Period::factory()->create([
             'history_id' => $history->id,
             'name' => '::period-2::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
             'position' => 2,
         ]);
         $period = Period::factory()->create([
             'history_id' => $history->id,
             'name' => '::period-1::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
             'position' => 1,
         ]);
         Event::factory()->create([
             'history_id' => $history->id,
             'period_id' => $period->id,
             'name' => '::event-1::',
-            'type' => Type::LIGHT,
+            'type' => CardType::Light,
             'position' => 2,
         ]);
         Event::factory()->create([
             'history_id' => $history->id,
             'period_id' => $period->id,
             'name' => '::event-2::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
             'position' => 1,
         ]);
 
@@ -106,14 +106,14 @@ final class CsvHistoryExporterTest extends TestCase
         $period = Period::factory()->create([
             'history_id' => $history->id,
             'name' => '::period-1::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
             'position' => 1,
         ]);
         Event::factory()->create([
             'history_id' => $history->id,
             'period_id' => $period->id,
             'name' => '::event-1::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
             'position' => 1,
         ]);
 
