@@ -17,6 +17,7 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
+use YlsIdeas\FeatureFlags\Facades\Features;
 
 final class HandleInertiaRequests extends Middleware
 {
@@ -48,8 +49,11 @@ final class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $features = Features::all();
+        $activeFeatures = \array_keys(\array_filter($features));
+
         return \array_merge(parent::share($request), [
-            'environment' => static fn () => app()->environment(),
+            'features' => $activeFeatures,
             'auth' => static function () use ($request) {
                 return [
                     'user' => !$request->routeIs('invitation.accept.show-form') && Auth::user() ? [

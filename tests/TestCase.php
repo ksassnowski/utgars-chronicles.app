@@ -20,6 +20,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionParameter;
+use YlsIdeas\FeatureFlags\Middleware\FeatureFlagState;
 
 /**
  * @internal
@@ -29,6 +30,13 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
 
     protected ?User $user = null;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->withoutMiddleware([FeatureFlagState::class]);
+    }
 
     public function assertActionUsesFormRequest(string $controller, string $method, string $form_request): void
     {
