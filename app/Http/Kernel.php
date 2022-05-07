@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'feature' => \YlsIdeas\FeatureFlags\Middleware\FeatureFlagState::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'microscope' => MicroscopeMiddleware::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,

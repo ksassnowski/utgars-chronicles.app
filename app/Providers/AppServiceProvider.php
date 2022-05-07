@@ -17,6 +17,7 @@ use App\Export\CsvHistoryExporter;
 use App\Export\HistoryExporter;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use YlsIdeas\FeatureFlags\Facades\Features;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->bind(HistoryExporter::class, CsvHistoryExporter::class);
+
+        Features::noBlade();
+        Features::noScheduling();
+        Features::noValidations();
+        Features::noCommands();
 
         Collection::macro('transpose', function () {
             /** @phpstan-ignore-next-line */

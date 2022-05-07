@@ -13,7 +13,7 @@
             </NavigationLink>
 
             <NavigationLink
-                v-if="$page.props.environment === 'local'"
+                v-if="featureActive('lfg')"
                 :href="$route('lfg.index')"
                 :is-active="$page.url.startsWith('/lfg')"
                 >Find a game</NavigationLink
@@ -167,8 +167,7 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup >
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import {
     SpeakerphoneIcon,
@@ -178,26 +177,10 @@ import {
 } from "@heroicons/vue/outline";
 import { Link } from "@inertiajs/inertia-vue3";
 
+import { useFeatureFlags } from "../composables/useFeatureFlags";
 import Gravatar from "./Gravatar.vue";
 import FeedbackModal from "./Modal/FeedbackModal.vue";
 import NavigationLink from "./UI/NavigationLink.vue";
 
-export default defineComponent({
-    name: "UserNavigation",
-
-    components: {
-        NavigationLink,
-        FeedbackModal,
-        Gravatar,
-        SpeakerphoneIcon,
-        LogoutIcon,
-        UserIcon,
-        ChevronDownIcon,
-        Link,
-        Menu,
-        MenuItems,
-        MenuItem,
-        MenuButton,
-    },
-});
+const featureActive = useFeatureFlags();
 </script>

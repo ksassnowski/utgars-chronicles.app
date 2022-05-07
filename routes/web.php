@@ -44,7 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
         ->middleware('can:deleteHistory,history')
         ->name('history.delete');
 
-    if (!app()->environment('production')) {
+    Route::middleware(['feature:lfg'])->group(function () {
         Route::get('/lfg', [LookingForGroupController::class, 'index'])
             ->name('lfg.index');
         Route::get('/lfg/create', [LookingForGroupController::class, 'create'])
@@ -64,7 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/requests/{request}/reject', [LfgRequestController::class, 'reject'])
             ->middleware('can:reject,request')
             ->name('lfg.requests.reject');
-    }
+    });
 });
 
 Route::group(['middleware' => 'auth:microscope'], function () {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8a8b002b1888c35624f0126206b8754a",
+    "content-hash": "62a326d35d728237555f959a0c873847",
     "packages": [
         {
             "name": "brick/math",
@@ -1489,6 +1489,74 @@
                 "source": "https://github.com/Jean85/pretty-package-versions/tree/2.0.5"
             },
             "time": "2021-10-08T21:21:46+00:00"
+        },
+        {
+            "name": "juststeveking/laravel-feature-flags",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JustSteveKing/laravel-feature-flags.git",
+                "reference": "bd8e15106aeba87c5c63a333d9d418d782dd88c4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JustSteveKing/laravel-feature-flags/zipball/bd8e15106aeba87c5c63a333d9d418d782dd88c4",
+                "reference": "bd8e15106aeba87c5c63a333d9d418d782dd88c4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^9.0.1",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^6.0",
+                "orchestra/testbench": "^7.0.0",
+                "pestphp/pest": "^1.21.1",
+                "pestphp/pest-plugin-laravel": "^1.2",
+                "phpunit/phpunit": "^9.3",
+                "vimeo/psalm": "^4.4"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "JustSteveKing\\Laravel\\FeatureFlags\\FeatureFlagsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "JustSteveKing\\Laravel\\FeatureFlags\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Steve McDougall",
+                    "email": "juststevemcd@gmail.com"
+                }
+            ],
+            "description": "A simple to use Feature Flags package for Laravel",
+            "homepage": "https://github.com/JustSteveKing/laravel-feature-flags",
+            "keywords": [
+                "JustSteveKing",
+                "laravel",
+                "laravel-feature-flags"
+            ],
+            "support": {
+                "issues": "https://github.com/JustSteveKing/laravel-feature-flags/issues",
+                "source": "https://github.com/JustSteveKing/laravel-feature-flags/tree/1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/JustSteveKing",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-02-11T09:25:48+00:00"
         },
         {
             "name": "laravel/framework",
@@ -7145,6 +7213,81 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.10.0"
             },
             "time": "2021-03-09T10:59:23+00:00"
+        },
+        {
+            "name": "ylsideas/feature-flags",
+            "version": "1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ylsideas/feature-flags.git",
+                "reference": "2924e5b2f1f68a0af906b6a335cb277091ff77d8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ylsideas/feature-flags/zipball/2924e5b2f1f68a0af906b6a335cb277091ff77d8",
+                "reference": "2924e5b2f1f68a0af906b6a335cb277091ff77d8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "9.*|8.*|7.*",
+                "php": "^7.3|^8.0"
+            },
+            "require-dev": {
+                "nunomaduro/collision": "^6.0|^5.0",
+                "nunomaduro/larastan": "^2.0|^1.0",
+                "orchestra/testbench": "^7.0|^6.24.1|^v5.20.0",
+                "pestphp/pest": "^1.21",
+                "pestphp/pest-plugin-laravel": "^1.1",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5.13|^8.3",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "YlsIdeas\\FeatureFlags\\FeatureFlagsServiceProvider"
+                    ],
+                    "aliases": {
+                        "FeatureFlags": "YlsIdeas\\FeatureFlags\\Facades\\Features"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "YlsIdeas\\FeatureFlags\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Peter Fox",
+                    "email": "peter.fox@ylsideas.co",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A Laravel package for handling feature flags",
+            "homepage": "https://github.com/ylsideas/feature-flags",
+            "keywords": [
+                "feature-flags",
+                "ylsideas"
+            ],
+            "support": {
+                "issues": "https://github.com/ylsideas/feature-flags/issues",
+                "source": "https://github.com/ylsideas/feature-flags/tree/1.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/peterfox",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-02-09T17:54:19+00:00"
         }
     ],
     "packages-dev": [

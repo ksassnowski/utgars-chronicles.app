@@ -12,6 +12,7 @@
         "doctrine/dbal": "^2.10",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.5.4",
+        "juststeveking/laravel-feature-flags": "^1.0",
         "laravel/framework": "^9.1.7",
         "laravel/horizon": "^5.0",
         "laravel/ui": "^3.0",
@@ -21,7 +22,8 @@
         "sentry/sentry-laravel": "^2.12.0",
         "symfony/http-client": "^6.0",
         "symfony/mailgun-mailer": "^6.0",
-        "tightenco/ziggy": "^1.4.6"
+        "tightenco/ziggy": "^1.4.6",
+        "ylsideas/feature-flags": "^1.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
