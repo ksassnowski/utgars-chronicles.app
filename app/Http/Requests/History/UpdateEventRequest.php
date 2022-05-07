@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\History;
 
-use App\Type;
+use App\CardType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 final class UpdateEventRequest extends FormRequest
 {
@@ -26,7 +26,7 @@ final class UpdateEventRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'type' => ['required', Rule::in([Type::DARK, Type::LIGHT])],
+            'type' => ['required', new Enum(CardType::class)],
         ];
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
+use App\CardType;
 use App\Event;
 use App\Events\BoardUpdated;
 use App\History;
@@ -21,7 +22,6 @@ use App\Http\Controllers\Scene\UpdateSceneController;
 use App\Http\Requests\History\CreateSceneRequest;
 use App\Http\Requests\History\UpdateSceneRequest;
 use App\Scene;
-use App\Type;
 use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event as EventFacade;
@@ -98,7 +98,7 @@ final class SceneTest extends TestCase
             'question' => '::question::',
             'scene' => '::scene::',
             'answer' => '::answer::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
             'position' => 1,
         ]);
 
@@ -109,7 +109,7 @@ final class SceneTest extends TestCase
             'question' => '::question::',
             'scene' => '::scene::',
             'answer' => '::answer::',
-            'type' => Type::DARK,
+            'type' => CardType::Dark,
             'position' => 1,
             'event_id' => $this->event->id,
             'history_id' => $this->event->history_id,
@@ -129,7 +129,7 @@ final class SceneTest extends TestCase
                 'question' => '::new-question::',
                 'scene' => '::new-scene::',
                 'answer' => '::new-answer::',
-                'type' => Type::LIGHT,
+                'type' => CardType::Light,
             ]);
 
         $response
@@ -139,7 +139,7 @@ final class SceneTest extends TestCase
         self::assertEquals('::new-question::', $scene->question);
         self::assertEquals('::new-scene::', $scene->scene);
         self::assertEquals('::new-answer::', $scene->answer);
-        self::assertEquals(Type::LIGHT, $scene->type);
+        self::assertEquals(CardType::Light, $scene->type);
         EventFacade::assertDispatched(BoardUpdated::class);
     }
 

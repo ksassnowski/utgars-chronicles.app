@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\History;
 
-use App\Type;
+use App\CardType;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 
 final class CreateSceneRequest extends FormRequest
 {
@@ -28,7 +28,7 @@ final class CreateSceneRequest extends FormRequest
             'question' => ['required'],
             'scene' => ['nullable'],
             'answer' => ['nullable'],
-            'type' => ['nullable', Rule::in([Type::DARK, Type::LIGHT])],
+            'type' => ['nullable', new Enum(CardType::class)],
         ];
     }
 }

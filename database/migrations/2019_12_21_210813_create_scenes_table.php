@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use App\Type;
+use App\CardType;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -20,7 +20,7 @@ class CreateScenesTable extends Migration
             $table->text('scene')->nullable();
             $table->text('answer')->nullable();
             $table->unsignedInteger('position');
-            $table->enum('type', [Type::LIGHT, Type::DARK])->nullable();
+            $table->enum('type', [CardType::Light->value, CardType::Dark->value])->nullable();
             $table->unsignedBigInteger('event_id');
             $table->timestamps();
 

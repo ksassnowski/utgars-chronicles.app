@@ -20,8 +20,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @property Event   $event
- * @property History $history
+ * @property Event    $event
+ * @property History  $history
+ * @property CardType $type
  */
 class Scene extends Model implements Movable
 {
@@ -44,6 +45,7 @@ class Scene extends Model implements Movable
      * @var array<string, string>
      */
     protected $casts = [
+        'type' => CardType::class,
         'position' => 'int',
     ];
 

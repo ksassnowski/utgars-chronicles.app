@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use App\Type;
+use App\CardType;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -17,7 +17,7 @@ class CreateEventsTable extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->enum('type', [Type::DARK, Type::LIGHT]);
+            $table->enum('type', [CardType::Dark->value, CardType::Light->value]);
             $table->unsignedInteger('position');
             $table->unsignedBigInteger('period_id');
             $table->timestamps();
