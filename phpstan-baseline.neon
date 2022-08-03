@@ -89,33 +89,3 @@ parameters:
 			message: "#^Cannot call method getBag\\(\\) on mixed\\.$#"
 			count: 1
 			path: app/Http/Middleware/HandleInertiaRequests.php
-
-		-
-			message: "#^Cannot access offset 'css' on mixed\\.$#"
-			count: 1
-			path: app/helpers.php
-
-		-
-			message: "#^Cannot access offset 'file' on mixed\\.$#"
-			count: 1
-			path: app/helpers.php
-
-		-
-			message: "#^Cannot access offset 'resources/js/app\\.js' on mixed\\.$#"
-			count: 2
-			path: app/helpers.php
-
-		-
-			message: "#^Cannot access offset 0 on mixed\\.$#"
-			count: 1
-			path: app/helpers.php
-
-		-
-			message: "#^Part \\$manifest\\['resources/js/app\\.js'\\]\\['css'\\]\\[0\\] \\(mixed\\) of encapsed string cannot be cast to string\\.$#"
-			count: 1
-			path: app/helpers.php
-
-		-
-			message: "#^Part \\$manifest\\['resources/js/app\\.js'\\]\\['file'\\] \\(mixed\\) of encapsed string cannot be cast to string\\.$#"
-			count: 1
-			path: app/helpers.php
