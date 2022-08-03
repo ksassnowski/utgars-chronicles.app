@@ -11,7 +11,7 @@
         />
 
         <div class="pb-12 sm:pb-0 sm:pr-24 flex flex-col flex-grow">
-            <div class="flex items-center w-full px-4 mb-4 h-10">
+            <div class="flex items-center w-full px-4 h-10">
                 <div class="hidden sm:block flex-1">
                     <PeriodModal :position="nextPosition" :history="history">
                         <PrimaryButton class="flex items-center">
@@ -52,126 +52,86 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onBeforeUnmount, provide } from "vue";
+<script lang="ts" setup>
+import { computed, ComputedRef, onBeforeUnmount, provide, onMounted } from "vue";
 import axios from "axios";
 import draggable from "vuedraggable";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Inertia } from "@inertiajs/inertia";
 import { PlusIcon } from "@heroicons/vue/solid";
 
-import PeriodCard from "./PeriodCard.vue";
-import Modal from "./Modal.vue";
-import HistorySeed from "./HistorySeed.vue";
-import PeriodModal from "./Modal/PeriodModal.vue";
-import PrimaryButton from "./UI/PrimaryButton.vue";
-import GameSidebar from "./GameSidebar.vue";
-import GameLog from "./GameLog.vue";
+import { History, Focus, PaletteItem, Legacy } from "@/types";
+import PeriodCard from "@/components/PeriodCard.vue";
+import HistorySeed from "@/components/HistorySeed.vue";
+import PeriodModal from "@/components/Modal/PeriodModal.vue";
+import PrimaryButton from "@/components/UI/PrimaryButton.vue";
+import GameSidebar from "@/components/GameSidebar.vue";
+import GameLog from "@/components/GameLog.vue";
 
-export default defineComponent({
-    name: "GameBoard",
+const props = defineProps<{
+    history: History,
+    palettes: Array<PaletteItem>,
+    foci: Array<Focus>,
+    legacies: Array<Legacy>,
+}>();
 
-    props: {
-        history: {
-            type: Object,
-            required: true,
-        },
-        palettes: {
-            type: Array,
-            default: () => [],
-        },
-        foci: {
-            type: Array,
-            default: () => [],
-        },
-        legacies: {
-            type: Array,
-            default: () => [],
-        },
-    },
+const nextPosition: ComputedRef<number> = computed(() => {
+    if (props.history.periods.length === 0) {
+        return 1;
+    }
 
-    components: {
-        GameLog,
-        GameSidebar,
-        PrimaryButton,
-        PeriodModal,
-        HistorySeed,
-        Modal,
-        draggable,
-        PeriodCard,
-        Link,
-        PlusIcon,
-    },
-
-    computed: {
-        nextPosition() {
-            if (this.history.periods.length === 0) {
-                return 1;
-            }
-
-            return this.history.periods.slice(-1)[0].position + 1;
-        },
-    },
-
-    methods: {
-        resyncBoard(...only: string[]) {
-            this.$inertia.reload({ only: only });
-        },
-
-        updateSeed({ name }) {
-            this.history.name = name;
-        },
-
-        onPeriodMoved(e) {
-            if (!e.moved) {
-                return;
-            }
-
-            const { element, newIndex } = e.moved;
-
-            this.$inertia.post(
-                this.route("periods.move", [this.history, element]),
-                { position: newIndex + 1 },
-                { only: ["history"] }
-            );
-        },
-    },
-
-    created() {
-        Echo.join(this.channelName)
-            .listen("BoardUpdated", () => this.resyncBoard("history"))
-            .listen("FocusDefined", () => this.resyncBoard("foci"))
-            .listen("FocusUpdated", () => this.resyncBoard("foci"))
-            .listen("FocusDeleted", () => this.resyncBoard("foci"))
-            .listen("ItemAddedToPalette", () => this.resyncBoard("palettes"))
-            .listen("PaletteItemUpdated", () => this.resyncBoard("palettes"))
-            .listen("PaletteItemDeleted", () => this.resyncBoard("palettes"))
-            .listen("LegacyCreated", () => this.resyncBoard("legacies"))
-            .listen("LegacyUpdated", () => this.resyncBoard("legacies"))
-            .listen("LegacyDeleted", () => this.resyncBoard("legacies"))
-            .listen("HistorySeedUpdated", this.updateSeed);
-    },
-
-    setup(props) {
-        const channelName = `history.${props.history.id}`;
-        onBeforeUnmount(() => Echo.leave(channelName));
-
-        // In order for `broadcast()->toOthers()` to work properly, we need to
-        // ensure that every request we send includes the `X-Socket-ID` header
-        // that Laravel uses internally to exclude the current user from the
-        // broadcast.
-        // Inertia.scripts doesn’t add this header to the request by default,
-        // so we have to do it ourselves here. Otherwise, the user sending the
-        // request will always resync the board as well which causes weird things
-        // to happen (like the `onSuccess` callback not properly working).
-        axios.interceptors.request.use((config) => {
-            config.headers["X-Socket-ID"] = Echo.socketId();
-            return config;
-        });
-
-        provide("history", props.history);
-        provide("channelName", channelName);
-
-        return { channelName };
-    },
+    return props.history.periods.slice(-1)[0].position + 1;
 });
+
+const resyncBoard = (...only: string[]) =>
+    Inertia.reload({ only: only });
+
+const updateSeed = ({ name }) => props.history.name = name;
+
+const onPeriodMoved = (e) => {
+    if (!e.moved) {
+        return;
+    }
+
+    const { element, newIndex } = e.moved;
+
+    Inertia.post(
+        route("periods.move", [props.history, element]),
+        { position: newIndex + 1 },
+        { only: ["history"] }
+    );
+};
+
+onMounted(() => {
+    Echo.join(channelName)
+        .listen("BoardUpdated", () => resyncBoard("history"))
+        .listen("FocusDefined", () => resyncBoard("foci"))
+        .listen("FocusUpdated", () => resyncBoard("foci"))
+        .listen("FocusDeleted", () => resyncBoard("foci"))
+        .listen("ItemAddedToPalette", () => resyncBoard("palettes"))
+        .listen("PaletteItemUpdated", () => resyncBoard("palettes"))
+        .listen("PaletteItemDeleted", () => resyncBoard("palettes"))
+        .listen("LegacyCreated", () => resyncBoard("legacies"))
+        .listen("LegacyUpdated", () => resyncBoard("legacies"))
+        .listen("LegacyDeleted", () => resyncBoard("legacies"))
+        .listen("HistorySeedUpdated", updateSeed);
+});
+
+const channelName = `history.${props.history.id}`;
+onBeforeUnmount(() => Echo.leave(channelName));
+
+// In order for `broadcast()->toOthers()` to work properly, we need to
+// ensure that every request we send includes the `X-Socket-ID` header
+// that Laravel uses internally to exclude the current user from the
+// broadcast.
+// Inertia.scripts doesn’t add this header to the request by default,
+// so we have to do it ourselves here. Otherwise, the user sending the
+// request will always resync the board as well which causes weird things
+// to happen (like the `onSuccess` callback not properly working).
+axios.interceptors.request.use((config) => {
+    config.headers["X-Socket-ID"] = Echo.socketId();
+    return config;
+});
+
+provide("history", props.history);
+provide("channelName", channelName);
 </script>
