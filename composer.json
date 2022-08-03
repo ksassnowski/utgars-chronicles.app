@@ -12,12 +12,10 @@
         "doctrine/dbal": "^2.10",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.5.4",
-        "juststeveking/laravel-feature-flags": "^1.0",
         "laravel/framework": "^9.22",
         "laravel/horizon": "^5.0",
         "laravel/ui": "^4.0",
         "league/csv": "^9.6",
-        "predis/predis": "^1.1",
         "pusher/pusher-php-server": "^7.0",
         "sentry/sentry-laravel": "^2.12.0",
         "symfony/http-client": "^6.0",
@@ -27,7 +25,6 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
-        "barryvdh/laravel-ide-helper": "^2.6",
         "ergebnis/composer-normalize": "^2.26",
         "ergebnis/php-cs-fixer-config": "^4.4",
         "fakerphp/faker": "^1.13",
@@ -73,8 +70,6 @@
     },
     "scripts": {
         "post-update-cmd": [
-            "@php artisan ide-helper:generate",
-            "@php artisan ide-helper:meta",
             "@composer normalize"
         ],
         "post-autoload-dump": [
