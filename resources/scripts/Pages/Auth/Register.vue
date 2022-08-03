@@ -63,7 +63,9 @@
                     />
                 </div>
 
-                <LoadingButton :loading="form.processing">Register</LoadingButton>
+                <LoadingButton :loading="form.processing" class="block w-full">
+                    Register
+                </LoadingButton>
 
                 <Link :href="route('login')" class="mt-2 text-sm text-indigo-700 text-center block">
                     Already have an account? Log in instead
@@ -93,5 +95,5 @@ const form = useForm({
     password_confirmation: '',
 });
 
-const submit = () => this.form.post(route('register'));
+const submit = () => form.post(route('register'));
 </script>

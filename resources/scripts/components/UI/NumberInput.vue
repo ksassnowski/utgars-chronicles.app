@@ -13,39 +13,30 @@
     >
 </template>
 
-<script>
-import InputGroup from "./InputGroup.vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 
-export default {
-    name: "NumberInput",
+const props = withDefaults(
+    defineProps<{
+        name: string,
+        required?: boolean,
+        placeholder: string,
+        value: string,
+        min: number,
+        max: number,
+        step: number,
+    }>(),
+    { required: false },
+);
 
-    components: {
-        InputGroup,
+const emit = defineEmits(["input"]);
+
+const text = computed({
+    get() {
+        return props.value;
     },
-
-    props: {
-        name: String,
-        required: {
-            type: Boolean,
-            default: false,
-        },
-        placeholder: String,
-        value: String,
-        min: Number,
-        max: Number,
-        step: Number
-    },
-
-    computed: {
-        text: {
-            get() {
-                return this.value;
-            },
-
-            set(val) {
-                this.$emit('input', val);
-            },
-        },
+    set(value: string) {
+        emit("input", value);
     }
-}
+});
 </script>

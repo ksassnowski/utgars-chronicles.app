@@ -104,60 +104,46 @@
     </Modal>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, inject, toRefs } from "vue";
+<script lang="ts" setup>
+import { inject, ref, toRefs } from "vue";
 import { Link } from "@inertiajs/inertia-vue3";
 
-import { useCreateEditForm } from "../../composables/useCreateEditForm";
-import Modal from "../Modal.vue";
-import LoadingButton from "../LoadingButton.vue";
+import {CardType, Event, Scene} from "@/types";
+import {HistoryKey} from "@/symbols";
+import {useCreateEditForm} from "@/composables/useCreateEditForm";
 
-export default defineComponent({
-    name: "SceneModal",
+import Modal from "@/components/Modal.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
 
-    props: {
-        event: Object,
-        scene: {
-            type: Object,
-            default: () => ({
-                question: "",
-                scene: "",
-                answer: "",
-                type: "light",
-            }),
-        },
-    },
+const props = withDefaults(
+    defineProps<{
+        event: Event,
+        scene?: Omit<Scene, "position">|null
+    }>(),
+    {
+        scene: () => ({
+            question: "",
+            scene: "",
+            answer: "",
+            type: CardType.Light,
+        })
+    }
+)
 
-    components: {
-        LoadingButton,
-        Modal,
-        Link,
-    },
+const modal = ref(null);
+const { scene } = toRefs(props);
+const history = inject(HistoryKey);
+const title = scene.value.id ? "Edit Scene" : "Create Scene";
 
-    methods: {
-        confirmDelete() {
-            return confirm("Are you sure you want to delete this scene?");
-        },
-    },
+const confirmDelete = () =>
+    confirm("Are you sure you want to delete this scene?");
 
-    setup(props) {
-        const modal = ref(null);
-        const { scene } = toRefs(props);
-        const history = inject("history");
+const { form, submit: formSubmit } = useCreateEditForm(
+    scene,
+    ["question", "scene", "answer", "type"],
+    route("events.scenes.store", [history, props.event]),
+    () => route("scenes.update", [history, scene.value])
+);
 
-        const { form, submit } = useCreateEditForm(
-            scene,
-            ["question", "scene", "answer", "type"],
-            route("events.scenes.store", [history, props.event]),
-            () => route("scenes.update", [history, scene.value])
-        );
-
-        return {
-            modal,
-            form,
-            submit: submit(() => modal.value.toggle()),
-            title: scene.value.id ? "Edit Scene" : "Create Scene",
-        };
-    },
-});
+const submit = formSubmit(() => modal.value.toggle());
 </script>

@@ -11,20 +11,8 @@
     </Link>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { Link } from "@inertiajs/inertia-vue3";
 
-export default defineComponent({
-    name: "NavigationLink",
-
-    components: {
-        Link,
-    },
-
-    props: {
-        href: String,
-        isActive: Boolean,
-    }
-});
+const props = defineProps<{ href: string, isActive: boolean }>();
 </script>

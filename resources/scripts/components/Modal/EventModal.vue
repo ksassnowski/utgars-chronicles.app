@@ -67,65 +67,47 @@
     </Modal>
 </template>
 
-<script lang="ts">
-import { defineComponent, toRefs, ref, inject } from "vue";
+<script lang="ts" setup>
+import { inject, ref, toRefs } from "vue";
 import { Link } from "@inertiajs/inertia-vue3";
 
-import { useCreateEditForm } from "../../composables/useCreateEditForm";
-import Modal from "../Modal.vue";
-import LoadingButton from "../LoadingButton.vue";
+import { CardType, Event, Period } from "@/types";
+import { HistoryKey } from "@/symbols";
+import { useCreateEditForm } from "@/composables/useCreateEditForm";
+import Modal from "@/components/Modal.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
 
-export default defineComponent({
-    name: "EventModal",
+const props = withDefaults(
+    defineProps<{
+        period: Period,
+        position?: number|null,
+        event?: Pick<Event, "id"|"name"|"type">|null,
+    }>(),
+    {
+        position: null,
+        event: () => ({
+            name: "",
+            type: CardType.Light,
+        }),
+    }
+);
 
-    props: {
-        period: Object,
-        position: {
-            type: Number,
-            default: null,
-        },
-        event: {
-            type: Object,
-            default: () => ({
-                name: "",
-                type: "light",
-            }),
-        },
-    },
+const modal = ref(null);
+const { event, position } = toRefs(props);
+const history = inject(HistoryKey);
+const title = props.event.id ? "Edit Event" : "Create Event";
 
-    components: {
-        LoadingButton,
-        Modal,
-        Link,
-    },
+const confirmDelete = () =>
+    confirm(
+        "Really delete this event? All scenes belonging to this event will be deleted too!"
+    );
 
-    methods: {
-        confirmDelete() {
-            return confirm(
-                "Really delete this event? All scenes belonging to this event will be deleted too!"
-            );
-        },
-    },
-
-    setup(props) {
-        const modal = ref(null);
-        const { event, position } = toRefs(props);
-        const history = inject("history");
-
-        const { form, submit } = useCreateEditForm(
-            event,
-            ["name", "type"],
-            route("periods.events.store", [history, props.period]),
-            () => route("events.update", [history, props.event]),
-            position
-        );
-
-        return {
-            modal,
-            form,
-            submit: submit(() => modal.value.toggle()),
-            title: props.event.id ? "Edit Event" : "Create Event",
-        };
-    },
-});
+const { form, submit: formSubmit } = useCreateEditForm(
+    event,
+    ["name", "type"],
+    route("periods.events.store", [history, props.period]),
+    () => route("events.update", [history, props.event]),
+    position
+);
+const submit = formSubmit(() => modal.value.toggle());
 </script>

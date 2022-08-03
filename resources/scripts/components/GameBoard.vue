@@ -59,6 +59,7 @@ import draggable from "vuedraggable";
 import { Inertia } from "@inertiajs/inertia";
 import { PlusIcon } from "@heroicons/vue/solid";
 
+import { ChannelKey, HistoryKey } from "@/symbols";
 import { History, Focus, PaletteItem, Legacy } from "@/types";
 import PeriodCard from "@/components/PeriodCard.vue";
 import HistorySeed from "@/components/HistorySeed.vue";
@@ -132,6 +133,6 @@ axios.interceptors.request.use((config) => {
     return config;
 });
 
-provide("history", props.history);
-provide("channelName", channelName);
+provide(HistoryKey, props.history);
+provide(ChannelKey, channelName);
 </script>

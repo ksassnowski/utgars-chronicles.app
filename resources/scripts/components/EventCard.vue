@@ -61,61 +61,36 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { inject } from "vue";
 import draggable from "vuedraggable";
 import {
-    MenuIcon,
-    PencilIcon,
     ArrowSmUpIcon,
     ArrowSmDownIcon,
     PlusIcon,
 } from "@heroicons/vue/outline";
 
-import LoadingButton from "./LoadingButton.vue";
+import { HistoryKey } from "@/symbols";
+import { Event, Period } from "@/types";
 import SceneCard from "./SceneCard.vue";
 import SceneModal from "./Modal/SceneModal.vue";
 import GameCard from "./GameCard.vue";
 import EventModal from "./Modal/EventModal.vue";
 import CardButton from "./CardButton.vue";
+import {Inertia} from "@inertiajs/inertia";
 
-export default defineComponent({
-    name: "EventCard",
+const props = defineProps<{ event: Event, period: Period }>();
+const history = inject(HistoryKey);
 
-    props: {
-        event: Object,
-        period: Object,
-    },
+const sceneMoved = (e) => {
+    if (!e.moved) {
+        return;
+    }
 
-    inject: ["history"],
-
-    components: {
-        CardButton,
-        EventModal,
-        GameCard,
-        SceneModal,
-        draggable,
-        SceneCard,
-        LoadingButton,
-        MenuIcon,
-        PencilIcon,
-        ArrowSmUpIcon,
-        ArrowSmDownIcon,
-        PlusIcon,
-    },
-
-    methods: {
-        sceneMoved(e) {
-            if (!e.moved) {
-                return;
-            }
-
-            this.$inertia.post(
-                this.route("scenes.move", [this.history, e.moved.element]),
-                { position: e.moved.newIndex + 1 },
-                { only: ["history"] }
-            );
-        },
-    },
-});
+    Inertia.post(
+        route("scenes.move", [history, e.moved.element]),
+        { position: e.moved.newIndex + 1 },
+        { only: ["history"] }
+    );
+};
 </script>

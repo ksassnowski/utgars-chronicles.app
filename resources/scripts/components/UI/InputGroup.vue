@@ -5,13 +5,6 @@
     </label>
 </template>
 
-<script>
-export default {
-    name: "InputGroup",
-
-    props: {
-        label: String,
-        name: String,
-    },
-}
+<script lang="ts" setup>
+const props = defineProps<{ label: string, name: string }>();
 </script>

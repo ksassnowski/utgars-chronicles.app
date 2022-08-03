@@ -69,88 +69,63 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, inject } from "vue";
+<script lang="ts" setup>
+import { inject, onMounted } from "vue";
 import {
-    XIcon,
+    SparklesIcon,
+    ThumbDownIcon,
+    ThumbUpIcon,
     UserAddIcon,
     UserRemoveIcon,
-    ThumbUpIcon,
-    ThumbDownIcon,
-    ExclamationCircleIcon,
-    SparklesIcon,
+    XIcon,
 } from "@heroicons/vue/outline";
 
-import { useGameLog } from "../composables/useGameLog";
+import {PaletteItem, PaletteType, Player} from "@/types";
+import {useGameLog} from "@/composables/useGameLog";
+import { ChannelKey } from "@/symbols";
 
-type Player = { id: string; name: string };
-type PaletteItem = { name: string; type: "yes" | "no" };
+const { messages, addMessage } = useGameLog();
+const channelName = inject(ChannelKey);
 
-export default defineComponent({
-    name: "GameLog",
+const onPaletteItemAdded = (item: PaletteItem) =>
+    addMessage({
+        title: "Added to Palette",
+        message: item.name,
+        icon: item.type === PaletteType.Yes ? ThumbUpIcon : ThumbDownIcon,
+    });
 
-    components: {
-        XIcon,
-        UserAddIcon,
-        UserRemoveIcon,
-        ThumbUpIcon,
-        ThumbDownIcon,
-        ExclamationCircleIcon,
-        SparklesIcon,
-    },
+const onPaletteItemRemoved = (item: PaletteItem) =>
+    addMessage({
+        title: "Removed from Palette",
+        message: item.name,
+        icon: item.type === "yes" ? ThumbUpIcon : ThumbDownIcon,
+    });
 
-    methods: {
-        onPaletteItemAdded(item: PaletteItem) {
-            this.addMessage({
-                title: "Added to Palette",
-                message: item.name,
-                icon: item.type === "yes" ? "ThumbUpIcon" : "ThumbDownIcon",
-            });
-        },
+const onLegacyCreated = ({ name }) =>
+    addMessage({
+        title: "New Legacy",
+        message: name,
+        icon: SparklesIcon,
+    });
 
-        onPaletteItemRemoved(item: PaletteItem) {
-            this.addMessage({
-                title: "Removed from Palette",
-                message: item.name,
-                icon: item.type === "yes" ? "ThumbUpIcon" : "ThumbDownIcon",
-            });
-        },
-
-        onLegacyCreated({ name }) {
-            this.addMessage({
-                title: "New Legacy",
-                message: name,
-                icon: "SparklesIcon",
-            });
-        },
-    },
-
-    mounted() {
-        Echo.join(this.channelName)
-            .joining((player: Player) =>
-                this.addMessage({
-                    title: "Player joined",
-                    message: player.name,
-                    icon: "UserAddIcon",
-                })
-            )
-            .leaving((player) =>
-                this.addMessage({
-                    title: "Player left",
-                    message: player.name,
-                    icon: "UserRemoveIcon",
-                })
-            )
-            .listen("ItemAddedToPalette", this.onPaletteItemAdded)
-            .listen("PaletteItemDeleted", this.onPaletteItemRemoved)
-            .listen("LegacyCreated", this.onLegacyCreated);
-    },
-
-    setup() {
-        const channelName = inject("channelName");
-        const { messages, addMessage } = useGameLog();
-
-        return { messages, addMessage, channelName };
-    },
+onMounted(() => {
+    Echo.join(channelName)
+        .joining((player: Player) =>
+            addMessage({
+                title: "Player joined",
+                message: player.name,
+                icon: UserAddIcon,
+            })
+        )
+        .leaving((player) =>
+            addMessage({
+                title: "Player left",
+                message: player.name,
+                icon: UserRemoveIcon,
+            })
+        )
+        .listen("ItemAddedToPalette", onPaletteItemAdded)
+        .listen("PaletteItemDeleted", onPaletteItemRemoved)
+        .listen("LegacyCreated", onLegacyCreated);
 });
 </script>

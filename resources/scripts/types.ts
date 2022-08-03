@@ -25,7 +25,7 @@ export interface Legacy {
 }
 
 export interface Scene {
-    id: number;
+    id?: number;
     question: string;
     scene: string|null;
     answer: string|null;
@@ -34,7 +34,7 @@ export interface Scene {
 }
 
 export interface Event {
-    id: number;
+    id?: number;
     name: string;
     position: number;
     type: CardType;
@@ -42,7 +42,7 @@ export interface Event {
 }
 
 export interface Period {
-    id: number;
+    id?: number;
     name: string;
     position: number;
     type: CardType;
@@ -54,4 +54,9 @@ export interface History {
     public: boolean;
     name: string;
     periods: Array<Period>
+}
+
+export interface Player {
+    id: string;
+    name: string
 }
