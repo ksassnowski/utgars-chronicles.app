@@ -26,4 +26,10 @@ final class CreateLegacyRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
         ];
     }
+
+    public function name(): string
+    {
+        /** @phpstan-ignore-next-line */
+        return $this->validated('name');
+    }
 }

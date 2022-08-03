@@ -32,11 +32,13 @@ final class CreatePaletteItemRequest extends FormRequest
 
     public function name(): string
     {
-        return $this->get('name');
+        /** @phpstan-ignore-next-line */
+        return $this->validated('name');
     }
 
     public function type(): string
     {
-        return $this->get('type');
+        /** @phpstan-ignore-next-line */
+        return $this->validated('type');
     }
 }

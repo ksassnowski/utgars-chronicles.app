@@ -23,7 +23,7 @@ class CreateLegacyController extends Controller
 {
     public function __invoke(CreateLegacyRequest $request, History $history): RedirectResponse
     {
-        $legacy = $history->addLegacy($request->get('name'));
+        $legacy = $history->addLegacy($request->name());
 
         broadcast(new LegacyCreated($legacy))->toOthers();
 

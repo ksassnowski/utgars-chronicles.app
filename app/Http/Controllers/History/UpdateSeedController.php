@@ -22,7 +22,7 @@ final class UpdateSeedController
 {
     public function __invoke(UpdateSeedRequest $request, History $history): RedirectResponse
     {
-        $history->update($request->validated());
+        $history->update(['name' => $request->name()]);
 
         broadcast(new HistorySeedUpdated($history))->toOthers();
 
