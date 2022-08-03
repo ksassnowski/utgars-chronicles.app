@@ -19,7 +19,7 @@ export const useGameLog = (function () {
         const id = Math.random()
             .toString(36)
             .replace(/[^a-z]+/g, "")
-            .substr(0, 10);
+            .substring(0, 10);
 
         const close = () => removeMessage(id);
         messages.value.push({ id, close, ...message });

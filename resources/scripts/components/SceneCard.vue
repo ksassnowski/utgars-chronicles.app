@@ -12,7 +12,7 @@
                     :type="scene.type"
                 >
                     <component
-                        :is="open ? 'EyeOffIcon' : 'EyeIcon'"
+                        :is="open ? EyeOffIcon : EyeIcon"
                         class="w-4 h-4"
                     />
                 </CardButton>
@@ -48,43 +48,24 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, inject, onUnmounted } from "vue";
-import { MenuIcon, EyeIcon, EyeOffIcon } from "@heroicons/vue/solid";
+<script lang="ts" setup>
+import { ref, inject, onUnmounted } from "vue";
+import { EyeIcon, EyeOffIcon } from "@heroicons/vue/solid";
 
-import { useEmitter } from "../composables/useEmitter";
-import LoadingButton from "./LoadingButton.vue";
-import GameCard from "./GameCard.vue";
-import SceneModal from "./Modal/SceneModal.vue";
-import CardButton from "./CardButton.vue";
+import { HistoryKey } from "@/symbols";
+import { Scene, Event } from "@/types";
+import { useEmitter } from "@/composables/useEmitter";
+import GameCard from "@/components/GameCard.vue";
+import SceneModal from "@/components/Modal/SceneModal.vue";
+import CardButton from "@/components/CardButton.vue";
 
-export default defineComponent({
-    name: "SceneCard",
+const props = defineProps<{ scene: Scene, event: Event }>();
 
-    components: {
-        CardButton,
-        SceneModal,
-        GameCard,
-        LoadingButton,
-        MenuIcon,
-        EyeIcon,
-        EyeOffIcon,
-    },
+const emitter = useEmitter();
 
-    props: {
-        scene: Object,
-        event: Object,
-    },
+const open = ref(false);
+const toggle = () => (open.value = !open.value);
+const history = inject(HistoryKey);
 
-    setup() {
-        const open = ref(false);
-        const toggle = () => (open.value = !open.value);
-        const history = inject("history");
-
-        const emitter = useEmitter();
-        onUnmounted(emitter.on("scenes:toggle", toggle));
-
-        return { open, toggle, history };
-    },
-});
+onUnmounted(emitter.on("scenes:toggle", toggle));
 </script>

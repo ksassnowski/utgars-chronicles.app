@@ -12,12 +12,9 @@
                     </div>
 
                     <div class="w-2/3">
-                        <Link
-                            class="text-white rounded py-2 px-4 text-sm transition duration-300 text-sm font-medium bg-indigo-700 hover:bg-indigo-600"
-                            :href="route('history.play', history)"
-                        >
+                        <PrimaryButton as="a" :href="route('history.play', history)">
                             Join Game
-                        </Link>
+                        </PrimaryButton>
                     </div>
                 </div>
             </section>
@@ -78,15 +75,23 @@
 
                         <div class="mb-4 mt-2">
                             <label for="link" class="label">Invite Link</label>
-                            <input
-                                type="text"
-                                id="link"
-                                class="input text-sm"
-                                :value="invitationLink"
-                                ref="link"
-                                @click="$refs.link.select()"
-                                readonly
-                            />
+
+                            <div class="relative flex space-x-0.5">
+                                <TextInput
+                                    type="text"
+                                    name="link"
+                                    class="z-0 text-sm rounded-r-none"
+                                    v-model="invitationLink"
+                                    readonly
+                                />
+
+                                <div
+                                    class="flex-1 flex items-center justify-center z-10"
+                                >
+                                    <CopyToClipboard :contents="invitationLink" />
+                                </div>
+                            </div>
+
                             <small class="text-xs text-gray-600 mt-1">
                                 Send this link to the person you want to invite
                                 to your game. This link is valid for
@@ -106,12 +111,9 @@
 
                     <div class="w-2/3">
                         <div class="mb-4">
-                            <a
-                                :href="route('history.export', history)"
-                                class="text-white rounded py-2 px-4 text-sm transition duration-300 text-sm font-medium bg-indigo-700 hover:bg-indigo-600"
-                            >
+                            <PrimaryButton :href="route('history.export', history)">
                                 Export as CSV
-                            </a>
+                            </PrimaryButton>
                         </div>
                     </div>
                 </div>
@@ -125,16 +127,13 @@
 
                     <div class="w-2/3">
                         <div class="mb-6">
-                            <button
-                                class="text-white rounded py-2 px-4 text-sm transition duration-300 text-sm font-medium bg-indigo-700 hover:bg-indigo-600"
-                                @click="onClickChangeVisibility"
-                            >
+                            <PrimaryButton @click="onClickChangeVisibility">
                                 {{
                                     confirmChangeVisibility
                                         ? "Click again to confirm"
                                         : visibilityButtonText
                                 }}
-                            </button>
+                            </PrimaryButton>
 
                             <div class="mt-1">
                                 <small
@@ -155,7 +154,7 @@
                         </div>
 
                         <button
-                            class="px-4 py-2 bg-red-700 rounded text-white text-sm font-medium transition duration-300 hover:bg-red-600"
+                            class="px-4 py-2 bg-red-700 rounded-md text-white text-sm font-medium transition duration-300 hover:bg-red-600"
                             @click="onClickDeleteHistory"
                         >
                             {{
@@ -180,12 +179,15 @@ export default { layout };
 <script lang="ts" setup>
 import { computed } from "vue";
 import { Inertia } from "@inertiajs/inertia";
-import { Link, Head, usePage } from "@inertiajs/inertia-vue3";
+import { Head } from "@inertiajs/inertia-vue3";
 
 import { useConfirmAction } from "@/composables/useConfirmAction";
 import GameVisibilityBadge from "@/components/GameVisibilityBadge.vue";
 import Panel from "@/components/UI/Panel.vue";
 import PageHeader from "@/components/UI/PageHeader.vue";
+import PrimaryButton from "@/components/UI/PrimaryButton.vue";
+import TextInput from "@/components/UI/TextInput.vue";
+import CopyToClipboard from "@/components/UI/CopyToClipboard.vue";
 
 interface History {
     id: number;
@@ -225,4 +227,7 @@ const {
 } = useConfirmAction(() =>
     Inertia.delete(route("history.delete", props.history))
 );
+
+const saveInvitationLinkToClipboard = () =>
+    navigator.clipboard.writeText(props.invitationLink);
 </script>

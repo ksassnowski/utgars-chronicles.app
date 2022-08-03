@@ -18,9 +18,13 @@ const props = withDefaults(
         name: string,
         required?: boolean|null;
         placeholder?: string|null,
-        modelValue: string|null,
+        modelValue?: string|null,
     }>(),
-    { required: false, placeholder: null },
+    {
+        required: false,
+        placeholder: null,
+        modelValue: null,
+    },
 );
 
 const emit = defineEmits(["update:modelValue"]);
@@ -30,7 +34,9 @@ const text = computed({
         return props.modelValue;
     },
     set(val: string) {
-        emit("update:modelValue", val);
+        if (props.modelValue !== null) {
+            emit("update:modelValue", val);
+        }
     }
-})
+});
 </script>

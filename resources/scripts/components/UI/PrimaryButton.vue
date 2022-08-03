@@ -7,16 +7,9 @@
     </component>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-    name: "PrimaryButton",
-
-    props: {
-        as: {
-            default: "button",
-        },
-    },
-});
+<script lang="ts" setup>
+withDefaults(
+    defineProps<{ as?: string }>(),
+    { as: "button" },
+);
 </script>

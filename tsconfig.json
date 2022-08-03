@@ -4,6 +4,12 @@
             "@/*": [
                 "./resources/scripts/*"
             ]
-        }
+        },
+        "lib": [
+            "dom",
+            "es5",
+            "scripthost",
+            "es2015"
+        ]
     },
 }

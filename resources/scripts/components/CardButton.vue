@@ -2,8 +2,8 @@
     <button
         class="rounded-lg p-1.5 text-white bg-black"
         :class="{
-            'bg-opacity-20 hover:bg-opacity-30': type === 'dark',
-            'bg-opacity-30 hover:bg-opacity-60': type === 'light',
+            'bg-opacity-20 hover:bg-opacity-30': type === CardType.Dark,
+            'bg-opacity-30 hover:bg-opacity-60': type === CardType.Light,
         }"
     >
         <slot>
@@ -12,19 +12,9 @@
     </button>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { PencilIcon } from "@heroicons/vue/outline";
+import {CardType} from "@/types";
 
-export default defineComponent({
-    name: "CardButton",
-
-    props: {
-        type: String,
-    },
-
-    components: {
-        PencilIcon,
-    },
-});
+defineProps<{ type: CardType }>();
 </script>
