@@ -1,4 +1,6 @@
 <template>
+    <Head :title="$page.props.history.name" />
+
     <GameBoard
         :history="$page.props.history"
         :foci="$page.props.foci"
@@ -8,24 +10,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import layout from "@/Pages/Layouts/Game.vue";
 
-import GameBoard from "../components/GameBoard.vue";
-import GameLayout from "./Layouts/Game.vue";
+export default { layout };
+</script>
 
-export default defineComponent({
-    name: "Game",
+<script lang="ts" setup>
+import { Head } from "@inertiajs/inertia-vue3";
 
-    metaInfo() {
-        return {
-            title: `${this.$page.props.history.name} – Utgar\'s Chronicles`
-        };
-    },
-
-    layout: GameLayout,
-
-    components: {
-        GameBoard
-    }
-});
+import GameBoard from "@/components/GameBoard.vue";
 </script>

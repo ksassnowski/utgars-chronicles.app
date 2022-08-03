@@ -1,7 +1,7 @@
 <template>
-    <Head title="My Games — Utgar's Chronicles" />
+    <Head title="My Games" />
 
-    <div class="mx-auto px-4">
+    <div class="mx-auto max-w-7xl px-4">
         <section class="mb-8">
             <div class="flex justify-between items-center mb-4">
                 <PageHeader>

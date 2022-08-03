@@ -1,5 +1,5 @@
 <template>
-    <Head title="Profile – Utgar's Chronicles" />
+    <Head title="Profile" />
 
     <div class="lg:max-w-5xl px-4 mx-auto">
         <PageHeader class="text-3xl font-bold text-gray-800 tracking-tight">

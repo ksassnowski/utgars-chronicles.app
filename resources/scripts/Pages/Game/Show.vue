@@ -1,5 +1,7 @@
 <template>
-    <div class="container mx-auto px-4 pt-8">
+    <Head :title="history.name" />
+
+    <div class="md:max-w-5xl mx-auto px-4 pt-8">
         <div
             class="rounded shadow-lg py-6 border border-gray-300 lg:w-3/5 mx-auto"
         >
@@ -93,7 +95,7 @@
 </template>
 
 <script>
-import { Link } from "@inertiajs/inertia-vue3";
+import { Head, Link } from "@inertiajs/inertia-vue3";
 
 import Layout from "../Layouts/Layout.vue";
 import ConfirmAction from "../../components/ConfirmAction.vue";

@@ -14,9 +14,9 @@ InertiaProgress.init({
     showSpinner: false,
 });
 
-const pages = import.meta.glob("./Pages/**/*.vue");
-
 createInertiaApp({
+    title: (title) => `${title} — Utgar's Chronicles`,
+
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
 
     setup({ el, App, props, plugin }) {

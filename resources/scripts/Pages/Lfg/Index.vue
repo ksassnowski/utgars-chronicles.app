@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto flex">
+    <div class="mx-auto max-w-7xl flex">
         <div class="w-64 bg-gray-100">
             <h2 class="text-lg text-black font-semibold pt-8 px-4">Filter</h2>
         </div>
