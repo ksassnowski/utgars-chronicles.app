@@ -53,7 +53,7 @@ const formValid = computed(() => form.name !== null);
 
 const submit = () => {
     if (formValid.value) {
-        this.form.post(props.acceptUrl, {
+        form.post(props.acceptUrl, {
             onSuccess: () => {
                 if (window.fathom) {
                     window.fathom.trackGoal("UKDSEW8G", 0);
