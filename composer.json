@@ -72,9 +72,6 @@
         }
     },
     "scripts": {
-        "post-install-cmd": [
-            "@composer normalize"
-        ],
         "post-update-cmd": [
             "@php artisan ide-helper:generate",
             "@php artisan ide-helper:meta",
