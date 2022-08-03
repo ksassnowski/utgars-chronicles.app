@@ -24,7 +24,7 @@ final class CreateEventController
     public function __invoke(
         CreateEventRequest $request,
         History $history,
-        Period $period
+        Period $period,
     ): RedirectResponse {
         $period->insertEvent($request->validated());
 
