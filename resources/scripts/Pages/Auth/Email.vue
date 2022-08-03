@@ -1,47 +1,50 @@
 <template>
+    <Head title="Reset password" />
 
-    <div class="container">
-        <div class="container mx-auto pt-8 px-4">
-            <div class="md:w-1/2 mx-auto bg-white p-4 shadow-lg rounded border border-gray-300">
-                <form @submit.prevent="submit" method="POST">
-                    <div class="mb-4">
-                        <label class="label" for="email">Email</label>
-                        <input v-model="form.email" class="input" type="email" name="email" id="email" required autofocus>
+    <div class="container mx-auto px-4 h-full flex flex-col space-y-4 items-center justify-center">
+        <Link href="/" class="text-2xl font-bold tracking-tight text-gray-700">Utgar's Chronicles</Link>
 
-                        <small v-if="form.errors.email" class="mt-1 text-xs text-red-400">
-                            {{ form.errors.email[0] }}
-                        </small>
-                    </div>
+        <Panel class="w-full md:max-w-md shadow-indigo-100 ring-indigo-50">
+            <form @submit.prevent="submit" method="POST">
+                <div class="mb-4">
+                    <label class="label" for="email">Email</label>
+                    <TextInput
+                        v-model="form.email"
+                        v-focus
+                        type="email"
+                        name="email"
+                        required
+                        autofocus
+                    />
 
-                    <button type="submit" class="bg-indigo-600 w-full py-3 text-white rounded font-bold test-sm">
+                    <small v-if="form.errors.email" class="mt-1 text-xs text-red-400">
+                        {{ form.errors.email[0] }}
+                    </small>
+                </div>
+
+                <footer class="flex justify-end">
+                    <LoadingButton :loading="form.processing">
                         Send Password Reset Link
-                    </button>
-                </form>
-            </div>
-        </div>
+                    </LoadingButton>
+                </footer>
+            </form>
+        </Panel>
     </div>
 </template>
 
-<script>
-import Layout from "../Layouts/Layout.vue";
+<script lang="ts">
+import layout from "@/Pages/Layouts/Layout.vue";
 
-export default {
-    name: "Email",
+export default { layout };
+</script>
 
-    layout: Layout,
+<script lang="ts" setup>
+import { Link, Head, useForm } from "@inertiajs/inertia-vue3";
 
-    data() {
-        return {
-            form: this.$inertia.form({
-                email: '',
-            })
-        };
-    },
+import Panel from "@/components/UI/Panel.vue";
+import TextInput from "@/components/UI/TextInput.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
 
-    methods: {
-        submit() {
-            this.form.post(this.$route('password.email'));
-        }
-    }
-}
+const form = useForm({ email: '' })
+const submit = () => form.post(route('password.email'));
 </script>

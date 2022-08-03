@@ -1,5 +1,5 @@
 <template>
-    <Head :title="`${history.name} – Utgar's Chronicles`" />
+    <Head :title="history.name" />
 
     <div class="mx-auto lg:max-w-5xl px-4">
         <PageHeader>{{ history.name }}</PageHeader>

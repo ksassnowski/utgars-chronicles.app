@@ -9,12 +9,6 @@ module.exports = {
         "./resources/scripts/**/*.vue",
     ],
 
-    safelist: [
-        {
-            pattern: /nprogress/,
-        }
-    ],
-
     theme: {
         extend: {
             screens: {

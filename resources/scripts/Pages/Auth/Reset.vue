@@ -1,10 +1,21 @@
 <template>
-    <div class="container mx-auto pt-8 px-4">
-        <div class="md:w-1/2 mx-auto bg-white p-4 shadow-lg rounded border border-gray-300">
+    <Head title="Reset password" />
+
+    <div class="container mx-auto px-4 h-full flex flex-col space-y-4 items-center justify-center">
+        <Link href="/" class="text-2xl font-bold tracking-tight text-gray-700">Utgar's Chronicles</Link>
+
+        <Panel class="w-full md:max-w-md shadow-indigo-100 ring-indigo-50">
             <form @submit.prevent="submit" method="POST">
                 <div class="mb-4">
                     <label class="label" for="email">Email</label>
-                    <input v-model="form.email" class="input" type="email" id="email" name="email" required>
+
+                    <TextInput
+                        v-model="form.email"
+                        type="email"
+                        name="email"
+                        required
+                        disabled
+                    />
 
                     <small v-if="form.errors.email" class="mt-1 text-xs text-red-400">
                         {{ form.errors.email[0] }}
@@ -13,45 +24,59 @@
 
                 <div class="mb-4">
                     <label class="label" for="password">New Password</label>
-                    <input v-model="form.password" class="input" type="password" name="password" id="password" autofocus required>
+
+                    <TextInput
+                        v-model="form.password"
+                        v-focus
+                        type="password"
+                        name="password"
+                        autofocus
+                        required
+                    />
 
                     <small v-if="form.errors.password" class="mt-1 text-xs text-red-400">{{ form.errors.password[0] }}</small>
                 </div>
 
                 <div class="mb-4">
                     <label class="label" for="password_confirmation">Confirm Password</label>
-                    <input v-model="form.password_confirmation" class="input" type="password" name="password_confirmation" id="password_confirmation" required>
+
+                    <TextInput
+                        v-model="form.password_confirmation"
+                        type="password"
+                        name="password_confirmation"
+                        required
+                    />
                 </div>
 
-                <button type="submit" class="bg-indigo-600 w-full py-3 text-white rounded font-bold test-sm">Change Password</button>
+                <footer class="flex justify-end">
+                    <LoadingButton :loading="form.processing">Change Password</LoadingButton>
+                </footer>
             </form>
-        </div>
+        </Panel>
     </div>
 </template>
 
-<script>
-import Layout from "../Layouts/Layout.vue";
+<script lang="ts">
+import layout from "@/Pages/Layouts/Layout.vue";
 
-export default {
-    name: "Reset",
+export default { layout };
+</script>
 
-    layout: Layout,
+<script lang="ts" setup>
+import { useForm, Head, Link } from "@inertiajs/inertia-vue3";
 
-    data() {
-        return {
-            form: this.$inertia.form({
-                email: this.$page.props.email,
-                token: this.$page.props.token,
-                password: '',
-                password_confirmation: '',
-            }),
-        };
-    },
+import Panel from "@/components/UI/Panel.vue";
+import TextInput from "@/components/UI/TextInput.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
 
-    methods: {
-        submit() {
-            this.form.post(this.$route('password.update'));
-        }
-    }
-}
+const props = defineProps<{ email: string, token: string }>();
+
+const form = useForm({
+    email: props.email,
+    token: props.token,
+    password: '',
+    password_confirmation: '',
+});
+
+const submit = () => form.post(route('password.update'));
 </script>

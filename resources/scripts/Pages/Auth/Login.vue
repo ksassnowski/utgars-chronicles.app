@@ -1,6 +1,7 @@
 <template>
-    <div class="container mx-auto px-4 h-full flex flex-col space-y-4 items-center justify-center">
+    <Head title="Login" />
 
+    <div class="container mx-auto px-4 h-full flex flex-col space-y-4 items-center justify-center">
         <Link href="/" class="text-2xl font-bold tracking-tight text-gray-700">Utgar's Chronicles</Link>
 
         <Panel class="w-full md:max-w-md shadow-indigo-100 ring-indigo-50">
@@ -45,7 +46,7 @@ export default { layout };
 </script>
 
 <script lang="ts" setup>
-import { Link, useForm } from "@inertiajs/inertia-vue3";
+import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
 
 import TextInput from "@/components/UI/TextInput.vue";
 import Panel from "@/components/UI/Panel.vue";
