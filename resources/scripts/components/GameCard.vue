@@ -39,7 +39,7 @@
                     flex
                     items-center
                     space-x-1
-                    md:invisible md:group-hover:visible
+                    sm:invisible sm:group-hover:visible
                 "
             >
                 <slot name="menu" />
@@ -60,7 +60,7 @@
                 bottom-0
                 py-2
                 px-3
-                md:invisible md:group-hover:visible
+                sm:invisible sm:group-hover:visible
             "
         >
             <slot name="footer" />
@@ -68,20 +68,8 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { MenuIcon } from "@heroicons/vue/solid";
 
-export default defineComponent({
-    name: "GameCard",
-
-    props: {
-        type: String,
-        label: String,
-    },
-
-    components: {
-        MenuIcon,
-    },
-});
+const props = defineProps<{ type: string, label: string }>();
 </script>
