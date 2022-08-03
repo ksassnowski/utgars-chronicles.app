@@ -21,8 +21,19 @@ jobs:
         with:
           php-version: 8.1
 
+      - name: "Determine composer cache directory"
+        id: "determine-composer-cache-directory"
+        run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
+
+      - name: "Cache dependencies installed with composer"
+        uses: "actions/cache@v2.1.6"
+        with:
+          path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
+          key: "utgars-${{ hashFiles('composer.lock') }}"
+          restore-keys: "utgars-"
+
       - name: Install dependencies
-        run: composer install --no-interaction --prefer-source
+        run: composer install --no-interaction --prefer-dist
 
       - name: Fix style
         run: composer cs

@@ -34,7 +34,7 @@ jobs:
           restore-keys: "utgars-"
 
       - name: Install dependencies
-        run: composer install --no-interaction --prefer-source
+        run: composer install --no-interaction --prefer-dist
 
       - name: Run phpstan
         run: composer analyze
@@ -79,7 +79,7 @@ jobs:
           restore-keys: "utgars-"
 
       - name: Install composer dependencies
-        run: composer install --no-interaction --prefer-source
+        run: composer install --no-interaction --prefer-dist
 
       - name: Install Javascript Dependencies
         run: yarn install --non-interactive
