@@ -21,8 +21,11 @@ use Illuminate\Http\RedirectResponse;
 
 final class CreateEventController
 {
-    public function __invoke(CreateEventRequest $request, History $history, Period $period): RedirectResponse
-    {
+    public function __invoke(
+        CreateEventRequest $request,
+        History $history,
+        Period $period
+    ): RedirectResponse {
         $period->insertEvent($request->validated());
 
         broadcast(new BoardUpdated($history->refresh()))->toOthers();

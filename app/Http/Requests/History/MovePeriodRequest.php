@@ -29,6 +29,7 @@ final class MovePeriodRequest extends FormRequest
 
     public function position(): int
     {
-        return (int) $this->json('position');
+        /** @phpstan-ignore-next-line */
+        return (int) $this->validated('position');
     }
 }

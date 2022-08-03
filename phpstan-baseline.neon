@@ -1,0 +1,121 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#2 \\$histories of class App\\\\AnonymousPlayer constructor expects array\\<int, string\\|null\\>, mixed given\\.$#"
+			count: 1
+			path: app/Guards/MicroscopeGuard.php
+
+		-
+			message: "#^Parameter \\#1 \\$key of function trans expects string\\|null, mixed given\\.$#"
+			count: 2
+			path: app/Http/Controllers/Auth/ForgotPasswordController.php
+
+		-
+			message: "#^Parameter \\#1 \\.\\.\\.\\$arrays of function array_merge expects array, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Event/CreateSceneController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Event/UpdateEventController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Focus/UpdateFocusController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/History/ChangeVisibilityController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method App\\\\History\\:\\:insertPeriod\\(\\) expects array\\{position\\: int, type\\: 'dark'\\|'light', name\\: string\\}, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/History/CreatePeriodController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\HasOneOrMany\\<App\\\\History\\>\\:\\:create\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/History/StoreHistoryController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Legacy/UpdateLegacyController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\HasOneOrMany\\<App\\\\Lfg\\>\\:\\:create\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/LookingForGroupController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/PaletteController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method App\\\\Period\\:\\:insertEvent\\(\\) expects array\\{position\\: int, name\\: string, type\\: 'dark'\\|'light'\\}, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Period/CreateEventController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Period/UpdatePeriodController.php
+
+		-
+			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/Scene/UpdateSceneController.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Contracts\\\\Auth\\\\Authenticatable\\:\\:\\$email\\.$#"
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Contracts\\\\Auth\\\\Authenticatable\\:\\:\\$id\\.$#"
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			message: "#^Access to an undefined property Illuminate\\\\Contracts\\\\Auth\\\\Authenticatable\\:\\:\\$name\\.$#"
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			message: "#^Cannot call method getBag\\(\\) on mixed\\.$#"
+			count: 1
+			path: app/Http/Middleware/HandleInertiaRequests.php
+
+		-
+			message: "#^Cannot access offset 'css' on mixed\\.$#"
+			count: 1
+			path: app/helpers.php
+
+		-
+			message: "#^Cannot access offset 'file' on mixed\\.$#"
+			count: 1
+			path: app/helpers.php
+
+		-
+			message: "#^Cannot access offset 'resources/js/app\\.js' on mixed\\.$#"
+			count: 2
+			path: app/helpers.php
+
+		-
+			message: "#^Cannot access offset 0 on mixed\\.$#"
+			count: 1
+			path: app/helpers.php
+
+		-
+			message: "#^Part \\$manifest\\['resources/js/app\\.js'\\]\\['css'\\]\\[0\\] \\(mixed\\) of encapsed string cannot be cast to string\\.$#"
+			count: 1
+			path: app/helpers.php
+
+		-
+			message: "#^Part \\$manifest\\['resources/js/app\\.js'\\]\\['file'\\] \\(mixed\\) of encapsed string cannot be cast to string\\.$#"
+			count: 1
+			path: app/helpers.php

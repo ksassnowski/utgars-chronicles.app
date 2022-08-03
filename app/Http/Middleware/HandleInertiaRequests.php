@@ -57,11 +57,8 @@ final class HandleInertiaRequests extends Middleware
             'auth' => static function () use ($request) {
                 return [
                     'user' => !$request->routeIs('invitation.accept.show-form') && Auth::user() ? [
-                        /** @phpstan-ignore-next-line  */
                         'id' => Auth::user()->id,
-                        /** @phpstan-ignore-next-line  */
                         'name' => Auth::user()->name,
-                        /** @phpstan-ignore-next-line  */
                         'email' => Auth::user()->email,
                     ] : null,
                 ];

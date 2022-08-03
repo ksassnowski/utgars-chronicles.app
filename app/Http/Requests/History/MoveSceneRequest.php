@@ -29,6 +29,7 @@ final class MoveSceneRequest extends FormRequest
 
     public function position(): int
     {
-        return (int) $this->get('position');
+        /** @phpstan-ignore-next-line */
+        return (int) $this->validated('position');
     }
 }

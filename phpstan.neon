@@ -1,9 +1,10 @@
 includes:
     - ./vendor/nunomaduro/larastan/extension.neon
+    - ./phpstan-baseline.neon
 
 parameters:
     paths:
         - app
-    level: 8
+    level: 9
     ignoreErrors: []
     excludePaths: []
