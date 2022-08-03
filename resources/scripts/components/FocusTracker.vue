@@ -1,5 +1,9 @@
 <template>
     <SettingsPopover title="Focus Tracker" button-text="Focus">
+        <template #icon>
+            <ExclamationCircleIcon class="w-4 h-4" />
+        </template>
+
         <template #description>
             The Lens declares the Focus of the game, the part of the history
             you’re going to explore next.
@@ -109,13 +113,13 @@
 </template>
 
 <script lang="ts" setup>
-import { watch, computed, toRefs, defineProps } from "vue";
+import { watch, computed, toRefs } from "vue";
 import {
     Disclosure,
     DisclosureButton,
     DisclosurePanel,
 } from "@headlessui/vue";
-import { XIcon, PlusIcon, ExclamationCircleIcon } from "@heroicons/vue/solid";
+import { XIcon, PlusIcon, ExclamationCircleIcon } from "@heroicons/vue/outline";
 import { useForm } from "@inertiajs/inertia-vue3";
 
 import { Focus, History } from "@/types";

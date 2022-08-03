@@ -2,22 +2,31 @@
     <Popover v-slot="{ open }" class="h-full sm:h-auto sm:w-full">
         <PopoverButton
             class="
-                px-2
+                px-3
                 sm:py-3 sm:bg-black sm:bg-opacity-20
                 text-gray-100
                 h-full
                 sm:w-full
-                text-xs
-                uppercase
+                text-[0.6rem]
+                sm:text-xs
+                sm:uppercase
                 font-medium
                 rounded-md
                 sm:hover:bg-opacity-30 sm:hover:text-white
                 transition
                 transform
                 sm:hover:-translate-x-0.5
+                flex flex-col justify-center items-center
+                sm:block
+                space-y-0.5
+                sm:space-y-0
             "
         >
-            {{ buttonText }}
+            <span class="sm:hidden text-indigo-100">
+                <slot name="icon" />
+            </span>
+
+            <span>{{ buttonText }}</span>
         </PopoverButton>
 
         <PopoverOverlay
@@ -105,6 +114,6 @@ withDefaults(
         buttonText: string,
         width?: string,
     }>(),
-    { width: "sm:w-112" }
+    { width: "w-full sm:w-112" }
 );
 </script>

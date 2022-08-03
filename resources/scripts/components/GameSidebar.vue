@@ -21,12 +21,12 @@
         <div class="flex sm:flex-col h-full items-center justify-between">
             <div
                 class="
-                    pr-4
                     sm:pl-2 sm:pr-2 sm:pt-12
-                    space-x-2
-                    sm:space-x-0 sm:space-y-3
+                    sm:space-y-3
                     flex
                     items-center
+                    justify-between
+                    sm:justify-start
                     sm:w-full sm:flex-col
                     flex-grow
                     h-full
@@ -40,26 +40,30 @@
                 >
                     <button
                         class="
-                            uppercase
+                            sm:uppercase
                             text-gray-100
                             hover:text-white
-                            text-xs
+                            text-[0.6rem]
                             font-medium
                             bg-black bg-opacity-20
                             h-full
                             px-3
                             inline-flex
+                            flex-col
                             items-center
+                            justify-center
+                            space-y-0.5
                         "
                     >
-                        <PlusIcon class="h-4 w-4 text-indigo-100 mr-1" />
-                        Period
+                        <PlusIcon class="h-4 w-4 text-indigo-100" />
+                        <span>Add Period</span>
                     </button>
                 </PeriodModal>
 
                 <FocusTracker :foci="foci" :history="history" />
                 <Palette :history="history" :palette="palette" />
                 <LegacyTracker :history="history" :legacies="legacies" />
+                <PlayerTracker />
             </div>
 
             <div class="sm:w-full">
@@ -74,7 +78,8 @@
                 <Link
                     :href="route('home')"
                     class="
-                        flex
+                        hidden
+                        sm:flex
                         items-center
                         sm:w-full
                         bg-indigo-800
@@ -109,6 +114,7 @@ import LegacyTracker from "@/components/LegacyTracker.vue";
 import Palette from "@/components/Palette.vue";
 import FocusTracker from "@/components/FocusTracker.vue";
 import PeriodModal from "@/components/Modal/PeriodModal.vue";
+import PlayerTracker from "@/components/PlayerTracker.vue";
 
 const props = defineProps<{
     history: History,
