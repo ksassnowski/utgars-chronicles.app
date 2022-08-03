@@ -1,5 +1,9 @@
 <template>
     <SettingsPopover title="Legacies" button-text="Legacies">
+        <template #icon>
+            <FlagIcon class="w-4 h-4" />
+        </template>
+
         <template #description>
             Legacies are common threads that may stretch through time and
             influence history. A Legacy can take many forms–an object, a person,
@@ -42,6 +46,8 @@
 
 <script lang="ts" setup>
 import { History, Legacy } from "@/types";
+
+import { FlagIcon } from "@heroicons/vue/outline";
 
 import SettingsPopover from "@/components/SettingsPopover.vue";
 import LegacyForm from "@/components/LegacyForm.vue";

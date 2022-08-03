@@ -1,5 +1,9 @@
 <template>
     <SettingsPopover title="Palette" button-text="Palette" width="sm:w-128">
+        <template #icon>
+            <ThumbUpIcon class="w-4 h-4" />
+        </template>
+
         <template #description>
             The Palette is a list of things the players agree to reserve the
             right to include or, conversely, outright ban. It gets everyone on
@@ -62,7 +66,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/vue/solid";
+import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/vue/outline";
 
 import { History, PaletteItem as PaletteItemType, PaletteType } from "@/types";
 
