@@ -30,7 +30,9 @@ jobs:
         uses: "actions/cache@v2.1.6"
         with:
           path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
-          key: "${{ hashFiles('composer.lock') }}"
+          key: "utgars-${{ hashFiles('composer.lock') }}"
+          restore-keys: "utgars-"
+
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-source
@@ -74,7 +76,8 @@ jobs:
         uses: "actions/cache@v2.1.6"
         with:
           path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
-          key: "${{ hashFiles('composer.lock') }}"
+          key: "utgars-${{ hashFiles('composer.lock') }}"
+          restore-keys: "utgars-"
 
       - name: Install composer dependencies
         run: composer install --no-interaction --prefer-source
