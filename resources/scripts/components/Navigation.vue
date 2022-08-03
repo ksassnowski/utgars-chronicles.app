@@ -29,29 +29,12 @@
     </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { ref } from "vue";
 import { Link } from "@inertiajs/inertia-vue3";
 
 import UserNavigation from "./UserNavigation.vue";
 
-export default {
-    name: "Navigation",
-
-    components: {
-        Link,
-        UserNavigation,
-    },
-
-    data() {
-        return {
-            open: false
-        };
-    },
-
-    methods: {
-        toggle() {
-            this.open = !this.open;
-        }
-    }
-};
+const open = ref(false);
+const toggle = () => open.value = !open.value;
 </script>

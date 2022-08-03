@@ -12,21 +12,9 @@
     </div>
 </template>
 
-<script>
+<script lang="ts" setup>
+import { History } from "@/types";
 import LfgListing from "@/components/LfgListing.vue";
 
-export default {
-    name: "LfgList",
-
-    components: {
-        LfgListing,
-    },
-
-    props: {
-        games: {
-            type: Array,
-            default: () => [],
-        }
-    }
-}
+defineProps<{ games: Array<History> }>();
 </script>

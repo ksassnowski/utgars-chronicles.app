@@ -98,43 +98,26 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { Link } from "@inertiajs/inertia-vue3";
 import { PlusIcon, ChevronDoubleLeftIcon } from "@heroicons/vue/outline";
 
-import { useEmitter } from "../composables/useEmitter";
-import LegacyTracker from "./LegacyTracker.vue";
-import Palette from "./Palette.vue";
-import FocusTracker from "./FocusTracker.vue";
-import PeriodModal from "./Modal/PeriodModal.vue";
+import { Focus, History, Legacy, PaletteItem } from "@/types";
+import { useEmitter } from "@/composables/useEmitter";
 
-export default defineComponent({
-    name: "GameSidebar",
+import LegacyTracker from "@/components/LegacyTracker.vue";
+import Palette from "@/components/Palette.vue";
+import FocusTracker from "@/components/FocusTracker.vue";
+import PeriodModal from "@/components/Modal/PeriodModal.vue";
 
-    props: {
-        history: Object,
-        palette: Array,
-        legacies: Array,
-        foci: Array,
-        nextPosition: Number,
-    },
+const props = defineProps<{
+    history: History,
+    palette: Array<PaletteItem>,
+    legacies: Array<Legacy>,
+    foci: Array<Focus>,
+    nextPosition: number,
+}>();
 
-    components: {
-        PeriodModal,
-        LegacyTracker,
-        Palette,
-        FocusTracker,
-        Link,
-        ChevronDoubleLeftIcon,
-        PlusIcon,
-    },
-
-    setup() {
-        const emitter = useEmitter();
-        const toggleScenes = () => emitter.trigger("scenes:toggle");
-
-        return { toggleScenes };
-    },
-});
+const emitter = useEmitter();
+const toggleScenes = () => emitter.trigger("scenes:toggle");
 </script>

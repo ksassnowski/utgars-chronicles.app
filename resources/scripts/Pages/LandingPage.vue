@@ -8,8 +8,8 @@
                     <Link href="/" class="text-xl font-bold tracking-tight text-white">Utgar's Chronicles</Link>
 
                     <nav class="px-4 py-4 flex justify-end items-center">
-                        <Link :href="$route('login')" class="text-indigo-100 px-4">Login</Link>
-                        <Link :href="$route('register')" class="px-4 py-2 rounded-sm text-indigo-700 bg-white hover:bg-indigo-100">Register</Link>
+                        <Link :href="route('login')" class="text-indigo-100 px-4">Login</Link>
+                        <Link :href="route('register')" class="px-4 py-2 rounded-sm text-indigo-700 bg-white hover:bg-indigo-100">Register</Link>
                     </nav>
                 </div>
 

@@ -90,12 +90,8 @@
     </Popover>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import {
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
     Popover,
     PopoverButton,
     PopoverOverlay,
@@ -103,27 +99,12 @@ import {
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/solid";
 
-export default defineComponent({
-    name: "SettingsPopover",
-
-    components: {
-        Popover,
-        PopoverButton,
-        PopoverOverlay,
-        PopoverPanel,
-        Disclosure,
-        DisclosureButton,
-        DisclosurePanel,
-        XIcon,
-    },
-
-    props: {
-        title: String,
-        buttonText: String,
-        width: {
-            type: String,
-            default: "sm:w-112",
-        },
-    },
-});
+withDefaults(
+    defineProps<{
+        title: string,
+        buttonText: string,
+        width?: string,
+    }>(),
+    { width: "sm:w-112" }
+);
 </script>

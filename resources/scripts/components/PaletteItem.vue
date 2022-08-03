@@ -73,61 +73,45 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 import { useForm, Link } from "@inertiajs/inertia-vue3";
 import { TrashIcon } from "@heroicons/vue/outline";
 
-import { useEditMode } from "../composables/useEditMode";
+import { PaletteItem } from "@/types";
+import { useEditMode } from "@/composables/useEditMode";
 
-export default defineComponent({
-    name: "PaletteItem",
+const props = defineProps<{ item: PaletteItem }>();
 
-    props: {
-        item: Object,
-    },
-
-    components: {
-        Link,
-        TrashIcon,
-    },
-
-    methods: {
-        submitForm() {
-            if (this.form.name === this.item.name) {
-                this.stopEditing();
-                return this.input.blur();
-            }
-
-            this.submit();
-        },
-
-        resizeTextarea(textarea) {
-            textarea.style.height = "1px";
-            textarea.style.height = 25 + textarea.scrollHeight + "px";
-        },
-
-        onFocusTextarea(event) {
-            const textarea = event.target;
-            textarea.select();
-            this.resizeTextarea(textarea);
-        },
-    },
-
-    setup(props) {
-        const input = ref(null);
-        const form = useForm({
-            name: props.item.name,
-            type: props.item.type,
-        });
-        const { editing, startEditing, stopEditing, submit } = useEditMode(
-            form,
-            route("palette.update", [props.item.history_id, props.item]),
-            ["errors", "palettes"],
-            "put"
-        );
-
-        return { form, input, editing, startEditing, stopEditing, submit };
-    },
+const input = ref(null);
+const form = useForm({
+    name: props.item.name,
+    type: props.item.type,
 });
+const { editing, startEditing, stopEditing, submit } = useEditMode(
+    form,
+    route("palette.update", [props.item.history_id, props.item]),
+    ["errors", "palettes"],
+    "put"
+);
+
+const submitForm = () => {
+    if (form.name === props.item.name) {
+        stopEditing();
+        return input.value.blur();
+    }
+
+    submit()();
+};
+
+const resizeTextarea = (textarea: HTMLTextAreaElement) => {
+    textarea.style.height = "1px";
+    textarea.style.height = 25 + textarea.scrollHeight + "px";
+};
+
+const onFocusTextarea = (event: FocusEvent) => {
+    const textarea = event.target as HTMLTextAreaElement;
+    textarea.select();
+    resizeTextarea(textarea);
+};
 </script>

@@ -167,7 +167,7 @@
     </div>
 </template>
 
-<script lang="ts" setup >
+<script lang="ts" setup>
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 import {
     SpeakerphoneIcon,
@@ -177,10 +177,10 @@ import {
 } from "@heroicons/vue/outline";
 import { Link } from "@inertiajs/inertia-vue3";
 
-import { useFeatureFlags } from "../composables/useFeatureFlags";
-import Gravatar from "./Gravatar.vue";
-import FeedbackModal from "./Modal/FeedbackModal.vue";
-import NavigationLink from "./UI/NavigationLink.vue";
+import { useFeatureFlags } from "@/composables/useFeatureFlags";
+import Gravatar from "@/components/Gravatar.vue";
+import FeedbackModal from "@/components/Modal/FeedbackModal.vue";
+import NavigationLink from "@/components/UI/NavigationLink.vue";
 
 const featureActive = useFeatureFlags();
 </script>

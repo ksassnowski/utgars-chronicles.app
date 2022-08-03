@@ -40,25 +40,12 @@
     </SettingsPopover>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { History, Legacy } from "@/types";
 
 import SettingsPopover from "@/components/SettingsPopover.vue";
 import LegacyForm from "@/components/LegacyForm.vue";
-import EditableCard from "./EditableCard.vue";
+import EditableCard from "@/components/EditableCard.vue";
 
-export default defineComponent({
-    name: "LegacyTracker",
-
-    props: {
-        legacies: Array,
-        history: Object,
-    },
-
-    components: {
-        EditableCard,
-        LegacyForm,
-        SettingsPopover,
-    },
-});
+defineProps<{ legacies: Array<Legacy>, history: History }>();
 </script>

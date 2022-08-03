@@ -5,7 +5,7 @@
         <Link href="/" class="text-2xl font-bold tracking-tight text-gray-700">Utgar's Chronicles</Link>
 
         <Panel class="w-full md:max-w-md shadow-indigo-100 ring-indigo-50">
-            <form @submit.prevent="form.post($route('login'))">
+            <form @submit.prevent="form.post(route('login'))">
                 <div class="mb-4">
                     <label class="label" for="email">Email</label>
                     <TextInput class="input" type="email" id="email" name="email" v-model="form.email" required autofocus />
@@ -19,7 +19,7 @@
                         {{ form.errors.password[0] }}
                     </small>
 
-                    <Link :href="$route('password.request')" class="mt-1 text-sm text-gray-600 block">
+                    <Link :href="route('password.request')" class="mt-1 text-sm text-gray-600 block">
                         Forgot password?
                     </Link>
                 </div>
@@ -31,7 +31,7 @@
 
                 <LoadingButton class="w-full" :loading="form.processing">Login</LoadingButton>
 
-                <Link :href="$route('register')" class="mt-2 text-sm text-indigo-700 text-center block">
+                <Link :href="route('register')" class="mt-2 text-sm text-indigo-700 text-center block">
                     Or create a new account
                 </Link>
             </form>

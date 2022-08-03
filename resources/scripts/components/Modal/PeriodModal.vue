@@ -65,67 +65,43 @@
     </Modal>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, toRefs } from "vue";
-import { Link } from "@inertiajs/inertia-vue3";
+<script lang="ts" setup>
+import {ref, toRefs} from "vue";
+import {Link} from "@inertiajs/inertia-vue3";
 
-import { useCreateEditForm } from "../../composables/useCreateEditForm";
-import Modal from "../Modal.vue";
-import LoadingButton from "../LoadingButton.vue";
+import {useCreateEditForm} from "@/composables/useCreateEditForm";
+import Modal from "@/components/Modal.vue";
+import LoadingButton from "@/components/LoadingButton.vue";
+import {CardType, History, Period} from "@/types";
 
-export default defineComponent({
-    name: "PeriodModal",
-
-    components: {
-        LoadingButton,
-        Modal,
-        Link,
+const props = withDefaults(
+    defineProps<{
+        history: History,
+        position?: number|null,
+        period?: Pick<Period, "id"|"name"|"type">
+    }>(),
+    {
+        period: () => ({ name: "", type: CardType.Light }),
+        position: null,
     },
+);
 
-    props: {
-        history: {
-            type: Object,
-            required: true,
-        },
-        position: {
-            type: Number,
-            default: null,
-        },
-        period: {
-            type: Object,
-            default: () => ({
-                name: "",
-                type: "light",
-            }),
-        },
-    },
+const { period, position } = toRefs(props);
+const modal = ref(null);
 
-    methods: {
-        confirmDelete() {
-            return confirm(
-                "Really delete this period? All events and scenes inside of this period will be deleted as well."
-            );
-        },
-    },
+const { form, submit: formSubmit } = useCreateEditForm(
+    period,
+    ["name", "type"],
+    route("history.periods.store", [props.history]),
+    () => route("periods.update", [props.history, props.period]),
+    position
+);
 
-    setup(props) {
-        const { period, position } = toRefs(props);
-        const modal = ref(null);
+const title = period.value.id ? "Edit Period" : "Create Period";
+const submit = formSubmit(() => modal.value.toggle());
 
-        const { form, submit } = useCreateEditForm(
-            period,
-            ["name", "type"],
-            route("history.periods.store", [props.history]),
-            () => route("periods.update", [props.history, props.period]),
-            position
-        );
-
-        return {
-            form,
-            modal,
-            submit: submit(() => modal.value.toggle()),
-            title: period.value.id ? "Edit Period" : "Create Period",
-        };
-    },
-});
+const confirmDelete = () =>
+    confirm(
+        "Really delete this period? All events and scenes inside of this period will be deleted as well."
+    );
 </script>

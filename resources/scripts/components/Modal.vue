@@ -76,8 +76,8 @@
     </TransitionRoot>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from "vue";
+<script lang="ts" setup>
+import { ref } from "vue";
 import {
     Dialog,
     DialogTitle,
@@ -87,29 +87,11 @@ import {
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/outline";
 
-export default defineComponent({
-    name: "Modal",
+defineProps<{ title: string }>();
+const emit = defineEmits(["close"]);
 
-    props: {
-        title: String,
-    },
+const isOpen = ref(false);
+const toggle = () => (isOpen.value = !isOpen.value);
 
-    emits: ["close"],
-
-    components: {
-        Dialog,
-        DialogOverlay,
-        DialogTitle,
-        TransitionRoot,
-        TransitionChild,
-        XIcon,
-    },
-
-    setup() {
-        const isOpen = ref(false);
-        const toggle = () => (isOpen.value = !isOpen.value);
-
-        return { isOpen, toggle };
-    },
-});
+defineExpose({ toggle });
 </script>

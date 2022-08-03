@@ -32,7 +32,7 @@ function detectServerConfig(host) {
 export default defineConfig({
     plugins: [
         laravel([
-            'resources/scripts/app.js',
+            'resources/scripts/app.ts',
         ]),
         vue({
             template: {

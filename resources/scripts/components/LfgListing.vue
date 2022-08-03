@@ -17,33 +17,16 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { CalendarIcon, UserGroupIcon } from "@heroicons/vue/outline";
 import dayjs from "dayjs";
 
-export default defineComponent({
-    name: "LfgListing",
+import { Lfg } from "@/types";
 
-    components: {
-        CalendarIcon,
-        UserGroupIcon,
-    },
+const props = defineProps<{ game: Lfg }>();
 
-    props: {
-        game: {
-            type: Object,
-            required: true,
-        },
-    },
-
-    computed: {
-        date() {
-            return dayjs
-                .utc(this.game.start_date)
-                .local()
-                .format("D. MMM YYYY hh:mm a");
-        },
-    },
-});
+const date = (() => dayjs
+    .utc(props.game.start_date)
+    .local()
+    .format("D. MMM YYYY hh:mm a"))();
 </script>

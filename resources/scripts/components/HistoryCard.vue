@@ -9,16 +9,8 @@
     </Link>
 </template>
 
-<script>
+<script lang="ts" setup>
 import { Link } from "@inertiajs/inertia-vue3";
 
-export default {
-    name: "HistoryCard",
-
-    props: ["history", "url"],
-
-    components: {
-        Link,
-    },
-};
+defineProps<{ history: History, url: string }>();
 </script>

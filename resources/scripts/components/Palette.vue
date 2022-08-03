@@ -60,49 +60,33 @@
     </SettingsPopover>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
-import { ThumbUpIcon, ThumbDownIcon } from "@heroicons/vue/solid";
+<script lang="ts" setup>
+import { computed } from "vue";
+import { ThumbDownIcon, ThumbUpIcon } from "@heroicons/vue/solid";
+
+import { History, PaletteItem as PaletteItemType, PaletteType } from "@/types";
 
 import SettingsPopover from "@/components/SettingsPopover.vue";
-import LoadingButton from "@/components/LoadingButton.vue";
 import PaletteItemForm from "@/components/PaletteItemForm.vue";
 import PaletteItem from "@/components/PaletteItem.vue";
 
-export default defineComponent({
-    name: "Palette",
+const props = defineProps<{
+    palette: Array<PaletteItemType>,
+    history: History
+}>();
 
-    props: {
-        palette: Array,
-        history: Object,
-    },
+const items = computed(() =>
+    props.palette.reduce(
+        (result, item) => {
+            if (item.type === PaletteType.Yes) {
+                result.yes.push(item);
+            } else {
+                result.no.push(item);
+            }
 
-    components: {
-        PaletteItem,
-        PaletteItemForm,
-        LoadingButton,
-        SettingsPopover,
-        ThumbUpIcon,
-        ThumbDownIcon,
-    },
-
-    setup(props) {
-        const partitionedItems = computed(() => {
-            return props.palette.reduce(
-                (result, item) => {
-                    if (item.type === "yes") {
-                        result.yes.push(item);
-                    } else {
-                        result.no.push(item);
-                    }
-
-                    return result;
-                },
-                { yes: [], no: [] }
-            );
-        });
-
-        return { items: partitionedItems };
-    },
-});
+            return result;
+        },
+        { yes: [], no: [] }
+    )
+);
 </script>

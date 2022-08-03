@@ -108,82 +108,52 @@
     </SettingsPopover>
 </template>
 
-<script lang="ts">
-import { defineComponent, watch, computed, toRefs } from "vue";
+<script lang="ts" setup>
+import { watch, computed, toRefs, defineProps } from "vue";
 import {
-    Popover,
-    PopoverButton,
-    PopoverOverlay,
-    PopoverPanel,
     Disclosure,
     DisclosureButton,
     DisclosurePanel,
 } from "@headlessui/vue";
-import { XIcon, PlusIcon } from "@heroicons/vue/solid";
+import { XIcon, PlusIcon, ExclamationCircleIcon } from "@heroicons/vue/solid";
 import { useForm } from "@inertiajs/inertia-vue3";
 
-import { useGameLog } from "../composables/useGameLog";
-import TextInput from "./UI/TextInput.vue";
-import PrimaryButton from "./UI/PrimaryButton.vue";
-import LoadingButton from "./LoadingButton.vue";
-import FocusStack from "./FocusStack.vue";
-import EditableCard from "./EditableCard.vue";
-import SettingsPopover from "./SettingsPopover.vue";
+import { Focus, History } from "@/types";
+import { useGameLog } from "@/composables/useGameLog";
 
-export default defineComponent({
-    name: "FocusTracker",
+import LoadingButton from "@/components/LoadingButton.vue";
+import FocusStack from "@/components/FocusStack.vue";
+import EditableCard from "@/components/EditableCard.vue";
+import SettingsPopover from "@/components/SettingsPopover.vue";
 
-    components: {
-        SettingsPopover,
-        EditableCard,
-        FocusStack,
-        LoadingButton,
-        PrimaryButton,
-        TextInput,
-        PlusIcon,
-        XIcon,
-        Popover,
-        PopoverButton,
-        PopoverOverlay,
-        PopoverPanel,
-        Disclosure,
-        DisclosureButton,
-        DisclosurePanel,
-    },
+const props = defineProps<{ foci: Array<Focus>, history: History }>();
 
-    props: ["foci", "history"],
+const { foci } = toRefs(props);
+const newFocusForm = useForm({ name: "" });
+const submitNewFocusForm = (close) => {
+    newFocusForm.post(route("history.focus.define", [props.history]), {
+        only: ["foci", "errors"],
+        onSuccess: (page) => {
+            newFocusForm.reset();
+            close();
+        },
+    });
+};
+const { addMessage } = useGameLog();
+const currentFocus = computed(() =>
+    foci.value.length === 0 ? null : foci.value[0]
+);
+const previousFoci = computed(() => foci.value.slice(1));
 
-    setup(props) {
-        const { foci } = toRefs(props);
-        const newFocusForm = useForm({ name: "" });
-        const submitNewFocusForm = (close) => {
-            newFocusForm.post(route("history.focus.define", [props.history]), {
-                only: ["foci", "errors"],
-                onSuccess: (page) => {
-                    newFocusForm.reset();
-                    close();
-                },
-            });
-        };
-        const { addMessage } = useGameLog();
-        const currentFocus = computed(() =>
-            foci.value.length === 0 ? null : foci.value[0]
-        );
-        const previousFoci = computed(() => foci.value.slice(1));
+watch(currentFocus, (newFocus, oldFocus) => {
+    if (newFocus === null || newFocus.name === oldFocus?.name) {
+        return;
+    }
 
-        watch(currentFocus, (newFocus, oldFocus) => {
-            if (newFocus === null || newFocus.name === oldFocus?.name) {
-                return;
-            }
-
-            addMessage({
-                title: "Current Focus",
-                message: newFocus.name,
-                icon: "ExclamationCircleIcon",
-            });
-        });
-
-        return { newFocusForm, currentFocus, previousFoci, submitNewFocusForm };
-    },
+    addMessage({
+        title: "Current Focus",
+        message: newFocus.name,
+        icon: ExclamationCircleIcon,
+    });
 });
 </script>

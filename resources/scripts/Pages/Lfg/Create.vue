@@ -59,62 +59,44 @@
     </form>
 </template>
 
-<script>
+<script lang="ts">
+import layout from "@/Pages/Layouts/Layout.vue";
+
+export default { layout };
+</script>
+
+<script lang="ts" setup>
+import { computed } from "vue";
 import dayjs from "dayjs";
 
-import Layout from "@/Pages/Layouts/Layout.vue";
 import InputGroup from "@/components/UI/InputGroup.vue";
 import TextInput from "@/components/UI/TextInput.vue";
 import HelpText from "@/components/UI/HelpText.vue";
 import NumberInput from "@/components/UI/NumberInput.vue";
+import {useForm} from "@inertiajs/inertia-vue3";
 
-export default {
-    name: "Create",
+const timezone = dayjs.tz.guess();
 
-    layout: Layout,
+const form = useForm({
+    title: "",
+    start_date: null,
+    slots: null,
+});
 
-    components: {
-        NumberInput,
-        TextInput,
-        InputGroup,
-        HelpText,
-    },
+const gameStartsIn = computed(() => {
+    if (form.start_date === null) {
+        return 'Please select a date';
+    }
 
-    computed: {
-        timezone() {
-            return dayjs.tz.guess();
-        },
+    return dayjs(form.start_date).fromNow();
+});
 
-        gameStartsIn() {
-            if (this.form.date === null) {
-                return 'Please select a date';
-            }
+const formValid = computed(() =>
+    form.title
+        && dayjs(form.start_date).isValid()
+        && form.slots !== null
+        && form.slots >= 2
+);
 
-            return dayjs(this.form.date).fromNow();
-        },
-
-        formValid() {
-            return this.form.title
-                && dayjs(this.form.date).isValid()
-                && this.form.slots !== null
-                && this.form.slots >= 2;
-        },
-    },
-
-    methods: {
-        onSubmit() {
-            this.form.post(this.$route('lfg.store'));
-        }
-    },
-
-    data() {
-        return {
-            form: this.$inertia.form({
-                title: '',
-                start_date: null,
-                slots: null,
-            }),
-        };
-    },
-}
+const onSubmit = () => form.post(route('lfg.store'));
 </script>
