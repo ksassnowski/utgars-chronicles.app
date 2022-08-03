@@ -1,9 +1,9 @@
 <template>
     <button
-        class="rounded-lg p-1.5 text-white bg-black"
+        class="rounded-lg p-1.5 text-white"
         :class="{
-            'bg-opacity-20 hover:bg-opacity-30': type === CardType.Dark,
-            'bg-opacity-30 hover:bg-opacity-60': type === CardType.Light,
+            'bg-black/20 hover:bg-black/30': type === CardType.Dark,
+            'bg-black/30 hover:bg-black/60': type === CardType.Light,
         }"
     >
         <slot>

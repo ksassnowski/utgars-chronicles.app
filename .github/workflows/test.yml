@@ -33,7 +33,6 @@ jobs:
           key: "utgars-${{ hashFiles('composer.lock') }}"
           restore-keys: "utgars-"
 
-
       - name: Install dependencies
         run: composer install --no-interaction --prefer-source
 
