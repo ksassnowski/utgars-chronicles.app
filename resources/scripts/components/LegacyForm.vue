@@ -71,48 +71,27 @@
     </Disclosure>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { Disclosure, DisclosurePanel, DisclosureButton } from "@headlessui/vue";
-import { PlusIcon, XIcon } from "@heroicons/vue/solid";
-import LoadingButton from "./LoadingButton.vue";
 import { useForm } from "@inertiajs/inertia-vue3";
+import { PlusIcon, XIcon } from "@heroicons/vue/solid";
 
-export default defineComponent({
-    name: "LegacyForm",
+import { History } from "@/types";
+import LoadingButton from "@/components/LoadingButton.vue";
 
-    props: {
-        history: Object,
-    },
+const props = defineProps<{ history: History }>();
 
-    components: {
-        LoadingButton,
-        Disclosure,
-        DisclosurePanel,
-        DisclosureButton,
-        PlusIcon,
-        XIcon,
-    },
+const form = useForm({ name: "" });
 
-    methods: {
-        submit(close) {
-            this.form.post(
-                this.route("history.legacies.store", this.history),
-                {
-                    only: ["errors", "legacies"],
-                    onSuccess: () => {
-                        this.form.reset();
-                        close();
-                    },
-                }
-            );
-        },
-    },
-
-    setup() {
-        const form = useForm({ name: "" });
-
-        return { form };
-    },
-});
+const submit = (close: () => void) =>
+    form.post(
+        route("history.legacies.store", props.history),
+        {
+            only: ["errors", "legacies"],
+            onSuccess: () => {
+                form.reset();
+                close();
+            },
+        }
+    );
 </script>

@@ -45,7 +45,7 @@
         </span>
 
         <template v-else>
-            <button @click="stopEditing" class="absolute -top-7 right-2">
+            <button @click="stopEditing" class="absolute top-0.5 right-2">
                 <XIcon class="w-5 h-5 text-gray-400"></XIcon>
             </button>
 
@@ -94,55 +94,37 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, toRefs, watch } from "vue";
+<script lang="ts" setup>
+import { toRefs, watch } from "vue";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 import { TrashIcon, PencilIcon, XIcon } from "@heroicons/vue/outline";
 
-import { useEditMode } from "../composables/useEditMode";
+import { useEditMode } from "@/composables/useEditMode";
 
-export default defineComponent({
-    name: "EditableCard",
+interface Item {
+    name: string;
+}
 
-    components: {
-        Link,
-        TrashIcon,
-        PencilIcon,
-        XIcon,
-    },
+const props = withDefaults(
+    defineProps<{
+        item: Item,
+        updateRoute: string,
+        deleteRoute: string,
+        reloadProps: Array<string>,
+        buttonClasses?: string,
+    }>(),
+    { buttonClasses: "bg-indigo-500 bg-opacity-70 hover:bg-opacity-60 text-gray-100 hover:text-white" },
+);
 
-    props: {
-        item: Object,
-        updateRoute: String,
-        deleteRoute: String,
-        reloadProps: Array,
-        buttonClasses: String,
-    },
+const { item } = toRefs(props);
+const form = useForm({ name: item.value.name });
+const { editing, startEditing, stopEditing, submit: formSubmit } = useEditMode(
+    form,
+    props.updateRoute,
+    props.reloadProps,
+    "put"
+);
+const submit = formSubmit();
 
-    setup(props) {
-        const { item } = toRefs(props);
-        const form = useForm({ name: item.value.name });
-        const { editing, startEditing, stopEditing, submit } = useEditMode(
-            form,
-            props.updateRoute,
-            props.reloadProps,
-            "put"
-        );
-
-        const buttonClasses =
-            props.buttonClasses ||
-            "bg-indigo-500 bg-opacity-70 hover:bg-opacity-60 text-gray-100 hover:text-white";
-
-        watch(item, (newItem) => (form.name = newItem.name));
-
-        return {
-            form,
-            editing,
-            startEditing,
-            stopEditing,
-            submit: submit(),
-            buttonClasses,
-        };
-    },
-});
+watch(item, (newItem) => (form.name = newItem.name));
 </script>

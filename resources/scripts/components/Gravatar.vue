@@ -2,24 +2,11 @@
     <img :src="url" />
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import md5 from "blueimp-md5";
 
-export default defineComponent({
-    name: "Gravatar",
+const props = defineProps<{ email: string, size: number }>();
 
-    props: {
-        email: String,
-        size: Number,
-    },
-
-    setup(props) {
-        const hash = md5(props.email.trim().toLowerCase());
-
-        return {
-            url: `https://www.gravatar.com/avatar/${hash}?s=${props.size}&d=retro&r=g`
-        };
-    }
-});
+const hash = md5(props.email.trim().toLowerCase());
+const url = `https://www.gravatar.com/avatar/${hash}?s=${props.size}&d=retro&r=g`;
 </script>

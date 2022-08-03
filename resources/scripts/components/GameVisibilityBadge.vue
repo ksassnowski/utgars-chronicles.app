@@ -15,7 +15,7 @@
         }"
     >
         <component
-            :is="public ? 'LockOpenIcon' : 'LockClosedIcon'"
+            :is="public ? LockOpenIcon : LockClosedIcon"
             class="w-4 h-4 mr-1"
             :class="public ? 'text-teal-500' : 'text-amber-500'"
         />
@@ -23,20 +23,8 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { LockOpenIcon, LockClosedIcon } from "@heroicons/vue/outline";
 
-export default defineComponent({
-    name: "GameVisibilityBadge",
-
-    props: {
-        public: Boolean,
-    },
-
-    components: {
-        LockOpenIcon,
-        LockClosedIcon,
-    },
-});
+defineProps<{ public: boolean }>();
 </script>

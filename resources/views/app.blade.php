@@ -13,7 +13,7 @@
         <script src="https://cdn.usefathom.com/script.js" data-site="RHQXBEGX" included-domains="utgars-chronicles.app" defer></script>
     @endproduction
 
-    @vite(['resources/scripts/app.js'])
+    @vite(['resources/scripts/app.ts'])
 
     @routes
 </head>

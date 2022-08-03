@@ -46,47 +46,28 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, watch } from "vue";
+<script lang="ts" setup>
+import { watch } from "vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 import { PencilIcon } from "@heroicons/vue/outline";
 
+import { History } from "@/types";
 import { useEditMode } from "@/composables/useEditMode";
+
 import TextInput from "@/components/UI/TextInput.vue";
 
-type History = { name: string };
+const props = defineProps<{ history: History }>();
 
-export default defineComponent({
-    name: "HistorySeed",
+const form = useForm({ name: props.history.name });
+const { editing, startEditing, stopEditing, submit: formSubmit } = useEditMode(
+    form,
+    route("history.update-seed", props.history),
+    ["errors", "history"],
+    "patch"
+);
+const submit = formSubmit();
 
-    components: {
-        TextInput,
-        PencilIcon,
-    },
-
-    props: ["history"],
-
-    setup(props) {
-        const history = reactive(props.history);
-        const form = useForm({ name: history.name });
-        const { editing, startEditing, stopEditing, submit } = useEditMode(
-            form,
-            route("history.update-seed", history),
-            ["errors", "history"],
-            "patch"
-        );
-
-        watch(history, (newHistory) => {
-            form.name = newHistory.name;
-        });
-
-        return {
-            form,
-            editing,
-            startEditing,
-            stopEditing,
-            submit: submit(),
-        };
-    },
-});
+watch(() => props.history.name, (name: string) => {
+    form.name = name;
+}, { deep: true });
 </script>

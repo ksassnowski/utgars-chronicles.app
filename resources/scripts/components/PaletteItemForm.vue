@@ -50,7 +50,6 @@
                         mt-2
                     "
                     @keydown.enter.prevent="submit(close)"
-                    @keyup.esc="test"
                     placeholder="Enter a description"
                 ></textarea>
             </form>
@@ -58,53 +57,28 @@
     </Disclosure>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import { PlusIcon, XIcon } from "@heroicons/vue/solid";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
 import { useForm } from "@inertiajs/inertia-vue3";
 
 import LoadingButton from "@/components/LoadingButton.vue";
+import {History, PaletteType} from "@/types";
 
-export default defineComponent({
-    name: "PaletteItemForm",
+const props = defineProps<{ type: PaletteType, history: History }>();
 
-    props: {
-        type: String,
-        history: Object,
-    },
-
-    components: {
-        LoadingButton,
-        PlusIcon,
-        XIcon,
-        Disclosure,
-        DisclosureButton,
-        DisclosurePanel,
-    },
-
-    methods: {
-        test() {
-            alert("aaa");
-        },
-    },
-
-    setup(props) {
-        const form = useForm({
-            name: "",
-            type: props.type,
-        });
-        const submit = (close) => {
-            form.post(route("history.palette.store", props.history), {
-                only: ["errors", "palettes"],
-                onSuccess: () => {
-                    form.reset();
-                    close();
-                },
-            });
-        };
-
-        return { form, submit };
-    },
+const form = useForm({
+    name: "",
+    type: props.type,
 });
+
+const submit = (close) => {
+    form.post(route("history.palette.store", props.history), {
+        only: ["errors", "palettes"],
+        onSuccess: () => {
+            form.reset();
+            close();
+        },
+    });
+};
 </script>

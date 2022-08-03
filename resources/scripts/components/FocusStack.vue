@@ -68,39 +68,23 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed, toRefs } from "vue";
+<script lang="ts" setup>
+import { ref, computed, toRefs } from "vue";
 
-import EditableCard from "./EditableCard.vue";
+import { Focus } from "@/types";
+import EditableCard from "@/components/EditableCard.vue";
 
-export default defineComponent({
-    name: "FocusStack",
+const props = defineProps<{ foci: Array<Focus> }>();
 
-    components: {
-        EditableCard,
-    },
+const open = ref(false);
+const { foci } = toRefs(props);
+const visibleFoci = computed(() => {
+    if (foci.value.length === 0) {
+        return [];
+    }
 
-    props: {
-        foci: {
-            type: Array,
-            default: () => [],
-        },
-    },
-
-    setup(props) {
-        const open = ref(false);
-        const { foci } = toRefs(props);
-        const visibleFoci = computed(() => {
-            if (foci.value.length === 0) {
-                return [];
-            }
-
-            return open.value ? foci.value : [foci.value[0]];
-        });
-        const toggle = () => (open.value = !open.value);
-        const showStack = computed(() => !open.value && foci.value.length > 1);
-
-        return { open, toggle, visibleFoci, showStack };
-    },
+    return open.value ? foci.value : [foci.value[0]];
 });
+const toggle = () => (open.value = !open.value);
+const showStack = computed(() => !open.value && foci.value.length > 1);
 </script>

@@ -68,71 +68,45 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { computed } from "vue";
 import draggable from "vuedraggable";
+import {Inertia} from "@inertiajs/inertia";
 import {
     PlusIcon,
-    MenuIcon,
     ArrowSmLeftIcon,
     ArrowSmRightIcon,
 } from "@heroicons/vue/outline";
 
-import EventCard from "./EventCard.vue";
-import Modal from "./Modal.vue";
-import EventModal from "./Modal/EventModal.vue";
-import LoadingButton from "./LoadingButton.vue";
-import GameCard from "./GameCard.vue";
-import PeriodModal from "./Modal/PeriodModal.vue";
-import CardButton from "./CardButton.vue";
+import { Period, History } from "@/types";
 
-export default defineComponent({
-    name: "PeriodCard",
+import EventCard from "@/components/EventCard.vue";
+import EventModal from "@/components/Modal/EventModal.vue";
+import GameCard from "@/components/GameCard.vue";
+import PeriodModal from "@/components/Modal/PeriodModal.vue";
+import CardButton from "@/components/CardButton.vue";
 
-    props: {
-        period: Object,
-        history: Object,
-    },
+const props = defineProps<{ period: Period, history: History }>();
 
-    components: {
-        ArrowSmLeftIcon,
-        ArrowSmRightIcon,
-        PlusIcon,
-        CardButton,
-        PeriodModal,
-        GameCard,
-        MenuIcon,
-        LoadingButton,
-        EventModal,
-        Modal,
-        draggable,
-        EventCard,
-    },
+const nextEventPosition = computed(() => {
+    const last = props.period.events.slice(-1)[0];
 
-    computed: {
-        nextEventPosition() {
-            const last = this.period.events.slice(-1)[0];
+    if (!last) {
+        return 1;
+    }
 
-            if (!last) {
-                return 1;
-            }
-
-            return last.position + 1;
-        },
-    },
-
-    methods: {
-        eventMoved(e) {
-            if (!e.moved) {
-                return;
-            }
-
-            this.$inertia.post(
-                this.route("events.move", [this.history, e.moved.element]),
-                { position: e.moved.newIndex + 1 },
-                { only: ["history"] }
-            );
-        },
-    },
+    return last.position + 1;
 });
+
+const eventMoved = (e) => {
+    if (!e.moved) {
+        return;
+    }
+
+    Inertia.post(
+        route("events.move", [props.history, e.moved.element]),
+        { position: e.moved.newIndex + 1 },
+        { only: ["history"] }
+    );
+};
 </script>

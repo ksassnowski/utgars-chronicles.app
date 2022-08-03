@@ -14,8 +14,9 @@ export interface Focus {
 }
 
 export interface PaletteItem {
-    id: number;
+    id?: number;
     name: string;
+    history_id?: number;
     type: PaletteType;
 }
 
@@ -59,4 +60,12 @@ export interface History {
 export interface Player {
     id: string;
     name: string
+}
+
+export interface Lfg {
+    id?: number;
+    title: string;
+    start_date: number;
+    slots: number;
+    availableSlots: number;
 }

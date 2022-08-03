@@ -8,42 +8,29 @@
             <h1 class="text-xl font-bold">Upcoming games</h1>
             <p class="text-gray-700 mt-4">
                 Check out who is looking for more people to play with. Can’t find anything? No problem! Why not
-                <Link :href="$route('lfg.create')" class="text-indigo-700 font-semibold">create a game yourself</Link>?
+                <Link :href="route('lfg.create')" class="text-indigo-700 font-semibold">create a game yourself</Link>?
             </p>
 
-            <LfgList :games="games" class="mt-8" />
+            <LfgList :games="page.props.value.games" class="mt-8" />
         </div>
     </div>
 </template>
 
-<script>
-import { Link } from "@inertiajs/inertia-vue3";
+<script lang="ts">
+import layout from "@/Pages/Layouts/Layout.vue";
 
-import Layout from "@/Pages/Layouts/Layout.vue";
+export default { layout };
+</script>
+
+<script lang="ts" setup>
+import { reactive } from "vue";
+import { Link, usePage } from "@inertiajs/inertia-vue3";
+
+import { Lfg } from "@/types";
 import LfgList from "@/components/LfgList.vue";
 
-export default {
-    name: "Index",
-
-    components: {
-        LfgList,
-        Link,
-    },
-
-    layout: Layout,
-
-    computed: {
-        games() {
-            return this.$page.props.games;
-        }
-    },
-
-    data() {
-        return {
-            filter: {
-                start_date: this.$route.query ? this.$route.query.start_date : null,
-            }
-        };
-    }
-}
+const page = usePage<{ games: Array<Lfg> }>();
+const filter = reactive({
+    start_date: route.query ? route.query.start_date : null,
+});
 </script>

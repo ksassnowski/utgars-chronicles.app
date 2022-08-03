@@ -1,5 +1,5 @@
 <template>
-    <transition name="flash" v-if="$page.props.flash.success && show">
+    <transition name="flash" v-if="page.props.value.flash.success && show">
         <div class="fixed pr-4 pb-6 bottom-0 right-0 z-20">
             <div
                 class="
@@ -15,7 +15,7 @@
                     font-semibold
                 "
             >
-                {{ $page.props.flash.success }}
+                {{ page.props.value.flash.success }}
 
                 <button @click="show = false" class="ml-4">
                     <XIcon class="h-4 w-4 text-green-100" />
@@ -25,31 +25,21 @@
     </transition>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
+import { ref, watch } from "vue";
 import { XIcon } from "@heroicons/vue/solid";
+import {usePage} from "@inertiajs/inertia-vue3";
 
-export default defineComponent({
-    name: "FlashMessage",
-
-    components: {
-        XIcon,
+const page = usePage<{
+    flash: {
+        success: string|null,
+        error: string|null
     },
+}>();
+const show = ref(false);
 
-    data() {
-        return {
-            show: false,
-        };
-    },
-
-    watch: {
-        "$page.props.flash": {
-            handler() {
-                this.show = true;
-                setTimeout(() => (this.show = false), 3000);
-            },
-            deep: true,
-        },
-    },
-});
+watch(() => page.props.value.flash, () => {
+    show.value = true;
+    setTimeout(() => (show.value = false), 3000);
+}, { deep: true });
 </script>
