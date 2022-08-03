@@ -1,21 +1,26 @@
+import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
 import vue from "@vitejs/plugin-vue";
 import path from "path";
 
-export default ({ command }) => ({
-    base: command === 'serve' ? '' : '/build/',
-    publicDir: 'fake_dir_so_nothing_gets_copied',
-    build: {
-        manifest: true,
-        outDir: 'public/build',
-        emptyOutDir: true,
-        rollupOptions: {
-            input: 'resources/js/app.js',
-        },
-    },
+export default defineConfig({
+    plugins: [
+        laravel([
+            'resources/scripts/app.js',
+        ]),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),
+    ],
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, 'resources/js/'),
+            '@': path.resolve(__dirname, 'resources/scripts/'),
+            ziggy: path.resolve('vendor/tightenco/ziggy/dist/vue.m'),
         }
     },
-    plugins: [vue()],
 });

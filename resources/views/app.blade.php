@@ -9,11 +9,11 @@
 
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 
-    <title>{{ config('app.name') }}</title>
-
     @production
         <script src="https://cdn.usefathom.com/script.js" data-site="RHQXBEGX" included-domains="utgars-chronicles.app" defer></script>
     @endproduction
+
+    @vite(['resources/scripts/app.js'])
 
     @routes
 </head>
@@ -21,7 +21,5 @@
     @inertia
 
     <div id="portal-modal"></div>
-
-    {{ vite_assets() }}
 </body>
 </html>
