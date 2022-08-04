@@ -5,7 +5,9 @@
         <div class="pb-8">
             <header class="page-header relative">
                 <div class="flex items-center justify-between max-w-7xl mx-auto px-4">
-                    <Link href="/" class="text-xl font-bold tracking-tight text-white">Utgar's Chronicles</Link>
+                    <Link href="/">
+                        <img src="/images/logo_inverted_text.svg" class="h-10"/>
+                    </Link>
 
                     <nav class="px-4 py-4 flex justify-end items-center">
                         <Link :href="route('login')" class="text-indigo-100 px-4">Login</Link>
@@ -15,7 +17,7 @@
 
                 <div class="max-w-7xl mx-auto px-4 pt-4 md:pt-12 pb-4">
                     <div class="md:w-2/3 lg:w-1/2">
-                        <h1 class="text-3xl md:text-5xl font-bold tracking-wider text-white brand-shadow">Play Microscope online</h1>
+                        <h1 class="text-3xl md:text-5xl font-bold tracking-wider text-white">Play Microscope online</h1>
                         <p class="text-indigo-200 mb-10">
                             Utgar's Chronicles is a website that enables you to play Microscope with your friends all over the world.
                             Completely for free. I just really like this game!

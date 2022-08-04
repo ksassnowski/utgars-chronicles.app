@@ -1,0 +1,19 @@
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 129">
+  <rect x="-1.3" y="-1.6" width="93.3" height="108.7" rx="18.5" transform="rotate(6 -57 159.5) skewX(.1)" fill="url(#a)" stroke="#EEF2FF" stroke-width="3"/>
+  <rect x="-1.6" y="-1.4" width="75.4" height="85.9" rx="15.5" transform="rotate(-4 392 -250) skewX(-.1)" fill="url(#b)" stroke="#E6E9F0" stroke-width="3"/>
+  <rect x="-1.8" y="-1.1" width="53.6" height="59.5" rx="11.5" transform="matrix(.9703 -.24192 .23843 .97116 27.6 46.7)" fill="url(#c)" stroke="#EEF2FF" stroke-width="3"/>
+  <defs>
+    <radialGradient id="a" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 52.8548 -45.1551 0 45.2 52.9)">
+      <stop stop-color="#fff"/>
+      <stop offset="1" stop-color="#F2F4F6"/>
+    </radialGradient>
+    <radialGradient id="b" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 41.4436 -36.2223 0 36.2 41.4)">
+      <stop stop-color="#4B5563"/>
+      <stop offset="1" stop-color="#374151"/>
+    </radialGradient>
+    <radialGradient id="c" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0 28.2424 -25.3163 0 25.3 28.2)">
+      <stop stop-color="#fff"/>
+      <stop offset="1" stop-color="#F2F4F6"/>
+    </radialGradient>
+  </defs>
+</svg>

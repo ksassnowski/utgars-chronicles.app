@@ -21,7 +21,7 @@
         <div class="flex sm:flex-col h-full items-center justify-between">
             <div
                 class="
-                    sm:pl-2 sm:pr-2 sm:pt-12
+                    sm:pl-2 sm:pr-2 sm:pt-6
                     sm:space-y-3
                     flex
                     items-center
@@ -33,6 +33,10 @@
                     sm:h-auto
                 "
             >
+                <Link :href="route('home')" class="mb-4 hidden sm:block">
+                    <img :src="`/images/logo_without_text.svg`" class="h-16" />
+                </Link>
+
                 <PeriodModal
                     class="h-full sm:hidden"
                     :history="history"

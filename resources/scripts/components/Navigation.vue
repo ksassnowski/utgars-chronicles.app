@@ -1,11 +1,13 @@
 <template>
     <div class="bg-gray-800 mb-8">
         <nav class="mx-auto w-full max-w-7xl flex flex-wrap items-center justify-between px-4">
-            <Link
-                :href="route('home')"
-                class="text-xl font-bold tracking-tight text-white mr-8"
-            >
-                Utgar’s Chronicles
+            <Link :href="route('home')" class="mr-8">
+                <img
+                    src="/images/logo_inverted_text.svg"
+                    class="h-9"
+                    alt="Utgar's Chronicles logo"
+                    title="Back to dashboard"
+                />
             </Link>
 
             <div class="block md:hidden py-6">

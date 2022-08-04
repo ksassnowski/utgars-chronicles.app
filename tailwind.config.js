@@ -11,6 +11,10 @@ module.exports = {
 
     theme: {
         extend: {
+            backgroundImage: {
+                'gradient-radial': 'radial-gradient(var(--gradient-color-stops))',
+            },
+
             screens: {
                 "2xl": "1700px",
                 "3xl": "2040px",

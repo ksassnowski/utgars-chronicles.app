@@ -13,9 +13,14 @@
                 </CreateHistoryModal>
             </div>
 
-            <ul class="history-cards">
-                <li v-for="history in histories" :key="history.id">
-                    <HistoryCard :history="history" :key="history.id" :url="route('history.show', history)"/>
+            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <li v-for="history in histories" :key="history.id" class="h-48">
+                    <HistoryCard
+                        class="transition duration-300 ease-in-out transform hover:rotate-1"
+                        :history="history"
+                        :key="history.id"
+                        :url="route('history.show', history)"
+                    />
                 </li>
             </ul>
         </section>
@@ -25,9 +30,13 @@
                 Your Games
             </h2>
 
-            <ul class="history-cards">
-                <li v-for="game in games" :key="game.id">
-                    <HistoryCard :history="game" :key="game.id" :url="route('user.games.show', game)" />
+            <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <li v-for="game in games" :key="game.id" class="h-48">
+                    <HistoryCard
+                        :history="game"
+                        :key="game.id"
+                        :url="route('user.games.show', game)"
+                    />
                 </li>
             </ul>
         </section>
