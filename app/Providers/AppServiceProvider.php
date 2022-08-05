@@ -15,6 +15,7 @@ namespace App\Providers;
 
 use App\Export\CsvHistoryExporter;
 use App\Export\HistoryExporter;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use YlsIdeas\FeatureFlags\Facades\Features;
@@ -34,6 +35,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->bind(HistoryExporter::class, CsvHistoryExporter::class);
+
+        Model::unguard();
 
         Features::noBlade();
         Features::noScheduling();
