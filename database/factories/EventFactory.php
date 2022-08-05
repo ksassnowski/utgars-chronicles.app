@@ -1,11 +1,22 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Copyright (c) 2022 Kai Sassnowski
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/ksassnowski/utgars-chronicles.app
+ */
 
 namespace Database\Factories;
 
 use App\CardType;
 use App\Event;
-use App\Period;
 use App\History;
+use App\Period;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EventFactory extends Factory
@@ -18,8 +29,8 @@ class EventFactory extends Factory
             'name' => $this->faker->sentence,
             'type' => $this->faker->randomElement([CardType::Light, CardType::Dark]),
             'position' => 1,
-            'period_id' => fn () => Period::factory(),
-            'history_id' => fn () => History::factory(),
+            'period_id' => static fn () => Period::factory(),
+            'history_id' => static fn () => History::factory(),
         ];
     }
 }

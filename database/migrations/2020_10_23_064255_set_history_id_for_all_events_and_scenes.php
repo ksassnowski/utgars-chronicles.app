@@ -1,13 +1,24 @@
-<?php declare(strict_types=1);
+<?php
 
-use Illuminate\Support\Facades\DB;
+declare(strict_types=1);
+
+/**
+ * Copyright (c) 2022 Kai Sassnowski
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/ksassnowski/utgars-chronicles.app
+ */
+
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class SetHistoryIdForAllEventsAndScenes extends Migration
 {
     public function up(): void
     {
-        $updateEventsQuery = <<<SQL
+        $updateEventsQuery = <<<'SQL'
 UPDATE `events`
    SET `history_id` =
        (SELECT history_id
@@ -15,7 +26,7 @@ UPDATE `events`
          WHERE `periods`.`id` = `events`.`period_id`);
 SQL;
 
-        $updateScenesQuery = <<<SQL
+        $updateScenesQuery = <<<'SQL'
 UPDATE `scenes`
    SET `history_id` =
        (SELECT `history_id`
