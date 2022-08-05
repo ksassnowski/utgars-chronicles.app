@@ -20,8 +20,10 @@ export enum AgentPowers {
 }
 
 export interface EchoGameSettings {
-    faction_1: string|null;
-    faction_2: string|null;
+    faction_1_name: string|null;
+    faction_1_description: string|null;
+    faction_2_name: string|null;
+    faction_2_description: string|null;
     agent_powers: AgentPowers|null;
 }
 
@@ -73,7 +75,6 @@ export interface History {
     name: string;
     periods: Array<Period>;
     game_mode: MicroscopeGameMode;
-    echo_game_settings?: EchoGameSettings;
 }
 
 export interface Player {

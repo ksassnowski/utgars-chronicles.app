@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\History;
 
 use App\History;
-use App\MicroscopeGameMode;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -22,15 +21,12 @@ final class GameController
 {
     public function __invoke(History $history): Response
     {
-        if (MicroscopeGameMode::Echo === $history->game_mode) {
-            $history->load('echoGameSettings');
-        }
-
         return Inertia::render('Game', [
             'history' => static fn () => $history->load(['periods.events.scenes']),
             'foci' => static fn () => $history->foci,
             'palettes' => static fn () => $history->palettes,
             'legacies' => static fn () => $history->legacies,
+            'echoGameSettings' => static fn () => $history->echoGameSettings,
         ]);
     }
 }
