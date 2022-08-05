@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\User;
+use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use PHPUnit\Framework\Assert;
 use YlsIdeas\FeatureFlags\Middleware\FeatureFlagState;
@@ -24,6 +25,7 @@ use YlsIdeas\FeatureFlags\Middleware\FeatureFlagState;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use LazilyRefreshDatabase;
 
     protected ?User $user = null;
 
