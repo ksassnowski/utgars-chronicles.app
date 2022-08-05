@@ -29,9 +29,9 @@ return new class() extends Migration {
             $table->text('faction_1')->nullable();
             $table->text('faction_2')->nullable();
             $table->enum('agent_powers', [
-                AgentPowers::Ordinary,
-                AgentPowers::Extraordinary,
-                AgentPowers::Omnipotent
+                AgentPowers::Ordinary->value,
+                AgentPowers::Extraordinary->value,
+                AgentPowers::Omnipotent->value,
             ])->nullable();
             $table->timestamps();
         });
