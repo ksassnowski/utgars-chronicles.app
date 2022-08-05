@@ -95,7 +95,7 @@ Route::group(['middleware' => 'microscope'], function () {
     Route::patch('histories/{history}/seed', 'History\UpdateSeedController')
         ->name('history.update-seed');
 
-    Route::put('histories/{history}/echo', UpdateEchoGameSettingsController::class)
+    Route::patch('histories/{history}/echo', UpdateEchoGameSettingsController::class)
         ->name('history.echo-settings.update');
 
     Route::post('histories/{history}/palette', [PaletteController::class, 'store'])
