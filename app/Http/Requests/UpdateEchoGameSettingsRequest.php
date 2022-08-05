@@ -29,7 +29,7 @@ class UpdateEchoGameSettingsRequest extends FormRequest
             'faction_1_description' => ['nullable', 'string'],
             'faction_2_name' => ['nullable', 'string', 'max:255'],
             'faction_2_description' => ['nullable', 'string'],
-            'agent_powers' => ['required', new Enum(AgentPowers::class)],
+            'agent_powers' => ['nullable', new Enum(AgentPowers::class)],
         ];
     }
 }
