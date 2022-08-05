@@ -21,6 +21,7 @@ use App\Http\Controllers\History\UpdateEchoGameSettingsController;
 use App\Http\Requests\UpdateEchoGameSettingsRequest;
 use Generator;
 use Illuminate\Support\Facades\Event;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\GameRouteTest;
 use Tests\TestCase;
 use Tests\ValidateRoutesTest;
@@ -56,7 +57,7 @@ final class EchoGameSettingsTest extends TestCase
 
         $this
             ->actingAs($history->owner)
-            ->putJson(route('history.echo-settings.update', $history), [
+            ->patchJson(route('history.echo-settings.update', $history), [
                 'faction_1_name' => '::new-faction-1-name::',
                 'faction_1_description' => '::new-faction-1-description::',
                 'faction_2_name' => '::new-faction-2-name::',
@@ -82,7 +83,7 @@ final class EchoGameSettingsTest extends TestCase
 
         $this
             ->actingAs($history->owner)
-            ->putJson(route('history.echo-settings.update', $history), [
+            ->patchJson(route('history.echo-settings.update', $history), [
                 'faction_1_name' => '::faction-1-name::',
                 'faction_1_description' => '::faction-1-description::',
                 'faction_2_name' => '::faction-2-name::',
@@ -94,6 +95,20 @@ final class EchoGameSettingsTest extends TestCase
             EchoSettingsUpdated::class,
             static fn (EchoSettingsUpdated $event): bool => $event->history->is($history),
         );
+    }
+
+    public function testItDoesNotAllowUpdatingSettingsOfANonEchoGame(): void
+    {
+        /** @var History $history */
+        $history = History::factory()->create();
+
+        $this
+            ->actingAs($history->owner)
+            ->patchJson(route('history.echo-settings.update', $history), [
+                'faction_1_name' => '::faction-1-name::',
+            ])
+            ->assertStatus(Response::HTTP_BAD_REQUEST)
+            ->assertJson(['message' => 'Game is not an Echo game']);
     }
 
     public function gameRouteProvider(): Generator

@@ -130,6 +130,11 @@ final class History extends Model
         return $this->hasOne(EchoGameSettings::class);
     }
 
+    public function isEchoGame(): bool
+    {
+        return $this->game_mode === MicroscopeGameMode::Echo;
+    }
+
     /**
      * @param array{position: int, type: "dark"|"light", name: string} $attributes
      */

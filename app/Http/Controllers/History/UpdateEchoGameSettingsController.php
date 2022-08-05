@@ -16,14 +16,21 @@ namespace App\Http\Controllers\History;
 use App\Events\EchoSettingsUpdated;
 use App\History;
 use App\Http\Requests\UpdateEchoGameSettingsRequest;
-use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 final class UpdateEchoGameSettingsController
 {
     public function __invoke(
         UpdateEchoGameSettingsRequest $request,
         History $history,
-    ): RedirectResponse {
+    ): Response {
+        if (!$history->isEchoGame()) {
+            return response()->json(
+                ['message' => 'Game is not an Echo game'],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
         $history->echoGameSettings()->update($request->validated());
 
         broadcast(new EchoSettingsUpdated($history))->toOthers();
