@@ -34,7 +34,6 @@ use Tests\ValidateRoutesTest;
  */
 final class HistoryTest extends TestCase
 {
-    use RefreshDatabase;
     use AuthenticatedRoutesTest;
     use ValidateRoutesTest;
     use GameRouteTest;
