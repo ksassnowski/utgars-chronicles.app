@@ -26,8 +26,10 @@ return new class() extends Migration {
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->text('faction_1')->nullable();
-            $table->text('faction_2')->nullable();
+            $table->string('faction_1_name')->nullable();
+            $table->text('faction_1_description')->nullable();
+            $table->string('faction_2_name')->nullable();
+            $table->text('faction_2_description')->nullable();
             $table->enum('agent_powers', [
                 AgentPowers::Ordinary->value,
                 AgentPowers::Extraordinary->value,

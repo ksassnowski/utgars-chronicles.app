@@ -21,8 +21,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property null|AgentPowers $agent_powers
  * @property Carbon           $created_at
- * @property null|string      $faction_1
- * @property null|string      $faction_2
+ * @property null|string      $faction_1_name
+ * @property null|string      $faction_1_description
+ * @property null|string      $faction_2_name
+ * @property null|string      $faction_2_description
  * @property History          $history
  * @property int              $history_id
  * @property int              $id
