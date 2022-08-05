@@ -30,7 +30,7 @@
         </PopoverButton>
 
         <PopoverOverlay
-            class="bg-black opacity-0"
+            class="bg-black"
             :class="[open ? 'opacity-50 inset-0 fixed' : 'opacity-0']"
         />
 
@@ -69,8 +69,8 @@
                     <XIcon class="w-7 h-7" />
                 </PopoverButton>
 
-                <div class="h-full">
-                    <div class="max-h-full flex flex-col">
+                <div class="h-full flex flex-col">
+                    <div class="max-h-full flex flex-col flex-1">
                         <header
                             class="
                                 bg-linear-to-r

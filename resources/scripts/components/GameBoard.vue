@@ -46,20 +46,14 @@
 </template>
 
 <script lang="ts" setup>
-import {
-    computed,
-    ComputedRef,
-    onBeforeUnmount,
-    provide,
-    onMounted,
-} from "vue";
+import {computed, ComputedRef, onBeforeUnmount, provide, onMounted, ref, toRef} from "vue";
 import axios from "axios";
 import draggable from "vuedraggable";
 import { router } from "@inertiajs/vue3";
 import { PlusIcon } from "@heroicons/vue/solid";
 
-import { ChannelKey, HistoryKey } from "@/symbols";
-import { History, Focus, PaletteItem, Legacy } from "@/types";
+import {ChannelKey, EchoSettingsKey, HistoryKey} from "@/symbols";
+import {History, Focus, PaletteItem, Legacy, EchoGameSettings} from "@/types";
 import PeriodCard from "@/components/PeriodCard.vue";
 import HistorySeed from "@/components/HistorySeed.vue";
 import PeriodModal from "@/components/Modal/PeriodModal.vue";
@@ -68,12 +62,14 @@ import GameSidebar from "@/components/GameSidebar.vue";
 import GameLog from "@/components/GameLog.vue";
 
 const props = defineProps<{
-    history: History;
-    palettes: Array<PaletteItem>;
-    foci: Array<Focus>;
-    legacies: Array<Legacy>;
+    history: History,
+    palettes: Array<PaletteItem>,
+    foci: Array<Focus>,
+    legacies: Array<Legacy>,
+    echoSettings: EchoGameSettings|null,
 }>();
 
+const echoSettings = toRef(props, 'echoSettings');
 const nextPosition: ComputedRef<number> = computed(() => {
     if (props.history.periods.length === 0) {
         return 1;
@@ -112,6 +108,7 @@ onMounted(() => {
         .listen("LegacyCreated", () => resyncBoard("legacies"))
         .listen("LegacyUpdated", () => resyncBoard("legacies"))
         .listen("LegacyDeleted", () => resyncBoard("legacies"))
+        .listen("EchoSettingsUpdated", () => resyncBoard("echoGameSettings"))
         .listen("HistorySeedUpdated", updateSeed);
 });
 
@@ -133,4 +130,5 @@ axios.interceptors.request.use((config) => {
 
 provide(HistoryKey, props.history);
 provide(ChannelKey, channelName);
+provide(EchoSettingsKey, echoSettings);
 </script>

@@ -34,7 +34,7 @@
                 "
             >
                 <Link :href="route('home')" class="mb-4 hidden sm:block">
-                    <img :src="`/images/logo_without_text.svg`" class="h-16" />
+                    <img :src="`/images/logo_without_text.svg`" class="h-16" alt="Utgar's Chronicles Logo" />
                 </Link>
 
                 <PeriodModal
@@ -68,6 +68,10 @@
                 <Palette :history="history" :palette="palette" />
                 <LegacyTracker :history="history" :legacies="legacies" />
                 <PlayerTracker />
+                <EchoSettings
+                    v-if="history.game_mode === MicroscopeGameMode.Echo"
+                    :history="history"
+                />
             </div>
 
             <div class="sm:w-full">
@@ -111,7 +115,7 @@
 import { Link } from "@inertiajs/vue3";
 import { PlusIcon, ChevronDoubleLeftIcon } from "@heroicons/vue/outline";
 
-import { Focus, History, Legacy, PaletteItem } from "@/types";
+import { Focus, History, Legacy, PaletteItem, MicroscopeGameMode } from "@/types";
 import { useEmitter } from "@/composables/useEmitter";
 
 import LegacyTracker from "@/components/LegacyTracker.vue";
@@ -119,6 +123,7 @@ import Palette from "@/components/Palette.vue";
 import FocusTracker from "@/components/FocusTracker.vue";
 import PeriodModal from "@/components/Modal/PeriodModal.vue";
 import PlayerTracker from "@/components/PlayerTracker.vue";
+import EchoSettings from "@/components/EchoSettings.vue";
 
 const props = defineProps<{
     history: History,

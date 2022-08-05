@@ -1,11 +1,12 @@
 <template>
-    <Head :title="page.props.history.name" />
+    <Head :title="history.name" />
 
     <GameBoard
-        :history="page.props.history"
-        :foci="page.props.foci"
-        :legacies="page.props.legacies"
-        :palettes="page.props.palettes"
+        :history="history"
+        :foci="foci"
+        :legacies="legacies"
+        :palettes="palettes"
+        :echo-settings="echoGameSettings"
     />
 </template>
 
@@ -16,9 +17,22 @@ export default { layout };
 </script>
 
 <script lang="ts" setup>
-import { usePage, Head } from "@inertiajs/vue3";
+import { Head } from "@inertiajs/inertia-vue3";
 
 import GameBoard from "@/components/GameBoard.vue";
+import {
+    EchoGameSettings,
+    Focus,
+    History,
+    Legacy,
+    PaletteItem
+} from "@/types";
 
-const page = usePage();
+const props = defineProps<{
+    history: History,
+    foci: Array<Focus>,
+    legacies: Array<Legacy>,
+    palettes: Array<PaletteItem>,
+    echoGameSettings: EchoGameSettings|null
+}>();
 </script>
