@@ -45,6 +45,8 @@
                 </div>
             </div>
 
+            <GameModeSelection v-model="form.game_mode" />
+
             <footer class="flex justify-end">
                 <LoadingButton :loading="form.processing">
                     Create History
@@ -57,9 +59,11 @@
 <script lang="ts" setup>
 import { useForm } from "@inertiajs/vue3";
 
+import { MicroscopeGameMode } from "@/types";
 import Modal from "@/components/Modal.vue";
 import LoadingButton from "@/components//LoadingButton.vue";
 import TextInput from "@/components/UI/TextInput.vue";
+import GameModeSelection from "@/components/GameModeSelection.vue";
 
 const emit = defineEmits(['close']);
 
@@ -71,5 +75,6 @@ const submit = () =>
 const form = useForm({
     name: '',
     public: false,
+    game_mode: MicroscopeGameMode.BaseGame,
 });
 </script>

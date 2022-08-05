@@ -16,8 +16,11 @@ namespace Tests\Feature;
 use App\Events\HistorySeedUpdated;
 use App\Exceptions\UserIsAlreadyPlayerInHistory;
 use App\History;
+use App\Http\Controllers\History\StoreHistoryController;
 use App\Http\Controllers\History\UpdateSeedController;
+use App\Http\Requests\History\CreateHistoryRequest;
 use App\Http\Requests\History\UpdateSeedRequest;
+use App\MicroscopeGameMode;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -45,14 +48,33 @@ final class HistoryTest extends TestCase
 
     public function testCreateANewHistoryForUser(): void
     {
+        $this->login()
+            ->post(route('history.store'), [
+                'name' => '::history-name::',
+                'game_mode' => MicroscopeGameMode::BaseGame->value,
+            ])
+            ->assertRedirect();
+
+        $this->assertDatabaseHas('histories', [
+            'name' => '::history-name::',
+            'public' => false,
+            'owner_id' => $this->user->id,
+            'game_mode' => MicroscopeGameMode::BaseGame,
+        ]);
+    }
+
+    public function testCreateEchoHistoryForUser(): void
+    {
         $this->login()->post(route('history.store'), [
             'name' => '::history-name::',
+            'game_mode' => MicroscopeGameMode::Echo->value,
         ]);
 
         $this->assertDatabaseHas('histories', [
             'name' => '::history-name::',
             'public' => false,
             'owner_id' => $this->user->id,
+            'game_mode' => MicroscopeGameMode::Echo,
         ]);
     }
 
@@ -60,6 +82,7 @@ final class HistoryTest extends TestCase
     {
         $this->login()->post(route('history.store'), [
             'name' => '::history-name::',
+            'game_mode' => MicroscopeGameMode::BaseGame->value,
             'public' => true,
         ]);
 
@@ -184,6 +207,11 @@ final class HistoryTest extends TestCase
     public static function validationProvider(): \Generator
     {
         yield from [
+            'create history' => [
+                StoreHistoryController::class,
+                '__invoke',
+                CreateHistoryRequest::class,
+            ],
             'update history seed' => [
                 UpdateSeedController::class,
                 '__invoke',

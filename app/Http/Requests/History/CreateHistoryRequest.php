@@ -13,18 +13,21 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\History;
 
+use App\MicroscopeGameMode;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
 final class CreateHistoryRequest extends FormRequest
 {
     /**
-     * @return array<string, array<int, string>>
+     * @return array<string, array<int, mixed>>
      */
     public function rules(): array
     {
         return [
             'name' => ['required'],
             'public' => ['nullable', 'boolean'],
+            'game_mode' => ['required', new Enum(MicroscopeGameMode::class)],
         ];
     }
 }

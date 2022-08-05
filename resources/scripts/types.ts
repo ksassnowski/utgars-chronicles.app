@@ -8,6 +8,23 @@ export enum PaletteType {
     No = "no",
 }
 
+export enum MicroscopeGameMode {
+    BaseGame = 1,
+    Echo = 2,
+}
+
+export enum AgentPowers {
+    Ordinary = "Ordinary",
+    Extraordinary = "Extraordinary",
+    Omnipotent = "Omnipotent",
+}
+
+export interface EchoGameSettings {
+    faction_1: string|null;
+    faction_2: string|null;
+    agent_powers: AgentPowers|null;
+}
+
 export interface Focus {
     id: number;
     name: string;
@@ -54,7 +71,9 @@ export interface History {
     id: number;
     public: boolean;
     name: string;
-    periods: Array<Period>
+    periods: Array<Period>;
+    game_mode: MicroscopeGameMode;
+    echo_game_settings?: EchoGameSettings;
 }
 
 export interface Player {

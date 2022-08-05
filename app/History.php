@@ -121,6 +121,9 @@ final class History extends Model
         return $this->hasMany(Legacy::class)->latest();
     }
 
+    /**
+     * @return HasOne<EchoGameSettings>
+     */
     public function echoGameSettings(): HasOne
     {
         return $this->hasOne(EchoGameSettings::class);
