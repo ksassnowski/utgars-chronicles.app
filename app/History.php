@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\DB;
 /**
  * @property Collection<int, Event>   $events
  * @property Collection<int, Focus>   $foci
+ * @property MicroscopeGameMode       $game_mode
  * @property int                      $id
  * @property Collection<int, Legacy>  $legacies
  * @property User                     $owner
@@ -37,7 +38,6 @@ use Illuminate\Support\Facades\DB;
  * @property Collection<int, User>    $players
  * @property bool                     $public
  * @property Collection<int, Scene>   $scenes
- * @property MicroscopeGameMode $game_mode
  */
 final class History extends Model
 {
@@ -56,15 +56,6 @@ final class History extends Model
         'public' => 'bool',
         'game_mode' => MicroscopeGameMode::class,
     ];
-
-    protected static function booted()
-    {
-        self::created(static function (History $history): void {
-            if ($history->game_mode === MicroscopeGameMode::Echo) {
-                $history->echoGameSettings()->create();
-            }
-        });
-    }
 
     /**
      * @return BelongsTo<User, History>
@@ -196,5 +187,14 @@ final class History extends Model
         return $this->legacies()->create([
             'name' => $name,
         ]);
+    }
+
+    protected static function booted(): void
+    {
+        self::created(static function (self $history): void {
+            if (MicroscopeGameMode::Echo === $history->game_mode) {
+                $history->echoGameSettings()->create();
+            }
+        });
     }
 }
