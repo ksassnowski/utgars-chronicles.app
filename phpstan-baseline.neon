@@ -223,6 +223,11 @@ parameters:
 			path: app/Legacy.php
 
 		-
+			message: "#^Parameter \\#1 \\$values of method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\HasOne\\<App\\\\EchoGameSettings\\>\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			count: 1
+			path: app/Http/Controllers/History/UpdateEchoGameSettingsController.php
+
+		-
 			message: '#^Class App\\Lfg uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1

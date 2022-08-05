@@ -26,6 +26,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
+ * @property null|EchoGameSettings    $echoGameSettings
  * @property Collection<int, Event>   $events
  * @property Collection<int, Focus>   $foci
  * @property MicroscopeGameMode       $game_mode

@@ -1,5 +1,6 @@
 <?php declare(strict_types=1);
 
+use App\Http\Controllers\History\UpdateEchoGameSettingsController;
 use App\Http\Controllers\PaletteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LfgRequestController;
@@ -93,6 +94,9 @@ Route::group(['middleware' => 'microscope'], function () {
 
     Route::patch('histories/{history}/seed', 'History\UpdateSeedController')
         ->name('history.update-seed');
+
+    Route::put('histories/{history}/echo', UpdateEchoGameSettingsController::class)
+        ->name('history.echo-settings.update');
 
     Route::post('histories/{history}/palette', [PaletteController::class, 'store'])
         ->name('history.palette.store');
