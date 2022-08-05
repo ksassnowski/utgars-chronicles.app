@@ -68,7 +68,7 @@
                 <Palette :history="history" :palette="palette" />
                 <LegacyTracker :history="history" :legacies="legacies" />
                 <PlayerTracker />
-                <EchoSettings
+                <FactionTracker
                     v-if="history.game_mode === MicroscopeGameMode.Echo"
                     :history="history"
                 />
@@ -123,7 +123,7 @@ import Palette from "@/components/Palette.vue";
 import FocusTracker from "@/components/FocusTracker.vue";
 import PeriodModal from "@/components/Modal/PeriodModal.vue";
 import PlayerTracker from "@/components/PlayerTracker.vue";
-import EchoSettings from "@/components/EchoSettings.vue";
+import FactionTracker from "@/components/FactionTracker.vue";
 
 const props = defineProps<{
     history: History,

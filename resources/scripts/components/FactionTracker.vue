@@ -1,12 +1,13 @@
 <template>
-    <SettingsPopover title="Echo" button-text="Echo">
+    <SettingsPopover title="Factions" button-text="Factions">
         <template #icon>
-            <RssIcon class="w-4 h-4" />
+            <OfficeBuildingIcon class="w-4 h-4" />
         </template>
 
         <template #description>
-            Keep track of all Echo-related information for your game. This is purely informational and does not
-            affect the behavior of the game.
+            In Echo, competing factions try to change the past to make it turn out the way
+            they want, whether that’s preventing an apocalyptic war, saving a species
+            from extinction or planting the seeds of a more enlightened society.
         </template>
 
         <form @submit.prevent="submit" class="space-y-6">
@@ -40,8 +41,9 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, inject} from "vue";
-import { RssIcon } from "@heroicons/vue/outline";
+import { computed, inject } from "vue";
+import { Inertia } from "@inertiajs/inertia";
+import { OfficeBuildingIcon } from "@heroicons/vue/outline";
 
 import { AgentPowers, History } from "@/types";
 import { EchoSettingsKey } from "@/symbols";
@@ -49,7 +51,6 @@ import SettingsPopover from "@/components/SettingsPopover.vue";
 import InputLabel from "@/components/UI/InputLabel.vue";
 import SelectInput from "@/components/UI/SelectInput.vue";
 import FactionCard from "@/components/FactionCard.vue";
-import {Inertia} from "@inertiajs/inertia";
 
 const props = defineProps<{ history: History }>();
 const settings = inject(EchoSettingsKey);
