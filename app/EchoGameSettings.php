@@ -19,14 +19,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * @property int $id
- * @property int $history_id
- * @property History $history
- * @property string|null $faction_1
- * @property string|null $faction_2
- * @property AgentPowers|null $agent_powers
- * @property Carbon $created_at
- * @property Carbon $updated_at
+ * @property null|AgentPowers $agent_powers
+ * @property Carbon           $created_at
+ * @property null|string      $faction_1
+ * @property null|string      $faction_2
+ * @property History          $history
+ * @property int              $history_id
+ * @property int              $id
+ * @property Carbon           $updated_at
  */
 final class EchoGameSettings extends Model
 {

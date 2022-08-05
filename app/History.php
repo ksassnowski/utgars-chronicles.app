@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -36,8 +37,9 @@ use Illuminate\Support\Facades\DB;
  * @property Collection<int, User>    $players
  * @property bool                     $public
  * @property Collection<int, Scene>   $scenes
+ * @property MicroscopeGameMode $game_mode
  */
-class History extends Model
+final class History extends Model
 {
     use HasFactory;
 
@@ -52,6 +54,7 @@ class History extends Model
     protected $casts = [
         'owner_id' => 'int',
         'public' => 'bool',
+        'game_mode' => MicroscopeGameMode::class,
     ];
 
     /**
@@ -116,6 +119,11 @@ class History extends Model
     public function legacies(): HasMany
     {
         return $this->hasMany(Legacy::class)->latest();
+    }
+
+    public function echoGameSettings(): HasOne
+    {
+        return $this->hasOne(EchoGameSettings::class);
     }
 
     /**
