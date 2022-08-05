@@ -57,6 +57,15 @@ final class History extends Model
         'game_mode' => MicroscopeGameMode::class,
     ];
 
+    protected static function booted()
+    {
+        self::created(static function (History $history): void {
+            if ($history->game_mode === MicroscopeGameMode::Echo) {
+                $history->echoGameSettings()->create();
+            }
+        });
+    }
+
     /**
      * @return BelongsTo<User, History>
      */
