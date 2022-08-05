@@ -16,7 +16,7 @@ namespace App\Events;
 use App\History;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -33,6 +33,11 @@ final class EchoSettingsUpdated implements ShouldBroadcastNow
 
     public function broadcastOn(): Channel
     {
-        return new PrivateChannel('history.' . $this->history->id);
+        return new PresenceChannel('history.' . $this->history->id);
+    }
+
+    public function broadcastWith(): array
+    {
+        return $this->history->only(['id']);
     }
 }
