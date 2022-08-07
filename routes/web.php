@@ -1,11 +1,14 @@
 <?php declare(strict_types=1);
 
+use App\Http\Controllers\Event\CreateEchoController;
+use App\Http\Controllers\Event\CreateInterventionController;
 use App\Http\Controllers\History\UpdateEchoGameSettingsController;
 use App\Http\Controllers\PaletteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LfgRequestController;
 use App\Http\Controllers\LookingForGroupController;
 use App\Http\Controllers\History\GuestInvitationController;
+use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
@@ -139,6 +142,12 @@ Route::group(['middleware' => 'microscope'], function () {
 
     Route::post('histories/{history}/periods/{period:id}/events', 'Period\CreateEventController')
         ->name('periods.events.store');
+
+    Route::post('histories/{history}/events/{event:id}/interventions', CreateInterventionController::class)
+        ->name('events.interventions.store');
+
+    Route::post('histories/{history}/events/{event:id}/echoes', CreateEchoController::class)
+        ->name('events.echoes.store');
 
     Route::put('histories/{history}/events/{event:id}', 'Event\UpdateEventController')
         ->name('events.update');

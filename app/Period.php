@@ -68,7 +68,8 @@ class Period extends Model implements Movable
      */
     public function events(): HasMany
     {
-        return $this->hasMany(Event::class)->orderBy('position', 'ASC');
+        return $this->hasMany(Event::class)
+            ->orderBy('position', 'ASC');
     }
 
     /**

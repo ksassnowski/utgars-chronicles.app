@@ -36,8 +36,13 @@ final class EchoSettingsUpdated implements ShouldBroadcastNow
         return new PresenceChannel('history.' . $this->history->id);
     }
 
+    /**
+     * @return array{id: int}
+     */
     public function broadcastWith(): array
     {
-        return $this->history->only(['id']);
+        return [
+            'id' => $this->history->id,
+        ];
     }
 }

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\AgentPowers;
 use App\EchoGameSettings;
 use App\Events\EchoSettingsUpdated;
 use App\History;
 use App\Http\Controllers\History\UpdateEchoGameSettingsController;
 use App\Http\Requests\UpdateEchoGameSettingsRequest;
+use App\MicroscopeEcho\AgentPowers;
 use Generator;
 use Illuminate\Support\Facades\Event;
 use Symfony\Component\HttpFoundation\Response;

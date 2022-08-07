@@ -11,8 +11,8 @@ declare(strict_types=1);
  * @see https://github.com/ksassnowski/utgars-chronicles.app
  */
 
-use App\AgentPowers;
 use App\History;
+use App\MicroscopeEcho\AgentPowers;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

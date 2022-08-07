@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\History;
 
 use App\History;
+use Illuminate\Contracts\Database\Query\Builder;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -22,11 +23,32 @@ final class GameController
     public function __invoke(History $history): Response
     {
         return Inertia::render('Game', [
-            'history' => static fn () => $history->load(['periods.events.scenes']),
+            'history' => fn () => $history->load([
+                'periods',
+                'periods.events' => function (Builder $builder) use ($history): void {
+                    $builder->whereIn('id', $this->getLatestEventIDs($history));
+                },
+                'periods.events.scenes',
+            ]),
             'foci' => static fn () => $history->foci,
             'palettes' => static fn () => $history->palettes,
             'legacies' => static fn () => $history->legacies,
             'echoGameSettings' => static fn () => $history->echoGameSettings,
         ]);
+    }
+
+    private function getLatestEventIDs(History $history): \Closure
+    {
+        return static function (Builder $query) use ($history): void {
+            $query
+                ->select('a.id')
+                ->fromSub(static function (Builder $query) use ($history): void {
+                    $query
+                        ->selectRaw('id, ROW_NUMBER() OVER (PARTITION BY echo_group ORDER BY echo_group_position DESC) ranked_order')
+                        ->from('events')
+                        ->where('history_id', $history->id);
+                }, 'a')
+                ->where('a.ranked_order', 1);
+        };
     }
 }

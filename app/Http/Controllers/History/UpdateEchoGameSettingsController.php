@@ -27,7 +27,7 @@ final class UpdateEchoGameSettingsController
         if (!$history->isEchoGame()) {
             return response()->json(
                 ['message' => 'Game is not an Echo game'],
-                Response::HTTP_BAD_REQUEST
+                Response::HTTP_BAD_REQUEST,
             );
         }
 

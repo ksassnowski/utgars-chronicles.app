@@ -11,13 +11,13 @@ declare(strict_types=1);
  * @see https://github.com/ksassnowski/utgars-chronicles.app
  */
 
-namespace App;
+namespace App\MicroscopeEcho\Repository;
 
-enum AgentPowers: string
+use App\Event;
+
+interface EchoGroupRepository
 {
-    case Ordinary = 'Ordinary';
+    public function getEchoGroup(Event $event): int;
 
-    case Extraordinary = 'Extraordinary';
-
-    case Omnipotent = 'Omnipotent';
+    public function getNextPosition(int $echoGroup): int;
 }

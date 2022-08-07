@@ -15,18 +15,40 @@ namespace App\Providers;
 
 use App\Export\CsvHistoryExporter;
 use App\Export\HistoryExporter;
+use App\MicroscopeEcho\Actions\AddEcho;
+use App\MicroscopeEcho\Actions\AddIntervention;
+use App\MicroscopeEcho\Actions\AddsEcho;
+use App\MicroscopeEcho\Actions\AddsIntervention;
+use App\MicroscopeEcho\Repository\DatabaseEchoGroupRepository;
+use App\MicroscopeEcho\Repository\EchoGroupRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use YlsIdeas\FeatureFlags\Facades\Features;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
+        $this->app->bind(
+            HistoryExporter::class,
+            CsvHistoryExporter::class,
+        );
+
+        $this->app->bind(
+            EchoGroupRepository::class,
+            DatabaseEchoGroupRepository::class,
+        );
+
+        $this->app->bind(
+            AddsIntervention::class,
+            AddIntervention::class,
+        );
+
+        $this->app->bind(
+            AddsEcho::class,
+            AddEcho::class,
+        );
     }
 
     /**
@@ -34,8 +56,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->bind(HistoryExporter::class, CsvHistoryExporter::class);
-
         Model::unguard();
 
         Features::noBlade();

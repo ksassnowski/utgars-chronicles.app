@@ -172,30 +172,6 @@ final class EventTest extends TestCase
         EventFacade::assertDispatched(BoardUpdated::class);
     }
 
-    public function testDeletingAnEventReordersTheRemainingEvents(): void
-    {
-        $event1 = Event::factory()->create([
-            'period_id' => $this->period->id,
-            'history_id' => $this->period->history_id,
-            'position' => 1,
-        ]);
-        $event2 = Event::factory()->create([
-            'period_id' => $this->period->id,
-            'position' => 2,
-            'history_id' => $this->period->history_id,
-        ]);
-        $event3 = Event::factory()->create([
-            'period_id' => $this->period->id,
-            'position' => 3,
-            'history_id' => $this->period->history_id,
-        ]);
-
-        $this->login()->delete(route('events.delete', [$this->period->history, $event2]));
-
-        self::assertEquals(1, $event1->refresh()->position);
-        self::assertEquals(2, $event3->refresh()->position);
-    }
-
     public static function scopedRouteProvider(): \Generator
     {
         yield from [

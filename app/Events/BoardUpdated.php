@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Events;
 
 use App\History;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -26,14 +27,11 @@ class BoardUpdated implements ShouldBroadcastNow
     use InteractsWithSockets;
     use SerializesModels;
 
-    private History $history;
-
-    public function __construct(History $history)
+    public function __construct(public readonly History $history)
     {
-        $this->history = $history;
     }
 
-    public function broadcastOn()
+    public function broadcastOn(): Channel
     {
         return new PresenceChannel('history.' . $this->history->id);
     }
