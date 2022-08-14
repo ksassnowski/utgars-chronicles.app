@@ -111,9 +111,12 @@
 
                     <div class="w-2/3">
                         <div class="mb-4">
-                            <PrimaryButton :href="route('history.export', history)">
+                            <a
+                                class="bg-indigo-700 text-white rounded-md text-sm font-medium px-4 py-2 transition duration-300 hover:bg-indigo-600"
+                                :href="route('history.export', history)"
+                            >
                                 Export as CSV
-                            </PrimaryButton>
+                            </a>
                         </div>
                     </div>
                 </div>
