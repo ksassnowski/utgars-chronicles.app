@@ -80,9 +80,13 @@
                                 px-6
                             "
                         >
-                            <h3 class="font-medium text-lg text-white">
-                                {{ title }}
-                            </h3>
+                            <div class="flex justify-between items-center">
+                                <h3 class="font-medium text-lg text-white">
+                                    {{ title }}
+                                </h3>
+
+                                <PinButton v-if="pinnableType !== null" :type="pinnableType" />
+                            </div>
 
                             <p class="text-sm text-indigo-300 mt-1">
                                 <slot name="description" />
@@ -108,12 +112,19 @@ import {
 } from "@headlessui/vue";
 import { XIcon } from "@heroicons/vue/solid";
 
+import { PinnedItemType } from "@/types";
+import PinButton from "@/components/Pinboard/PinButton.vue";
+
 withDefaults(
     defineProps<{
         title: string,
         buttonText: string,
         width?: string,
+        pinnableType?: PinnedItemType|null,
     }>(),
-    { width: "w-full sm:w-112" }
+    {
+        width: "w-full sm:w-112",
+        pinnableType: null,
+    },
 );
 </script>

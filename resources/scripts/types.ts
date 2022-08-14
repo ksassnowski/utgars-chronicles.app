@@ -1,3 +1,5 @@
+import { Ref } from "vue";
+
 export enum CardType {
     Dark = "dark",
     Light = "light",
@@ -68,4 +70,11 @@ export interface Lfg {
     start_date: number;
     slots: number;
     availableSlots: number;
+}
+
+export enum PinnedItemType {
+    Players = "players",
+    CurrentFocus = "current-focus",
+    Legacies = "legacies",
+    Palette = "palette",
 }

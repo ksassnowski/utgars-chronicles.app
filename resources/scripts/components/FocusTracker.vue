@@ -1,5 +1,9 @@
 <template>
-    <SettingsPopover title="Focus Tracker" button-text="Focus">
+    <SettingsPopover
+        title="Focus Tracker"
+        button-text="Focus"
+        :pinnable-type="PinnedItemType.CurrentFocus"
+    >
         <template #icon>
             <ExclamationCircleIcon class="w-4 h-4" />
         </template>
@@ -122,7 +126,7 @@ import {
 import { XIcon, PlusIcon, ExclamationCircleIcon } from "@heroicons/vue/outline";
 import { useForm } from "@inertiajs/inertia-vue3";
 
-import { Focus, History } from "@/types";
+import { Focus, History, PinnedItemType } from "@/types";
 import { useGameLog } from "@/composables/useGameLog";
 
 import LoadingButton from "@/components/LoadingButton.vue";

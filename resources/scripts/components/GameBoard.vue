@@ -2,6 +2,8 @@
     <div class="h-full flex relative">
         <GameLog />
 
+        <Pinboard />
+
         <GameSidebar
             :history="history"
             :next-position="nextPosition"
@@ -10,7 +12,7 @@
             :palette="palettes"
         />
 
-        <div class="pb-12 sm:pb-0 sm:pr-24 flex flex-col flex-grow">
+        <div class="pb-12 sm:pb-0 sm:pr-24 flex flex-col flex-grow pt-4">
             <div class="flex items-center w-full px-4 h-10">
                 <div class="hidden sm:block flex-1">
                     <PeriodModal :position="nextPosition" :history="history">
@@ -53,13 +55,13 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ComputedRef, onBeforeUnmount, provide, onMounted } from "vue";
+import {computed, ComputedRef, onBeforeUnmount, provide, onMounted, toRef} from "vue";
 import axios from "axios";
 import draggable from "vuedraggable";
 import { Inertia } from "@inertiajs/inertia";
 import { PlusIcon } from "@heroicons/vue/solid";
 
-import { ChannelKey, HistoryKey } from "@/symbols";
+import {ChannelKey, FociKey, HistoryKey, PaletteKey} from "@/symbols";
 import { History, Focus, PaletteItem, Legacy } from "@/types";
 import PeriodCard from "@/components/PeriodCard.vue";
 import HistorySeed from "@/components/HistorySeed.vue";
@@ -67,6 +69,7 @@ import PeriodModal from "@/components/Modal/PeriodModal.vue";
 import PrimaryButton from "@/components/UI/PrimaryButton.vue";
 import GameSidebar from "@/components/GameSidebar.vue";
 import GameLog from "@/components/GameLog.vue";
+import Pinboard from "@/components/Pinboard.vue";
 
 const props = defineProps<{
     history: History,
@@ -135,4 +138,6 @@ axios.interceptors.request.use((config) => {
 
 provide(HistoryKey, props.history);
 provide(ChannelKey, channelName);
+provide(FociKey, toRef(props, 'foci'));
+provide(PaletteKey, toRef(props, 'palettes'));
 </script>
