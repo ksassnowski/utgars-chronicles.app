@@ -20,9 +20,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 
 /**
- * @property Event    $event
- * @property History  $history
- * @property CardType $type
+ * @property Event         $event
+ * @property History       $history
+ * @property null|CardType $type
  */
 class Scene extends Model implements Movable
 {

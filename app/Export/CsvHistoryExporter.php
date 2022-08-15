@@ -31,7 +31,7 @@ final class CsvHistoryExporter implements HistoryExporter
                     $row[] = \sprintf('EVENT (%s): %s', $event->type->value, $event->name);
 
                     foreach ($event->scenes as $scene) {
-                        $row[] = \sprintf('SCENE (%s): %s ** %s ** %s', $scene->type->value, $scene->question, $scene->scene, $scene->answer);
+                        $row[] = \sprintf('SCENE (%s): %s ** %s ** %s', $scene->type?->value, $scene->question, $scene->scene, $scene->answer);
                     }
                 }
 
