@@ -16,6 +16,7 @@
                 type === 'dark',
             'bg-gradient-to-br from-white to-gray-100 text-gray-700 border-gray-200':
                 type === 'light',
+            'text-gray-700': type === null,
             'pb-6': $slots.footer,
         }"
     >
@@ -26,7 +27,7 @@
                 <p
                     class="text-sm font-bold leading-loose uppercase"
                     :class="{
-                        'text-gray-700': type === 'light',
+                        'text-gray-700': type === 'light' || type === null,
                         'text-white': type === 'dark',
                     }"
                 >

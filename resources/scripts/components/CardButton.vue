@@ -3,7 +3,7 @@
         class="rounded-lg p-1.5 text-white"
         :class="{
             'bg-black/20 hover:bg-black/30': type === CardType.Dark,
-            'bg-black/30 hover:bg-black/60': type === CardType.Light,
+            'bg-black/30 hover:bg-black/60': type === CardType.Light || type === null,
         }"
     >
         <slot>
