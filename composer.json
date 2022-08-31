@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.1",
         "doctrine/dbal": "^2.10",
+        "filament/filament": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inertiajs/inertia-laravel": "^0.5.4",
         "laravel/framework": "^9.22",
@@ -70,7 +71,8 @@
     },
     "scripts": {
         "post-update-cmd": [
-            "@composer normalize"
+            "@composer normalize",
+            "@php artisan filament:upgrade"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
