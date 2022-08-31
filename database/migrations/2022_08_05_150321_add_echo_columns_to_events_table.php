@@ -11,6 +11,7 @@ declare(strict_types=1);
  * @see https://github.com/ksassnowski/utgars-chronicles.app
  */
 
+use App\Event;
 use App\EventType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -28,7 +29,8 @@ return new class() extends Migration {
                     EventType::Intervention->value,
                     EventType::Echo->value,
                 ])->default(EventType::Echo->value);
-                $table->foreignIdFor(\App\Event::class)
+                $table->boolean('contradiction')->default(false);
+                $table->foreignIdFor(Event::class)
                     ->nullable()
                     ->constrained()
                     ->cascadeOnUpdate()
