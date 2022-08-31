@@ -234,4 +234,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
     ],
+
+    'admin_email_domain' => env('ADMIN_EMAIL_DOMAIN'),
 ];

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -28,7 +29,7 @@ use Illuminate\Support\Collection;
  * @property Collection<int, Lfg>     $lfgs
  * @property string                   $name
  */
-class User extends Authenticatable implements MicroscopePlayer
+class User extends Authenticatable implements FilamentUser, MicroscopePlayer
 {
     use Notifiable;
     use HasFactory;
@@ -94,5 +95,10 @@ class User extends Authenticatable implements MicroscopePlayer
     public function isGuest(): bool
     {
         return false;
+    }
+
+    public function canAccessFilament(): bool
+    {
+        return \str_ends_with($this->email, '@' . config('app.admin_email_domain'));
     }
 }
