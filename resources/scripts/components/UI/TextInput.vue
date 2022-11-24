@@ -34,9 +34,7 @@ const text = computed({
         return props.modelValue;
     },
     set(val: string) {
-        if (props.modelValue !== null) {
-            emit("update:modelValue", val);
-        }
+        emit("update:modelValue", val);
     }
 });
 </script>
