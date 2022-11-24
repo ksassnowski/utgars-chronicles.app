@@ -13,6 +13,12 @@ export enum MicroscopeGameMode {
     Echo = 2,
 }
 
+export enum EventType {
+    Event = "event",
+    Intervention = "intervention",
+    Echo = "echo",
+}
+
 export enum AgentPowers {
     Ordinary = "Ordinary",
     Extraordinary = "Extraordinary",
@@ -58,7 +64,13 @@ export interface Event {
     name: string;
     position: number;
     type: CardType;
-    scenes: Array<Scene>
+    scenes: Array<Scene>;
+    event_type: EventType;
+    event_id: number|null;
+    contradiction: boolean;
+    echo_group: number;
+    echo_group_position: number;
+    cause?: { id: number; echo_group: number };
 }
 
 export interface Period {

@@ -45,9 +45,7 @@ trait HasPosition
 
         $query->whereBetween('position', [$startPosition, $endPosition])
             ->where('id', '!=', $this->id)
-            ->update([
-                'position' => DB::raw($updateStmt),
-            ]);
+            ->update(['position' => DB::raw($updateStmt)]);
 
         $this->save();
     }

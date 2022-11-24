@@ -59,23 +59,5 @@ trait EchoGroupRepositoryContractTests
         $this->assertSame(4, $repository->getEchoGroup($event));
     }
 
-    public function testReturnNextEchoGroupPosition(): void
-    {
-        $history = History::factory()->create();
-        $events = Event::factory()
-            ->for($history)
-            ->count(3)
-            ->sequence(
-                ['echo_group' => 1, 'echo_group_position' => 1],
-                ['echo_group' => 1, 'echo_group_position' => 2],
-                ['echo_group' => 2, 'echo_group_position' => 1],
-            )
-            ->create();
-        $repository = $this->getRepository(...$events);
-
-        $this->assertSame(3, $repository->getNextPosition(1));
-        $this->assertSame(2, $repository->getNextPosition(2));
-    }
-
     abstract protected function getRepository(Event ...$events): EchoGroupRepository;
 }

@@ -83,6 +83,7 @@ class Period extends Model implements Movable
 
         return $this->events()->create(\array_merge($attributes, [
             'history_id' => $this->history->id,
+            'event_type' => EventType::Event,
         ]));
     }
 

@@ -38,7 +38,9 @@ use Illuminate\Support\Facades\DB;
  */
 class Event extends Model implements Movable
 {
-    use HasPosition;
+    use HasPosition {
+        move as baseMove;
+    }
     use HasFactory;
 
     /**
@@ -115,6 +117,22 @@ class Event extends Model implements Movable
         return null !== $this->echo_group;
     }
 
+    public function move(int $position): void
+    {
+        DB::transaction(function () use ($position) {
+            $this->baseMove($position);
+
+            // Make sure we also move all events in the same "stack"
+            // to the new position.
+            if ($this->echo_group !== null) {
+                Event::query()
+                    ->where('echo_group', $this->echo_group)
+                    ->where('history_id', $this->history_id)
+                    ->update(['position' => $position]);
+            }
+        });
+    }
+
     protected static function boot(): void
     {
         parent::boot();
@@ -142,7 +160,13 @@ class Event extends Model implements Movable
      */
     protected function limitElementsToMove(Builder $query): void
     {
-        $query->where('period_id', $this->period->id);
+        $query
+            ->where('period_id', $this->period->id)
+            ->when($this->echo_group !== null, function (Builder $query) {
+                $query
+                    ->where('echo_group', '!=', $this->echo_group)
+                    ->orWhereNull('echo_group');
+            });
     }
 
     private static function reorderEventsInEchoGroup(self $event): void

@@ -43,18 +43,33 @@ final class AddEcho implements AddsEcho
             throw new InvalidArgumentException('Cannot use regular event as cause for Echo');
         }
 
-        if ($cause->echo_group <= $event->echo_group) {
+        if ($event->echo_group !== null && $cause->echo_group <= $event->echo_group) {
             throw new InvalidArgumentException(
                 'Echo cause needs to have happened after changed event',
             );
         }
 
-        $group = $this->echoGroups->getEchoGroup($event);
-        $position = $this->echoGroups->getNextPosition($group);
+        if (
+            $cause->period->position > $event->period->position ||
+            $cause->position > $event->position
+        ) {
+            throw new InvalidArgumentException(
+                'Echo needs to happen after its cause',
+            );
+        }
 
-        return DB::transaction(static function () use ($cause, $event, $name, $type, $position, $group): Event {
-            if (null === $event->echo_group) {
-                $event->update(['echo_group' => $group]);
+        $group = $this->echoGroups->getEchoGroup($event);
+        $event->echo_group = $group;
+
+        if ($event->echo_group_position === null) {
+            $event->echo_group_position = 1;
+        }
+
+        $groupPosition = $event->echo_group_position + 1;
+
+        return DB::transaction(static function () use ($cause, $event, $name, $type, $groupPosition, $group): Event {
+            if ($event->isDirty()) {
+                $event->save();
             }
 
             return Event::create([
@@ -66,7 +81,7 @@ final class AddEcho implements AddsEcho
                 'event_id' => $cause->id,
                 'event_type' => EventType::Echo,
                 'echo_group' => $group,
-                'echo_group_position' => $position,
+                'echo_group_position' => $groupPosition,
             ]);
         });
     }

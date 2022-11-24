@@ -1,6 +1,6 @@
 <template>
     <div class="relative group">
-        <GameCard :type="event.type" label="Event">
+        <GameCard :type="event.type" :label="cardLabel">
             <template #menu>
                 <EventModal :event="event" :period="period">
                     <CardButton :type="event.type" />
@@ -10,6 +10,23 @@
             <h3 class="text-center whitespace-pre-wrap text-sm">
                 {{ event.name }}
             </h3>
+
+            <span
+                v-if="echoGroup !== null"
+                class="absolute bottom-1 right-2.5 text-2xl font-bold"
+            >
+                {{ echoGroup }}
+            </span>
+
+            <div class="flex flex-col">
+                <button type="button" @click="createIntervention">
+                    Create Intervention
+                </button>
+
+                <button type="button" @click="createEcho">
+                    Create Echo
+                </button>
+            </div>
 
             <template #footer>
                 <EventModal :period="period" :position="event.position">
@@ -62,17 +79,13 @@
 </template>
 
 <script lang="ts" setup>
-import { inject } from "vue";
+import {computed, inject} from "vue";
 import draggable from "vuedraggable";
 import { router } from "@inertiajs/vue3";
-import {
-    ArrowSmUpIcon,
-    ArrowSmDownIcon,
-    PlusIcon,
-} from "@heroicons/vue/outline";
+import {ArrowSmDownIcon, ArrowSmUpIcon, PlusIcon,} from "@heroicons/vue/outline";
 
-import { HistoryKey } from "@/symbols";
-import { Event, Period } from "@/types";
+import {HistoryKey} from "@/symbols";
+import {CardType, Event, EventType, Period} from "@/types";
 import SceneCard from "./SceneCard.vue";
 import SceneModal from "./Modal/SceneModal.vue";
 import GameCard from "./GameCard.vue";
@@ -93,4 +106,42 @@ const sceneMoved = (e) => {
         { only: ["history"] },
     );
 };
+
+const cardLabel = computed(() => {
+    switch (props.event.event_type) {
+        case EventType.Event:
+            return "Event";
+        case EventType.Intervention:
+            return "Intervention";
+        case EventType.Echo:
+            return "Echo";
+    }
+});
+
+const echoGroup = computed(() => {
+    const group = props.event.cause
+        ? props.event.cause.echo_group
+        : props.event.echo_group;
+
+    if (group === null) {
+        return null;
+    }
+
+    return group + 1;
+});
+
+function createIntervention() {
+    Inertia.post(route("events.interventions.store", { history: history, event: props.event }), {
+        name: "Sick Intervention",
+        type: CardType.Dark,
+    }, { preserveState: true, preserveScroll: true });
+}
+
+function createEcho() {
+    Inertia.post(route("events.echoes.store", { history: history, event: props.event }), {
+        name: "Such wow",
+        type: CardType.Light,
+        cause: 27,
+    }, { preserveState: true, preserveScroll: true });
+}
 </script>

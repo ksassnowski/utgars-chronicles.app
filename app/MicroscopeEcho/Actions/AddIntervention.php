@@ -36,13 +36,18 @@ final class AddIntervention implements AddsIntervention
         }
 
         $group = $this->echoGroups->getEchoGroup($event);
+        $event->echo_group = $group;
 
-        return DB::transaction(function () use ($event, $group, $name, $type) {
-            if (null === $event->echo_group) {
-                $event->update(['echo_group' => $group]);
+        if ($event->echo_group_position === null) {
+            $event->echo_group_position = 1;
+        }
+
+        $groupPosition = $event->echo_group_position + 1;
+
+        return DB::transaction(function () use ($event, $group, $name, $type, $groupPosition) {
+            if ($event->isDirty()) {
+                $event->update();
             }
-
-            $groupPosition = $this->echoGroups->getNextPosition($group);
 
             return Event::create([
                 'name' => $name,

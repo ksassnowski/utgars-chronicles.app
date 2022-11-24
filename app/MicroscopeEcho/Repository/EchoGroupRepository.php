@@ -18,6 +18,4 @@ use App\Event;
 interface EchoGroupRepository
 {
     public function getEchoGroup(Event $event): int;
-
-    public function getNextPosition(int $echoGroup): int;
 }

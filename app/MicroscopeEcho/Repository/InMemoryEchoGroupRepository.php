@@ -38,14 +38,4 @@ final class InMemoryEchoGroupRepository implements EchoGroupRepository
             ? $groups->max() + 1
             : 0;
     }
-
-    public function getNextPosition(int $echoGroup): int
-    {
-        /** @var int $largestPosition */
-        $largestPosition = collect($this->events)
-            ->where('echo_group', $echoGroup)
-            ->max('echo_group_position');
-
-        return $largestPosition + 1;
-    }
 }

@@ -31,15 +31,4 @@ final class DatabaseEchoGroupRepository implements EchoGroupRepository
         /** @phpstan-ignore-next-line */
         return (int) $largestGroup;
     }
-
-    public function getNextPosition(int $echoGroup): int
-    {
-        $nextPosition = Event::query()
-            ->selectRaw('MAX(echo_group_position) + 1 as next_position')
-            ->where('echo_group', $echoGroup)
-            ->value('next_position');
-
-        /** @phpstan-ignore-next-line */
-        return (int) $nextPosition;
-    }
 }

@@ -15,6 +15,7 @@ namespace App\Providers;
 
 use App\Guards\MicroscopeGuard;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 
 class AuthServiceProvider extends ServiceProvider
 {

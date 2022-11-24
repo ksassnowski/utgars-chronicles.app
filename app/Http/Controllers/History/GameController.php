@@ -28,6 +28,9 @@ final class GameController
                 'periods.events' => function (Builder $builder) use ($history): void {
                     $builder->whereIn('id', $this->getLatestEventIDs($history));
                 },
+                'periods.events.cause' => function (Builder $builder) use ($history): void {
+                    $builder->select('id', 'echo_group');
+                },
                 'periods.events.scenes',
             ]),
             'foci' => static fn () => $history->foci,
@@ -44,11 +47,12 @@ final class GameController
                 ->select('a.id')
                 ->fromSub(static function (Builder $query) use ($history): void {
                     $query
-                        ->selectRaw('id, ROW_NUMBER() OVER (PARTITION BY echo_group ORDER BY echo_group_position DESC) ranked_order')
+                        ->selectRaw('id, echo_group, ROW_NUMBER() OVER (PARTITION BY echo_group ORDER BY echo_group_position DESC) ranked_order')
                         ->from('events')
                         ->where('history_id', $history->id);
                 }, 'a')
-                ->where('a.ranked_order', 1);
+                ->where('a.ranked_order', 1)
+                ->orWhereNull('a.echo_group');
         };
     }
 }

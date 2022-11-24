@@ -17,12 +17,21 @@ use App\Event;
 use App\Events\BoardUpdated;
 use App\History;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 
 final class DeleteEventController
 {
     public function __invoke(History $history, Event $event): RedirectResponse
     {
-        $event->delete();
+        DB::transaction(function () use ($history, $event) {
+            $event->delete();
+
+            if ($history->events()->where('echo_group', $event->echo_group)->count() === 1) {
+                $history->events()
+                    ->where('echo_group', $event->echo_group)
+                    ->update(['echo_group' => null, 'echo_group_position' => 1]);
+            }
+        });
 
         broadcast(new BoardUpdated($history->refresh()))->toOthers();
 
