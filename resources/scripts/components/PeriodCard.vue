@@ -1,58 +1,57 @@
 <template>
-    <div class="max-h-full flex flex-col overflow-x-hidden overflow-y-auto space-y-4 pt-4">
-        <div class="relative group">
-            <GameCard :type="period.type" label="Period">
-                <template #menu>
-                    <PeriodModal :period="period" :history="history">
-                        <CardButton :type="period.type" />
-                    </PeriodModal>
-                </template>
+    <div class="space-y-4 py-4 relative group">
+        <GameCard :type="period.type" label="Period">
+            <template #menu>
+                <PeriodModal :period="period" :history="history">
+                    <CardButton :type="period.type" />
+                </PeriodModal>
+            </template>
 
-                <h3 class="font-bold tracking-wide text-center">
-                    {{ period.name }}
-                </h3>
+            <h3 class="font-bold tracking-wide text-center">
+                {{ period.name }}
+            </h3>
 
-                <template #footer>
-                    <PeriodModal :history="history" :position="period.position">
-                        <CardButton
-                            :type="period.type"
-                            class="flex items-center -space-x-0.5"
-                            title="Add Period before"
-                        >
-                            <ArrowSmLeftIcon class="w-4 h-4" />
-                            <PlusIcon class="w-3 h-3" />
-                        </CardButton>
-                    </PeriodModal>
-
-                    <EventModal :period="period" :position="nextEventPosition">
-                        <button
-                            class="text-sm"
-                            :class="{
-                                'text-indigo-700': period.type === 'light',
-                                'text-indigo-300': period.type === 'dark',
-                            }"
-                        >
-                            Add Event
-                        </button>
-                    </EventModal>
-
-                    <PeriodModal
-                        :history="history"
-                        :position="period.position + 1"
+            <template #footer>
+                <PeriodModal :history="history" :position="period.position">
+                    <CardButton
+                        :type="period.type"
+                        class="flex items-center -space-x-0.5"
+                        title="Add Period before"
                     >
-                        <CardButton
-                            :type="period.type"
-                            class="flex items-center -space-x-0.5"
-                            title="Add period after"
-                        >
-                            <PlusIcon class="w-3 h-3" />
-                            <ArrowSmRightIcon class="w-4 h-4" />
-                        </CardButton>
-                    </PeriodModal>
-                </template>
-            </GameCard>
-        </div>
+                        <ArrowSmLeftIcon class="w-4 h-4" />
+                        <PlusIcon class="w-3 h-3" />
+                    </CardButton>
+                </PeriodModal>
 
+                <EventModal :period="period" :position="nextEventPosition">
+                    <button
+                        class="text-sm"
+                        :class="{
+                            'text-indigo-700': period.type === 'light',
+                            'text-indigo-300': period.type === 'dark',
+                        }"
+                    >
+                        Add Event
+                    </button>
+                </EventModal>
+
+                <PeriodModal
+                    :history="history"
+                    :position="period.position + 1"
+                >
+                    <CardButton
+                        :type="period.type"
+                        class="flex items-center -space-x-0.5"
+                        title="Add period after"
+                    >
+                        <PlusIcon class="w-3 h-3" />
+                        <ArrowSmRightIcon class="w-4 h-4" />
+                    </CardButton>
+                </PeriodModal>
+            </template>
+        </GameCard>
+    </div>
+    <div class="max-h-full flex flex-col overflow-x-hidden overflow-y-auto space-y-4">
         <draggable
             :list="period.events"
             @change="eventMoved"
