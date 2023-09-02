@@ -23,11 +23,37 @@ RUN apt-get update \
  libxml2-dev \
  libldap2-dev \
  libmcrypt-dev \
- python-pip \
  fabric \
  jq \
  gnupg \
+ npm \
+ nodejs \
+ composer \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Add codebase to image
+ADD . /app
+
+# set working directory
+WORKDIR /app
+
+# install php dependencies
+RUN composer install
+
+# generate database application key
+RUN php artisan key:generate
+
+# create database tables and generate base contents
+RUN php artisan migrate:fresh --seed
+
+# install javascript dependencies
+RUN npm install -legacy-peer-deps
+
+# build generated JS assets
+RUN npm run development
+
+# run the app
+CMD ["php artisan serve"]
 
 
 
