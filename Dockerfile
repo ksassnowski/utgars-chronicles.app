@@ -3,65 +3,54 @@ FROM php:8.1.3 as base
 # update apt
 RUN apt-get update
 
-# install system dependencies
-RUN  apt-get install -y \
- ca-certificates \
- curl \
- apt-transport-https \
- git \
- build-essential \
- libssl-dev \
- wget \
- unzip \
- bzip2 \
- libbz2-dev \
- zlib1g-dev \
- default-mysql-client \
- libonig-dev \
- libfontconfig \
- libfreetype6-dev \
- libjpeg62-turbo-dev \
- libpng-dev \
- libicu-dev \
- libxml2-dev \
- libldap2-dev \
- libmcrypt-dev \
- fabric \
- jq \
- gnupg \
- npm \
- nodejs
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libonig-dev \
+    libpng-dev \
+    libzip-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl \
+    npm \
+    nodejs \
+    libxml2-dev
+
+# install exentsion
+RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# copy composer from
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+WORKDIR /app
 
 # Add codebase to image
 ADD . /app
-
-# set working directory
-WORKDIR /app
 
 # install php dependencies
 RUN composer update --lock
 RUN composer install --ignore-platform-reqs # TODO fix ignore
 
+# install javascript dependencies
+RUN npm install -legacy-peer-deps
+
 # generate database application key
 RUN php artisan key:generate
 
 # create database tables and generate base contents
-RUN php artisan migrate:fresh --seed
-
-# install javascript dependencies
-RUN npm install -legacy-peer-deps
+# RUN php artisan migrate:fresh --seed
 
 # build generated JS assets
-RUN npm run development
+RUN npm run dev
 
 # run the app
 CMD ["php artisan serve"]
