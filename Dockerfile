@@ -1,9 +1,11 @@
-FROM php:8.0 as base
+FROM php:8.1.3 as base
 
+# update apt
+RUN apt-get update
 
-# Install basic requirements
-RUN apt-get update \
- && apt-get install -y \
+# install system dependencies
+RUN  apt-get install -y \
+ ca-certificates \
  curl \
  apt-transport-https \
  git \
@@ -14,7 +16,8 @@ RUN apt-get update \
  bzip2 \
  libbz2-dev \
  zlib1g-dev \
- mysql-client \
+ default-mysql-client \
+ libonig-dev \
  libfontconfig \
  libfreetype6-dev \
  libjpeg62-turbo-dev \
@@ -27,9 +30,16 @@ RUN apt-get update \
  jq \
  gnupg \
  npm \
- nodejs \
- composer \
- && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+ nodejs
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# copy composer from
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # Add codebase to image
 ADD . /app
@@ -38,7 +48,8 @@ ADD . /app
 WORKDIR /app
 
 # install php dependencies
-RUN composer install
+RUN composer update --lock
+RUN composer install --ignore-platform-reqs # TODO fix ignore
 
 # generate database application key
 RUN php artisan key:generate
