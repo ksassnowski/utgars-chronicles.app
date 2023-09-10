@@ -33,15 +33,17 @@ RUN cd ~ && curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_
 RUN bash /tmp/nodesource_setup.sh
 RUN apt-get install -y nodejs
 
-
 WORKDIR /app
 
 # Add codebase to image
 ADD . /app
 
+# Make server script executable
+RUN chmod +x ./sh/server.sh
+
 # install php dependencies
 RUN composer update --lock
-RUN composer install --ignore-platform-reqs # TODO fix ignore
+RUN composer install --ignore-platform-reqs
 
 # install javascript dependencies
 RUN npm install -legacy-peer-deps
@@ -49,8 +51,9 @@ RUN npm install -legacy-peer-deps
 # generate database application key
 RUN php artisan key:generate
 
-EXPOSE 8000 5173
+EXPOSE 8000
 
-
+# start the vue application
+ENTRYPOINT "./sh/run.sh"
 
 
