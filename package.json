@@ -1,7 +1,8 @@
 {
     "private": true,
     "scripts": {
-        "dev": "vite --host",
+        "docker": "vite --host",
+        "dev": "vite",
         "production": "vite build"
     },
     "devDependencies": {
