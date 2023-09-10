@@ -1,10 +1,8 @@
 FROM php:8.1.3 as base
 
-# update apt
-RUN apt-get update
-
 # Install dependencies
 RUN apt-get update && apt-get install -y \
+    apt-utils \
     build-essential \
     libonig-dev \
     libpng-dev \
@@ -18,18 +16,23 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     curl \
-    npm \
-    nodejs \
     libxml2-dev
 
+
 # install exentsion
-RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
+RUN docker-php-ext-install mysqli pdo_mysql mbstring zip exif pcntl
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# install nodejs
+RUN cd ~ && curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
+RUN bash /tmp/nodesource_setup.sh
+RUN apt-get install -y nodejs
+
 
 WORKDIR /app
 
@@ -46,14 +49,7 @@ RUN npm install -legacy-peer-deps
 # generate database application key
 RUN php artisan key:generate
 
-# create database tables and generate base contents
-# RUN php artisan migrate:fresh --seed
-
-# build generated JS assets
-RUN npm run dev
-
-# run the app
-CMD ["php artisan serve"]
+EXPOSE 8000 5173
 
 
 
