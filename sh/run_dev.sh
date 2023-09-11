@@ -3,7 +3,7 @@
 # pattern from the Docker docs https://docs.docker.com/config/containers/multi-service_container/#use-a-wrapper-script
 
 # run the vue server in the background
-npm run docker &
+npm run docker-dev &
 
 # run the laravel server in the background
 php artisan serve --host 0.0.0.0 &
