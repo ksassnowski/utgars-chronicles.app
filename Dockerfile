@@ -38,8 +38,8 @@ WORKDIR /app
 # Add codebase to image
 ADD . /app
 
-# Make server script executable
-RUN chmod +x ./sh/server.sh
+# Make scripts executable
+RUN chmod -R +x ./sh
 
 # install php dependencies
 RUN composer update --lock
