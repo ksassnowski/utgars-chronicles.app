@@ -1,7 +1,7 @@
 {
     "private": true,
     "scripts": {
-        "docker": "vite --host",
+        "docker-dev": "vite --host",
         "dev": "vite",
         "production": "vite build"
     },
