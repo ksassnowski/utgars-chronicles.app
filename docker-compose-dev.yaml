@@ -1,0 +1,38 @@
+version: '3'
+services:
+  # php service
+  app:
+    container_name: utgars_chronicles_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+      - "5173:5173"
+    environment:
+      - DB_HOST=$DB_HOST
+      - DB_USERNAME=$DB_USERNAME
+      - DB_PASSWORD=$DB_PASSWORD
+      - DB_DATABASE=$DB_DATABASE
+      - DB_PORT=$DB_PORT
+    entrypoint: "./sh/run_dev.sh"
+
+  # database service
+  mysql:
+    container_name: mysql
+    image: mysql:8.0.27
+    restart: always
+    env_file: .env
+    volumes:
+    - db_data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=$DB_DATABASE
+      - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
+      - MYSQL_USER=$DB_USERNAME
+      - MYSQL_PASSWORD=$DB_PASSWORD
+    ports:
+       - "3306:3306"
+
+volumes:
+  db_data:

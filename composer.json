@@ -59,7 +59,9 @@
         },
         "optimize-autoloader": true,
         "platform": {
-            "php": "8.1.0"
+            "php": "8.1.0",
+            "ext-pcntl": "8.0",
+            "ext-posix": "8.0"
         },
         "preferred-install": "dist",
         "sort-packages": true
