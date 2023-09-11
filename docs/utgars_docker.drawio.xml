@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2023-09-11T02:42:51.656Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/118.0" etag="iVwy7HTvGU0fjHMQZETI" version="21.7.2" type="device">
+  <diagram name="Page-1" id="57hgrZVCTWWEZgkcOKNi">
+    <mxGraphModel dx="2074" dy="1059" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="G2t2Yp4LXin3roI9IZI5-1" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="190" y="280" width="410" height="410" as="geometry" />
+        </mxCell>
+        <mxCell id="G2t2Yp4LXin3roI9IZI5-2" value="Docker" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="365" y="290" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="G2t2Yp4LXin3roI9IZI5-3" value="mysql" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;" vertex="1" parent="1">
+          <mxGeometry x="510" y="420" width="60" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="G2t2Yp4LXin3roI9IZI5-4" value="" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="220" y="390" width="190" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="G2t2Yp4LXin3roI9IZI5-5" value="utgars_chronicles_app" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="285" y="400" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="G2t2Yp4LXin3roI9IZI5-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;" edge="1" parent="1" source="G2t2Yp4LXin3roI9IZI5-6" target="G2t2Yp4LXin3roI9IZI5-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G2t2Yp4LXin3roI9IZI5-6" value="Laravel" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="255" y="535" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="G2t2Yp4LXin3roI9IZI5-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" edge="1" parent="1" source="G2t2Yp4LXin3roI9IZI5-7" target="G2t2Yp4LXin3roI9IZI5-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="G2t2Yp4LXin3roI9IZI5-7" value="Javascript" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="255" y="440" width="120" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
