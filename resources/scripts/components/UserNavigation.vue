@@ -1,6 +1,6 @@
 <template>
-    <div class="w-full items-center flex-grow md:flex md:w-auto">
-        <div class="flex items-center flex-grow space-x-4">
+    <div class="w-full items-center grow md:flex md:w-auto">
+        <div class="flex items-center grow space-x-4">
             <NavigationLink
                 :href="route('home')"
                 :is-active="
@@ -48,10 +48,10 @@
             </ul>
 
             <Menu as="div" class="relative">
-                <MenuButton class="flex items-center">
+                <MenuButton class="flex items-center cursor-pointer">
                     <div
                         class="
-                            bg-gradient-to-br
+                            bg-linear-to-br
                             from-purple-400
                             to-indigo-700
                             p-[0.15rem]
@@ -96,7 +96,7 @@
                             text-sm
                             font-medium
                             divide-y divide-gray-200
-                            ring-1 ring-black ring-opacity-5
+                            ring-1 ring-black/5
                         "
                     >
                         <div class="p-1">
@@ -175,7 +175,7 @@ import {
     ChevronDownIcon,
     LogoutIcon,
 } from "@heroicons/vue/outline";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/vue3";
 
 import { useFeatureFlags } from "@/composables/useFeatureFlags";
 import Gravatar from "@/components/Gravatar.vue";

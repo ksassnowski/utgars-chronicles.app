@@ -42,7 +42,7 @@ export default { layout };
 </script>
 
 <script lang="ts" setup>
-import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 
 import TextInput from "@/components/UI/TextInput.vue";
 import LoadingButton from "@/components/LoadingButton.vue";

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -16,7 +16,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateLfgRequest;
 use App\Lfg;
 use App\User;
-use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,7 +31,7 @@ final class LookingForGroupController extends Controller
         return Inertia::render('Lfg/Index', [
             'games' => Lfg::query()
                 /** @phpstan-ignore-next-line */
-                ->has('users', '<', DB::raw('lfgs.slots'))
+                ->has('users', '<', \DB::raw('lfgs.slots'))
                 ->where('start_date', '>=', now())
                 ->when($request->query('start_date'), static function (Builder $query, $date): void {
                     $query->where('start_date', '>=', $date);

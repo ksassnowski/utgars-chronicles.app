@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -70,7 +70,6 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'feature' => \YlsIdeas\FeatureFlags\Middleware\FeatureFlagState::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'microscope' => MicroscopeMiddleware::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,

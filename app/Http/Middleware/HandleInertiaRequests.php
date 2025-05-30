@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Inertia\Middleware;
 use YlsIdeas\FeatureFlags\Facades\Features;
@@ -49,7 +49,7 @@ final class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $features = Features::all();
+        $features = []; // Features::all();
         $activeFeatures = \array_keys(\array_filter($features));
 
         return \array_merge(parent::share($request), [

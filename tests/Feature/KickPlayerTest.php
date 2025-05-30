@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -15,7 +15,6 @@ namespace Tests\Feature;
 
 use App\History;
 use App\User;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\AuthenticatedRoutesTest;
 use Tests\TestCase;
@@ -28,7 +27,7 @@ final class KickPlayerTest extends TestCase
     use RefreshDatabase;
     use AuthenticatedRoutesTest;
 
-    public function authenticatedRoutesProvider(): Generator
+    public static function authenticatedRoutesProvider(): \Generator
     {
         yield from [
             'kick player' => ['delete', '/histories/1/players/1'],

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -22,7 +22,6 @@ use App\Http\Requests\Palette\CreatePaletteItemRequest;
 use App\Http\Requests\Palette\UpdatePaletteItemRequest;
 use App\Palette;
 use App\PaletteType;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\GameRouteTest;
@@ -47,7 +46,7 @@ final class PaletteTest extends TestCase
         Event::fake();
     }
 
-    public function validationProvider(): Generator
+    public static function validationProvider(): \Generator
     {
         yield from [
             'add to palette' => [PaletteController::class, 'store', CreatePaletteItemRequest::class],
@@ -124,7 +123,7 @@ final class PaletteTest extends TestCase
         );
     }
 
-    public function scopedRouteProvider(): Generator
+    public static function scopedRouteProvider(): \Generator
     {
         yield from [
             'update palette' => [
@@ -140,7 +139,7 @@ final class PaletteTest extends TestCase
         ];
     }
 
-    public function gameRouteProvider(): Generator
+    public static function gameRouteProvider(): \Generator
     {
         yield ['history.palette.store'];
 

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -19,7 +19,6 @@ use App\History;
 use App\Http\Controllers\History\UpdateSeedController;
 use App\Http\Requests\History\UpdateSeedRequest;
 use App\User;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\AuthenticatedRoutesTest;
@@ -127,7 +126,7 @@ final class HistoryTest extends TestCase
         );
     }
 
-    public function authenticatedRoutesProvider(): Generator
+    public static function authenticatedRoutesProvider(): \Generator
     {
         yield from [
             'create history' => ['post', '/histories'],
@@ -182,7 +181,7 @@ final class HistoryTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function validationProvider(): Generator
+    public static function validationProvider(): \Generator
     {
         yield from [
             'update history seed' => [
@@ -193,7 +192,7 @@ final class HistoryTest extends TestCase
         ];
     }
 
-    public function gameRouteProvider(): Generator
+    public static function gameRouteProvider(): \Generator
     {
         yield ['history.update-seed'];
     }

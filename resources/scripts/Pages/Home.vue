@@ -50,7 +50,7 @@ export default { layout }
 </script>
 
 <script lang="ts" setup>
-import { Head } from "@inertiajs/inertia-vue3";
+import { Head } from "@inertiajs/vue3";
 
 import HistoryCard from '@/components/HistoryCard.vue';
 import CreateHistoryModal from "@/components/Modal/CreateHistoryModal.vue";

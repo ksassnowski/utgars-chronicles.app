@@ -1,5 +1,7 @@
 <template>
-    <div class="max-h-full flex flex-col overflow-x-hidden overflow-y-auto space-y-4 pt-4">
+    <div
+        class="max-h-full flex flex-col overflow-x-hidden overflow-y-auto space-y-4 pt-4"
+    >
         <div class="relative group">
             <GameCard :type="period.type" label="Period">
                 <template #menu>
@@ -71,7 +73,7 @@
 <script lang="ts" setup>
 import { computed } from "vue";
 import draggable from "vuedraggable";
-import {Inertia} from "@inertiajs/inertia";
+import { router } from "@inertiajs/vue3";
 import {
     PlusIcon,
     ArrowSmLeftIcon,
@@ -86,7 +88,7 @@ import GameCard from "@/components/GameCard.vue";
 import PeriodModal from "@/components/Modal/PeriodModal.vue";
 import CardButton from "@/components/CardButton.vue";
 
-const props = defineProps<{ period: Period, history: History }>();
+const props = defineProps<{ period: Period; history: History }>();
 
 const nextEventPosition = computed(() => {
     const last = props.period.events.slice(-1)[0];
@@ -103,10 +105,10 @@ const eventMoved = (e) => {
         return;
     }
 
-    Inertia.post(
+    router.post(
         route("events.move", [props.history, e.moved.element]),
         { position: e.moved.newIndex + 1 },
-        { only: ["history"] }
+        { only: ["history"] },
     );
 };
 </script>

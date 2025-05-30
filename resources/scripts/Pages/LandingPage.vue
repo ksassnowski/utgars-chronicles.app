@@ -93,7 +93,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Head, Link } from "@inertiajs/inertia-vue3";
+import { Head, Link } from "@inertiajs/vue3";
 import {onMounted} from "vue";
 
 import PageFooter from "@/components/UI/PageFooter.vue";

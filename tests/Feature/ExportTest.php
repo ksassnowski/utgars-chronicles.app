@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -16,9 +16,7 @@ namespace Tests\Feature;
 use App\Export\HistoryExporter;
 use App\History;
 use App\Period;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Mockery;
 use Tests\GameRouteTest;
 use Tests\TestCase;
 
@@ -34,7 +32,7 @@ final class ExportTest extends TestCase
     {
         $history = History::factory()->create();
         $history->periods()->create(Period::factory()->make()->toArray());
-        $exporterMock = Mockery::mock(HistoryExporter::class);
+        $exporterMock = \Mockery::mock(HistoryExporter::class);
         $exporterMock->shouldReceive('export')
             ->once();
 
@@ -45,7 +43,7 @@ final class ExportTest extends TestCase
         $response->assertOk();
     }
 
-    public function gameRouteProvider(): Generator
+    public static function gameRouteProvider(): \Generator
     {
         yield ['history.export'];
     }

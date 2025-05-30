@@ -6,13 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class MakeNameColumnsIntoText extends Migration
 {
-    public function __construct()
-    {
-        // Weird bug fix around the fact that you can't modify columns
-        // in a table that has *any* 'enum' columns...
-        DB::getDoctrineSchemaManager()->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
-    }
-
     /**
      * Run the migrations.
      *

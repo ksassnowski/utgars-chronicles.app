@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -18,8 +18,10 @@ final class AnonymousPlayer implements MicroscopePlayer
     /**
      * @param array<int, null|string> $histories
      */
-    public function __construct(private string $id, private array $histories = [])
-    {
+    public function __construct(
+        private string $id,
+        private array $histories = [],
+    ) {
     }
 
     public function joinGame(History $history, ?string $name = null): void

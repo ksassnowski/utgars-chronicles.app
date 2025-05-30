@@ -1,5 +1,5 @@
 import { watch } from "vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 import { pick, noop } from "lodash";
 
 export function useCreateEditForm(

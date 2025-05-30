@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use Carbon\Carbon;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -60,7 +59,7 @@ final class CreateLfgTest extends TestCase
             ->assertSessionHasErrors($expectedErrorKey);
     }
 
-    public function validationProvider(): Generator
+    public static function validationProvider(): iterable
     {
         $validPayload = [
             'title' => '::title::',

@@ -99,8 +99,7 @@ export default { layout };
 </script>
 
 <script lang="ts" setup>
-import { Inertia } from "@inertiajs/inertia";
-import { Head } from "@inertiajs/inertia-vue3";
+import { router, Head } from "@inertiajs/vue3";
 
 import { History } from "@/types";
 import { useConfirmAction } from "@/composables/useConfirmAction";
@@ -111,6 +110,6 @@ import PrimaryButton from "@/components/UI/PrimaryButton.vue";
 const props = defineProps<{ game: History }>();
 
 const { needsConfirmation, onClick } = useConfirmAction(() =>
-    Inertia.delete(route("user.games.leave", props.game))
+    router.delete(route("user.games.leave", props.game))
 );
 </script>

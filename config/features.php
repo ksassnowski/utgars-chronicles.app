@@ -3,55 +3,49 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | default
+    | Pipeline
     |--------------------------------------------------------------------------
     |
-    | The repository to use for establishing a feature's on/off state.
+    | The pipeline for the feature to travel through.
     |
     */
 
-    'default' => 'database',
+    'pipeline' => ['database', 'in_memory'],
 
     /*
     |--------------------------------------------------------------------------
-    | Config Feature Switches
+    | Gateways
     |--------------------------------------------------------------------------
     |
-    | This is a set of features to load into the config features repository.
+    | Configures the different gateway options
     |
     */
 
-    'feature' => [
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Repositories
-    |--------------------------------------------------------------------------
-    |
-    | Configures the different repository options
-    |
-    */
-
-    'repositories' => [
-        'database' => [
-            'table' => 'features',
+    'gateways' => [
+        'in_memory' => [
+            'file' => env('FEATURE_FLAG_IN_MEMORY_FILE', '.features.php'),
+            'driver' => 'in_memory',
         ],
-        'config' => [
-            'key' => 'features.feature',
+        'database' => [
+            'driver' => 'database',
+            'cache' => [
+                'ttl' => 600,
+            ],
+            'connection' => env('FEATURE_FLAG_DATABASE_CONNECTION'),
+            'table' => env('FEATURE_FLAG_DATABASE_TABLE', 'features'),
+        ],
+        'gate' => [
+            'driver' => 'gate',
+            'gate' => env('FEATURE_FLAG_GATE_GATE', 'feature'),
+            'guard' => env('FEATURE_FLAG_GATE_GUARD'),
+            'cache' => [
+                'ttl' => 600,
+            ],
         ],
         'redis' => [
-            'prefix' => 'features',
-            'connection' => 'default',
-        ],
-        'chain' => [
-            'drivers' => [
-                'config',
-                'redis',
-                'database',
-            ],
-            'store' => 'database',
-            'update_on_resolve' => true,
+            'driver' => 'redis',
+            'prefix' => env('FEATURE_FLAG_REDIS_PREFIX', 'features'),
+            'connection' => env('FEATURE_FLAG_REDIS_CONNECTION', 'default'),
         ],
     ],
 ];

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -22,7 +22,6 @@ use App\Http\Requests\History\CreatePeriodRequest;
 use App\Http\Requests\History\UpdatePeriodRequest;
 use App\Period;
 use App\User;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\GameRouteTest;
@@ -52,7 +51,7 @@ final class PeriodTest extends TestCase
         $this->history = History::factory()->create(['owner_id' => $this->user->id]);
     }
 
-    public function scopedRouteProvider(): Generator
+    public static function scopedRouteProvider(): \Generator
     {
         yield from [
             'update period' => [
@@ -145,7 +144,7 @@ final class PeriodTest extends TestCase
         Event::assertDispatched(BoardUpdated::class);
     }
 
-    public function validationProvider(): Generator
+    public static function validationProvider(): \Generator
     {
         yield from [
             [
@@ -189,7 +188,7 @@ final class PeriodTest extends TestCase
         self::assertEquals(2, $period3->refresh()->position);
     }
 
-    public function gameRouteProvider(): Generator
+    public static function gameRouteProvider(): \Generator
     {
         yield ['history.periods.store'];
 

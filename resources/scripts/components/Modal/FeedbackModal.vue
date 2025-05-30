@@ -25,7 +25,7 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 
 import Modal from "../Modal.vue";
 import LoadingButton from "../LoadingButton.vue";

@@ -3,7 +3,7 @@
         <PopoverButton
             class="
                 px-3
-                sm:py-3 sm:bg-black sm:bg-opacity-20
+                sm:py-3 sm:bg-black/20
                 text-gray-100
                 h-full
                 sm:w-full
@@ -12,7 +12,7 @@
                 sm:uppercase
                 font-medium
                 rounded-md
-                sm:hover:bg-opacity-30 sm:hover:text-white
+                sm:hover:bg-black/30 sm:hover:text-white
                 transition
                 transform
                 sm:hover:-translate-x-0.5
@@ -73,7 +73,7 @@
                     <div class="max-h-full flex flex-col">
                         <header
                             class="
-                                bg-gradient-to-r
+                                bg-linear-to-r
                                 from-indigo-600
                                 to-indigo-800
                                 py-6
@@ -114,6 +114,6 @@ withDefaults(
         buttonText: string,
         width?: string,
     }>(),
-    { width: "w-full sm:w-112" }
+    { width: "w-full sm:w-md" }
 );
 </script>

@@ -60,7 +60,7 @@
 <script lang="ts" setup>
 import { PlusIcon, XIcon } from "@heroicons/vue/solid";
 import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 
 import LoadingButton from "@/components/LoadingButton.vue";
 import {History, PaletteType} from "@/types";

@@ -120,7 +120,7 @@ import {
     DisclosurePanel,
 } from "@headlessui/vue";
 import { XIcon, PlusIcon, ExclamationCircleIcon } from "@heroicons/vue/outline";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 
 import { Focus, History } from "@/types";
 import { useGameLog } from "@/composables/useGameLog";

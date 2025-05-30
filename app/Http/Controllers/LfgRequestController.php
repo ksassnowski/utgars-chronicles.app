@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -25,7 +25,6 @@ use App\Notifications\NewLfgRequest;
 use App\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Throwable;
 
 final class LfgRequestController extends Controller
 {
@@ -43,7 +42,7 @@ final class LfgRequestController extends Controller
             $message = $request->post('message');
 
             $lfgRequest = $lfg->requestToJoin($user, $message);
-        } catch (AlreadyRequestedToJoinException|LfgAlreadyFullException|GameAlreadyStartedException $e) {
+        } catch (AlreadyRequestedToJoinException|GameAlreadyStartedException|LfgAlreadyFullException $e) {
             return $this->unsuccessfulRequestResponse($e);
         }
 
@@ -86,7 +85,7 @@ final class LfgRequestController extends Controller
         return redirect()->back();
     }
 
-    private function unsuccessfulRequestResponse(Throwable $exception): RedirectResponse
+    private function unsuccessfulRequestResponse(\Throwable $exception): RedirectResponse
     {
         $message = match ($exception::class) {
             AlreadyRequestedToJoinException::class => 'You already have a pending request for this game',

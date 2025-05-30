@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -18,7 +18,6 @@ use App\Event;
 use App\Events\BoardUpdated;
 use App\History;
 use App\Period;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event as EventFacade;
 use Tests\GameRouteTest;
@@ -30,9 +29,9 @@ use Tests\TestCase;
  */
 final class EventTest extends TestCase
 {
+    use GameRouteTest;
     use RefreshDatabase;
     use ScopedRouteTest;
-    use GameRouteTest;
 
     private Period $period;
 
@@ -93,7 +92,7 @@ final class EventTest extends TestCase
         $response->assertJsonValidationErrors($attribute);
     }
 
-    public function validationProvider(): Generator
+    public static function validationProvider(): iterable
     {
         yield from [
             'no name' => ['name', ''],
@@ -197,7 +196,7 @@ final class EventTest extends TestCase
         self::assertEquals(2, $event3->refresh()->position);
     }
 
-    public function scopedRouteProvider(): Generator
+    public static function scopedRouteProvider(): \Generator
     {
         yield from [
             'create event' => [
@@ -218,7 +217,7 @@ final class EventTest extends TestCase
         ];
     }
 
-    public function gameRouteProvider(): Generator
+    public static function gameRouteProvider(): \Generator
     {
         yield ['periods.events.store'];
 

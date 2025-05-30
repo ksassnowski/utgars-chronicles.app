@@ -1,19 +1,10 @@
 import { createApp, h } from "vue";
-import { createInertiaApp } from "@inertiajs/inertia-vue3";
-import { InertiaProgress } from "@inertiajs/progress";
-// @ts-ignore
-import { ZiggyVue } from 'ziggy';
+import { createInertiaApp } from "@inertiajs/vue3";
+import { ZiggyVue } from 'ziggy-js';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 import "../css/app.css";
 import "./bootstrap";
-
-InertiaProgress.init({
-    delay: 250,
-    color: "#29d",
-    includeCSS: true,
-    showSpinner: false,
-});
 
 createInertiaApp({
     title: (title) => `${title} — Utgar's Chronicles`,

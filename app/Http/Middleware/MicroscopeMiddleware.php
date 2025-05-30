@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -15,16 +15,15 @@ namespace App\Http\Middleware;
 
 use App\History;
 use App\MicroscopePlayer;
-use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class MicroscopeMiddleware
 {
     /**
-     * @param Closure(Request): Response $next
+     * @param \Closure(Request): Response $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, \Closure $next): Response
     {
         /** @var null|History $history */
         $history = $request->route('history');

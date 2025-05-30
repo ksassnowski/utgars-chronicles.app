@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -15,7 +15,6 @@ namespace Tests\Feature;
 
 use App\Lfg;
 use App\User;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia;
 use Tests\AuthenticatedRoutesTest;
@@ -99,7 +98,7 @@ final class SearchGameTest extends TestCase
             ->assertInertia(static fn (AssertableInertia $page) => $page->has('games', 0));
     }
 
-    public function authenticatedRoutesProvider(): Generator
+    public static function authenticatedRoutesProvider(): \Generator
     {
         yield from [
             'index' => ['get', '/lfg'],

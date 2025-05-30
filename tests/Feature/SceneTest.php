@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -22,14 +22,12 @@ use App\Http\Controllers\Scene\UpdateSceneController;
 use App\Http\Requests\History\CreateSceneRequest;
 use App\Http\Requests\History\UpdateSceneRequest;
 use App\Scene;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event as EventFacade;
 use Tests\GameRouteTest;
 use Tests\ScopedRouteTest;
 use Tests\TestCase;
 use Tests\ValidateRoutesTest;
-use function route;
 
 /**
  * @internal
@@ -55,28 +53,28 @@ final class SceneTest extends TestCase
         $this->user = $this->event->history->owner;
     }
 
-    public function scopedRouteProvider(): Generator
+    public static function scopedRouteProvider(): \Generator
     {
         yield from [
             'create scene' => [
                 'post',
                 static fn () => Event::factory()->create(),
-                static fn (History $history, Event $event) => route('events.scenes.store', [$history, $event]),
+                static fn (History $history, Event $event) => \route('events.scenes.store', [$history, $event]),
             ],
             'update scene' => [
                 'put',
                 static fn () => Scene::factory()->create(),
-                static fn (History $history, Scene $scene) => route('scenes.update', [$history, $scene]),
+                static fn (History $history, Scene $scene) => \route('scenes.update', [$history, $scene]),
             ],
             'delete scene' => [
                 'delete',
                 static fn () => Scene::factory()->create(),
-                static fn (History $history, Scene $scene) => route('scenes.delete', [$history, $scene]),
+                static fn (History $history, Scene $scene) => \route('scenes.delete', [$history, $scene]),
             ],
         ];
     }
 
-    public function validationProvider(): Generator
+    public static function validationProvider(): \Generator
     {
         yield from [
             'create scene' => [
@@ -94,7 +92,7 @@ final class SceneTest extends TestCase
 
     public function testCreateScene(): void
     {
-        $response = $this->login()->postJson(route('events.scenes.store', [$this->event->history, $this->event]), [
+        $response = $this->login()->postJson(\route('events.scenes.store', [$this->event->history, $this->event]), [
             'question' => '::question::',
             'scene' => '::scene::',
             'answer' => '::answer::',
@@ -125,7 +123,7 @@ final class SceneTest extends TestCase
         ]);
 
         $response = $this->login()
-            ->putJson(route('scenes.update', [$scene->history, $scene]), [
+            ->putJson(\route('scenes.update', [$scene->history, $scene]), [
                 'question' => '::new-question::',
                 'scene' => '::new-scene::',
                 'answer' => '::new-answer::',
@@ -149,7 +147,7 @@ final class SceneTest extends TestCase
             'history_id' => $this->event->history_id,
         ]);
 
-        $response = $this->login()->deleteJson(route('scenes.delete', [$scene->history, $scene]));
+        $response = $this->login()->deleteJson(\route('scenes.delete', [$scene->history, $scene]));
 
         $response
             ->assertRedirect()
@@ -160,7 +158,7 @@ final class SceneTest extends TestCase
         EventFacade::assertDispatched(BoardUpdated::class);
     }
 
-    public function gameRouteProvider(): Generator
+    public static function gameRouteProvider(): \Generator
     {
         yield ['events.scenes.store'];
 

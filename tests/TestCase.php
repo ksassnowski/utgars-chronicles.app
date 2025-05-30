@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -16,10 +16,6 @@ namespace Tests;
 use App\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use PHPUnit\Framework\Assert;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionNamedType;
-use ReflectionParameter;
 use YlsIdeas\FeatureFlags\Middleware\FeatureFlagState;
 
 /**
@@ -43,16 +39,16 @@ abstract class TestCase extends BaseTestCase
         Assert::assertTrue(\is_subclass_of($form_request, 'Illuminate\\Foundation\\Http\\FormRequest'), $form_request . ' is not a type of Form Request');
 
         try {
-            $reflector = new ReflectionClass($controller);
+            $reflector = new \ReflectionClass($controller);
             $action = $reflector->getMethod($method);
-        } catch (ReflectionException $exception) {
+        } catch (\ReflectionException $exception) {
             Assert::fail('Controller action could not be found: ' . $controller . '@' . $method);
         }
 
         Assert::assertTrue($action->isPublic(), 'Action "' . $method . '" is not public, controller actions must be public.');
 
-        $actual = collect($action->getParameters())->contains(static function (ReflectionParameter $parameter) use ($form_request) {
-            return $parameter->getType() instanceof ReflectionNamedType && $parameter->getType()->getName() === $form_request;
+        $actual = collect($action->getParameters())->contains(static function (\ReflectionParameter $parameter) use ($form_request) {
+            return $parameter->getType() instanceof \ReflectionNamedType && $parameter->getType()->getName() === $form_request;
         });
 
         Assert::assertTrue($actual, 'Action "' . $method . '" does not have validation using the "' . $form_request . '" Form Request.');

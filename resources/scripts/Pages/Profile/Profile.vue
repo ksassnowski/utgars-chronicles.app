@@ -68,8 +68,8 @@ export default { layout };
 </script>
 
 <script lang="ts" setup>
-import { useForm } from "@inertiajs/inertia-vue3";
-import { Head } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
+import { Head } from "@inertiajs/vue3";
 
 import LoadingButton from "@/components/LoadingButton.vue";
 import Panel from "@/components/UI/Panel.vue";

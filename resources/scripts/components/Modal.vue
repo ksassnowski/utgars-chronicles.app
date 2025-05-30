@@ -2,23 +2,21 @@
     <slot name="button" :toggle="toggle"></slot>
 
     <TransitionRoot appear :show="isOpen" as="template">
-        <Dialog as="div" @close="toggle">
+        <Dialog as="div" @close="toggle" class="relative z-0">
+            <TransitionChild
+                as="template"
+                enter="duration-300 ease-out"
+                enter-from="opacity-0"
+                enter-to="opacity-100"
+                leave="duration-200 ease-in"
+                leave-from="opacity-100"
+                leave-to="opacity-0"
+            >
+                <div class="fixed inset-0 bg-black/50" aria-hidden="true" />
+            </TransitionChild>
+
             <div class="fixed inset-0 z-30 overflow-y-auto">
                 <div class="min-h-screen px-4 text-center">
-                    <TransitionChild
-                        as="template"
-                        enter="duration-300 ease-out"
-                        enter-from="opacity-0"
-                        enter-to="opacity-100"
-                        leave="duration-200 ease-in"
-                        leave-from="opacity-100"
-                        leave-to="opacity-0"
-                    >
-                        <DialogOverlay
-                            class="fixed inset-0 bg-black bg-opacity-50"
-                        />
-                    </TransitionChild>
-
                     <span
                         class="inline-block h-screen align-middle"
                         aria-hidden="true"
@@ -36,21 +34,7 @@
                         leave-to="opacity-0 scale-95"
                     >
                         <div
-                            class="
-                                inline-block
-                                w-full
-                                max-w-xl
-                                p-5
-                                my-6
-                                overflow-hidden
-                                text-left
-                                align-middle
-                                transition-all
-                                transform
-                                bg-white
-                                shadow-xl
-                                rounded-lg
-                            "
+                            class="inline-block w-full max-w-xl p-5 my-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg z-10"
                         >
                             <div class="flex items-center justify-between">
                                 <DialogTitle

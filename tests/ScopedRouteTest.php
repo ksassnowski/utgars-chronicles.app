@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\History;
-use Generator;
 
 trait ScopedRouteTest
 {
     /**
      * @test
+     *
      * @dataProvider scopedRouteProvider
      */
     public function routeIsCorrectlyScoped(
@@ -37,5 +37,5 @@ trait ScopedRouteTest
             ->assertNotFound();
     }
 
-    abstract public function scopedRouteProvider(): Generator;
+    abstract public static function scopedRouteProvider(): \Generator;
 }

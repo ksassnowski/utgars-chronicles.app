@@ -75,7 +75,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
-import { useForm, Link } from "@inertiajs/inertia-vue3";
+import { useForm, Link } from "@inertiajs/vue3";
 import { TrashIcon } from "@heroicons/vue/outline";
 
 import { PaletteItem } from "@/types";

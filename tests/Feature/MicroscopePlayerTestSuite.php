@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -17,7 +17,7 @@ use App\History;
 use App\MicroscopePlayer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-trait MicroscopePlayerTest
+trait MicroscopePlayerTestSuite
 {
     use RefreshDatabase;
 

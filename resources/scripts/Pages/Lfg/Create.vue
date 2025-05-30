@@ -73,7 +73,7 @@ import InputGroup from "@/components/UI/InputGroup.vue";
 import TextInput from "@/components/UI/TextInput.vue";
 import HelpText from "@/components/UI/HelpText.vue";
 import NumberInput from "@/components/UI/NumberInput.vue";
-import {useForm} from "@inertiajs/inertia-vue3";
+import {useForm} from "@inertiajs/vue3";
 
 const timezone = dayjs.tz.guess();
 

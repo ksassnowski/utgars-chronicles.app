@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/vue3";
 
 import PageFooter from "@/components/UI/PageFooter.vue";
 import Panel from "@/components/UI/Panel.vue";

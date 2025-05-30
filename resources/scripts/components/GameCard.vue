@@ -12,9 +12,9 @@
             whitespace-normal
         "
         :class="{
-            'bg-gradient-to-br from-gray-600 to-gray-700 text-white border-transparent':
+            'bg-linear-to-br from-gray-600 to-gray-700 text-white border-transparent':
                 type === 'dark',
-            'bg-gradient-to-br from-white to-gray-100 text-gray-700 border-gray-200':
+            'bg-linear-to-br from-white to-gray-100 text-gray-700 border-gray-200':
                 type === 'light',
             'text-gray-700': type === null,
             'pb-6': $slots.footer,

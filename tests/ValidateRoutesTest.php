@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Generator;
-
 trait ValidateRoutesTest
 {
     /**
      * @test
+     *
      * @dataProvider validationProvider
      */
     public function validateRoutes(string $controller, string $action, string $requestClass): void
@@ -26,5 +25,5 @@ trait ValidateRoutesTest
         $this->assertActionUsesFormRequest($controller, $action, $requestClass);
     }
 
-    abstract public function validationProvider(): Generator;
+    abstract public static function validationProvider(): \Generator;
 }
