@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -41,14 +41,11 @@ class AppServiceProvider extends ServiceProvider
         Features::noCommands();
 
         Collection::macro('transpose', function () {
-            /** @phpstan-ignore-next-line */
             if ($this->isEmpty()) {
                 return [];
             }
 
-            /** @phpstan-ignore-next-line */
             if ($this->count() === 1) {
-                /** @phpstan-ignore-next-line */
                 return \array_map(static fn (string $item) => [$item], $this->first());
             }
 

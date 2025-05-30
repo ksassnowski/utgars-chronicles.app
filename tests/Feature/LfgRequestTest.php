@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -20,9 +20,7 @@ use App\Notifications\LfgRequestWasRejected;
 use App\Notifications\NewLfgRequest;
 use App\User;
 use Carbon\Carbon;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Notification;
 use Tests\TestCase;
 
 /**
@@ -38,7 +36,7 @@ final class LfgRequestTest extends TestCase
     {
         parent::setUp();
 
-        Notification::fake();
+        \Notification::fake();
     }
 
     public function testSendRequestForUpcomingGame(): void
@@ -102,7 +100,7 @@ final class LfgRequestTest extends TestCase
         $this->login()
             ->post(route('lfg.requests.store', $lfg));
 
-        Notification::assertSentTo(
+        \Notification::assertSentTo(
             $lfg->owner,
             NewLfgRequest::class,
             fn (NewLfgRequest $notification) => $notification->request->user->is($this->user)
@@ -178,7 +176,7 @@ final class LfgRequestTest extends TestCase
             ->actingAs($lfg->owner)
             ->post(route('lfg.requests.accept', $request))
             ->assertSessionHasErrors(['request' => 'Can only accept pending requests']);
-        Notification::assertNothingSent();
+        \Notification::assertNothingSent();
     }
 
     public function testCanRejectRequest(): void
@@ -214,7 +212,20 @@ final class LfgRequestTest extends TestCase
             ->actingAs($lfg->owner)
             ->post(route('lfg.requests.reject', $request))
             ->assertSessionHasErrors(['request' => 'Can only reject pending requests']);
-        Notification::assertNothingSent();
+        \Notification::assertNothingSent();
+    }
+
+    public static function notPendingRequestProvider(): iterable
+    {
+        yield from [
+            'already accepted request' => [
+                static fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->accepted()->create(),
+            ],
+
+            'already rejected request' => [
+                static fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->rejected()->create(),
+            ],
+        ];
     }
 
     public function testUserGetsNotifiedIfRequestGotRejected(): void
@@ -229,7 +240,7 @@ final class LfgRequestTest extends TestCase
             ->actingAs($lfg->owner)
             ->post(route('lfg.requests.reject', $request));
 
-        Notification::assertSentTo(
+        \Notification::assertSentTo(
             $request->user,
             LfgRequestWasRejected::class,
             static fn (LfgRequestWasRejected $notification) => $notification->request->is($request),
@@ -248,7 +259,7 @@ final class LfgRequestTest extends TestCase
             ->actingAs($lfg->owner)
             ->post(route('lfg.requests.accept', $request));
 
-        Notification::assertSentTo(
+        \Notification::assertSentTo(
             $request->user,
             LfgRequestWasAccepted::class,
             static fn (LfgRequestWasAccepted $notification) => $notification->request->is($request),
@@ -306,18 +317,5 @@ final class LfgRequestTest extends TestCase
     public function testDeleteAllOverlappingRequestsAfterRequestWasAccepted(): void
     {
         self::markTestIncomplete();
-    }
-
-    public function notPendingRequestProvider(): Generator
-    {
-        yield from [
-            'already accepted request' => [
-                static fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->accepted()->create(),
-            ],
-
-            'already rejected request' => [
-                static fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->rejected()->create(),
-            ],
-        ];
     }
 }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -16,14 +16,14 @@ namespace Tests\Feature\Event;
 use App\Events\LegacyDeleted;
 use App\History;
 use Tests\TestCase;
-use Tests\Unit\Event\BroadcastingEventTest;
+use Tests\Unit\Event\BroadcastingEventTestSuite;
 
 /**
  * @internal
  */
 final class LegacyDeletedTest extends TestCase
 {
-    use BroadcastingEventTest;
+    use BroadcastingEventTestSuite;
 
     public function testBroadcastCorrectAttributes(): void
     {

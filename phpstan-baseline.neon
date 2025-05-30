@@ -1,91 +1,439 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#2 \\$histories of class App\\\\AnonymousPlayer constructor expects array\\<int, string\\|null\\>, mixed given\\.$#"
+			message: '#^Class App\\Event uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Event.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Scene\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/Event.php
+
+		-
+			message: '#^Method App\\Event\:\:history\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, App\\Event\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, \$this\(App\\Event\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Event.php
+
+		-
+			message: '#^Method App\\Event\:\:period\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Period, App\\Event\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Period, \$this\(App\\Event\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Event.php
+
+		-
+			message: '#^Method App\\Event\:\:scenes\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Scene\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Scene, \$this\(App\\Event\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Event.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Event\:\:\$hidden is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$hidden\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Event.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Event\:\:limitElementsToMove\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Event\>, Illuminate\\Database\\Eloquent\\Builder\<\$this\(App\\Event\)\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Event.php
+
+		-
+			message: '#^Method App\\Filament\\Resources\\UserResource\:\:getPages\(\) should return array\<string, array\<int, string\>\> but returns array\<string, Filament\\Resources\\Pages\\PageRegistration\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Filament/Resources/UserResource.php
+
+		-
+			message: '#^Method App\\Filament\\Resources\\UserResource\\Pages\\EditUser\:\:getHeaderActions\(\) should return array\<int, Filament\\Pages\\Actions\\Action\> but returns array\{Filament\\Pages\\Actions\\DeleteAction\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Filament/Resources/UserResource/Pages/EditUser.php
+
+		-
+			message: '#^Method App\\Filament\\Resources\\UserResource\\Pages\\ListUsers\:\:getHeaderActions\(\) should return array\<int, Filament\\Pages\\Actions\\Action\> but returns array\{Filament\\Pages\\Actions\\CreateAction\}\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Filament/Resources/UserResource/Pages/ListUsers.php
+
+		-
+			message: '#^Class App\\Focus uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Focus.php
+
+		-
+			message: '#^Method App\\Focus\:\:history\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, App\\Focus\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, \$this\(App\\Focus\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Focus.php
+
+		-
+			message: '#^Parameter \#2 \$histories of class App\\AnonymousPlayer constructor expects array\<int, string\|null\>, mixed given\.$#'
+			identifier: argument.type
 			count: 1
 			path: app/Guards/MicroscopeGuard.php
 
 		-
-			message: "#^Parameter \\#1 \\$key of function trans expects string\\|null, mixed given\\.$#"
+			message: '#^Class App\\History uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Event\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Focus\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Legacy\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Palette\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Period\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Scene\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Method App\\History\:\:events\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Event\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Event, \$this\(App\\History\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Method App\\History\:\:foci\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Focus\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Focus, \$this\(App\\History\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Method App\\History\:\:legacies\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Legacy\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Legacy, \$this\(App\\History\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Method App\\History\:\:owner\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\User, App\\History\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\User, \$this\(App\\History\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Method App\\History\:\:palettes\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Palette\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Palette, \$this\(App\\History\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Method App\\History\:\:periods\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Period\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Period, \$this\(App\\History\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Method App\\History\:\:players\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\User, Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\User, \$this\(App\\History\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Method App\\History\:\:scenes\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Scene\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Scene, \$this\(App\\History\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Type string in generic type Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\User, Illuminate\\Database\\Eloquent\\Relations\\Pivot, string\> in PHPDoc tag @return is not subtype of template type TPivotModel of Illuminate\\Database\\Eloquent\\Relations\\Pivot \= Illuminate\\Database\\Eloquent\\Relations\\Pivot of class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Parameter \#1 \$key of function trans expects string\|null, mixed given\.$#'
+			identifier: argument.type
 			count: 2
 			path: app/Http/Controllers/Auth/ForgotPasswordController.php
 
 		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$arrays of function array_merge expects array, mixed given\\.$#"
-			count: 1
-			path: app/Http/Controllers/Event/CreateSceneController.php
-
-		-
-			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
-			count: 1
-			path: app/Http/Controllers/Event/UpdateEventController.php
-
-		-
-			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
-			count: 1
-			path: app/Http/Controllers/Focus/UpdateFocusController.php
-
-		-
-			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
-			count: 1
-			path: app/Http/Controllers/History/ChangeVisibilityController.php
-
-		-
-			message: "#^Parameter \\#1 \\$attributes of method App\\\\History\\:\\:insertPeriod\\(\\) expects array\\{position\\: int, type\\: 'dark'\\|'light', name\\: string\\}, mixed given\\.$#"
+			message: '#^Parameter \#1 \$attributes of method App\\History\:\:insertPeriod\(\) expects array\{position\: int, type\: ''dark''\|''light'', name\: string\}, array\<string, mixed\> given\.$#'
+			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/History/CreatePeriodController.php
 
 		-
-			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\HasOneOrMany\\<App\\\\History\\>\\:\\:create\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
-			count: 1
-			path: app/Http/Controllers/History/StoreHistoryController.php
-
-		-
-			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
-			count: 1
-			path: app/Http/Controllers/Legacy/UpdateLegacyController.php
-
-		-
-			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\HasOneOrMany\\<App\\\\Lfg\\>\\:\\:create\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
-			count: 1
-			path: app/Http/Controllers/LookingForGroupController.php
-
-		-
-			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
-			count: 1
-			path: app/Http/Controllers/PaletteController.php
-
-		-
-			message: "#^Parameter \\#1 \\$attributes of method App\\\\Period\\:\\:insertEvent\\(\\) expects array\\{position\\: int, name\\: string, type\\: 'dark'\\|'light'\\}, mixed given\\.$#"
+			message: '#^Parameter \#1 \$attributes of method App\\Period\:\:insertEvent\(\) expects array\{position\: int, name\: string, type\: ''dark''\|''light''\}, array\<string, mixed\> given\.$#'
+			identifier: argument.type
 			count: 1
 			path: app/Http/Controllers/Period/CreateEventController.php
 
 		-
-			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
+			message: '#^Method App\\Http\\Middleware\\Authenticate\:\:redirectTo\(\) should return string\|null but return statement is missing\.$#'
+			identifier: return.missing
 			count: 1
-			path: app/Http/Controllers/Period/UpdatePeriodController.php
+			path: app/Http/Middleware/Authenticate.php
 
 		-
-			message: "#^Parameter \\#1 \\$attributes of method Illuminate\\\\Database\\\\Eloquent\\\\Model\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
-			count: 1
-			path: app/Http/Controllers/Scene/UpdateSceneController.php
-
-		-
-			message: "#^Access to an undefined property Illuminate\\\\Contracts\\\\Auth\\\\Authenticatable\\:\\:\\$email\\.$#"
+			message: '#^Cannot call method getBag\(\) on mixed\.$#'
+			identifier: method.nonObject
 			count: 1
 			path: app/Http/Middleware/HandleInertiaRequests.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Contracts\\\\Auth\\\\Authenticatable\\:\\:\\$id\\.$#"
+			message: '#^Parameter \#1 \$array \(array\{\}\) to function array_filter is empty, call has no effect\.$#'
+			identifier: arrayFilter.empty
 			count: 1
 			path: app/Http/Middleware/HandleInertiaRequests.php
 
 		-
-			message: "#^Access to an undefined property Illuminate\\\\Contracts\\\\Auth\\\\Authenticatable\\:\\:\\$name\\.$#"
+			message: '#^Class App\\Legacy uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
 			count: 1
-			path: app/Http/Middleware/HandleInertiaRequests.php
+			path: app/Legacy.php
 
 		-
-			message: "#^Cannot call method getBag\\(\\) on mixed\\.$#"
+			message: '#^Method App\\Legacy\:\:history\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, App\\Legacy\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, \$this\(App\\Legacy\)\>\.$#'
+			identifier: return.type
 			count: 1
-			path: app/Http/Middleware/HandleInertiaRequests.php
+			path: app/Legacy.php
+
+		-
+			message: '#^Class App\\Lfg uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Lfg.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\LfgRequest\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 2
+			path: app/Lfg.php
+
+		-
+			message: '#^Method App\\Lfg\:\:owner\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\User, App\\Lfg\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\User, \$this\(App\\Lfg\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Lfg.php
+
+		-
+			message: '#^Method App\\Lfg\:\:requests\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\LfgRequest\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\LfgRequest, \$this\(App\\Lfg\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Lfg.php
+
+		-
+			message: '#^Method App\\Lfg\:\:users\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\User, Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\User, \$this\(App\\Lfg\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Lfg.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Lfg\:\:\$appends is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$appends\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Lfg.php
+
+		-
+			message: '#^Type string in generic type Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\User, Illuminate\\Database\\Eloquent\\Relations\\Pivot, string\> in PHPDoc tag @return is not subtype of template type TPivotModel of Illuminate\\Database\\Eloquent\\Relations\\Pivot \= Illuminate\\Database\\Eloquent\\Relations\\Pivot of class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/Lfg.php
+
+		-
+			message: '#^Class App\\LfgRequest uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/LfgRequest.php
+
+		-
+			message: '#^Method App\\LfgRequest\:\:lfg\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Lfg, App\\LfgRequest\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Lfg, \$this\(App\\LfgRequest\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/LfgRequest.php
+
+		-
+			message: '#^Method App\\LfgRequest\:\:user\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\User, App\\LfgRequest\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\User, \$this\(App\\LfgRequest\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/LfgRequest.php
+
+		-
+			message: '#^Class App\\Palette uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Palette.php
+
+		-
+			message: '#^Method App\\Palette\:\:history\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, App\\Palette\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, \$this\(App\\Palette\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Palette.php
+
+		-
+			message: '#^Class App\\Period uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Period.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Event\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/Period.php
+
+		-
+			message: '#^Method App\\Period\:\:events\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Event\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Event, \$this\(App\\Period\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Period.php
+
+		-
+			message: '#^Method App\\Period\:\:history\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, App\\Period\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, \$this\(App\\Period\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Period.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Period\:\:\$hidden is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$hidden\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Period.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Period\:\:limitElementsToMove\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Period\>, Illuminate\\Database\\Eloquent\\Builder\<\$this\(App\\Period\)\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Period.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(string\)\: array\{string\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Providers/AppServiceProvider.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Providers/AppServiceProvider.php
+
+		-
+			message: '#^Binary operation "\-" between mixed and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Rules/ValidPosition.php
+
+		-
+			message: '#^Binary operation "\+" between mixed and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Scene.php
+
+		-
+			message: '#^Class App\\Scene uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/Scene.php
+
+		-
+			message: '#^Method App\\Scene\:\:event\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Event, App\\Scene\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Event, \$this\(App\\Scene\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Scene.php
+
+		-
+			message: '#^Method App\\Scene\:\:history\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, App\\Scene\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, \$this\(App\\Scene\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Scene.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\Scene\:\:\$hidden is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$hidden\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/Scene.php
+
+		-
+			message: '#^Parameter \#1 \$query of method App\\Scene\:\:limitElementsToMove\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Scene\>, Illuminate\\Database\\Eloquent\\Builder\<\$this\(App\\Scene\)\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Scene.php
+
+		-
+			message: '#^Binary operation "\." between ''@'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/User.php
+
+		-
+			message: '#^Class App\\User uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/User.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\History\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/User.php
+
+		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Lfg\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/User.php
+
+		-
+			message: '#^Method App\\User\:\:games\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\History, Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\History, \$this\(App\\User\), Illuminate\\Database\\Eloquent\\Relations\\Pivot, ''pivot''\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/User.php
+
+		-
+			message: '#^Method App\\User\:\:histories\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\History\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\History, \$this\(App\\User\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/User.php
+
+		-
+			message: '#^Method App\\User\:\:lfgs\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Lfg\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Lfg, \$this\(App\\User\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/User.php
+
+		-
+			message: '#^PHPDoc type array\<int, string\> of property App\\User\:\:\$hidden is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$hidden\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: app/User.php
+
+		-
+			message: '#^Type string in generic type Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\<App\\History, Illuminate\\Database\\Eloquent\\Relations\\Pivot, string\> in PHPDoc tag @return is not subtype of template type TPivotModel of Illuminate\\Database\\Eloquent\\Relations\\Pivot \= Illuminate\\Database\\Eloquent\\Relations\\Pivot of class Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany\.$#'
+			identifier: generics.notSubtype
+			count: 1
+			path: app/User.php

@@ -64,6 +64,7 @@
 <script lang="ts" setup>
 import { inject } from "vue";
 import draggable from "vuedraggable";
+import { router } from "@inertiajs/vue3";
 import {
     ArrowSmUpIcon,
     ArrowSmDownIcon,
@@ -77,9 +78,8 @@ import SceneModal from "./Modal/SceneModal.vue";
 import GameCard from "./GameCard.vue";
 import EventModal from "./Modal/EventModal.vue";
 import CardButton from "./CardButton.vue";
-import {Inertia} from "@inertiajs/inertia";
 
-const props = defineProps<{ event: Event, period: Period }>();
+const props = defineProps<{ event: Event; period: Period }>();
 const history = inject(HistoryKey);
 
 const sceneMoved = (e) => {
@@ -87,10 +87,10 @@ const sceneMoved = (e) => {
         return;
     }
 
-    Inertia.post(
+    router.post(
         route("scenes.move", [history, e.moved.element]),
         { position: e.moved.newIndex + 1 },
-        { only: ["history"] }
+        { only: ["history"] },
     );
 };
 </script>

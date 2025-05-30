@@ -15,7 +15,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.4
           coverage: none
           extensions: pdo, mysql, pdo_mysql
 
@@ -27,7 +27,7 @@ jobs:
         run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
 
       - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2.1.6"
+        uses: "actions/cache@v4"
         with:
           path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
           key: "utgars-${{ hashFiles('composer.lock') }}"
@@ -43,7 +43,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0.27
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: utgars_chronicles_test
@@ -60,7 +60,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: 8.4
           coverage: none
           extensions: pdo, mysql, pdo_mysql
 
@@ -72,7 +72,7 @@ jobs:
         run: "echo \"::set-output name=directory::$(composer config cache-dir)\""
 
       - name: "Cache dependencies installed with composer"
-        uses: "actions/cache@v2.1.6"
+        uses: "actions/cache@v4"
         with:
           path: "${{ steps.determine-composer-cache-directory.outputs.directory }}"
           key: "utgars-${{ hashFiles('composer.lock') }}"

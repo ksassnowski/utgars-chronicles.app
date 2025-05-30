@@ -96,7 +96,7 @@
 
 <script lang="ts" setup>
 import { toRefs, watch } from "vue";
-import { Link, useForm } from "@inertiajs/inertia-vue3";
+import { Link, useForm } from "@inertiajs/vue3";
 import { TrashIcon, PencilIcon, XIcon } from "@heroicons/vue/outline";
 
 import { useEditMode } from "@/composables/useEditMode";

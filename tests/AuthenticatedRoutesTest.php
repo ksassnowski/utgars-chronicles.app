@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Generator;
 use Illuminate\Testing\TestResponse;
 
 trait AuthenticatedRoutesTest
 {
     /**
      * @test
+     *
      * @dataProvider authenticatedRoutesProvider
      *
      * @param mixed $uri
@@ -42,5 +42,5 @@ trait AuthenticatedRoutesTest
         $response->assertUnauthorized();
     }
 
-    abstract public function authenticatedRoutesProvider(): Generator;
+    abstract public static function authenticatedRoutesProvider(): \Generator;
 }

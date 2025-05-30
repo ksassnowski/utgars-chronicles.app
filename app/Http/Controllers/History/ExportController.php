@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -18,7 +18,6 @@ use App\History;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use League\Csv\Writer;
-use SplTempFileObject;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ExportController extends Controller
@@ -37,7 +36,7 @@ final class ExportController extends Controller
             \ini_set('auto_detect_line_endings', '1');
         }
 
-        $writer = Writer::createFromFileObject(new SplTempFileObject());
+        $writer = Writer::createFromFileObject(new \SplTempFileObject());
         $writer->insertAll($this->exporter->export($history));
 
         return response((string) $writer, 200, [

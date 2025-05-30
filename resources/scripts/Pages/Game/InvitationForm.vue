@@ -39,7 +39,7 @@
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { Link, Head, useForm } from "@inertiajs/inertia-vue3";
+import { Link, Head, useForm } from "@inertiajs/vue3";
 
 import Panel from "@/components/UI/Panel.vue";
 import LoadingButton from "../../components/LoadingButton.vue";

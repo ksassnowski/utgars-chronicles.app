@@ -181,8 +181,7 @@ export default { layout };
 
 <script lang="ts" setup>
 import { computed } from "vue";
-import { Inertia } from "@inertiajs/inertia";
-import { Head } from "@inertiajs/inertia-vue3";
+import { router, Head } from "@inertiajs/vue3";
 
 import { useConfirmAction } from "@/composables/useConfirmAction";
 import GameVisibilityBadge from "@/components/GameVisibilityBadge.vue";
@@ -200,6 +199,7 @@ interface History {
 
 const props = defineProps<{ history: History, invitationLink: string}>() ;
 
+const invitationLink = props.invitationLink;
 const visibilityButtonText = computed(() => {
     return props.history.public
             ? "Make game private"
@@ -210,7 +210,7 @@ const {
     needsConfirmation: confirmChangeVisibility,
     onClick: onClickChangeVisibility,
 } = useConfirmAction(() => {
-    Inertia.patch(route("history.visibility", props.history), {
+    router.patch(route("history.visibility", props.history), {
         public: !props.history.public,
     });
 });
@@ -219,7 +219,7 @@ const {
     needsConfirmation: confirmKickPlayer,
     onClick: onClickKickPlayer,
 } = useConfirmAction((player) =>
-    Inertia.delete(
+    router.delete(
         route("history.players.kick", [props.history, player])
     )
 );
@@ -228,7 +228,7 @@ const {
     needsConfirmation: confirmDeleteHistory,
     onClick: onClickDeleteHistory,
 } = useConfirmAction(() =>
-    Inertia.delete(route("history.delete", props.history))
+    router.delete(route("history.delete", props.history))
 );
 
 const saveInvitationLinkToClipboard = () =>

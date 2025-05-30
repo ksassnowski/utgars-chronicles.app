@@ -1,6 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@source "../views";
 
 @layer base {
     #app {
@@ -114,7 +113,7 @@
     content: '';
     z-index: -10;
     height: 125%;
-    background: linear-gradient(135deg, theme('colors.indigo.800') 0%, theme('colors.indigo.600') 100%);
+    background: linear-gradient(135deg, var(--color-indigo-800) 0%, var(--color-indigo-600) 100%);
     clip-path: polygon(0 0, 100% 0, 100% 85%, 0% 100%);
 }
 
@@ -160,4 +159,8 @@
 .flash-leave-to {
     opacity: 0;
     transform: translateX(-12px);
+}
+
+button {
+    cursor: pointer;
 }

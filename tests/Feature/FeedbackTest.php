@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -17,7 +17,6 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Requests\SubmitFeedbackRequest;
 use App\Notifications\FeedbackSubmitted;
 use App\User;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Tests\AuthenticatedRoutesTest;
@@ -33,7 +32,7 @@ final class FeedbackTest extends TestCase
     use AuthenticatedRoutesTest;
     use ValidateRoutesTest;
 
-    public function authenticatedRoutesProvider(): Generator
+    public static function authenticatedRoutesProvider(): \Generator
     {
         yield from [
             'submit feedback' => ['post', '/feedback'],
@@ -59,7 +58,7 @@ final class FeedbackTest extends TestCase
         );
     }
 
-    public function validationProvider(): Generator
+    public static function validationProvider(): \Generator
     {
         yield from [
             'submit feedback' => [

@@ -73,7 +73,7 @@
 
 <script lang="ts" setup>
 import { Disclosure, DisclosurePanel, DisclosureButton } from "@headlessui/vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 import { PlusIcon, XIcon } from "@heroicons/vue/solid";
 
 import { History } from "@/types";

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Generator;
-
 trait GameRouteTest
 {
     /**
      * @test
+     *
      * @dataProvider gameRouteProvider
      */
     public function routeUsesMicroscopeMiddleware(string $routeName): void
@@ -26,5 +25,5 @@ trait GameRouteTest
         $this->assertRouteUsesMiddleware($routeName, ['microscope']);
     }
 
-    abstract public function gameRouteProvider(): Generator;
+    abstract public static function gameRouteProvider(): \Generator;
 }

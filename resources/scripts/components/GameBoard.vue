@@ -10,7 +10,7 @@
             :palette="palettes"
         />
 
-        <div class="pb-12 sm:pb-0 sm:pr-24 flex flex-col flex-grow">
+        <div class="pb-12 sm:pb-0 sm:pr-24 flex flex-col grow">
             <div class="flex items-center w-full px-4 h-10">
                 <div class="hidden sm:block flex-1">
                     <PeriodModal :position="nextPosition" :history="history">
@@ -26,19 +26,12 @@
                 <div class="flex-1 hidden sm:flex justify-end"></div>
             </div>
 
-            <div class="flex-grow relative z-0">
+            <div class="grow relative z-0">
                 <draggable
                     :list="history.periods"
                     @change="onPeriodMoved"
                     handle=".handle"
-                    class="
-                        absolute
-                        inset-0
-                        overflow-x-auto overflow-y-hidden
-                        whitespace-nowrap
-                        pl-2
-                        pb-3
-                    "
+                    class="absolute inset-0 overflow-x-auto overflow-y-hidden whitespace-nowrap pl-2 pb-3"
                     item-key="id"
                 >
                     <template #item="{ element }">
@@ -53,10 +46,16 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ComputedRef, onBeforeUnmount, provide, onMounted } from "vue";
+import {
+    computed,
+    ComputedRef,
+    onBeforeUnmount,
+    provide,
+    onMounted,
+} from "vue";
 import axios from "axios";
 import draggable from "vuedraggable";
-import { Inertia } from "@inertiajs/inertia";
+import { router } from "@inertiajs/vue3";
 import { PlusIcon } from "@heroicons/vue/solid";
 
 import { ChannelKey, HistoryKey } from "@/symbols";
@@ -69,10 +68,10 @@ import GameSidebar from "@/components/GameSidebar.vue";
 import GameLog from "@/components/GameLog.vue";
 
 const props = defineProps<{
-    history: History,
-    palettes: Array<PaletteItem>,
-    foci: Array<Focus>,
-    legacies: Array<Legacy>,
+    history: History;
+    palettes: Array<PaletteItem>;
+    foci: Array<Focus>;
+    legacies: Array<Legacy>;
 }>();
 
 const nextPosition: ComputedRef<number> = computed(() => {
@@ -83,10 +82,9 @@ const nextPosition: ComputedRef<number> = computed(() => {
     return props.history.periods.slice(-1)[0].position + 1;
 });
 
-const resyncBoard = (...only: string[]) =>
-    Inertia.reload({ only: only });
+const resyncBoard = (...only: string[]) => router.reload({ only: only });
 
-const updateSeed = ({ name }) => props.history.name = name;
+const updateSeed = ({ name }) => (props.history.name = name);
 
 const onPeriodMoved = (e) => {
     if (!e.moved) {
@@ -95,10 +93,10 @@ const onPeriodMoved = (e) => {
 
     const { element, newIndex } = e.moved;
 
-    Inertia.post(
+    router.post(
         route("periods.move", [props.history, element]),
         { position: newIndex + 1 },
-        { only: ["history"] }
+        { only: ["history"] },
     );
 };
 

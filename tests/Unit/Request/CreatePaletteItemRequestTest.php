@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class CreatePaletteItemRequestTest extends TestCase
 {
-    use FormRequestTest;
+    use FormRequestTestSuite;
 
     protected function getRequest(): FormRequest
     {

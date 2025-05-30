@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -22,7 +22,6 @@ use App\Http\Controllers\Focus\UpdateFocusController;
 use App\Http\Controllers\History\DefineFocusController;
 use App\Http\Requests\History\DefineFocusRequest;
 use App\Http\Requests\History\UpdateFocusRequest;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\GameRouteTest;
@@ -47,7 +46,7 @@ final class FocusTest extends TestCase
         Event::fake();
     }
 
-    public function validationProvider(): Generator
+    public static function validationProvider(): \Generator
     {
         yield from [
             'create focus' => [
@@ -124,7 +123,7 @@ final class FocusTest extends TestCase
         );
     }
 
-    public function scopedRouteProvider(): Generator
+    public static function scopedRouteProvider(): \Generator
     {
         yield from [
             'update focus' => [
@@ -140,7 +139,7 @@ final class FocusTest extends TestCase
         ];
     }
 
-    public function gameRouteProvider(): Generator
+    public static function gameRouteProvider(): \Generator
     {
         yield ['history.focus.define'];
 

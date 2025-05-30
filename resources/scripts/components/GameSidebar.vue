@@ -8,7 +8,7 @@
             sm:left-auto
             sm:right-0
             sm:inset-y-0
-            sm:bg-gradient-to-b
+            sm:bg-linear-to-b
             sm:from-indigo-600
             sm:to-indigo-800
             shadow-lg
@@ -28,7 +28,7 @@
                     justify-between
                     sm:justify-start
                     sm:w-full sm:flex-col
-                    flex-grow
+                    grow
                     h-full
                     sm:h-auto
                 "
@@ -49,7 +49,7 @@
                             hover:text-white
                             text-[0.6rem]
                             font-medium
-                            bg-black bg-opacity-20
+                            bg-black/20
                             h-full
                             px-3
                             inline-flex
@@ -108,7 +108,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/vue3";
 import { PlusIcon, ChevronDoubleLeftIcon } from "@heroicons/vue/outline";
 
 import { Focus, History, Legacy, PaletteItem } from "@/types";

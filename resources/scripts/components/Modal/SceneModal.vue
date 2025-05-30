@@ -106,7 +106,7 @@
 
 <script lang="ts" setup>
 import { inject, ref, toRefs } from "vue";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/vue3";
 
 import {CardType, Event, Scene} from "@/types";
 import {HistoryKey} from "@/symbols";

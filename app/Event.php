@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -87,7 +86,7 @@ class Event extends Model implements Movable
             self::where('period_id', $event->period_id)
                 ->where('position', '>', $event->position)
                 ->update([
-                    'position' => DB::raw('position - 1'),
+                    'position' => \DB::raw('position - 1'),
                 ]);
         });
     }

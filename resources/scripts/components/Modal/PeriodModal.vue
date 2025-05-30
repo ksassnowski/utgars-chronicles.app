@@ -47,7 +47,9 @@
             </div>
 
             <div class="text-center">
-                <LoadingButton :loading="form.processing" class="block w-full">Save</LoadingButton>
+                <LoadingButton :loading="form.processing" class="block w-full"
+                    >Save</LoadingButton
+                >
 
                 <Link
                     v-if="period.id"
@@ -66,19 +68,19 @@
 </template>
 
 <script lang="ts" setup>
-import {ref, toRefs} from "vue";
-import {Link} from "@inertiajs/inertia-vue3";
+import { ref, toRefs } from "vue";
+import { Link } from "@inertiajs/vue3";
 
-import {useCreateEditForm} from "@/composables/useCreateEditForm";
+import { useCreateEditForm } from "@/composables/useCreateEditForm";
 import Modal from "@/components/Modal.vue";
 import LoadingButton from "@/components/LoadingButton.vue";
-import {CardType, History, Period} from "@/types";
+import { CardType, History, Period } from "@/types";
 
 const props = withDefaults(
     defineProps<{
-        history: History,
-        position?: number|null,
-        period?: Pick<Period, "id"|"name"|"type">
+        history: History;
+        position?: number | null;
+        period?: Pick<Period, "id" | "name" | "type">;
     }>(),
     {
         period: () => ({ name: "", type: CardType.Light }),
@@ -94,7 +96,7 @@ const { form, submit: formSubmit } = useCreateEditForm(
     ["name", "type"],
     route("history.periods.store", [props.history]),
     () => route("periods.update", [props.history, props.period]),
-    position
+    position,
 );
 
 const title = period.value.id ? "Edit Period" : "Create Period";
@@ -102,6 +104,6 @@ const submit = formSubmit(() => modal.value.toggle());
 
 const confirmDelete = () =>
     confirm(
-        "Really delete this period? All events and scenes inside of this period will be deleted as well."
+        "Really delete this period? All events and scenes inside of this period will be deleted as well.",
     );
 </script>

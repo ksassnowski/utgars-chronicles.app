@@ -1,14 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 use App\History;
 use App\MicroscopePlayer;
+use Illuminate\Support\Facades\Broadcast;
 
 Broadcast::channel('history.{history}', function (MicroscopePlayer $player, History $history) {
-    if (!$history->public && $player->isGuest()) {
+    if (! $history->public && $player->isGuest()) {
         return null;
     }
 
-    if (!$player->isPlayer($history)) {
+    if (! $player->isPlayer($history)) {
         return null;
     }
 

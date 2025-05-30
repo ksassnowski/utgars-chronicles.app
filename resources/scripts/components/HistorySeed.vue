@@ -25,7 +25,7 @@
                 name="name"
                 ref="input"
                 v-model="form.name"
-                class="md:w-[22rem]"
+                class="md:w-88"
             />
 
             <button
@@ -48,7 +48,7 @@
 
 <script lang="ts" setup>
 import { watch } from "vue";
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 import { PencilIcon } from "@heroicons/vue/outline";
 
 import { History } from "@/types";

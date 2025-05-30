@@ -11,7 +11,7 @@
                 <Link :href="route('lfg.create')" class="text-indigo-700 font-semibold">create a game yourself</Link>?
             </p>
 
-            <LfgList :games="page.props.value.games" class="mt-8" />
+            <LfgList :games="page.props.games" class="mt-8" />
         </div>
     </div>
 </template>
@@ -24,7 +24,7 @@ export default { layout };
 
 <script lang="ts" setup>
 import { reactive } from "vue";
-import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 
 import { Lfg } from "@/types";
 import LfgList from "@/components/LfgList.vue";

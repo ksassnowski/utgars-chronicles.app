@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -18,7 +18,6 @@ use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
-use function route;
 
 /**
  * @internal
@@ -48,7 +47,7 @@ final class InvitationTest extends TestCase
             'history' => $history->id,
         ]));
 
-        $response->assertRedirect(route('login'));
+        $response->assertRedirect(\route('login'));
     }
 
     public function testCannotAcceptAnInvitationTwice(): void

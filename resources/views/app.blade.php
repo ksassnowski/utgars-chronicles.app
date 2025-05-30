@@ -20,9 +20,9 @@
         <script src="https://cdn.usefathom.com/script.js" data-site="RHQXBEGX" included-domains="utgars-chronicles.app" defer></script>
     @endproduction
 
-    @vite('resources/scripts/app.ts')
-
     @routes
+
+    @vite('resources/scripts/app.ts')
 </head>
 <body class="flex flex-col h-full antialiased">
     @inertia

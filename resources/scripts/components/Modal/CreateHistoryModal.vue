@@ -55,7 +55,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useForm } from "@inertiajs/inertia-vue3";
+import { useForm } from "@inertiajs/vue3";
 
 import Modal from "@/components/Modal.vue";
 import LoadingButton from "@/components//LoadingButton.vue";

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -97,7 +97,7 @@ class User extends Authenticatable implements FilamentUser, MicroscopePlayer
         return false;
     }
 
-    public function canAccessFilament(): bool
+    public function canAccessPanel(\Filament\Panel $panel): bool
     {
         return \str_ends_with($this->email, '@' . config('app.admin_email_domain'));
     }

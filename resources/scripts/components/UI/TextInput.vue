@@ -2,7 +2,7 @@
     <input
         v-model="text"
         type="text"
-        class="w-full bg-gray-100 px-4 py-2 border-2 border-transparent rounded focus:bg-white focus:border-indigo-700 placeholder-gray-400"
+        class="w-full bg-gray-100 px-4 py-2 border-none outline-none rounded focus:bg-white focus:ring-2 focus:ring-indigo-700 placeholder-gray-400"
         :name="name"
         :id="name"
         :required="required"

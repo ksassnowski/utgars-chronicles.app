@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -42,7 +42,7 @@ final class MicroscopeGuardTest extends TestCase
     {
         $request = new Request();
         $request->setUserResolver(static fn () => null);
-        $request->setLaravelSession(session());
+        $request->setLaravelSession(session()->driver());
         $guard = new MicroscopeGuard();
 
         self::assertInstanceOf(AnonymousPlayer::class, $guard($request));
@@ -52,7 +52,7 @@ final class MicroscopeGuardTest extends TestCase
     {
         $request = new Request();
         $request->setUserResolver(static fn () => null);
-        $request->setLaravelSession(session());
+        $request->setLaravelSession(session()->driver());
         $guard = new MicroscopeGuard();
 
         $player = $guard($request);
@@ -68,7 +68,7 @@ final class MicroscopeGuardTest extends TestCase
         session()->put('histories', [
             $history->id => '::name::',
         ]);
-        $request->setLaravelSession(session());
+        $request->setLaravelSession(session()->driver());
         $guard = new MicroscopeGuard();
 
         $player = $guard($request);

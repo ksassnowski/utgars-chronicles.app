@@ -1,5 +1,5 @@
 <template>
-    <SettingsPopover title="Palette" button-text="Palette" width="sm:w-128">
+    <SettingsPopover title="Palette" button-text="Palette" width="sm:w-lg">
         <template #icon>
             <ThumbUpIcon class="w-4 h-4" />
         </template>

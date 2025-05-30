@@ -24,7 +24,7 @@
                 :key="message.id"
                 class="
                     relative
-                    bg-gradient-to-r
+                    bg-linear-to-r
                     from-indigo-500
                     to-indigo-700
                     rounded-md

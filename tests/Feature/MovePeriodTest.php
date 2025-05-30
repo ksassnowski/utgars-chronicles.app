@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -17,7 +17,6 @@ use App\Events\BoardUpdated;
 use App\History;
 use App\Period;
 use App\User;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\ScopedRouteTest;
@@ -211,7 +210,7 @@ final class MovePeriodTest extends TestCase
         $response->assertJsonValidationErrors('position');
     }
 
-    public function invalidPositionProvider(): Generator
+    public static function invalidPositionProvider(): iterable
     {
         yield from [
             'missing' => [[]],
@@ -236,7 +235,7 @@ final class MovePeriodTest extends TestCase
         $response->assertForbidden();
     }
 
-    public function scopedRouteProvider(): Generator
+    public static function scopedRouteProvider(): \Generator
     {
         yield from [
             'move period' => [

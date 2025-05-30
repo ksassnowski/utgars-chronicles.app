@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -22,7 +22,6 @@ use App\Http\Controllers\Legacy\UpdateLegacyController;
 use App\Http\Requests\Legacy\CreateLegacyRequest;
 use App\Http\Requests\Legacy\UpdateLegacyRequest;
 use App\Legacy;
-use Generator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\GameRouteTest;
@@ -110,7 +109,7 @@ final class LegacyTest extends TestCase
         );
     }
 
-    public function validationProvider(): Generator
+    public static function validationProvider(): \Generator
     {
         yield from [
             'create legacy' => [
@@ -126,7 +125,7 @@ final class LegacyTest extends TestCase
         ];
     }
 
-    public function scopedRouteProvider(): Generator
+    public static function scopedRouteProvider(): \Generator
     {
         yield from [
             'update legacy' => [
@@ -142,7 +141,7 @@ final class LegacyTest extends TestCase
         ];
     }
 
-    public function gameRouteProvider(): Generator
+    public static function gameRouteProvider(): \Generator
     {
         yield ['history.legacies.store'];
 

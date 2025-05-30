@@ -1,5 +1,5 @@
 import { ref } from "vue";
-import { InertiaForm } from "@inertiajs/inertia-vue3";
+import { InertiaForm } from "@inertiajs/vue3";
 import { noop } from "lodash";
 
 export function useEditMode<T>(
