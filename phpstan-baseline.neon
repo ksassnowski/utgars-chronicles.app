@@ -1,6 +1,18 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Class App\\EchoGameSettings uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
+			identifier: missingType.generics
+			count: 1
+			path: app/EchoGameSettings.php
+
+		-
+			message: '#^Method App\\EchoGameSettings\:\:history\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, App\\EchoGameSettings\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\History, \$this\(App\\EchoGameSettings\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/EchoGameSettings.php
+
+		-
 			message: '#^Class App\\Event uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1
@@ -9,6 +21,12 @@ parameters:
 		-
 			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Scene\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasMany\: TRelatedModel, TDeclaringModel$#'
 			identifier: generics.lessTypes
+			count: 1
+			path: app/Event.php
+
+		-
+			message: '#^Method App\\Event\:\:cause\(\) should return Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Event, App\\Event\> but returns Illuminate\\Database\\Eloquent\\Relations\\BelongsTo\<App\\Event, \$this\(App\\Event\)\>\.$#'
+			identifier: return.type
 			count: 1
 			path: app/Event.php
 
@@ -121,6 +139,18 @@ parameters:
 			path: app/History.php
 
 		-
+			message: '#^Generic type Illuminate\\Database\\Eloquent\\Relations\\HasOne\<App\\EchoGameSettings\> in PHPDoc tag @return does not specify all template types of class Illuminate\\Database\\Eloquent\\Relations\\HasOne\: TRelatedModel, TDeclaringModel$#'
+			identifier: generics.lessTypes
+			count: 1
+			path: app/History.php
+
+		-
+			message: '#^Method App\\History\:\:echoGameSettings\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasOne\<App\\EchoGameSettings\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasOne\<App\\EchoGameSettings, \$this\(App\\History\)\>\.$#'
+			identifier: return.type
+			count: 1
+			path: app/History.php
+
+		-
 			message: '#^Method App\\History\:\:events\(\) should return Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Event\> but returns Illuminate\\Database\\Eloquent\\Relations\\HasMany\<App\\Event, \$this\(App\\History\)\>\.$#'
 			identifier: return.type
 			count: 1
@@ -187,6 +217,12 @@ parameters:
 			path: app/Http/Controllers/History/CreatePeriodController.php
 
 		-
+			message: '#^Anonymous function has an unused use \$history\.$#'
+			identifier: closure.unusedUse
+			count: 1
+			path: app/Http/Controllers/History/GameController.php
+
+		-
 			message: '#^Parameter \#1 \$attributes of method App\\Period\:\:insertEvent\(\) expects array\{position\: int, name\: string, type\: ''dark''\|''light''\}, array\<string, mixed\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -211,6 +247,24 @@ parameters:
 			path: app/Http/Middleware/HandleInertiaRequests.php
 
 		-
+			message: '#^Access to an undefined property \(object\|string\|null\)\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Requests/CreateEchoRequest.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method App\\CardType\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Requests/CreateEchoRequest.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method App\\CardType\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Requests/CreateInterventionRequest.php
+
+		-
 			message: '#^Class App\\Legacy uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
 			identifier: missingType.generics
 			count: 1
@@ -221,11 +275,6 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: app/Legacy.php
-
-		-
-			message: "#^Parameter \\#1 \\$values of method Illuminate\\\\Database\\\\Eloquent\\\\Relations\\\\HasOne\\<App\\\\EchoGameSettings\\>\\:\\:update\\(\\) expects array\\<string, mixed\\>, mixed given\\.$#"
-			count: 1
-			path: app/Http/Controllers/History/UpdateEchoGameSettingsController.php
 
 		-
 			message: '#^Class App\\Lfg uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'
@@ -286,6 +335,12 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: app/LfgRequest.php
+
+		-
+			message: '#^Binary operation "\+" between mixed and 1 results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/MicroscopeEcho/Repository/InMemoryEchoGroupRepository.php
 
 		-
 			message: '#^Class App\\Palette uses generic trait Illuminate\\Database\\Eloquent\\Factories\\HasFactory but does not specify its types\: TFactory$#'

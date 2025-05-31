@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -18,7 +18,6 @@ use App\Event;
 use App\EventType;
 use App\MicroscopeEcho\Repository\EchoGroupRepository;
 use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
 
 final class AddIntervention implements AddsIntervention
 {
@@ -30,7 +29,7 @@ final class AddIntervention implements AddsIntervention
     public function handle(Event $event, string $name, CardType $type): Event
     {
         if ($event->isIntervention()) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'Cannot add an intervention to another intervention',
             );
         }
@@ -38,13 +37,13 @@ final class AddIntervention implements AddsIntervention
         $group = $this->echoGroups->getEchoGroup($event);
         $event->echo_group = $group;
 
-        if ($event->echo_group_position === null) {
+        if (null === $event->echo_group_position) {
             $event->echo_group_position = 1;
         }
 
         $groupPosition = $event->echo_group_position + 1;
 
-        return DB::transaction(function () use ($event, $group, $name, $type, $groupPosition) {
+        return DB::transaction(static function () use ($event, $group, $name, $type, $groupPosition) {
             if ($event->isDirty()) {
                 $event->update();
             }

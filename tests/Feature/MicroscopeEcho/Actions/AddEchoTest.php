@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -19,7 +19,6 @@ use App\History;
 use App\MicroscopeEcho\Actions\AddEcho;
 use App\MicroscopeEcho\Repository\InMemoryEchoGroupRepository;
 use App\Period;
-use InvalidArgumentException;
 use Tests\TestCase;
 
 /**
@@ -152,7 +151,7 @@ final class AddEchoTest extends TestCase
             new InMemoryEchoGroupRepository([$cause, $event]),
         );
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot use regular event as cause for Echo');
 
         $action->handle($cause, $event, '::echo-name::', CardType::Dark);
@@ -172,7 +171,7 @@ final class AddEchoTest extends TestCase
             new InMemoryEchoGroupRepository([$cause, $event]),
         );
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Echo cause needs to have happened after changed event');
 
         $action->handle($cause, $event, '::echo-name::', CardType::Dark);
@@ -192,7 +191,7 @@ final class AddEchoTest extends TestCase
             new InMemoryEchoGroupRepository([$cause, $event]),
         );
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Echo cause needs to have happened after changed event');
 
         $action->handle($cause, $event, '::echo-name::', CardType::Dark);
@@ -209,7 +208,7 @@ final class AddEchoTest extends TestCase
             new InMemoryEchoGroupRepository([$cause, $event]),
         );
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Cause and event need to belong to the same history');
 
         $action->handle($cause, $event, '::echo-name::', CardType::Dark);
@@ -237,7 +236,7 @@ final class AddEchoTest extends TestCase
             new InMemoryEchoGroupRepository([$cause, $event]),
         );
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Echo needs to happen after its cause');
 
         $action->handle($cause, $event, '::echo-name::', CardType::Dark);
@@ -265,7 +264,7 @@ final class AddEchoTest extends TestCase
             new InMemoryEchoGroupRepository([$cause, $event]),
         );
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Echo needs to happen after its cause');
 
         $action->handle($cause, $event, '::echo-name::', CardType::Dark);

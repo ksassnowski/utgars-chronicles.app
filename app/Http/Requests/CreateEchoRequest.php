@@ -1,5 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
+/**
+ * Copyright (c) 2025 Kai Sassnowski
+ *
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
+ *
+ * @see https://github.com/ksassnowski/utgars-chronicles.app
+ */
+
 namespace App\Http\Requests;
 
 use App\CardType;
@@ -21,8 +32,8 @@ final class CreateEchoRequest extends FormRequest
             'cause' => [
                 'required',
                 Rule::exists('events', 'id')
-                    ->where('history_id', $this->route('history')->id)
-            ]
+                    ->where('history_id', $this->route('history')->id),
+            ],
         ];
     }
 

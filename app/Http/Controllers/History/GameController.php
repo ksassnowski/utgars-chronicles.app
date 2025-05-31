@@ -28,7 +28,7 @@ final class GameController
                 'periods.events' => function (Builder $builder) use ($history): void {
                     $builder->whereIn('id', $this->getLatestEventIDs($history));
                 },
-                'periods.events.cause' => function (Builder $builder) use ($history): void {
+                'periods.events.cause' => static function (Builder $builder): void {
                     $builder->select('id', 'echo_group');
                 },
                 'periods.events.scenes',

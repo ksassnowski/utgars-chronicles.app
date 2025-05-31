@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+
 trait GameRouteTest
 {
-    /**
-     * @test
-     *
-     * @dataProvider gameRouteProvider
-     */
+    #[DataProvider('gameRouteProvider')]
+    #[Test()]
     public function routeUsesMicroscopeMiddleware(string $routeName): void
     {
         $this->assertRouteUsesMiddleware($routeName, ['microscope']);

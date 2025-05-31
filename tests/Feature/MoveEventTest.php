@@ -15,7 +15,6 @@ namespace Tests\Feature;
 
 use App\Event;
 use App\Events\BoardUpdated;
-use App\EventType;
 use App\History;
 use App\Period;
 use App\User;
@@ -99,7 +98,7 @@ final class MoveEventTest extends TestCase
             ->login()
             ->postJson(
                 route('events.move', [$this->history, $event]),
-                ['position' => 2]
+                ['position' => 2],
             )
             ->assertSessionHasNoErrors();
 
@@ -135,7 +134,7 @@ final class MoveEventTest extends TestCase
             ->login()
             ->postJson(
                 route('events.move', [$this->history, $event]),
-                ['position' => 2]
+                ['position' => 2],
             )
             ->assertSessionHasNoErrors();
 
@@ -165,7 +164,7 @@ final class MoveEventTest extends TestCase
             ->login()
             ->postJson(
                 route('events.move', [$this->history, $event]),
-                ['position' => 2]
+                ['position' => 2],
             )
             ->assertSessionHasNoErrors();
 
@@ -202,7 +201,7 @@ final class MoveEventTest extends TestCase
             ->login()
             ->postJson(
                 route('events.move', [$this->history, $echoEvent1]),
-                ['position' => 1]
+                ['position' => 1],
             )
             ->assertSessionHasNoErrors();
 

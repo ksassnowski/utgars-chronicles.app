@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\History;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 
 trait ScopedRouteTest
 {
-    /**
-     * @test
-     *
-     * @dataProvider scopedRouteProvider
-     */
+    #[DataProvider('scopedRouteProvider')]
+    #[Test()]
     public function routeIsCorrectlyScoped(
         string $httpMethod,
         callable $setup,

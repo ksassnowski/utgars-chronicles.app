@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -19,7 +19,6 @@ use App\History;
 use App\Http\Controllers\History\UpdateEchoGameSettingsController;
 use App\Http\Requests\UpdateEchoGameSettingsRequest;
 use App\MicroscopeEcho\AgentPowers;
-use Generator;
 use Illuminate\Support\Facades\Event;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\GameRouteTest;
@@ -111,12 +110,12 @@ final class EchoGameSettingsTest extends TestCase
             ->assertJson(['message' => 'Game is not an Echo game']);
     }
 
-    public function gameRouteProvider(): Generator
+    public static function gameRouteProvider(): \Generator
     {
         yield ['history.echo-settings.update'];
     }
 
-    public function validationProvider(): Generator
+    public static function validationProvider(): \Generator
     {
         yield from [
             'update echo settings' => [

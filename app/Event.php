@@ -119,12 +119,12 @@ class Event extends Model implements Movable
 
     public function move(int $position): void
     {
-        DB::transaction(function () use ($position) {
+        DB::transaction(function () use ($position): void {
             $this->baseMove($position);
 
             // Make sure we also move all events in the same "stack"
             // to the new position.
-            if ($this->echo_group !== null) {
+            if (null !== $this->echo_group) {
                 Event::query()
                     ->where('echo_group', $this->echo_group)
                     ->where('history_id', $this->history_id)
@@ -162,7 +162,7 @@ class Event extends Model implements Movable
     {
         $query
             ->where('period_id', $this->period->id)
-            ->when($this->echo_group !== null, function (Builder $query) {
+            ->when(null !== $this->echo_group, function (Builder $query): void {
                 $query
                     ->where('echo_group', '!=', $this->echo_group)
                     ->orWhereNull('echo_group');

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -18,7 +18,6 @@ use App\Event;
 use App\EventType;
 use App\MicroscopeEcho\Repository\EchoGroupRepository;
 use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
 
 final class AddEcho implements AddsEcho
 {
@@ -34,26 +33,26 @@ final class AddEcho implements AddsEcho
         CardType $type,
     ): Event {
         if ($cause->history_id !== $event->history_id) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'Cause and event need to belong to the same history',
             );
         }
 
         if ($cause->isRegularEvent()) {
-            throw new InvalidArgumentException('Cannot use regular event as cause for Echo');
+            throw new \InvalidArgumentException('Cannot use regular event as cause for Echo');
         }
 
-        if ($event->echo_group !== null && $cause->echo_group <= $event->echo_group) {
-            throw new InvalidArgumentException(
+        if (null !== $event->echo_group && $cause->echo_group <= $event->echo_group) {
+            throw new \InvalidArgumentException(
                 'Echo cause needs to have happened after changed event',
             );
         }
 
         if (
-            $cause->period->position > $event->period->position ||
-            $cause->position > $event->position
+            $cause->period->position > $event->period->position
+            || $cause->position > $event->position
         ) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 'Echo needs to happen after its cause',
             );
         }
@@ -61,7 +60,7 @@ final class AddEcho implements AddsEcho
         $group = $this->echoGroups->getEchoGroup($event);
         $event->echo_group = $group;
 
-        if ($event->echo_group_position === null) {
+        if (null === $event->echo_group_position) {
             $event->echo_group_position = 1;
         }
 

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -19,9 +19,10 @@ use App\Events\BoardUpdated;
 use App\History;
 use App\MicroscopeEcho\Actions\AddsEcho;
 use App\MicroscopeEcho\Actions\AddsIntervention;
-use Generator;
 use Illuminate\Support\Facades\Event as EventFacade;
+use Illuminate\Support\Str;
 use Mockery as m;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\GameRouteTest;
 use Tests\ScopedRouteTest;
 use Tests\TestCase;
@@ -77,9 +78,7 @@ final class EchoTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider invalidInterventionPayloadProvider
-     */
+    #[DataProvider('invalidInterventionPayloadProvider')]
     public function testInterventionValidation(array $payload, string $expectedKey): void
     {
         $event = Event::factory()
@@ -95,7 +94,7 @@ final class EchoTest extends TestCase
             ->assertSessionHasErrors($expectedKey);
     }
 
-    public function invalidInterventionPayloadProvider(): Generator
+    public static function invalidInterventionPayloadProvider(): \Generator
     {
         yield from [
             'missing name' => [
@@ -156,33 +155,93 @@ final class EchoTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider invalidEchoPayloadProvider
-     */
+    #[DataProvider('invalidEchoPayloadProvider')]
     public function testEchoValidation(callable $getPayload, string $expectedKey): void
     {
-        $event = Event::factory()
+        $changedEvent = Event::factory()
             ->for($this->history)
             ->create();
 
         $this->actingAs($this->history->owner)
             ->post(
-                route('events.echoes.store', [$this->history, $event]),
-                $getPayload(),
+                route('events.echoes.store', [$this->history, $changedEvent]),
+                $getPayload($changedEvent),
             )
             ->assertRedirect()
             ->assertSessionHasErrors($expectedKey);
     }
 
-    public function invalidEchoPayloadProvider(): Generator
+    public static function invalidEchoPayloadProvider(): \Generator
     {
         yield from [
             'name missing' => [
+                static fn (Event $changedEvent) => [
+                    'type' => CardType::Dark->value,
+                    'cause' => Event::factory()
+                        ->for($changedEvent->history)
+                        ->intervention()
+                        ->create()
+                        ->id,
+                ],
+                'name',
+            ],
+            'name too long' => [
+                static fn (Event $changedEvent) => [
+                    'type' => CardType::Dark->value,
+                    'cause' => Event::factory()
+                        ->for($changedEvent->history)
+                        ->intervention()
+                        ->create()
+                        ->id,
+                    'name' => Str::repeat('a', 256),
+                ],
+                'name',
+            ],
+            'type missing' => [
+                static fn (Event $changedEvent) => [
+                    'cause' => Event::factory()
+                        ->for($changedEvent->history)
+                        ->intervention()
+                        ->create()
+                        ->id,
+                    'name' => '::name::',
+                ],
+                'type',
+            ],
+            'type not a valid value' => [
+                static fn (Event $changedEvent) => [
+                    'type' => '::invalid-value::',
+                    'cause' => Event::factory()
+                        ->for($changedEvent->history)
+                        ->intervention()
+                        ->create()
+                        ->id,
+                    'name' => '::name::',
+                ],
+                'type',
+            ],
+            'cause missing' => [
+                static fn (Event $changedEvent) => [
+                    'type' => '::invalid-value::',
+                    'name' => '::name::',
+                ],
+                'cause',
+            ],
+            'cause belongs to different history' => [
+                static fn (Event $changedEvent) => [
+                    'type' => CardType::Dark->value,
+                    'name' => '::name::',
+                    'cause' => Event::factory()
+                        ->intervention()
+                        ->create()
+                        ->id,
+                ],
+                'cause',
             ],
         ];
     }
 
-    public function gameRouteProvider(): Generator
+    public static function gameRouteProvider(): \Generator
     {
         yield from [
             'add intervention' => ['events.interventions.store'],
@@ -190,7 +249,7 @@ final class EchoTest extends TestCase
         ];
     }
 
-    public function scopedRouteProvider(): Generator
+    public static function scopedRouteProvider(): \Generator
     {
         yield from [
             'add intervention' => [

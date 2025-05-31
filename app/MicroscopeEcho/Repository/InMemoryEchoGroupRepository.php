@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -31,7 +31,7 @@ final class InMemoryEchoGroupRepository implements EchoGroupRepository
         }
 
         $groups = collect($this->events)
-            ->map(static fn (Event $event): int|null => $event->echo_group)
+            ->map(static fn (Event $event): ?int => $event->echo_group)
             ->filter();
 
         return $groups->isNotEmpty()

@@ -22,7 +22,6 @@ use App\Http\Requests\History\CreateHistoryRequest;
 use App\Http\Requests\History\UpdateSeedRequest;
 use App\MicroscopeGameMode;
 use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Tests\AuthenticatedRoutesTest;
 use Tests\GameRouteTest;

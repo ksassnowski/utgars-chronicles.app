@@ -23,7 +23,7 @@ final class DeleteEventController
 {
     public function __invoke(History $history, Event $event): RedirectResponse
     {
-        DB::transaction(function () use ($history, $event) {
+        DB::transaction(static function () use ($history, $event): void {
             $event->delete();
 
             if ($history->events()->where('echo_group', $event->echo_group)->count() === 1) {

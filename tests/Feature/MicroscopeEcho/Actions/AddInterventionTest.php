@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * Copyright (c) 2022 Kai Sassnowski
+ * Copyright (c) 2025 Kai Sassnowski
  *
  * For the full copyright and license information, please view
  * the LICENSE file that was distributed with this source code.
@@ -18,7 +18,6 @@ use App\Event;
 use App\EventType;
 use App\MicroscopeEcho\Actions\AddIntervention;
 use App\MicroscopeEcho\Repository\InMemoryEchoGroupRepository;
-use InvalidArgumentException;
 use Tests\TestCase;
 
 /**
@@ -93,8 +92,8 @@ final class AddInterventionTest extends TestCase
             new InMemoryEchoGroupRepository([$intervention]),
         );
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectErrorMessage('Cannot add an intervention to another intervention');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot add an intervention to another intervention');
 
         $action->handle($intervention, '::intervention-name::', CardType::Dark);
     }
