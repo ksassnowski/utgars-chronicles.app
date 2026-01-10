@@ -42,7 +42,6 @@ final class AcceptGuestInvitationRequest extends FormRequest
 
     public function name(): string
     {
-        /** @phpstan-ignore-next-line */
         return $this->post('name');
     }
 }

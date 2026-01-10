@@ -37,12 +37,6 @@ parameters:
 			path: app/Event.php
 
 		-
-			message: '#^Parameter \#1 \$query of method App\\Event\:\:limitElementsToMove\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Event\>, Illuminate\\Database\\Eloquent\\Builder\<\$this\(App\\Event\)\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Event.php
-
-		-
 			message: '#^Method App\\Filament\\Resources\\UserResource\:\:getPages\(\) should return array\<string, array\<int, string\>\> but returns array\<string, Filament\\Resources\\Pages\\PageRegistration\>\.$#'
 			identifier: return.type
 			count: 1
@@ -325,12 +319,6 @@ parameters:
 			path: app/Period.php
 
 		-
-			message: '#^Parameter \#1 \$query of method App\\Period\:\:limitElementsToMove\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Period\>, Illuminate\\Database\\Eloquent\\Builder\<\$this\(App\\Period\)\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: app/Period.php
-
-		-
 			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(string\)\: array\{string\} given\.$#'
 			identifier: argument.type
 			count: 1
@@ -375,12 +363,6 @@ parameters:
 		-
 			message: '#^PHPDoc type array\<int, string\> of property App\\Scene\:\:\$hidden is not covariant with PHPDoc type list\<string\> of overridden property Illuminate\\Database\\Eloquent\\Model\:\:\$hidden\.$#'
 			identifier: property.phpDocType
-			count: 1
-			path: app/Scene.php
-
-		-
-			message: '#^Parameter \#1 \$query of method App\\Scene\:\:limitElementsToMove\(\) expects Illuminate\\Database\\Eloquent\\Builder\<App\\Scene\>, Illuminate\\Database\\Eloquent\\Builder\<\$this\(App\\Scene\)\> given\.$#'
-			identifier: argument.type
 			count: 1
 			path: app/Scene.php
 

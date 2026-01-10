@@ -29,7 +29,6 @@ final class ChangePasswordRequest extends FormRequest
 
     public function password(): string
     {
-        /** @phpstan-ignore-next-line */
         return $this->post('password');
     }
 }
