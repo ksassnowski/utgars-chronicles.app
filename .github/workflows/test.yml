@@ -103,7 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Deploy
     steps:
-      - name: Trigger Envoyer Deploy
+      - name: Trigger Deploy
         uses: wei/curl@v1
         with:
-          args: ${{secrets.ENVOYER_DEPLOY_URL}}
+          args: ${{secrets.DEPLOY_URL}}
