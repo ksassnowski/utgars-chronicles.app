@@ -221,7 +221,6 @@ final class LfgRequestTest extends TestCase
             'already accepted request' => [
                 static fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->accepted()->create(),
             ],
-
             'already rejected request' => [
                 static fn (Lfg $lfg) => LfgRequest::factory()->for($lfg)->rejected()->create(),
             ],

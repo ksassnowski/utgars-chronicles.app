@@ -15,6 +15,6 @@ namespace App;
 
 abstract class PaletteType
 {
-    public const YES = 'yes';
-    public const NO = 'no';
+    public const string YES = 'yes';
+    public const string NO = 'no';
 }

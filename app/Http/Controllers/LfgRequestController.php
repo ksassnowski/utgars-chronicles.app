@@ -43,7 +43,7 @@ final class LfgRequestController extends Controller
 
             $lfgRequest = $lfg->requestToJoin($user, $message);
         } catch (AlreadyRequestedToJoinException|GameAlreadyStartedException|LfgAlreadyFullException $e) {
-            return $this->unsuccessfulRequestResponse($e);
+            return self::unsuccessfulRequestResponse($e);
         }
 
         $lfg->owner->notify(new NewLfgRequest($lfgRequest));
@@ -85,7 +85,7 @@ final class LfgRequestController extends Controller
         return redirect()->back();
     }
 
-    private function unsuccessfulRequestResponse(\Throwable $exception): RedirectResponse
+    private static function unsuccessfulRequestResponse(\Throwable $exception): RedirectResponse
     {
         $message = match ($exception::class) {
             AlreadyRequestedToJoinException::class => 'You already have a pending request for this game',

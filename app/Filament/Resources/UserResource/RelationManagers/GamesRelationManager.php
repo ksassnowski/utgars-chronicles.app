@@ -41,11 +41,9 @@ class GamesRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-
                 Tables\Columns\TextColumn::make('owner.name')
                     ->searchable()
                     ->label('Owner'),
-
                 Tables\Columns\TextColumn::make('created_at')
                     ->date('Y-m-d')
                     ->sortable(),
